@@ -5,10 +5,8 @@
 #include "qrFunctions.h"
 
 
-int main() {
-
-    createQR("test",
-             "Ceci est un gros test.\nPour l'instant, la taille maximale d'un message est de :\nMAX = 213 caractères");
-
+int main(int argc, char **argv) {
+    assert(argc == 3);
+    createQR(argv[1],argv[2]);
     return EXIT_SUCCESS;
 }
