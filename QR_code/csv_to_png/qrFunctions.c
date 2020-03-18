@@ -48,8 +48,9 @@ u_int8_t QRToPNG(QRCode qrcode, char *filename) {
     return 0;
 }
 
-void createQR(char *filename, char *message) {
-    assert(strlen(filename) > 0);
+void createQR(char *sourceFilename, char *destFilename) {
+    char *message = readCSV(sourceFilename);
+    assert(strlen(sourceFilename) > 0);
     assert(strlen(message) > 0);
 
     // The structure to manage the QR code
@@ -58,15 +59,18 @@ void createQR(char *filename, char *message) {
     uint8_t version = getVersion(message);
     assert(version > 0);
 
-    printf("Version : %d\n", version);
-    printf("Message : %s\nSize : %lu", message, strlen(message));
+    printf("QR code version: %d\n\n", version);
+    printf("QR code content : \n\n%s\n\nContent size : %lu", message, strlen(message));
 
     // Allocate a chunk of memory to store the QR code
     uint8_t qrcodeBytes[qrcode_getBufferSize(version)];
 
     qrcode_initText(&qrcode, qrcodeBytes, version, ECC_MEDIUM, message);
 
-    assert(QRToPNG(qrcode, filename) == 0);
+    assert(QRToPNG(qrcode, destFilename) == 0);
+    free(message);
+}
+
 char *readCSV(char *filename) {
     char *finalString, buffer[255];
     size_t size;
