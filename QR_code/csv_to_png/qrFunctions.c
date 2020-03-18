@@ -41,7 +41,7 @@ u_int8_t QRToPNG(QRCode qrcode, char *filename) {
         }
     }
 
-    unsigned error = lodepng_encode32_file(finalFilename, image, qrcode.size, qrcode.size);
+    unsigned error = lodepng_encode32_file(finalFilename, (const unsigned char *) image, qrcode.size, qrcode.size);
     assert(error == 0 && lodepng_error_text(error));
 
     free(image);
