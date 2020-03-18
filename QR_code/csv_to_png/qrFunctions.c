@@ -45,6 +45,7 @@ u_int8_t QRToPNG(QRCode qrcode, char *filename) {
     assert(error == 0 && lodepng_error_text(error));
 
     free(image);
+    free(finalFilename);
     return 0;
 }
 
