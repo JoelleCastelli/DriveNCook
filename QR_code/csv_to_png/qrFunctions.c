@@ -67,4 +67,30 @@ void createQR(char *filename, char *message) {
     qrcode_initText(&qrcode, qrcodeBytes, version, ECC_MEDIUM, message);
 
     assert(QRToPNG(qrcode, filename) == 0);
+char *readCSV(char *filename) {
+    char *finalString, buffer[255];
+    size_t size;
+    FILE *csvFile = fopen(filename, "rb");
+    assert(csvFile != NULL);
+
+    fseek(csvFile, 0, SEEK_END);
+    size = ftell(csvFile);
+    fseek(csvFile, 0, SEEK_SET);
+
+    finalString = malloc(1);
+    strcpy(finalString, "\0");
+
+    while (ftell(csvFile) < size) {
+        fscanf(csvFile, "%[^\n]", buffer);
+        fseek(csvFile, 1, SEEK_CUR);
+        if (*buffer != '#' && strchr(buffer, '=') != NULL) {
+            finalString = realloc(finalString, strlen(finalString) + strlen(buffer) + 2);
+            strcat(finalString, buffer);
+            strcat(finalString, "\n");
+        }
+    }
+
+    fclose(csvFile);
+    printf("FILE CONTENT:\n\n%s\n\n", finalString);
+    return finalString;
 }
