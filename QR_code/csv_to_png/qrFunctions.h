@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 
 #include "qrcode.h"
 #include "lodepng.h"
@@ -19,11 +20,13 @@ typedef struct {
     u_int8_t transparency;
 } RGBA_pixel;
 
-void createQR(char *filename, char *message);
+void createQR(char *sourceFilename, char *destFilename);
 
 u_int8_t getVersion(char *message);
 
 u_int8_t QRToPNG(QRCode qrcode, char *filename);
+
+char *readCSV(char *filename);
 
 
 #endif //CSV_TO_PNG_QRFUNCTIONS_H
