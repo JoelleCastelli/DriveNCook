@@ -15,7 +15,7 @@ int main(int argc, char **argv) {
     if (!logFd) exit(EXIT_FAILURE);
 
 	if(argc != 5) {
-		fprintf(stderr, "Usage: ./upload [Server IP] [FTP user] [FTP password] [file]");
+		fprintf(stderr, "Usage: ./upload [Server IP] [FTP user] [FTP password] [file]\n");
 		toLog(logFd, ERROR, "Usage: ./upload [Server IP] [FTP user] [FTP password] [file]");
 		return EXIT_FAILURE;
 	}
