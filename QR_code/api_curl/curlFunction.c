@@ -80,12 +80,16 @@ CURLcode setupCurl(CURL *curl, FILE *fd, FILE *logFd, const char *filename) {
 
     toLog(logFd, INFO, "Curl init succeed !");
 
-    sprintf(ftpURL, "ftp://%s:%s@%s/uploads/%s", ftpUser, ipDest, ftpPwd, filename);
-    printf("Command : %s\n", ftpURL);
+    sprintf(ftpURL, "sftp://%s:%s@%s/~.uploads/%s", ftpUser, ftpPwd, ipDest, filename);
+
+    curl_easy_setopt(curl, CURLOPT_FTP_CREATE_MISSING_DIRS, CURLFTP_CREATE_DIR_RETRY);
+
+    curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L); //ask to upload at the URL
 
     curl_easy_setopt(curl, CURLOPT_URL, ftpURL);
 
-    curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L); //ask to upload at the URL
+    curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+
 
     curl_easy_setopt(curl, CURLOPT_READDATA, fd);
 
@@ -93,7 +97,6 @@ CURLcode setupCurl(CURL *curl, FILE *fd, FILE *logFd, const char *filename) {
 
     curl_easy_setopt(curl, CURLOPT_STDERR, logFd);
 
-    curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 
     toLog(logFd, INFO, "Curl verbose:");
 

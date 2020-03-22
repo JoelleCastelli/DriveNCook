@@ -7,9 +7,9 @@
 #include "useful.h"
 #include "curlFunction.h"
 
-char *ipDest = "192.168.63.131";
-char *ftpPwd = "21ftpUs3r";
-char *ftpUser = "ftpuser";
+char *ipDest = "192.168.49.2";
+char *ftpPwd = "vanves";
+char *ftpUser = "server";
 
 int main(void) {
     char *filename;
