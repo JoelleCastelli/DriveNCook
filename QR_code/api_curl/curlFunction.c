@@ -77,7 +77,7 @@ CURLcode setupCurl(CURL *curl, FILE *fd, FILE *logFd, const CurlInfos *userArgs)
     toLog(logFd, INFO, "Curl init succeed !");
 
     sprintf(
-        ftpURL, "ftp://%s:%s@%s~./uploads/%s",
+        ftpURL, "sftp://%s:%s@%s/~./uploads/%s",
         userArgs->ftpUser, userArgs->ftpPwd, userArgs->ipDest, userArgs->filename
     );
     printf("Command : %s\n", ftpURL);
