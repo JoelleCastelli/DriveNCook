@@ -10,4 +10,11 @@
 #include <fcntl.h>
 #include <time.h>
 
+typedef struct CurlInfos {
+    char *ipDest;
+	char *ftpUser;
+	char *ftpPwd;
+	char *filename;
+} CurlInfos;
+
 void toLog(FILE * logFd, const short logFlag, const char * logMessage);
