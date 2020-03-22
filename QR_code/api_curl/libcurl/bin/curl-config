@@ -161,7 +161,7 @@ while test $# -gt 0; do
            CURLLIBDIR=""
         fi
         if test "Xyes" = "Xyes"; then
-          echo ${CURLLIBDIR}-lcurl -lssh2 -lssh2 -lssl -lcrypto
+          echo ${CURLLIBDIR}-lcurl -lssh2 -lssl -lcrypto
         else
           echo ${CURLLIBDIR}-lcurl
         fi
@@ -172,7 +172,7 @@ while test $# -gt 0; do
 
     --static-libs)
         if test "Xyes" != "Xno" ; then
-          echo ${exec_prefix}/lib/libcurl.a -L/usr/local/lib -lssh2 -lssh2 -lssl -lcrypto
+          echo ${exec_prefix}/lib/libcurl.a  -lssh2 -lssl -lcrypto
         else
           echo "curl was built with static libraries disabled" >&2
           exit 1
@@ -180,7 +180,7 @@ while test $# -gt 0; do
         ;;
 
     --configure)
-        echo " '--disable-libcurl-option' '--disable-shared' '--with-libssh2=/usr/local'"
+        echo " '--disable-libcurl-option' '--disable-shared' '--with-libssh2=../'"
         ;;
 
     *)
