@@ -6,3 +6,7 @@ QR_code/Information_to_QR_code/cmake-build-debug/
 QR_code/csv_to_png/cmake-build-debug/
 
 QR_code/csv_to_png/.idea/
+
+QR_code/api_curl/cpl.sh
+
+.vscode
