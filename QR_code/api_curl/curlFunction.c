@@ -7,25 +7,21 @@
 #include "useful.h"
 #include "curlFunction.h"
 
-extern char *ipDest;
-extern char *ftpPwd;
-extern char *ftpUser;
+// extern char *ipDest;
+// extern char *ftpPwd;
+// extern char *ftpUser;
 
-void uploadFile(const char *filename) {
+void uploadFile(FILE *logFd, const CurlInfos *userArgs) {
     FILE *fd;
-    FILE *logFd;
     CURL *curl;
     CURLcode res;
     curl_off_t speed_upload;
     curl_off_t total_time;
     char *tmpLogMsg;
 
-    logFd = fopen("sender.log", "a");
-    if (!logFd) exit(EXIT_FAILURE);
-
     toLog(logFd, INFO, "Program start...");
 
-    fd = fopen(filename, "rb");
+    fd = fopen(userArgs->filename, "rb");
     if (!fd) exit(EXIT_FAILURE);
 
     total_time = 0;
@@ -36,7 +32,7 @@ void uploadFile(const char *filename) {
     curl = curl_easy_init();
 
     if (curl) {
-        res = setupCurl(curl, fd, logFd, filename);
+        res = setupCurl(curl, fd, logFd, userArgs);
 
         if (res != CURLE_OK) {
             sprintf(
@@ -69,7 +65,7 @@ void uploadFile(const char *filename) {
     free(tmpLogMsg);
 }
 
-CURLcode setupCurl(CURL *curl, FILE *fd, FILE *logFd, const char *filename) {
+CURLcode setupCurl(CURL *curl, FILE *fd, FILE *logFd, const CurlInfos *userArgs) {
     CURLcode res;
     struct stat file_info;
     char *ftpURL;
@@ -80,7 +76,10 @@ CURLcode setupCurl(CURL *curl, FILE *fd, FILE *logFd, const char *filename) {
 
     toLog(logFd, INFO, "Curl init succeed !");
 
-    sprintf(ftpURL, "ftp://%s:%s@%s/uploads/%s", ftpUser, ipDest, ftpPwd, filename);
+    sprintf(
+        ftpURL, "ftp://%s:%s@%s/uploads/%s",
+        userArgs->ftpUser, userArgs->ftpPwd, userArgs->ipDest, userArgs->filename
+    );
     printf("Command : %s\n", ftpURL);
 
     curl_easy_setopt(curl, CURLOPT_URL, ftpURL);

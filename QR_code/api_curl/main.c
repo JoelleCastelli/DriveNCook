@@ -6,17 +6,26 @@
 
 #include "useful.h"
 #include "curlFunction.h"
+ 
+int main(int argc, char **argv) {
+	FILE *logFd;
+	CurlInfos userArgs;
 
-char *ipDest = "192.168.63.131";
-char *ftpPwd = "21ftpUs3r";
-char *ftpUser = "ftpuser";
+	logFd = fopen("upload.log", "a");
+    if (!logFd) exit(EXIT_FAILURE);
 
-int main(void) {
-    char *filename;
+	if(argc != 5) {
+		fprintf(stderr, "Usage: ./upload [Server IP] [FTP user] [FTP password] [file]");
+		toLog(logFd, ERROR, "Usage: ./upload [Server IP] [FTP user] [FTP password] [file]");
+		return EXIT_FAILURE;
+	}
 
-    filename = "message.txt";
+	userArgs.ipDest = argv[1];
+	userArgs.ftpUser = argv[2];
+	userArgs.ftpPwd = argv[3];
+	userArgs.filename = argv[4];
 
-    uploadFile(filename);
+    uploadFile(logFd, &userArgs);
 
     return EXIT_SUCCESS;
 }
