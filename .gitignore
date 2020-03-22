@@ -12,3 +12,5 @@ QR_code/csv_to_png/.idea/
 QR_code/api_curl/cmake-build-debug/
 
 QR_code/api_curl/.idea/
+
+QR_code/api_curl/upload.log
