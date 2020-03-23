@@ -11,7 +11,8 @@ link_directories(${CMAKE_SOURCE_DIR}/libcurl/lib)
 
 
 add_executable(${PROJECT_NAME}
-        main.c)
+        main.c
+        useful.c)
 
 #target_link_libraries(${PROJECT_NAME} curl)
 
