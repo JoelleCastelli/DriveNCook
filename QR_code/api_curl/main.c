@@ -1,5 +1,5 @@
 /*
- * Curl sender: main file
+ * Curl uploader: main file
  * 21/03/2020
  * by Antoine Fèvre
  */

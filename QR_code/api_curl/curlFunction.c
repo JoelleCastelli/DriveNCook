@@ -7,10 +7,6 @@
 #include "useful.h"
 #include "curlFunction.h"
 
-// extern char *ipDest;
-// extern char *ftpPwd;
-// extern char *ftpUser;
-
 void uploadFile(FILE *logFd, const CurlInfos *userArgs) {
     FILE *fd;
     CURL *curl;
@@ -80,7 +76,6 @@ CURLcode setupCurl(CURL *curl, FILE *fd, FILE *logFd, const CurlInfos *userArgs)
         ftpURL, "sftp://%s:%s@%s/~./uploads/%s",
         userArgs->ftpUser, userArgs->ftpPwd, userArgs->ipDest, userArgs->filename
     );
-    printf("Command : %s\n", ftpURL);
 
     curl_easy_setopt(curl, CURLOPT_FTP_CREATE_MISSING_DIRS, CURLFTP_CREATE_DIR_RETRY);
 
