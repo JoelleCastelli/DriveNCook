@@ -6,8 +6,8 @@ set(PROJECT_NAME listener)
 
 #set(CURL_LIBRARY "-lcurl")
 #find_package(CURL REQUIRED)
-include_directories(${CMAKE_SOURCE_DIR}/libcurl/include)
-link_directories(${CMAKE_SOURCE_DIR}/libcurl/lib)
+#include_directories(${CMAKE_SOURCE_DIR}/libcurl/include)
+#link_directories(${CMAKE_SOURCE_DIR}/libcurl/lib)
 
 
 add_executable(${PROJECT_NAME}

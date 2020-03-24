@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "curl/curl.h"
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <time.h>
