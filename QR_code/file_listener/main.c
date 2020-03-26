@@ -4,12 +4,6 @@
  * by Antoine Fèvre
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <dirent.h>
-#include <unistd.h>
-#include <errno.h>
-
 #include "useful.h"
 
 int main(int argc, char **argv) {
@@ -19,6 +13,8 @@ int main(int argc, char **argv) {
     char tmpLogMsg[200];
     char dirPath[200];
     char tmpFilePath[200];
+    short timer = 0;
+    pid_t pid;
 
     logFd = fopen("listener.log", "a");
     if(!logFd) exit(EXIT_FAILURE);
@@ -41,8 +37,18 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
+    printf("%d", timer);
+
     for(;;) {
         sleep(1);
+
+        if(timer++ == 5) {
+            timer = 0;
+            fclose(logFd);
+            logFd = fopen("listener.log", "a");
+            if(!logFd) return(EXIT_FAILURE);
+        }
+
         readFile = readdir(rep);
 
         if(readFile == NULL) {
@@ -59,9 +65,18 @@ int main(int argc, char **argv) {
 
         if(strcmp(&tmpFilePath[strlen(tmpFilePath) - 1], ".") == 0) continue;
 
-        //execl("/home/antoine/Desktop/sender/QR_code/file_listener/cmake-build-debug/", "listener", "/home/antoine/upload", NULL);
-        //perror("Error: ");
-        //remove(tmpFilePath);
+        pid = fork();
+
+        if(pid == -1) {
+            strcat(strcpy(tmpLogMsg, "Fork : "), strerror(errno));
+            toLog(logFd, ERROR, tmpLogMsg);
+        } else if(pid == 0) {
+            execl("/bin/ls", "ls", "-l", (char *) NULL);
+        } else {
+            remove(tmpFilePath);
+            strcat(strcpy(tmpLogMsg, "Deleted : "), tmpFilePath);
+            toLog(logFd, INFO, tmpLogMsg);
+        }
     }
 
     closedir(rep);

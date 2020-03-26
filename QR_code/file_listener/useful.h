@@ -11,13 +11,9 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <time.h>
-
-typedef struct CurlInfos {
-    char *ipDest;
-	char *ftpUser;
-	char *ftpPwd;
-	char *filename;
-} CurlInfos;
+#include <dirent.h>
+#include <unistd.h>
+#include <errno.h>
 
 void toLog(FILE * logFd, const short logFlag, const char * logMessage);
 
