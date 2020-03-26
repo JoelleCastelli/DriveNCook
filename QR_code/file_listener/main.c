@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
     for(;;) {
         sleep(1);
 
-        if(timer++ == 5) {
+        if(timer++ == 60) {
             timer = 0;
             fclose(logFd);
             logFd = fopen("listener.log", "a");
