@@ -37,4 +37,12 @@ void connectSignals();
 
 void onDestroy();
 
+void status(char *statusMessage);
+
+void successStatus(char *statusMessage);
+
+void errorStatus(char *statusMessage);
+
+char *checkInputs(const char *name, const char *firstName, const char *email);
+
 #endif //DRIVENCOOK_SUBSCRIBE_GTKFUNCTIONS_H
