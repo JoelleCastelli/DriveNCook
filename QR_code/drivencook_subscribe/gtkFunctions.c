@@ -18,6 +18,7 @@ void startGTK(int *argc, char ***argv) {
     connectWidgets();
 
     g_signal_connect(widgets->window, "destroy", G_CALLBACK(onDestroy), NULL);
+    gtk_builder_add_callback_symbol(builder, "on_subscribeButton_clicked", G_CALLBACK(on_subscribeButton_clicked));
     gtk_builder_connect_signals(builder, NULL);
     g_object_unref(builder);
 
