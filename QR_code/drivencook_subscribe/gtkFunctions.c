@@ -19,7 +19,18 @@ void on_subscribeButton_clicked() {
     }
     status("En cours de traitement...");
 
+    time_t seconds = time(NULL);
 
+    char filename[50];
+    sprintf(filename, "%ld", seconds);
+
+    char qrContent[300];
+    sprintf(qrContent, "NAME=%s\nFIRSTNAME=%s\nEMAIL=%s\n", name, firstName, email);
+    assert(strlen(qrContent) < 300);
+
+    createQR(qrContent, filename);
+
+    successStatus("code QR créé !");
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

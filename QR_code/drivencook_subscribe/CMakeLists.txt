@@ -3,7 +3,7 @@ project(drivencook_subscribe C)
 
 set(CMAKE_C_STANDARD 99)
 
-set(PROJECT_FILES main.c gtkFunctions.c)
+set(PROJECT_FILES main.c gtkFunctions.c qrFunctions.c libs/lodepng.c libs/qrcode.c)
 set(PROJECT_NAME drivencook_subscribe)
 
 FIND_PACKAGE(PkgConfig REQUIRED)

@@ -6,6 +6,10 @@
 #define DRIVENCOOK_SUBSCRIBE_GTKFUNCTIONS_H
 
 #include <gtk-3.0/gtk/gtk.h>
+#include <time.h>
+#include <assert.h>
+
+#include "qrFunctions.h"
 
 GtkBuilder *builder;
 extern char *gladeFile;
