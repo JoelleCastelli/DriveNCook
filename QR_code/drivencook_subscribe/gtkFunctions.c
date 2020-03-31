@@ -17,9 +17,7 @@ void startGTK(int *argc, char ***argv) {
     builder = gtk_builder_new_from_file(gladeFile);
     connectWidgets();
 
-    g_signal_connect(widgets->window, "destroy", G_CALLBACK(onDestroy), NULL);
-    gtk_builder_add_callback_symbol(builder, "on_subscribeButton_clicked", G_CALLBACK(on_subscribeButton_clicked));
-    gtk_builder_connect_signals(builder, NULL);
+    connectSignals();
     g_object_unref(builder);
 
     gtk_widget_show_all(widgets->window);
@@ -38,6 +36,12 @@ void connectWidgets() {
     widgets->firstNameEntry = GTK_ENTRY(gtk_builder_get_object(builder, "firstNameEntry"));
     widgets->emailEntry = GTK_ENTRY(gtk_builder_get_object(builder, "emailEntry"));
     widgets->statusLabel = GTK_LABEL(gtk_builder_get_object(builder, "statusLabel"));
+}
+
+void connectSignals() {
+    g_signal_connect(widgets->window, "destroy", G_CALLBACK(onDestroy), NULL);
+    gtk_builder_add_callback_symbol(builder, "on_subscribeButton_clicked", G_CALLBACK(on_subscribeButton_clicked));
+    gtk_builder_connect_signals(builder, NULL);
 }
 
 void onDestroy() {

@@ -33,6 +33,8 @@ void startGTK(int *argc, char ***argv);
 
 void connectWidgets();
 
+void connectSignals();
+
 void onDestroy();
 
 #endif //DRIVENCOOK_SUBSCRIBE_GTKFUNCTIONS_H
