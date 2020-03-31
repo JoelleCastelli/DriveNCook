@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(api_curl C)
 
 set(CMAKE_C_STANDARD 11)
-set(PROJECT_NAME sender)
+set(PROJECT_NAME upload)
 
 #set(CURL_LIBRARY "-lcurl")
 #find_package(CURL REQUIRED)
