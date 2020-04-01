@@ -7,23 +7,24 @@
 #include "useful.h"
 #include "curlFunction.h"
 
-void uploadFile(FILE *logFd, const CurlInfos *userArgs) {
+int uploadFile(FILE *logFd, const CurlInfos *userArgs) {
     FILE *fd;
     CURL *curl;
     CURLcode res;
     curl_off_t speed_upload;
     curl_off_t total_time;
     char *tmpLogMsg;
+    int returnCode = 0;
 
     toLog(logFd, INFO, "Program start...");
 
     fd = fopen(userArgs->filename, "rb");
-    if (!fd) exit(EXIT_FAILURE);
+    if (!fd) return 1;
 
     total_time = 0;
 
     tmpLogMsg = malloc(sizeof(char) * 200);
-    if (!tmpLogMsg) exit(EXIT_FAILURE);
+    if (!tmpLogMsg) return 1;
 
     curl = curl_easy_init();
 
@@ -37,7 +38,7 @@ void uploadFile(FILE *logFd, const CurlInfos *userArgs) {
                     curl_easy_strerror(res)
             );
             toLog(logFd, ERROR, tmpLogMsg);
-
+            returnCode = 1;
         } else {
             curl_easy_getinfo(curl, CURLINFO_SPEED_UPLOAD_T, &speed_upload);
 
@@ -52,6 +53,7 @@ void uploadFile(FILE *logFd, const CurlInfos *userArgs) {
 
         curl_easy_cleanup(curl);
     } else {
+        returnCode = 1;
         toLog(logFd, ERROR, "Curl init failed :c");
     }
 
@@ -59,6 +61,7 @@ void uploadFile(FILE *logFd, const CurlInfos *userArgs) {
 
     fclose(fd);
     free(tmpLogMsg);
+    return returnCode;
 }
 
 CURLcode setupCurl(CURL *curl, FILE *fd, FILE *logFd, const CurlInfos *userArgs) {
@@ -66,15 +69,15 @@ CURLcode setupCurl(CURL *curl, FILE *fd, FILE *logFd, const CurlInfos *userArgs)
     struct stat file_info;
     char *ftpURL;
 
-    if (fstat(fileno(fd), &file_info) != 0) exit(EXIT_FAILURE);
+    if (fstat(fileno(fd), &file_info) != 0) return 1;
 
     ftpURL = malloc(sizeof(char) * 100);
 
     toLog(logFd, INFO, "Curl init succeed !");
 
     sprintf(
-        ftpURL, "sftp://%s:%s@%s/~./uploads/%s",
-        userArgs->ftpUser, userArgs->ftpPwd, userArgs->ipDest, userArgs->filename
+            ftpURL, "sftp://%s:%s@%s/~./uploads/%s",
+            userArgs->sftpUser, userArgs->sftpPwd, userArgs->ipDest, userArgs->filename
     );
 
     curl_easy_setopt(curl, CURLOPT_FTP_CREATE_MISSING_DIRS, CURLFTP_CREATE_DIR_RETRY);

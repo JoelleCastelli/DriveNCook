@@ -15,8 +15,8 @@
 
 typedef struct CurlInfos {
     char *ipDest;
-	char *ftpUser;
-	char *ftpPwd;
+	char *sftpUser;
+	char *sftpPwd;
 	char *filename;
 } CurlInfos;
 
