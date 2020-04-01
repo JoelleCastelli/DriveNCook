@@ -11,6 +11,7 @@
 
 #include "qrFunctions.h"
 #include "codecFunctions.h"
+#include "curlFunction.h"
 
 GtkBuilder *builder;
 extern char *gladeFile;
@@ -26,13 +27,6 @@ typedef struct {
     GtkLabel *statusLabel;
 
 } AppWidgets;
-
-typedef struct CurlInfos {
-    char *ipDest;
-    char *sftpUser;
-    char *sftpPwd;
-    char *filename;
-} CurlInfos;
 
 AppWidgets *widgets;
 CurlInfos userArgs;
@@ -61,6 +55,8 @@ void errorStatus(char *statusMessage);
 void processConfigFile();
 
 void processKeyFile();
+
+int sendFile(char *filename);
 
 char *checkInputs(const char *name, const char *firstName, const char *email);
 

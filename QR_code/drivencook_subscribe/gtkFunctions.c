@@ -31,6 +31,17 @@ void on_subscribeButton_clicked() {
     createQR(qrContent, filename);
 
     successStatus("code QR créé !");
+
+    strcat(filename, ".png");
+
+    status("Envoie du fichier..");
+    int returnCode = sendFile(filename);
+    if (returnCode == 0) {
+        successStatus("Fichier envoyé ! Consulter le fichier log pour plus d'informations...");
+    } else {
+        errorStatus(
+                "Une erreur s'est produite lors de l'envoie ! Consulter le fichier log pour plus d'informations...");
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -175,3 +186,11 @@ void processConfigFile() {
     successStatus("Configuration valide!");
 }
 
+int sendFile(char *filename) {
+    userArgs.filename = filename;
+    FILE *logFd;
+
+    logFd = fopen("upload.log", "a");
+    if (!logFd) return 1;
+    return uploadFile(logFd, &userArgs);
+}
