@@ -10,9 +10,12 @@
 #include <assert.h>
 
 #include "qrFunctions.h"
+#include "codecFunctions.h"
 
 GtkBuilder *builder;
 extern char *gladeFile;
+extern char *configFilePath;
+
 
 typedef struct {
     GtkWidget *window;
@@ -24,7 +27,15 @@ typedef struct {
 
 } AppWidgets;
 
+typedef struct CurlInfos {
+    char *ipDest;
+    char *sftpUser;
+    char *sftpPwd;
+    char *filename;
+} CurlInfos;
+
 AppWidgets *widgets;
+CurlInfos userArgs;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -46,6 +57,10 @@ void status(char *statusMessage);
 void successStatus(char *statusMessage);
 
 void errorStatus(char *statusMessage);
+
+void processConfigFile();
+
+void processKeyFile();
 
 char *checkInputs(const char *name, const char *firstName, const char *email);
 

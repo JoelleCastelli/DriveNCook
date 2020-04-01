@@ -45,6 +45,7 @@ void startGTK(int *argc, char ***argv) {
 
     gtk_widget_show_all(widgets->window);
     status("En attente d'entrée utilisateur...");
+    processKeyFile();
     gtk_main();
 
     g_slice_free(AppWidgets, widgets);
@@ -108,5 +109,69 @@ char *checkInputs(const char *name, const char *firstName, const char *email) {
     }
 
     return errorMessage;
+}
+
+void processKeyFile() {
+    fillC2B();
+    int returnCode = fillMatrixDecode();
+    if (returnCode == 1) {
+        errorStatus("Erreur dans la configuration de la clé de chiffrement!");
+        gtk_widget_set_sensitive(GTK_WIDGET(widgets->subscribeButton), FALSE);
+    } else {
+        processConfigFile();
+    }
+}
+
+void processConfigFile() {
+    char *conf = decode(configFilePath);
+    if (strlen(conf) == 0) {
+        errorStatus("Erreur la lecture du fichier de configuration");
+        gtk_widget_set_sensitive(GTK_WIDGET(widgets->subscribeButton), FALSE);
+        return;
+    }
+    successStatus("Configuration déchiffré !");
+    char *confP;
+    size_t lineSize = 0;
+    //IPDEST=
+    //SFTPUSER=
+    //SFTPPASSWORD=
+
+    confP = strstr(conf, "IPDEST= ");
+    if (confP == NULL) {
+        errorStatus("Configuration invalide! (ipdest)");
+        gtk_widget_set_sensitive(GTK_WIDGET(widgets->subscribeButton), FALSE);
+        return;
+    }
+    confP = strchr(confP, ' ') + 1;
+    lineSize = strchr(confP, '\n') - confP;
+    userArgs.ipDest = malloc(lineSize + 1);
+    strncpy(userArgs.ipDest, confP, lineSize);
+    userArgs.ipDest[lineSize] = '\0';
+
+    confP = strstr(conf, "SFTPUSER= ");
+    if (confP == NULL) {
+        errorStatus("Configuration invalide! (sftp user)");
+        gtk_widget_set_sensitive(GTK_WIDGET(widgets->subscribeButton), FALSE);
+        return;
+    }
+    confP = strchr(confP, ' ') + 1;
+    lineSize = strchr(confP, '\n') - confP;
+    userArgs.sftpUser = malloc(lineSize + 1);
+    strncpy(userArgs.sftpUser, confP, lineSize);
+    userArgs.sftpUser[lineSize] = '\0';
+
+    confP = strstr(conf, "SFTPPASSWORD= ");
+    if (confP == NULL) {
+        errorStatus("Configuration invalide! (sftp password)");
+        gtk_widget_set_sensitive(GTK_WIDGET(widgets->subscribeButton), FALSE);
+        return;
+    }
+    confP = strchr(confP, ' ') + 1;
+    lineSize = strchr(confP, '\n') - confP;
+    userArgs.sftpPwd = malloc(lineSize + 1);
+    strncpy(userArgs.sftpPwd, confP, lineSize);
+    userArgs.sftpPwd[lineSize] = '\0';
+
+    successStatus("Configuration valide!");
 }
 
