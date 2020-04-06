@@ -236,6 +236,7 @@
             <property name="receives_default">False</property>
             <property name="tooltip_text" translatable="yes">Configuration du serveur</property>
             <property name="relief">none</property>
+            <signal name="clicked" handler="on_configureButton_clicked" swapped="no"/>
             <child>
               <object class="GtkImage">
                 <property name="visible">True</property>
@@ -366,7 +367,6 @@
                 <child>
                   <object class="GtkEntry" id="userLoginEntry">
                     <property name="visible">True</property>
-                    <property name="sensitive">False</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">50</property>
                     <property name="width_chars">30</property>
@@ -380,7 +380,6 @@
                 <child>
                   <object class="GtkEntry" id="userPwdEntry">
                     <property name="visible">True</property>
-                    <property name="sensitive">False</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">50</property>
                     <property name="width_chars">30</property>
@@ -441,6 +440,21 @@
             <property name="can_focus">False</property>
             <property name="layout_style">end</property>
             <child>
+              <object class="GtkButton" id="saveBtn">
+                <property name="label" translatable="yes">Sauvegarder</property>
+                <property name="width_request">100</property>
+                <property name="height_request">40</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkButton" id="editBtn">
                 <property name="label" translatable="yes">Modifier</property>
                 <property name="width_request">100</property>
@@ -452,7 +466,7 @@
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
-                <property name="position">0</property>
+                <property name="position">1</property>
               </packing>
             </child>
             <child>
@@ -467,7 +481,7 @@
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
-                <property name="position">1</property>
+                <property name="position">2</property>
               </packing>
             </child>
           </object>
@@ -549,7 +563,6 @@
                 <child>
                   <object class="GtkEntry" id="serverAddrEntry">
                     <property name="visible">True</property>
-                    <property name="sensitive">False</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">50</property>
                     <property name="width_chars">30</property>
@@ -563,7 +576,6 @@
                 <child>
                   <object class="GtkEntry" id="serverUsrEntry">
                     <property name="visible">True</property>
-                    <property name="sensitive">False</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">50</property>
                     <property name="width_chars">30</property>
@@ -577,7 +589,6 @@
                 <child>
                   <object class="GtkEntry" id="serverPwdEntry">
                     <property name="visible">True</property>
-                    <property name="sensitive">False</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">150</property>
                     <property name="width_chars">30</property>
