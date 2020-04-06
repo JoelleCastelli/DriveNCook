@@ -87,6 +87,7 @@ void connectWidgets() {
     widgets->serverConfDialog = GTK_DIALOG(gtk_builder_get_object(builder, "serverConfDialog"));
     widgets->closeBtn = GTK_BUTTON(gtk_builder_get_object(builder, "closeBtn"));
     widgets->editBtn = GTK_BUTTON(gtk_builder_get_object(builder, "editBtn"));
+    widgets->saveBtn = GTK_BUTTON(gtk_builder_get_object(builder, "editBtn"));
     widgets->serverAddrEntry = GTK_ENTRY(gtk_builder_get_object(builder, "serverAddrEntry"));
     widgets->serverUsrEntry = GTK_ENTRY(gtk_builder_get_object(builder, "serverUsrEntry"));
     widgets->serverPwdEntry = GTK_ENTRY(gtk_builder_get_object(builder, "serverPwdEntry"));
