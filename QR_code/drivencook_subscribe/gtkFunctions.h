@@ -25,6 +25,18 @@ typedef struct {
     GtkEntry *firstNameEntry;
     GtkEntry *emailEntry;
     GtkLabel *statusLabel;
+    GtkDialog *serverConfDialog;
+    GtkButton *closeBtn;
+    GtkButton *editBtn;
+    GtkEntry *serverAddrEntry;
+    GtkEntry *serverUsrEntry;
+    GtkEntry *serverPwdEntry;
+    GtkDialog *passRequestDialog;
+    GtkButton *okBtn;
+    GtkButton *cancelBtn;
+    GtkEntry *userLoginEntry;
+    GtkEntry *userPwdEntry;
+    GtkLabel *passRequestErr;
 
 } AppWidgets;
 
