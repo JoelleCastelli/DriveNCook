@@ -65,17 +65,40 @@ void startGTK(int *argc, char ***argv) {
 void connectWidgets() {
     widgets = g_slice_new(AppWidgets);
 
+    //main window
     widgets->window = GTK_WIDGET(gtk_builder_get_object(builder, "window"));
     widgets->subscribeButton = GTK_BUTTON(gtk_builder_get_object(builder, "subscribeButton"));
     widgets->nameEntry = GTK_ENTRY(gtk_builder_get_object(builder, "nameEntry"));
     widgets->firstNameEntry = GTK_ENTRY(gtk_builder_get_object(builder, "firstNameEntry"));
     widgets->emailEntry = GTK_ENTRY(gtk_builder_get_object(builder, "emailEntry"));
     widgets->statusLabel = GTK_LABEL(gtk_builder_get_object(builder, "statusLabel"));
+
+    //server configuration dialog
+    widgets->serverConfDialog = GTK_DIALOG(gtk_builder_get_object(builder, "serverConfDialog"));
+    widgets->closeBtn = GTK_BUTTON(gtk_builder_get_object(builder, "closeBtn"));
+    widgets->editBtn = GTK_BUTTON(gtk_builder_get_object(builder, "editBtn"));
+    widgets->serverAddrEntry = GTK_ENTRY(gtk_builder_get_object(builder, "serverAddrEntry"));
+    widgets->serverUsrEntry = GTK_ENTRY(gtk_builder_get_object(builder, "serverUsrEntry"));
+    widgets->serverPwdEntry = GTK_ENTRY(gtk_builder_get_object(builder, "serverPwdEntry"));
+
+    //security dialog
+    widgets->passRequestDialog = GTK_DIALOG(gtk_builder_get_object(builder, "passRequestDialog"));
+    widgets->okBtn = GTK_BUTTON(gtk_builder_get_object(builder, "okBtn"));
+    widgets->cancelBtn = GTK_BUTTON(gtk_builder_get_object(builder, "cancelBtn"));
+    widgets->userLoginEntry = GTK_ENTRY(gtk_builder_get_object(builder, "userLoginEntry"));
+    widgets->userPwdEntry = GTK_ENTRY(gtk_builder_get_object(builder, "userPwdEntry"));
+    widgets->passRequestErr = GTK_LABEL(gtk_builder_get_object(builder, "passRequestErr"));
 }
 
 void connectSignals() {
+    //main window
     g_signal_connect(widgets->window, "destroy", G_CALLBACK(onDestroy), NULL);
     gtk_builder_add_callback_symbol(builder, "on_subscribeButton_clicked", G_CALLBACK(on_subscribeButton_clicked));
+
+    //server configuration dialog
+
+    //security dialog
+
     gtk_builder_connect_signals(builder, NULL);
 }
 
@@ -194,3 +217,4 @@ int sendFile(char *filename) {
     if (!logFd) return 1;
     return uploadFile(logFd, &userArgs);
 }
+
