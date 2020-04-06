@@ -44,6 +44,16 @@ void on_subscribeButton_clicked() {
     }
 }
 
+void on_configureButton_clicked() {
+    gtk_widget_set_sensitive(widgets->window, FALSE);
+    gtk_widget_set_visible(GTK_WIDGET(widgets->passRequestDialog), TRUE);
+}
+
+void on_cancel_loginButton_clicked() {
+    gtk_widget_set_visible(GTK_WIDGET(widgets->passRequestDialog), FALSE);
+    gtk_widget_set_sensitive(widgets->window, FALSE);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void startGTK(int *argc, char ***argv) {
@@ -96,8 +106,10 @@ void connectSignals() {
     gtk_builder_add_callback_symbol(builder, "on_subscribeButton_clicked", G_CALLBACK(on_subscribeButton_clicked));
 
     //server configuration dialog
+    gtk_builder_add_callback_symbol(builder, "on_cancel_loginButton_clicked", G_CALLBACK(on_cancel_loginButton_clicked));
 
     //security dialog
+    gtk_builder_add_callback_symbol(builder, "on_configureButton_clicked", G_CALLBACK(on_configureButton_clicked));
 
     gtk_builder_connect_signals(builder, NULL);
 }
@@ -217,4 +229,3 @@ int sendFile(char *filename) {
     if (!logFd) return 1;
     return uploadFile(logFd, &userArgs);
 }
-

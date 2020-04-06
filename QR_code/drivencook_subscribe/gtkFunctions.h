@@ -28,6 +28,7 @@ typedef struct {
     GtkDialog *serverConfDialog;
     GtkButton *closeBtn;
     GtkButton *editBtn;
+    GtkButton *saveBtn;
     GtkEntry *serverAddrEntry;
     GtkEntry *serverUsrEntry;
     GtkEntry *serverPwdEntry;
