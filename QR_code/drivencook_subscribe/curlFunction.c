@@ -16,7 +16,7 @@ int uploadFile(FILE *logFd, const CurlInfos *userArgs) {
     char *tmpLogMsg;
     int returnCode = 0;
 
-    toLog(logFd, INFO, "Program start...");
+    toLog(logFd, INFO, "Upload start...");
 
     fd = fopen(userArgs->filename, "rb");
     if (!fd) return 1;
@@ -57,7 +57,7 @@ int uploadFile(FILE *logFd, const CurlInfos *userArgs) {
         toLog(logFd, ERROR, "Curl init failed :c");
     }
 
-    toLog(logFd, INFO, "Program stop...");
+    toLog(logFd, INFO, "Upload stop...");
 
     fclose(fd);
     free(tmpLogMsg);
