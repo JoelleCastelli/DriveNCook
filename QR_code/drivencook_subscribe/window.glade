@@ -283,6 +283,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_okButton_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -298,6 +299,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_cancel_loginButton_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -370,6 +372,7 @@
                     <property name="can_focus">True</property>
                     <property name="max_length">50</property>
                     <property name="width_chars">30</property>
+                    <property name="text" translatable="yes">admin</property>
                     <property name="input_purpose">name</property>
                   </object>
                   <packing>
@@ -383,6 +386,7 @@
                     <property name="can_focus">True</property>
                     <property name="max_length">50</property>
                     <property name="width_chars">30</property>
+                    <property name="text" translatable="yes">admin</property>
                     <property name="input_purpose">name</property>
                   </object>
                   <packing>
@@ -445,8 +449,10 @@
                 <property name="width_request">100</property>
                 <property name="height_request">40</property>
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_saveButton_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -462,6 +468,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_editButton_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -477,6 +484,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_closeButton_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -563,6 +571,7 @@
                 <child>
                   <object class="GtkEntry" id="serverAddrEntry">
                     <property name="visible">True</property>
+                    <property name="sensitive">False</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">50</property>
                     <property name="width_chars">30</property>
@@ -576,6 +585,7 @@
                 <child>
                   <object class="GtkEntry" id="serverUsrEntry">
                     <property name="visible">True</property>
+                    <property name="sensitive">False</property>
                     <property name="can_focus">True</property>
                     <property name="max_length">50</property>
                     <property name="width_chars">30</property>
@@ -589,8 +599,9 @@
                 <child>
                   <object class="GtkEntry" id="serverPwdEntry">
                     <property name="visible">True</property>
+                    <property name="sensitive">False</property>
                     <property name="can_focus">True</property>
-                    <property name="max_length">150</property>
+                    <property name="max_length">50</property>
                     <property name="width_chars">30</property>
                     <property name="input_purpose">email</property>
                   </object>
@@ -603,6 +614,20 @@
               <packing>
                 <property name="x">20</property>
                 <property name="y">20</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="serverConfStatus">
+                <property name="width_request">330</property>
+                <property name="height_request">30</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="wrap">True</property>
+                <property name="xalign">0</property>
+              </object>
+              <packing>
+                <property name="x">20</property>
+                <property name="y">176</property>
               </packing>
             </child>
           </object>

@@ -1,5 +1,6 @@
 //
 // Created by nou on 31/03/2020.
+// Updated by Antoine on 06/04/2020.
 //
 
 #ifndef DRIVENCOOK_SUBSCRIBE_GTKFUNCTIONS_H
@@ -32,6 +33,7 @@ typedef struct {
     GtkEntry *serverAddrEntry;
     GtkEntry *serverUsrEntry;
     GtkEntry *serverPwdEntry;
+    GtkLabel *serverConfStatus;
     GtkDialog *passRequestDialog;
     GtkButton *okBtn;
     GtkButton *cancelBtn;
@@ -47,6 +49,18 @@ CurlInfos userArgs;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 G_MODULE_EXPORT void on_subscribeButton_clicked();
+
+G_MODULE_EXPORT void on_configureButton_clicked();
+
+G_MODULE_EXPORT void on_okButton_clicked();
+
+G_MODULE_EXPORT void on_cancel_loginButton_clicked();
+
+G_MODULE_EXPORT void on_saveButton_clicked();
+
+G_MODULE_EXPORT void on_editButton_clicked();
+
+G_MODULE_EXPORT void on_closeButton_clicked();
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -65,12 +79,21 @@ void successStatus(char *statusMessage);
 
 void errorStatus(char *statusMessage);
 
-void processConfigFile();
+int processConfigFile();
 
-void processKeyFile();
+int processKeyFile();
 
 int sendFile(char *filename);
 
 char *checkInputs(const char *name, const char *firstName, const char *email);
+
+
+void successLabel(GtkLabel *successLabel, char *successMessage);
+
+void errorLabel(GtkLabel *errLabel, char *errorMessage);
+
+void checkCredentials();
+
+void loadServerConfig();
 
 #endif //DRIVENCOOK_SUBSCRIBE_GTKFUNCTIONS_H

@@ -1,5 +1,6 @@
 //
 // Created by nou on 31/03/2020.
+// Updated by Antoine on 06/04/2020.
 //
 
 #include "gtkFunctions.h"
@@ -46,12 +47,52 @@ void on_subscribeButton_clicked() {
 
 void on_configureButton_clicked() {
     gtk_widget_set_sensitive(widgets->window, FALSE);
+    gtk_window_set_accept_focus(GTK_WINDOW(widgets->window), FALSE);
     gtk_widget_set_visible(GTK_WIDGET(widgets->passRequestDialog), TRUE);
+}
+
+void on_okButton_clicked() {
+    checkCredentials();
 }
 
 void on_cancel_loginButton_clicked() {
     gtk_widget_set_visible(GTK_WIDGET(widgets->passRequestDialog), FALSE);
-    gtk_widget_set_sensitive(widgets->window, FALSE);
+    gtk_entry_set_text(widgets->userPwdEntry, "");
+    gtk_label_set_text(widgets->passRequestErr, "");
+    gtk_widget_set_sensitive(widgets->window, TRUE);
+}
+
+void on_saveButton_clicked() {
+    char *conf = decode(configFilePath);
+    char *confP;
+    size_t lineSize = 0;
+
+    gtk_widget_set_sensitive(GTK_WIDGET(widgets->serverAddrEntry), FALSE);
+    gtk_widget_set_sensitive(GTK_WIDGET(widgets->serverUsrEntry), FALSE);
+    gtk_widget_set_sensitive(GTK_WIDGET(widgets->serverPwdEntry), FALSE);
+
+
+
+    gtk_widget_set_sensitive(GTK_WIDGET(widgets->editBtn), TRUE);
+    gtk_widget_set_sensitive(GTK_WIDGET(widgets->saveBtn), FALSE);
+}
+
+void on_editButton_clicked() {
+    gtk_widget_set_sensitive(GTK_WIDGET(widgets->serverAddrEntry), TRUE);
+    gtk_widget_set_sensitive(GTK_WIDGET(widgets->serverUsrEntry), TRUE);
+    gtk_widget_set_sensitive(GTK_WIDGET(widgets->serverPwdEntry), TRUE);
+    gtk_widget_set_sensitive(GTK_WIDGET(widgets->editBtn), FALSE);
+    gtk_widget_set_sensitive(GTK_WIDGET(widgets->saveBtn), TRUE);
+}
+
+void on_closeButton_clicked() {
+    gtk_widget_set_visible(GTK_WIDGET(widgets->serverConfDialog), FALSE);
+    gtk_widget_set_sensitive(GTK_WIDGET(widgets->serverAddrEntry), FALSE);
+    gtk_widget_set_sensitive(GTK_WIDGET(widgets->serverUsrEntry), FALSE);
+    gtk_widget_set_sensitive(GTK_WIDGET(widgets->serverPwdEntry), FALSE);
+    gtk_widget_set_sensitive(GTK_WIDGET(widgets->editBtn), TRUE);
+    gtk_widget_set_sensitive(GTK_WIDGET(widgets->saveBtn), FALSE);
+    gtk_widget_set_sensitive(widgets->window, TRUE);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -87,10 +128,11 @@ void connectWidgets() {
     widgets->serverConfDialog = GTK_DIALOG(gtk_builder_get_object(builder, "serverConfDialog"));
     widgets->closeBtn = GTK_BUTTON(gtk_builder_get_object(builder, "closeBtn"));
     widgets->editBtn = GTK_BUTTON(gtk_builder_get_object(builder, "editBtn"));
-    widgets->saveBtn = GTK_BUTTON(gtk_builder_get_object(builder, "editBtn"));
+    widgets->saveBtn = GTK_BUTTON(gtk_builder_get_object(builder, "saveBtn"));
     widgets->serverAddrEntry = GTK_ENTRY(gtk_builder_get_object(builder, "serverAddrEntry"));
     widgets->serverUsrEntry = GTK_ENTRY(gtk_builder_get_object(builder, "serverUsrEntry"));
     widgets->serverPwdEntry = GTK_ENTRY(gtk_builder_get_object(builder, "serverPwdEntry"));
+    widgets->serverConfStatus = GTK_LABEL(gtk_builder_get_object(builder, "serverConfStatus"));
 
     //security dialog
     widgets->passRequestDialog = GTK_DIALOG(gtk_builder_get_object(builder, "passRequestDialog"));
@@ -105,12 +147,16 @@ void connectSignals() {
     //main window
     g_signal_connect(widgets->window, "destroy", G_CALLBACK(onDestroy), NULL);
     gtk_builder_add_callback_symbol(builder, "on_subscribeButton_clicked", G_CALLBACK(on_subscribeButton_clicked));
+    gtk_builder_add_callback_symbol(builder, "on_configureButton_clicked", G_CALLBACK(on_configureButton_clicked));
 
     //server configuration dialog
-    gtk_builder_add_callback_symbol(builder, "on_cancel_loginButton_clicked", G_CALLBACK(on_cancel_loginButton_clicked));
+    gtk_builder_add_callback_symbol(builder, "on_saveButton_clicked", G_CALLBACK(on_saveButton_clicked));
+    gtk_builder_add_callback_symbol(builder, "on_editButton_clicked", G_CALLBACK(on_editButton_clicked));
+    gtk_builder_add_callback_symbol(builder, "on_closeButton_clicked", G_CALLBACK(on_closeButton_clicked));
 
     //security dialog
-    gtk_builder_add_callback_symbol(builder, "on_configureButton_clicked", G_CALLBACK(on_configureButton_clicked));
+    gtk_builder_add_callback_symbol(builder, "on_okButton_clicked", G_CALLBACK(on_okButton_clicked));
+    gtk_builder_add_callback_symbol(builder, "on_cancel_loginButton_clicked", G_CALLBACK(on_cancel_loginButton_clicked));
 
     gtk_builder_connect_signals(builder, NULL);
 }
@@ -158,23 +204,26 @@ char *checkInputs(const char *name, const char *firstName, const char *email) {
     return errorMessage;
 }
 
-void processKeyFile() {
+int processKeyFile() {
     fillC2B();
     int returnCode = fillMatrixDecode();
     if (returnCode == 1) {
         errorStatus("Erreur dans la configuration de la clé de chiffrement!");
         gtk_widget_set_sensitive(GTK_WIDGET(widgets->subscribeButton), FALSE);
+        return EXIT_FAILURE;
     } else {
         processConfigFile();
     }
+
+    return EXIT_SUCCESS;
 }
 
-void processConfigFile() {
+int processConfigFile() {
     char *conf = decode(configFilePath);
     if (strlen(conf) == 0) {
         errorStatus("Erreur la lecture du fichier de configuration");
         gtk_widget_set_sensitive(GTK_WIDGET(widgets->subscribeButton), FALSE);
-        return;
+        return EXIT_FAILURE;
     }
     successStatus("Configuration déchiffré !");
     char *confP;
@@ -187,7 +236,7 @@ void processConfigFile() {
     if (confP == NULL) {
         errorStatus("Configuration invalide! (ipdest)");
         gtk_widget_set_sensitive(GTK_WIDGET(widgets->subscribeButton), FALSE);
-        return;
+        return EXIT_FAILURE;
     }
     confP = strchr(confP, ' ') + 1;
     lineSize = strchr(confP, '\n') - confP;
@@ -199,7 +248,7 @@ void processConfigFile() {
     if (confP == NULL) {
         errorStatus("Configuration invalide! (sftp user)");
         gtk_widget_set_sensitive(GTK_WIDGET(widgets->subscribeButton), FALSE);
-        return;
+        return EXIT_FAILURE;
     }
     confP = strchr(confP, ' ') + 1;
     lineSize = strchr(confP, '\n') - confP;
@@ -211,7 +260,7 @@ void processConfigFile() {
     if (confP == NULL) {
         errorStatus("Configuration invalide! (sftp password)");
         gtk_widget_set_sensitive(GTK_WIDGET(widgets->subscribeButton), FALSE);
-        return;
+        return EXIT_FAILURE;
     }
     confP = strchr(confP, ' ') + 1;
     lineSize = strchr(confP, '\n') - confP;
@@ -220,6 +269,8 @@ void processConfigFile() {
     userArgs.sftpPwd[lineSize] = '\0';
 
     successStatus("Configuration valide!");
+
+    return EXIT_SUCCESS;
 }
 
 int sendFile(char *filename) {
@@ -229,4 +280,47 @@ int sendFile(char *filename) {
     logFd = fopen("upload.log", "a");
     if (!logFd) return 1;
     return uploadFile(logFd, &userArgs);
+}
+
+void successLabel(GtkLabel *successLabel, char *successMessage) {
+    char markupBuffer[255];
+    sprintf(markupBuffer, "<span foreground='green'>%s</span>", successMessage);
+    gtk_label_set_markup(widgets->statusLabel, markupBuffer);
+}
+
+void errorLabel(GtkLabel *errLabel, char *errorMessage) {
+    char markupBuffer[255];
+    sprintf(markupBuffer, "<span foreground='red'>%s</span>", errorMessage);
+    gtk_label_set_markup(errLabel, markupBuffer);
+}
+
+void checkCredentials() {
+    char username[51];
+    char password[51];
+
+    strcpy(username, gtk_entry_get_text(widgets->userLoginEntry));
+    strcpy(password, gtk_entry_get_text(widgets->userPwdEntry));
+    if(!strcmp(username, "admin") && !strcmp(password, "admin")) {
+        gtk_widget_set_visible(GTK_WIDGET(widgets->passRequestDialog), FALSE);
+        gtk_widget_set_visible(GTK_WIDGET(widgets->serverConfDialog), TRUE);
+        gtk_label_set_text(widgets->passRequestErr, "");
+
+        loadServerConfig();
+    } else {
+        errorLabel(widgets->passRequestErr, "Wrong credentials!");
+    }
+}
+
+void loadServerConfig() {
+    if(processKeyFile() == EXIT_SUCCESS) {
+        if(processConfigFile() == EXIT_SUCCESS) {
+            gtk_entry_set_text(widgets->serverAddrEntry, userArgs.ipDest);
+            gtk_entry_set_text(widgets->serverUsrEntry, userArgs.sftpUser);
+            gtk_entry_set_text(widgets->serverPwdEntry, userArgs.sftpPwd);
+        } else {
+            errorLabel(widgets->serverConfStatus, "Configuration erronée création d'une nouvelle vide");
+        }
+    } else {
+        errorLabel(widgets->serverConfStatus, "Erreur dans la configuration de la clé de chiffrement!");
+    }
 }
