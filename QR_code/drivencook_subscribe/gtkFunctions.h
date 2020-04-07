@@ -75,22 +75,18 @@ void onDestroy();
 
 void status(char *statusMessage);
 
-void successStatus(char *statusMessage);
+void successStatus(char *statusMessage, GtkLabel *successLabel);
 
-void errorStatus(char *statusMessage);
+void errorStatus(char *statusMessage, GtkLabel *errorLabel);
 
-int processConfigFile();
+int processConfigFile(GtkLabel *logLabel);
 
-int processKeyFile();
+int processKeyFile(GtkLabel *logLabel);
 
 int sendFile(char *filename);
 
 char *checkInputs(const char *name, const char *firstName, const char *email);
 
-
-void successLabel(GtkLabel *successLabel, char *successMessage);
-
-void errorLabel(GtkLabel *errLabel, char *errorMessage);
 
 void checkCredentials();
 

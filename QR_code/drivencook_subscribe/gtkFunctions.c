@@ -15,7 +15,7 @@ void on_subscribeButton_clicked() {
     char *errorMessage = checkInputs(name, firstName, email);
 
     if (strlen(errorMessage) > 0) {
-        errorStatus(errorMessage);
+        errorStatus(errorMessage, widgets->statusLabel);
         return;
     }
     status("En cours de traitement...");
@@ -31,17 +31,17 @@ void on_subscribeButton_clicked() {
 
     createQR(qrContent, filename);
 
-    successStatus("code QR créé !");
+    successStatus("code QR créé !", widgets->statusLabel);
 
     strcat(filename, ".png");
 
     status("Envoie du fichier..");
     int returnCode = sendFile(filename);
     if (returnCode == 0) {
-        successStatus("Fichier envoyé ! Consulter le fichier log pour plus d'informations...");
+        successStatus("Fichier envoyé ! Consulter le fichier log pour plus d'informations...", widgets->statusLabel);
     } else {
         errorStatus(
-                "Une erreur s'est produite lors de l'envoie ! Consulter le fichier log pour plus d'informations...");
+                "Une erreur s'est produite lors de l'envoie ! Consulter le fichier log pour plus d'informations...", widgets->statusLabel);
     }
 }
 
@@ -63,15 +63,41 @@ void on_cancel_loginButton_clicked() {
 }
 
 void on_saveButton_clicked() {
-    char *conf = decode(configFilePath);
-    char *confP;
-    size_t lineSize = 0;
+    char *newConf;
+    char anteIP[] = "IPDEST= ";
+    char anteUser[] = "\nSFTPUSER= ";
+    char antePwd[] = "\nSFTPPASSWORD= ";
+    char *ip = (char *)gtk_entry_get_text(widgets->serverAddrEntry);
+    char *user = (char *)gtk_entry_get_text(widgets->serverUsrEntry);
+    char *pwd = (char *)gtk_entry_get_text(widgets->serverPwdEntry);
 
     gtk_widget_set_sensitive(GTK_WIDGET(widgets->serverAddrEntry), FALSE);
     gtk_widget_set_sensitive(GTK_WIDGET(widgets->serverUsrEntry), FALSE);
     gtk_widget_set_sensitive(GTK_WIDGET(widgets->serverPwdEntry), FALSE);
 
+    newConf = malloc(
+            sizeof(char) *
+            strlen(anteIP) + strlen(anteUser) + strlen(antePwd) +
+            strlen(ip) + strlen(user) + strlen(pwd)
+    );
 
+    strcpy(newConf, anteIP);
+    strcat(newConf, ip);
+
+    strcat(newConf, anteUser);
+    strcat(newConf, user);
+
+    strcat(newConf, antePwd);
+    strcat(newConf, pwd);
+
+    puts(newConf);
+
+    //encode(configFilePath, newConf);
+
+    processConfigFile(widgets->serverConfStatus);
+    gtk_entry_set_text(widgets->serverAddrEntry, userArgs.ipDest);
+    gtk_entry_set_text(widgets->serverUsrEntry, userArgs.sftpUser);
+    gtk_entry_set_text(widgets->serverPwdEntry, userArgs.sftpPwd);
 
     gtk_widget_set_sensitive(GTK_WIDGET(widgets->editBtn), TRUE);
     gtk_widget_set_sensitive(GTK_WIDGET(widgets->saveBtn), FALSE);
@@ -107,7 +133,7 @@ void startGTK(int *argc, char ***argv) {
 
     gtk_widget_show_all(widgets->window);
     status("En attente d'entrée utilisateur...");
-    processKeyFile();
+    processKeyFile(widgets->statusLabel);
     gtk_main();
 
     g_slice_free(AppWidgets, widgets);
@@ -169,13 +195,13 @@ void status(char *statusMessage) {
     gtk_label_set_label(widgets->statusLabel, statusMessage);
 }
 
-void successStatus(char *statusMessage) {
+void successStatus(char *statusMessage, GtkLabel *successLabel) {
     char markupBuffer[255];
     sprintf(markupBuffer, "<span foreground='green'>%s</span>", statusMessage);
     gtk_label_set_markup(widgets->statusLabel, markupBuffer);
 }
 
-void errorStatus(char *statusMessage) {
+void errorStatus(char *statusMessage, GtkLabel *errorLabel) {
     char markupBuffer[255];
     sprintf(markupBuffer, "<span foreground='red'>%s</span>", statusMessage);
     gtk_label_set_markup(widgets->statusLabel, markupBuffer);
@@ -204,28 +230,28 @@ char *checkInputs(const char *name, const char *firstName, const char *email) {
     return errorMessage;
 }
 
-int processKeyFile() {
+int processKeyFile(GtkLabel *logLabel) {
     fillC2B();
     int returnCode = fillMatrixDecode();
     if (returnCode == 1) {
-        errorStatus("Erreur dans la configuration de la clé de chiffrement!");
+        errorStatus("Erreur dans la configuration de la clé de chiffrement!", logLabel);
         gtk_widget_set_sensitive(GTK_WIDGET(widgets->subscribeButton), FALSE);
         return EXIT_FAILURE;
     } else {
-        processConfigFile();
+        processConfigFile(logLabel);
     }
 
     return EXIT_SUCCESS;
 }
 
-int processConfigFile() {
+int processConfigFile(GtkLabel *logLabel) {
     char *conf = decode(configFilePath);
     if (strlen(conf) == 0) {
-        errorStatus("Erreur la lecture du fichier de configuration");
+        errorStatus("Erreur la lecture du fichier de configuration", logLabel);
         gtk_widget_set_sensitive(GTK_WIDGET(widgets->subscribeButton), FALSE);
         return EXIT_FAILURE;
     }
-    successStatus("Configuration déchiffré !");
+    successStatus("Configuration déchiffré !", logLabel);
     char *confP;
     size_t lineSize = 0;
     //IPDEST=
@@ -234,7 +260,7 @@ int processConfigFile() {
 
     confP = strstr(conf, "IPDEST= ");
     if (confP == NULL) {
-        errorStatus("Configuration invalide! (ipdest)");
+        errorStatus("Configuration invalide! (ipdest)", logLabel);
         gtk_widget_set_sensitive(GTK_WIDGET(widgets->subscribeButton), FALSE);
         return EXIT_FAILURE;
     }
@@ -246,7 +272,7 @@ int processConfigFile() {
 
     confP = strstr(conf, "SFTPUSER= ");
     if (confP == NULL) {
-        errorStatus("Configuration invalide! (sftp user)");
+        errorStatus("Configuration invalide! (sftp user)", logLabel);
         gtk_widget_set_sensitive(GTK_WIDGET(widgets->subscribeButton), FALSE);
         return EXIT_FAILURE;
     }
@@ -258,7 +284,7 @@ int processConfigFile() {
 
     confP = strstr(conf, "SFTPPASSWORD= ");
     if (confP == NULL) {
-        errorStatus("Configuration invalide! (sftp password)");
+        errorStatus("Configuration invalide! (sftp password)", logLabel);
         gtk_widget_set_sensitive(GTK_WIDGET(widgets->subscribeButton), FALSE);
         return EXIT_FAILURE;
     }
@@ -268,7 +294,7 @@ int processConfigFile() {
     strncpy(userArgs.sftpPwd, confP, lineSize);
     userArgs.sftpPwd[lineSize] = '\0';
 
-    successStatus("Configuration valide!");
+    successStatus("Configuration valide!", logLabel);
 
     return EXIT_SUCCESS;
 }
@@ -280,18 +306,6 @@ int sendFile(char *filename) {
     logFd = fopen("upload.log", "a");
     if (!logFd) return 1;
     return uploadFile(logFd, &userArgs);
-}
-
-void successLabel(GtkLabel *successLabel, char *successMessage) {
-    char markupBuffer[255];
-    sprintf(markupBuffer, "<span foreground='green'>%s</span>", successMessage);
-    gtk_label_set_markup(widgets->statusLabel, markupBuffer);
-}
-
-void errorLabel(GtkLabel *errLabel, char *errorMessage) {
-    char markupBuffer[255];
-    sprintf(markupBuffer, "<span foreground='red'>%s</span>", errorMessage);
-    gtk_label_set_markup(errLabel, markupBuffer);
 }
 
 void checkCredentials() {
@@ -307,20 +321,20 @@ void checkCredentials() {
 
         loadServerConfig();
     } else {
-        errorLabel(widgets->passRequestErr, "Wrong credentials!");
+        errorStatus("Wrong credentials!", widgets->passRequestErr);
     }
 }
 
 void loadServerConfig() {
-    if(processKeyFile() == EXIT_SUCCESS) {
-        if(processConfigFile() == EXIT_SUCCESS) {
+    if(processKeyFile(widgets->serverConfStatus) == EXIT_SUCCESS) {
+        if(processConfigFile(widgets->serverConfStatus) == EXIT_SUCCESS) {
             gtk_entry_set_text(widgets->serverAddrEntry, userArgs.ipDest);
             gtk_entry_set_text(widgets->serverUsrEntry, userArgs.sftpUser);
             gtk_entry_set_text(widgets->serverPwdEntry, userArgs.sftpPwd);
         } else {
-            errorLabel(widgets->serverConfStatus, "Configuration erronée création d'une nouvelle vide");
+            errorStatus("Configuration erronée création d'une nouvelle vide", widgets->serverConfStatus);
         }
     } else {
-        errorLabel(widgets->serverConfStatus, "Erreur dans la configuration de la clé de chiffrement!");
+        errorStatus("Erreur dans la configuration de la clé de chiffrement!", widgets->serverConfStatus);
     }
 }
