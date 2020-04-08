@@ -3,6 +3,7 @@ QR_code/Information_to_QR_code/.idea/
 
 QR_code/Information_to_QR_code/cmake-build-debug/
 
+
 QR_code/csv_to_png/cmake-build-debug/
 
 QR_code/csv_to_png/.idea/
@@ -22,6 +23,12 @@ QR_code/file_listener/.idea/
 
 QR_code/file_listener/listener.log
 
+
 QR_code/drivencook_subscribe/.idea/
 
 QR_code/drivencook_subscribe/cmake-build-debug/
+
+
+QR_code/qrcode_reader/.idea/
+
+QR_code/qrcode_reader/cmake-build-debug/
