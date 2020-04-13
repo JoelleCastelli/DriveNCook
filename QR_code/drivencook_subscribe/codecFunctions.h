@@ -28,4 +28,6 @@ int fillMatrixEncode();
 
 char * decode(char *filePath);
 
+int encode(char *configFilePath, char *content);
+
 #endif //CODECC_CODECFUNCTIONS_H

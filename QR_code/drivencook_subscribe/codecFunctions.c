@@ -103,6 +103,39 @@ char *decode(char *filePath) {
     return result;
 }
 
+int encode(char *configFilePath, char *content) {
+    // Check if there's a file to encode
+    if (configFilePath == NULL || strlen(configFilePath) == 0) {
+        return 1;
+    }
+
+    // Create destination path (sourcePath + "e")
+
+    // Open the file to encode
+
+    // Create the new encoded file
+    FILE *dest = fopen(configFilePath, "wb");
+    if (dest == NULL) {
+        return 1;
+    }
+
+    // Get size of file, method depending on the OS
+    if (strlen(content) > 1000000) {
+        return 1;
+    }
+
+    unsigned char writeBuffer[2];
+
+    for (int i = 0; i < strlen(content); ++i) {
+        writeBuffer[0] = encodeMatrix[content[i]][0];
+        writeBuffer[1] = encodeMatrix[content[i]][1];
+        assert(fwrite(writeBuffer, sizeof(char), 2, dest) == 2);
+    }
+
+    fclose(dest);
+    return 0;
+}
+
 void fillC2B() {
     int i;
     unsigned char j, byte;
