@@ -91,10 +91,15 @@ void on_saveButton_clicked() {
 
     strcat(newConf, antePwd);
     strcat(newConf, pwd);
+    strcat(newConf, "\n");
 
-    puts(newConf);
+    int returnCode = encode(configFilePath, newConf);
+    if (returnCode) {
+        errorStatus("Error while updating conf !!!", widgets->statusLabel);
+        return;
+    }
 
-    //encode(configFilePath, newConf);
+    free(newConf);
 
     processConfigFile(widgets->serverConfStatus);
     gtk_entry_set_text(widgets->serverAddrEntry, userArgs.ipDest);
@@ -235,7 +240,7 @@ char *checkInputs(const char *name, const char *firstName, const char *email) {
 
 int processKeyFile(GtkLabel *logLabel) {
     fillC2B();
-    int returnCode = fillMatrixDecode();
+    int returnCode = fillMatrixDecode() || fillMatrixEncode();
     if (returnCode == 1) {
         errorStatus("Erreur dans la configuration de la clé de chiffrement!", logLabel);
         gtk_widget_set_sensitive(GTK_WIDGET(widgets->subscribeButton), FALSE);
