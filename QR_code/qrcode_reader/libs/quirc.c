@@ -18,13 +18,11 @@
 #include <string.h>
 #include "quirc_internal.h"
 
-const char *quirc_version(void)
-{
+const char *quirc_version(void) {
     return "1.0";
 }
 
-struct quirc *quirc_new(void)
-{
+struct quirc *quirc_new(void) {
     struct quirc *q = malloc(sizeof(*q));
 
     if (!q)
@@ -34,8 +32,7 @@ struct quirc *quirc_new(void)
     return q;
 }
 
-void quirc_destroy(struct quirc *q)
-{
+void quirc_destroy(struct quirc *q) {
     free(q->image);
     /* q->pixels may alias q->image when their type representation is of the
        same size, so we need to be careful here to avoid a double free */
@@ -44,10 +41,9 @@ void quirc_destroy(struct quirc *q)
     free(q);
 }
 
-int quirc_resize(struct quirc *q, int w, int h)
-{
-    uint8_t		*image  = NULL;
-    quirc_pixel_t	*pixels = NULL;
+int quirc_resize(struct quirc *q, int w, int h) {
+    uint8_t *image = NULL;
+    quirc_pixel_t *pixels = NULL;
 
     /*
      * XXX: w and h should be size_t (or at least unsigned) as negatives
@@ -77,7 +73,7 @@ int quirc_resize(struct quirc *q, int w, int h)
      * old buffer when the new size is greater and (b) to write beyond the
      * new buffer when the new size is smaller, hence the min computation.
      */
-    (void)memcpy(image, q->image, min);
+    (void) memcpy(image, q->image, min);
 
     /* alloc a new buffer for q->pixels if needed */
     if (!QUIRC_PIXEL_ALIAS_IMAGE) {
@@ -105,8 +101,7 @@ int quirc_resize(struct quirc *q, int w, int h)
     return -1;
 }
 
-int quirc_count(const struct quirc *q)
-{
+int quirc_count(const struct quirc *q) {
     return q->num_grids;
 }
 
@@ -121,8 +116,7 @@ static const char *const error_table[] = {
         [QUIRC_ERROR_DATA_UNDERFLOW] = "Data underflow"
 };
 
-const char *quirc_strerror(quirc_decode_error_t err)
-{
+const char *quirc_strerror(quirc_decode_error_t err) {
     if (err >= 0 && err < sizeof(error_table) / sizeof(error_table[0]))
         return error_table[err];
 
