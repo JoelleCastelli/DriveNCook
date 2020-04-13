@@ -40,7 +40,26 @@ int fillMatrixDecode() {
     return 0;
 }
 
-char * decode(char *filePath) {
+int fillMatrixEncode() {
+    char array1[8], array2[8];
+    int i, j;
+
+    for (i = 0; i < 256; ++i) {
+        // XOR, equivalent to a matrix product
+        for (j = 0; j < 8; ++j) {
+            array1[j] = (c2b[i][0] && codecKey[0][j]) ^ (c2b[i][1] && codecKey[1][j]) ^ (c2b[i][2] && codecKey[2][j]) ^
+                        (c2b[i][3] && codecKey[3][j]);
+            array2[j] = (c2b[i][4] && codecKey[0][j]) ^ (c2b[i][5] && codecKey[1][j]) ^ (c2b[i][6] && codecKey[2][j]) ^
+                        (c2b[i][7] && codecKey[3][j]);
+        }
+        encodeMatrix[i][0] = b2C(array1);
+        encodeMatrix[i][1] = b2C(array2);
+    }
+
+    return 0;
+}
+
+char *decode(char *filePath) {
     char *result;
     result = malloc(1);
     strcpy(result, "");
@@ -78,7 +97,7 @@ char * decode(char *filePath) {
     readBuffer = realloc(readBuffer, readBufferSize);
 
     while (fread(readBuffer, 1, readBufferSize, fp) == readBufferSize) {
-        strncat(result, (const char*)&(decodeMatrix[readBuffer[0]][readBuffer[1]]),1);
+        strncat(result, (const char *) &(decodeMatrix[readBuffer[0]][readBuffer[1]]), 1);
     }
 
     return result;
