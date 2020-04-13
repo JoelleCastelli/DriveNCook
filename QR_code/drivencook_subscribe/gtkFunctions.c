@@ -41,7 +41,8 @@ void on_subscribeButton_clicked() {
         successStatus("Fichier envoyé ! Consulter le fichier log pour plus d'informations...", widgets->statusLabel);
     } else {
         errorStatus(
-                "Une erreur s'est produite lors de l'envoie ! Consulter le fichier log pour plus d'informations...", widgets->statusLabel);
+                "Une erreur s'est produite lors de l'envoie ! Consulter le fichier log pour plus d'informations...",
+                widgets->statusLabel);
     }
 }
 
@@ -64,12 +65,12 @@ void on_cancel_loginButton_clicked() {
 
 void on_saveButton_clicked() {
     char *newConf;
-    char anteIP[] = "IPDEST= ";
-    char anteUser[] = "\nSFTPUSER= ";
-    char antePwd[] = "\nSFTPPASSWORD= ";
-    char *ip = (char *)gtk_entry_get_text(widgets->serverAddrEntry);
-    char *user = (char *)gtk_entry_get_text(widgets->serverUsrEntry);
-    char *pwd = (char *)gtk_entry_get_text(widgets->serverPwdEntry);
+    char anteIP[9] = "IPDEST= ";
+    char anteUser[12] = "\nSFTPUSER= ";
+    char antePwd[16] = "\nSFTPPASSWORD= ";
+    const char *ip = gtk_entry_get_text(widgets->serverAddrEntry);
+    const char *user = gtk_entry_get_text(widgets->serverUsrEntry);
+    const char *pwd = gtk_entry_get_text(widgets->serverPwdEntry);
 
     gtk_widget_set_sensitive(GTK_WIDGET(widgets->serverAddrEntry), FALSE);
     gtk_widget_set_sensitive(GTK_WIDGET(widgets->serverUsrEntry), FALSE);
@@ -77,8 +78,9 @@ void on_saveButton_clicked() {
 
     newConf = malloc(
             sizeof(char) *
-            strlen(anteIP) + strlen(anteUser) + strlen(antePwd) +
-            strlen(ip) + strlen(user) + strlen(pwd)
+            (strlen(anteIP) + strlen(anteUser) + strlen(antePwd) +
+             strlen(ip) + strlen(user) + strlen(pwd)
+             + 2) // last '\n' + '\0'
     );
 
     strcpy(newConf, anteIP);
@@ -182,7 +184,8 @@ void connectSignals() {
 
     //security dialog
     gtk_builder_add_callback_symbol(builder, "on_okButton_clicked", G_CALLBACK(on_okButton_clicked));
-    gtk_builder_add_callback_symbol(builder, "on_cancel_loginButton_clicked", G_CALLBACK(on_cancel_loginButton_clicked));
+    gtk_builder_add_callback_symbol(builder, "on_cancel_loginButton_clicked",
+                                    G_CALLBACK(on_cancel_loginButton_clicked));
 
     gtk_builder_connect_signals(builder, NULL);
 }
@@ -314,7 +317,7 @@ void checkCredentials() {
 
     strcpy(username, gtk_entry_get_text(widgets->userLoginEntry));
     strcpy(password, gtk_entry_get_text(widgets->userPwdEntry));
-    if(!strcmp(username, "admin") && !strcmp(password, "admin")) {
+    if (!strcmp(username, "admin") && !strcmp(password, "admin")) {
         gtk_widget_set_visible(GTK_WIDGET(widgets->passRequestDialog), FALSE);
         gtk_widget_set_visible(GTK_WIDGET(widgets->serverConfDialog), TRUE);
         gtk_label_set_text(widgets->passRequestErr, "");
@@ -326,8 +329,8 @@ void checkCredentials() {
 }
 
 void loadServerConfig() {
-    if(processKeyFile(widgets->serverConfStatus) == EXIT_SUCCESS) {
-        if(processConfigFile(widgets->serverConfStatus) == EXIT_SUCCESS) {
+    if (processKeyFile(widgets->serverConfStatus) == EXIT_SUCCESS) {
+        if (processConfigFile(widgets->serverConfStatus) == EXIT_SUCCESS) {
             gtk_entry_set_text(widgets->serverAddrEntry, userArgs.ipDest);
             gtk_entry_set_text(widgets->serverUsrEntry, userArgs.sftpUser);
             gtk_entry_set_text(widgets->serverPwdEntry, userArgs.sftpPwd);
