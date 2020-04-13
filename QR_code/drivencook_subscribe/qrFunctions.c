@@ -6,7 +6,7 @@
 
 u_int8_t getVersion(char *message) {
     //Version / Max character for ECC_MEDIUM :
-    uint16_t versions[13] = {14, 26, 42, 62, 84, 106, 122, 152, 180, 213,251,287,331};
+    uint16_t versions[13] = {14, 26, 42, 62, 84, 106, 122, 152, 180, 213, 251, 287, 331};
     uint8_t nbVersions = 13;
     uint8_t i;
     size_t size = strlen(message);
@@ -20,28 +20,55 @@ u_int8_t getVersion(char *message) {
 }
 
 u_int8_t QRToPNG(QRCode qrcode, char *filename) {
+    int i, j;
     char *finalFilename = malloc(strlen(filename) + 5); // +5 for \0 + ".png"
     sprintf(finalFilename, "%s.png", filename);
 
-    RGBA_pixel *image = malloc(qrcode.size * qrcode.size * sizeof(RGBA_pixel));
+    RGBA_pixel *image = malloc((40 + qrcode.size * 10 * qrcode.size * 10) * sizeof(RGBA_pixel));
 
-    for (int i = 0; i < qrcode.size; ++i) {
-        for (int j = 0; j < qrcode.size; ++j) {
-            if (qrcode_getModule(&qrcode, j, i)) {
-                image[i * qrcode.size + j].r = 255;
-                image[i * qrcode.size + j].g = 255;
-                image[i * qrcode.size + j].b = 255;
-                image[i * qrcode.size + j].transparency = 255;
+    for (i = 0; i < 10; ++i) {
+        for (j = 0; j < 20 + qrcode.size * 10; ++j) {
+            image[i * (qrcode.size * 10 + 20) + j].r = 255;
+            image[i * (qrcode.size * 10 + 20) + j].g = 255;
+            image[i * (qrcode.size * 10 + 20) + j].b = 255;
+            image[i * (qrcode.size * 10 + 20) + j].transparency = 255;
+
+            image[(qrcode.size * 10 + 10) * (qrcode.size * 10 + 20) + i * (qrcode.size * 10 + 20) + j].r = 255;
+            image[(qrcode.size * 10 + 10) * (qrcode.size * 10 + 20) + i * (qrcode.size * 10 + 20) + j].g = 255;
+            image[(qrcode.size * 10 + 10) * (qrcode.size * 10 + 20) + i * (qrcode.size * 10 + 20) + j].b = 255;
+            image[(qrcode.size * 10 + 10) * (qrcode.size * 10 + 20) + i * (qrcode.size * 10 + 20) + j].transparency = 255;
+
+            image[j * (qrcode.size * 10 + 20) + i].r = 255;
+            image[j * (qrcode.size * 10 + 20) + i].g = 255;
+            image[j * (qrcode.size * 10 + 20) + i].b = 255;
+            image[j * (qrcode.size * 10 + 20) + i].transparency = 255;
+
+            image[(qrcode.size * 10 + 10) + j * (qrcode.size * 10 + 20) + i].r = 255;
+            image[(qrcode.size * 10 + 10) + j * (qrcode.size * 10 + 20) + i].g = 255;
+            image[(qrcode.size * 10 + 10) + j * (qrcode.size * 10 + 20) + i].b = 255;
+            image[(qrcode.size * 10 + 10) + j * (qrcode.size * 10 + 20) + i].transparency = 255;
+        }
+
+    }
+
+    for (i = 0; i < qrcode.size * 10; ++i) {
+        for (j = 0; j < qrcode.size * 10; ++j) {
+            if (qrcode_getModule(&qrcode, j / 10, i / 10)) {
+                image[i * (qrcode.size * 10 + 20) + (qrcode.size * 10 + 20) * 10 + j + 10].r = 0;
+                image[i * (qrcode.size * 10 + 20) + (qrcode.size * 10 + 20) * 10 + j + 10].g = 0;
+                image[i * (qrcode.size * 10 + 20) + (qrcode.size * 10 + 20) * 10 + j + 10].b = 0;
+                image[i * (qrcode.size * 10 + 20) + (qrcode.size * 10 + 20) * 10 + j + 10].transparency = 255;
             } else {
-                image[i * qrcode.size + j].r = 0;
-                image[i * qrcode.size + j].g = 0;
-                image[i * qrcode.size + j].b = 0;
-                image[i * qrcode.size + j].transparency = 255;
+                image[i * (qrcode.size * 10 + 20) + (qrcode.size * 10 + 20) * 10 + j + 10].r = 255;
+                image[i * (qrcode.size * 10 + 20) + (qrcode.size * 10 + 20) * 10 + j + 10].g = 255;
+                image[i * (qrcode.size * 10 + 20) + (qrcode.size * 10 + 20) * 10 + j + 10].b = 255;
+                image[i * (qrcode.size * 10 + 20) + (qrcode.size * 10 + 20) * 10 + j + 10].transparency = 255;
             }
         }
     }
 
-    unsigned error = lodepng_encode32_file(finalFilename, (const unsigned char *) image, qrcode.size, qrcode.size);
+    unsigned error = lodepng_encode32_file(finalFilename, (const unsigned char *) image, qrcode.size * 10 + 20,
+                                           qrcode.size * 10 + 20);
     assert(error == 0 && lodepng_error_text(error));
 
     free(image);
