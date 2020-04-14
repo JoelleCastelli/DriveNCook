@@ -6,12 +6,12 @@
 
 u_int8_t getVersion(char *message) {
     //Version / Max character for ECC_MEDIUM :
-    uint16_t versions[13] = {14, 26, 42, 62, 84, 106, 122, 152, 180, 213, 251, 287, 331};
-    uint8_t nbVersions = 13;
+    uint16_t versions[15] = {14, 26, 42, 62, 84, 106, 122, 152, 180, 213, 251, 287, 331, 362, 412};
+    uint8_t nbVersions = 15;
     uint8_t i;
-    size_t size = strlen(message);
+    size_t size = strlen(message) + 1;
 
-    for (i = 0; i < nbVersions; i++) {
+    for (i = 0; i < nbVersions - 1; i++) {
         if (size <= versions[i]) {
             return i + 1;
         }
@@ -24,7 +24,7 @@ u_int8_t QRToPNG(QRCode qrcode, char *filename) {
     char *finalFilename = malloc(strlen(filename) + 5); // +5 for \0 + ".png"
     sprintf(finalFilename, "%s.png", filename);
 
-    RGBA_pixel *image = malloc((40 + qrcode.size * 10 * qrcode.size * 10) * sizeof(RGBA_pixel));
+    RGBA_pixel *image = malloc(((20 + qrcode.size) * 10 * (20 + qrcode.size) * 10) * sizeof(RGBA_pixel));
 
     for (i = 0; i < 10; ++i) {
         for (j = 0; j < 20 + qrcode.size * 10; ++j) {
@@ -36,7 +36,8 @@ u_int8_t QRToPNG(QRCode qrcode, char *filename) {
             image[(qrcode.size * 10 + 10) * (qrcode.size * 10 + 20) + i * (qrcode.size * 10 + 20) + j].r = 255;
             image[(qrcode.size * 10 + 10) * (qrcode.size * 10 + 20) + i * (qrcode.size * 10 + 20) + j].g = 255;
             image[(qrcode.size * 10 + 10) * (qrcode.size * 10 + 20) + i * (qrcode.size * 10 + 20) + j].b = 255;
-            image[(qrcode.size * 10 + 10) * (qrcode.size * 10 + 20) + i * (qrcode.size * 10 + 20) + j].transparency = 255;
+            image[(qrcode.size * 10 + 10) * (qrcode.size * 10 + 20) + i * (qrcode.size * 10 + 20) +
+                  j].transparency = 255;
 
             image[j * (qrcode.size * 10 + 20) + i].r = 255;
             image[j * (qrcode.size * 10 + 20) + i].g = 255;
@@ -86,7 +87,7 @@ void createQR(char *qrContent, char *destFilename) {
     assert(version > 0);
 
     printf("QR code version: %d\n\n", version);
-    printf("QR code content : \n\n%s\n\nContent size : %lu", qrContent, strlen(qrContent));
+    printf("QR code content : \n\n%s\n\nContent size : %lu", qrContent, strlen(qrContent) + 1);
 
     // Allocate a chunk of memory to store the QR code
     uint8_t qrcodeBytes[qrcode_getBufferSize(version)];
