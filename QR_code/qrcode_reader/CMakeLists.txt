@@ -3,6 +3,8 @@ project(qrcode_reader C)
 
 set(CMAKE_C_STANDARD 99)
 
+include_directories(${CMAKE_SOURCE_DIR}/libs)
+
 set(PROJECT_FILES
         main.c
         libs/quirc.c
@@ -10,10 +12,10 @@ set(PROJECT_FILES
         libs/decode.c
         libs/version_db.c
         libs/lodepng.c
-        useful.c)
+        useful.c
+        readerFunctions.c)
 
-#link_directories(${CMAKE_SOURCE_DIR}/libs)
-
+link_directories(${CMAKE_SOURCE_DIR}/libs)
 add_executable(qrcode_reader ${PROJECT_FILES})
 
 target_link_libraries(qrcode_reader m)
