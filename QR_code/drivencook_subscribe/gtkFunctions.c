@@ -26,7 +26,7 @@ void on_subscribeButton_clicked() {
     sprintf(filename, "%ld", seconds);
 
     char qrContent[300];
-    sprintf(qrContent, "NAME=%s\nFIRSTNAMEe=%s\nEMAIL=%s\n", name, firstName, email);
+    sprintf(qrContent, "NAME=%s\nFIRSTNAME=%s\nEMAIL=%s\n", name, firstName, email);
     assert(strlen(qrContent) < 300);
 
     createQR(qrContent, filename);
