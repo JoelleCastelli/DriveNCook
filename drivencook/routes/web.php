@@ -14,3 +14,18 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/corporate/franchisee_creation', [
+    'as' => 'franchisee_creation',
+    'uses' => 'Corporate\FranchiseeController@franchisee_creation'
+]);
+
+Route::post('/corporate/franchisee_creation_submit', [
+    'as' => 'franchisee_creation_submit',
+    'uses' => 'Corporate\FranchiseeController@franchisee_creation_submit'
+]);
+
+Route::post('/test', [
+    'as' => 'test',
+    'uses' => 'Corporate\FranchiseeController@test'
+]);
