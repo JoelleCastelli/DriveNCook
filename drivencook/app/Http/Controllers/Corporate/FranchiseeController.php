@@ -16,7 +16,10 @@ class FranchiseeController extends Controller
     }
 
     public function get_franchisee_by_email($email){
-        return User::where('email', $email)->get();
+        return User::where([
+                ['email', $email],
+                ['role', 'Franchisé']
+            ])->get();
     }
 
     public function franchisee_creation(){
