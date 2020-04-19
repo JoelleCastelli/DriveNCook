@@ -82,5 +82,7 @@
     @yield('content')
 
 </div>
+
+<script type="text/javascript" src="/js/franchisee_update.js"></script>
 </body>
 </html>

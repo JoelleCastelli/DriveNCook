@@ -30,6 +30,16 @@ Route::post('/corporate/franchisee_creation_submit', [
     'uses' => 'Corporate\FranchiseeController@franchisee_creation_submit'
 ]);
 
+Route::get('/corporate/franchisee_update/{id}', [
+    'as' => 'franchisee_update',
+    'uses' => 'Corporate\FranchiseeController@franchisee_update'
+]);
+
+Route::post('/corporate/franchisee_update_submit', [
+    'as' => 'franchisee_update_submit',
+    'uses' => 'Corporate\FranchiseeController@franchisee_update_submit'
+]);
+
 Route::post('/test', [
     'as' => 'test',
     'uses' => 'Corporate\FranchiseeController@test'
