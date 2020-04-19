@@ -77,6 +77,8 @@
         </div>
     @endif
 
+    @yield('title')
+
     @yield('content')
 
 </div>

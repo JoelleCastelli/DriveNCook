@@ -2,12 +2,12 @@
 
 return [
 
-    'name' => 'Name',
+    'lastname' => 'Name',
     'firstname' => 'Firstname',
     'email' => 'Email',
     'submit' => 'Confirm',
     'new_franchisee_success' => 'New franchisee created',
-    'new_franchisee_error' => 'Error creating new franchisee',
+    'new_franchisee_error' => 'Error creating new franchisee:',
 
     // Tooltips
     'set_name' => 'Set a name',
