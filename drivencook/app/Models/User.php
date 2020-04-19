@@ -25,4 +25,14 @@ class User extends Model
     protected $hidden = [
         'password', 'new_pwd_code',
     ];
+
+    public function pseudo()
+    {
+        return $this->belongsTo(Pseudo::class, 'pseudo');
+    }
+
+    public function stocks()
+    {
+        return $this->hasMany(Stock::class, 'user');
+    }
 }

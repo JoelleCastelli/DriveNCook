@@ -42,7 +42,76 @@
         <nav class="col-2 d-block bg-dark sidebar">
             <div class="sidebar-sticky">
                 <ul class="nav flex-column text-light">
-                    @yield('sidebar')
+                    @switch(url()->current())
+                        @case(route('corporate_dashboard'))
+                        <li class="nav-item">
+                            <a class="nav-link text-light2" href="#">
+                                <i class="fa fa-warehouse"></i>&nbsp;&nbsp;&nbsp;Entrepôts
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light2" href="{{route('franchisee_list')}}">
+                                <i class="fa fa-user-tie"></i>&nbsp;&nbsp;&nbsp;Franchisés
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light2" href="#">
+                                <i class="fa fa-user"></i>&nbsp;&nbsp;&nbsp;Clients
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light2" href="#">
+                                <i class="fa fa-truck"></i>&nbsp;&nbsp;&nbsp;Camions
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light2" href="#">
+                                <i class="fa fa-chart-line"></i>&nbsp;&nbsp;&nbsp;Revenus & Statistiques
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light2" href="#">
+                                <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp;&nbsp;Evenements
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light2" href="#">
+                                <i class="fa fa-globe"></i>&nbsp;&nbsp;&nbsp;Pays & Villes
+                            </a>
+                        </li>
+                        @break
+                        @case(route('franchisee_list'))
+                        <li class="nav-item">
+                            <a class="nav-link text-light2" href="{{route('corporate_dashboard')}}">
+                                <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Retour au tableau de bord
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light2" href="{{route('franchisee_creation')}}">
+                                <i class="fa fa-user-plus"></i>&nbsp;&nbsp;&nbsp;Ajouter un franchisé
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light2" href="#">
+                                <i class="fa fa-headset"></i>&nbsp;&nbsp;&nbsp;Gestion des tickets
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light2" href="#">
+                                <i class="fa fa-cogs"></i>&nbsp;&nbsp;&nbsp;Modifier les obligations des franchisés
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light2" href="#">
+                                <i class="fa fa-address-card"></i>&nbsp;&nbsp;&nbsp;Gestion des pseudo
+                            </a>
+                        </li>
+
+                        @break
+
+                        @default
+                        @break
+                    @endswitch
                 </ul>
             </div>
         </nav>
