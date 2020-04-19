@@ -15,6 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/corporate', [
+    'as' => 'corporate_dashboard',
+    'uses' => 'Corporate\AccountController@dashboard'
+]);
+
 Route::get('/corporate/franchisee_list', [
     'as' => 'franchisee_list',
     'uses' => 'Corporate\FranchiseeController@franchisee_list'
