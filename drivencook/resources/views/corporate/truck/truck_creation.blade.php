@@ -39,17 +39,17 @@
 
             <div class="form-group">
                 <label for="license_plate">{{ trans('truck_creation.license_plate') }}</label>
-                <input type="text" name="license_plate" id="license_plate" placeholder="{{ trans('truck_creation.set_license_plate') }}" class="form-control" maxlength="10">
+                <input type="text" name="license_plate" id="license_plate" placeholder="{{ trans('truck_creation.set_license_plate') }}" class="form-control" minlength="9" maxlength="9">
             </div>
 
             <div class="form-group">
                 <label for="registration_document">{{ trans('truck_creation.registration_document') }}</label>
-                <input type="text" name="registration_document" id="registration_document" placeholder="{{ trans('truck_creation.set_registration_document') }}" class="form-control" maxlength="15">
+                <input type="text" name="registration_document" id="registration_document" placeholder="{{ trans('truck_creation.set_registration_document') }}" class="form-control" minlength="15" maxlength="15">
             </div>
 
             <div class="form-group">
                 <label for="insurance_number">{{ trans('truck_creation.insurance_number') }}</label>
-                <input type="text" name="insurance_number" id="insurance_number" placeholder="{{ trans('truck_creation.set_insurance_number') }}" class="form-control" maxlength="20">
+                <input type="text" name="insurance_number" id="insurance_number" placeholder="{{ trans('truck_creation.set_insurance_number') }}" class="form-control" minlength="20" maxlength="20">
             </div>
 
             <div class="form-group">
@@ -74,12 +74,12 @@
 
             <div class="form-group">
                 <label for="chassis_number">{{ trans('truck_creation.chassis_number') }}</label>
-                <input type="text" name="chassis_number" id="chassis_number" placeholder="{{ trans('truck_creation.set_chassis_number') }}" class="form-control" maxlength="20">
+                <input type="text" name="chassis_number" id="chassis_number" placeholder="{{ trans('truck_creation.set_chassis_number') }}" class="form-control" minlength="20" maxlength="20">
             </div>
 
             <div class="form-group">
                 <label for="engine_number">{{ trans('truck_creation.engine_number') }}</label>
-                <input type="text" name="engine_number" id="engine_number" placeholder="{{ trans('truck_creation.set_engine_number') }}" class="form-control" maxlength="20">
+                <input type="text" name="engine_number" id="engine_number" placeholder="{{ trans('truck_creation.set_engine_number') }}" class="form-control" minlength="20" maxlength="20">
             </div>
 
             <div class="form-group">

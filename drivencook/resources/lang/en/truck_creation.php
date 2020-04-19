@@ -19,6 +19,25 @@ return [
     'location_name' => 'Location name',
     'location_date_start' => 'Location date start',
     'submit' => 'Add',
+
+    'brand_error' => 'Brand invalid format',
+    'model_error' => 'Model invalid format',
+    'functional_error' => 'Functional invalid format',
+    'purchase_date_error' => 'Purchase date invalid format',
+    'license_plate_error' => 'License plate invalid format',
+    'registration_document_error' => 'Registration document invalid format',
+    'insurance_number_error' => 'Insurance number invalid format',
+    'fuel_type_error' => 'Fuel type invalid format',
+    'chassis_number_error' => 'Chassis number invalid format',
+    'engine_number_error' => 'Engine number invalid format',
+    'horsepower_error' => 'Horsepower invalid format',
+    'weight_empty_error' => 'Weight empty invalid format',
+    'payload_error' => 'Payload invalid format',
+    'general_state_error' => 'General state invalid format',
+    'location_name_error' => 'Location name invalid format',
+    'location_date_start_error' => 'Location date start invalid format',
+    'duplicate_entry_error' => 'Truck already in database',
+
     'new_truck_success' => 'New truck added',
     'new_truck_error' => 'Error adding new truck',
 
@@ -38,5 +57,6 @@ return [
 
     // Dropdown menu
     'select_menu_off' => 'Choose...',
-    'fuel_type_electric' => 'Electric'
+    'fuel_type_electric' => 'Electric',
+
 ];
