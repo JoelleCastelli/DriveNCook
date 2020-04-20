@@ -14,7 +14,7 @@ class User extends Model
      * @var array
      */
     protected $fillable = [
-        'lastname', 'firstname', 'birthdate', 'pseudo', 'email', 'role', 'driving_licence', 'social_security', 'password',
+        'lastname', 'firstname', 'birthdate', 'pseudo_id', 'email', 'role', 'driving_licence', 'social_security', 'password',
     ];
 
     /**
@@ -28,26 +28,26 @@ class User extends Model
 
     public function pseudo()
     {
-        return $this->belongsTo(Pseudo::class, 'pseudo');
+        return $this->belongsTo(Pseudo::class, 'pseudo_id');
     }
 
     public function stocks()
     {
-        return $this->hasMany(Stock::class, 'user');
+        return $this->hasMany(Stock::class, 'user_id');
     }
 
     public function monthly_licence_fees()
     {
-        return $this->hasMany(MonthlyLicenseFee::class, 'user');
+        return $this->hasMany(MonthlyLicenseFee::class, 'user_id');
     }
 
-    public function last_monthly_licence_fees()
+    public function last_monthly_licence_fee()
     {
-        return $this->hasOne(MonthlyLicenseFee::class, 'user')->orderByDesc('id');
+        return $this->hasOne(MonthlyLicenseFee::class, 'user_id')->orderByDesc('id');
     }
 
-    public function last_paid_licence_fees()
+    public function last_paid_licence_fee()
     {
-        return $this->hasOne(MonthlyLicenseFee::class, 'user')->where('status', '=', 'Payée')->orderByDesc('id');
+        return $this->hasOne(MonthlyLicenseFee::class, 'user_id')->where('status', '=', 'Payée')->orderByDesc('id');
     }
 }

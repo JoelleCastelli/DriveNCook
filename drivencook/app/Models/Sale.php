@@ -24,7 +24,7 @@ class Sale extends \Illuminate\Database\Eloquent\Model
 
     public function sold_dishes()
     {
-        return $this->hasMany(SoldDish::class, 'sale');
+        return $this->hasMany(SoldDish::class, 'sale_id');
     }
 
 }

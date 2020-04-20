@@ -14,7 +14,7 @@ class Pseudo extends Model
 
     public function users()
     {
-        return $this->hasMany(User::class,'pseudo');
+        return $this->hasMany(User::class,'pseudo_id');
     }
 
 }

@@ -9,11 +9,11 @@ class Warehouse extends Model
     protected $table = 'warehouse';
 
     protected $fillable = [
-        'name', 'address', 'city'
+        'name', 'address', 'city_id'
     ];
 
     public function city()
     {
-        return $this->belongsTo(City::class, 'city');
+        return $this->belongsTo(City::class, 'city_id');
     }
 }
