@@ -35,4 +35,19 @@ class User extends Model
     {
         return $this->hasMany(Stock::class, 'user');
     }
+
+    public function monthly_licence_fees()
+    {
+        return $this->hasMany(MonthlyLicenseFee::class, 'user');
+    }
+
+    public function last_monthly_licence_fees()
+    {
+        return $this->hasOne(MonthlyLicenseFee::class, 'user')->orderByDesc('id');
+    }
+
+    public function last_paid_licence_fees()
+    {
+        return $this->hasOne(MonthlyLicenseFee::class, 'user')->where('status', '=', 'Payée')->orderByDesc('id');
+    }
 }

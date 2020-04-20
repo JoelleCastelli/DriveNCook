@@ -9,13 +9,17 @@ use App\Models\Pseudo;
 use App\Models\User;
 use DateTime;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class FranchiseeController extends Controller
 {
 
     public function franchisee_list()
     {
-        $franchisees = User::with('pseudo')->where('role', 'Franchisé')->get()->toArray();
+        $franchisees = User::with('pseudo')
+            ->with('last_paid_licence_fees')
+            ->where('role', 'Franchisé')
+            ->get()->toArray();
         $nextPaiement = $this->getNextPaiementDate(
             FranchiseObligation::all()->sortByDesc('id')->first()->toArray());
 
