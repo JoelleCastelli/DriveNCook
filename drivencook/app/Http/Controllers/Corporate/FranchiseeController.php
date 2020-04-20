@@ -4,34 +4,62 @@
 namespace App\Http\Controllers\Corporate;
 
 use App\Http\Controllers\Controller;
+use App\Models\FranchiseObligation;
 use App\Models\Pseudo;
 use App\Models\User;
+use DateTime;
 use Illuminate\Http\Request;
 
 class FranchiseeController extends Controller
 {
 
-    public function franchisee_list(){
-        $franchisees = User::where('role', 'Franchisé')->get();
-        return view('corporate/franchisee/franchisee_list')->with('franchisees', $franchisees);
+    public function franchisee_list()
+    {
+        $franchisees = User::with('pseudo')->where('role', 'Franchisé')->get()->toArray();
+        $nextPaiement = $this->getNextPaiementDate(
+            FranchiseObligation::all()->sortByDesc('id')->first()->toArray());
+
+        return view('corporate/franchisee/franchisee_list')
+            ->with('franchisees', $franchisees)
+            ->with('nextPaiement', $nextPaiement);
     }
 
-    public function get_franchisee_by_email($email){
+    public function getNextPaiementDate($franchiseObligation)
+    {
+        $currentDay = new DateTime();
+        $currentDay->setDate(date('Y'), date('m'), date('d'));
+
+        if ($currentDay->format('d') <= $franchiseObligation['billing_day']) {
+            return $currentDay
+                ->setDate(date('Y'), date('m'), $franchiseObligation['billing_day'])
+                ->format('d-m-Y');
+        }
+        return $currentDay
+            ->setDate(date('Y'), date('m'), $franchiseObligation['billing_day'])
+            ->modify('+1 month')
+            ->format('d-m-Y');
+    }
+
+    public function get_franchisee_by_email($email)
+    {
         return User::where([
                 ['email', $email],
                 ['role', 'Franchisé']
             ])->first()->toArray();
     }
 
-    public function get_franchisee_by_id($id){
+    public function get_franchisee_by_id($id)
+    {
         return User::with('pseudo')->where('id', $id)->first();
     }
 
-    public function franchisee_creation(){
+    public function franchisee_creation()
+    {
         return view('corporate/franchisee/franchisee_creation');
     }
 
-    public function franchisee_creation_submit(Request $request){
+    public function franchisee_creation_submit(Request $request)
+    {
         $parameters = $request->except(['_token']);
         $error = false;
         $errors_list = [];
@@ -66,7 +94,7 @@ class FranchiseeController extends Controller
                 }
             }
 
-            if($error) {
+            if ($error) {
                 return redirect()->back()->with('error', $errors_list);
             } else {
                 $user = [$lastname, $firstname, $email, $role];
@@ -76,14 +104,16 @@ class FranchiseeController extends Controller
         }
     }
 
-    public function franchisee_update($id){
+    public function franchisee_update($id)
+    {
         $franchisee = $this->get_franchisee_by_id($id);
         $unavailable_pseudos = User::whereNotNull('pseudo')->get(['pseudo'])->toArray();
         $pseudos = Pseudo::whereNotIn('id', $unavailable_pseudos)->get();
         return view('corporate/franchisee/franchisee_update')->with('franchisee', $franchisee)->with('pseudos', $pseudos);
     }
 
-    public function franchisee_update_submit(Request $request){
+    public function franchisee_update_submit(Request $request)
+    {
 
         $parameters = $request->except(['_token']);
         $error = false;
@@ -154,7 +184,7 @@ class FranchiseeController extends Controller
                 $errors_list[] = trans('franchisee_update.driving_licence_error');
             }*/
 
-            if($error) {
+            if ($error) {
                 return redirect()->back()->with('error', $errors_list);
             } else {
                 $user = [$lastname, $firstname, $email, $role];
@@ -176,7 +206,8 @@ class FranchiseeController extends Controller
     }
 
 
-    public function test(){
+    public function test()
+    {
         return view('test');
     }
 }
