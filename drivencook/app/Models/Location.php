@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Location extends Model
 {
-    protected $table = 'truck';
+    protected $table = 'location';
 
     /**
      * The attributes that are mass assignable.

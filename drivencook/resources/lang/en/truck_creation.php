@@ -37,6 +37,8 @@ return [
     'location_name_error' => 'Location name invalid format',
     'location_date_start_error' => 'Location date start invalid format',
     'duplicate_entry_error' => 'Truck already in database',
+    'date_timeline_error' => 'Purchase date in the future compare to the location start date',
+
 
     'new_truck_success' => 'New truck added',
     'new_truck_error' => 'Error adding new truck',
@@ -57,6 +59,16 @@ return [
 
     // Dropdown menu
     'select_menu_off' => 'Choose...',
+    'fuel_type_b7' => 'B7',
+    'fuel_type_b10' => 'B10',
+    'fuel_type_xtl' => 'XTL',
+    'fuel_type_e10' => 'E10',
+    'fuel_type_e5' => 'E5',
+    'fuel_type_e85' => 'E85',
+    'fuel_type_lng' => 'LNG',
+    'fuel_type_h2' => 'H2',
+    'fuel_type_cng' => 'CNG',
+    'fuel_type_lpg' => 'LPG',
     'fuel_type_electric' => 'Electric',
 
 ];

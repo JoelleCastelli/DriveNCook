@@ -4,13 +4,23 @@
 namespace App\Http\Controllers\Corporate;
 
 use App\Http\Controllers\Controller;
+use App\Models\Location;
 use App\Models\Truck;
+use App\Traits\EnumValue;
+use DateTime;
 use Illuminate\Http\Request;
 
 class TruckController extends Controller
 {
+    use EnumValue;
+
     public function truck_creation() {
-        return view('corporate/truck/truck_creation');
+        $fuels = $this->get_enum_column_values('truck', 'fuel_type');
+        $locations = Location::select('name', 'address')->get();
+        if(!empty($locations)) {
+            $locations = $locations->toArray();
+        }
+        return view('corporate/truck/truck_creation')->with('locations', $locations)->with('fuels', $fuels);
     }
 
     public function get_truck($license_plate, $registration_document, $insurance_number, $chassis_number, $engine_number) {
@@ -22,12 +32,16 @@ class TruckController extends Controller
             ->get();
     }
 
+    public function get_location_id_by_name($location_name) {
+        return $location = Location::where('name', $location_name)->first()->id;
+    }
+
     public function truck_creation_submit(Request $request) {
         $parameters = $request->except(['_token']);
         $error = false;
         $errors_list = [];
 
-        $fuel_type_options = ['B7', 'B10', 'XTL', 'E10', 'E5', 'E85', 'LNG', 'H2', 'CNG', 'LPG', 'Electric'];
+        $fuel_type_options = $this->get_enum_column_values('truck', 'fuel_type');
 
         if (
             count($parameters) == 16 && !empty($parameters["brand"]) && !empty($parameters["model"]) && !empty($parameters["functional"]) &&
@@ -41,9 +55,9 @@ class TruckController extends Controller
             $model = strtoupper($parameters["model"]);
             $functional = $parameters["functional"];
             $purchase_date = $parameters["purchase_date"];
-            $license_plate = $parameters["license_plate"];
-            $registration_document = $parameters["registration_document"];
-            $insurance_number = $parameters["insurance_number"];
+            $license_plate = strtoupper($parameters["license_plate"]);
+            $registration_document = strtoupper($parameters["registration_document"]);
+            $insurance_number = strtoupper($parameters["insurance_number"]);
             $fuel_type = $parameters["fuel_type"];
             $chassis_number = $parameters["chassis_number"];
             $engine_number = $parameters["engine_number"];
@@ -52,6 +66,7 @@ class TruckController extends Controller
             $payload = $parameters["payload"];
             $general_state = $parameters["general_state"];
             $location_name = $parameters["location_name"];
+            $location_id = -1;
             $location_date_start = $parameters["location_date_start"];
 
             if (strlen($brand) < 1 || strlen($brand) > 30) {
@@ -64,29 +79,34 @@ class TruckController extends Controller
                 $errors_list[] = trans('truck_creation.model_error');
             }
 
-            if ($functional === 'on' || $functional === 'off') {
+            if (!($functional === 'on' || $functional === 'off')) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.functional_error');
+            } else {
+                if($functional === 'on') {
+                    $functional = true;
+                } else {
+                    $functional = false;
+                }
             }
 
-            $date_split = explode("-", $purchase_date);
-
-            if (!checkdate($date_split[2], $date_split[1], $date_split[0])) {
+            $purchase_date_split = explode("-", $purchase_date);
+            if (!checkdate($purchase_date_split[1], $purchase_date_split[2], $purchase_date_split[0])) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.purchase_date_error');
             }
 
-            if(!preg_match('/^(A-Z){2}-(0-9){3}-(A-Z){2}$/', $license_plate)) {
+            if(!preg_match('/^[A-Z]{2}-[0-9]{3}-[A-Z]{2}$/', $license_plate)) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.license_plate_error');
             }
 
-            if(!preg_match('/^(A-Z0-9){15}$/', $registration_document)) {
+            if(!preg_match('/^[A-Z0-9]{15}$/', $registration_document)) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.registration_document_error');
             }
 
-            if(!preg_match('/^(A-Z0-9){20}$/', $insurance_number)) {
+            if(!preg_match('/^[A-Z0-9]{20}$/', $insurance_number)) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.insurance_number_error');
             }
@@ -96,69 +116,86 @@ class TruckController extends Controller
                 $errors_list[] = trans('truck_creation.fuel_type_error');
             }
 
-            if(!preg_match('/^(0-9){20}$/', $chassis_number)) {
+            if(!preg_match('/^[0-9]{20}$/', $chassis_number)) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.chassis_number_error');
             }
 
-            if(!preg_match('/^(0-9){20}$/', $engine_number)) {
+            if(!preg_match('/^[0-9]{20}$/', $engine_number)) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.engine_number_error');
             }
 
-            if($horsepower > 1) {
+            if($horsepower < 1) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.horsepower_error');
             }
 
-            if($weight_empty > 1) {
+            if($weight_empty < 1) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.weight_empty_error');
             }
 
-            if($payload > 2) {
+            if($payload < 2) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.payload_error');
             }
 
-            if($general_state > 0 && $general_state < 256) {
+            if(strlen($general_state) < 1 || strlen($general_state) > 255) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.general_state_error');
             }
 
-            if(!preg_match('/^(A-Za-z)+$/', $location_name)) {
+            if(!preg_match('/^[A-Za-z -_]+$/', $location_name)) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.location_name_error');
+            } else {
+                $location_id = $this->get_location_id_by_name($location_name);
+                if(empty($location_id)) {
+                    $error = true;
+                    $errors_list[] = trans('truck_creation.location_name_error');
+                }
             }
 
-            if (!checkdate($date_split[2], $date_split[1], $date_split[0])) {
+            $location_date_start_split = explode('-', $location_date_start);
+            if (!checkdate($location_date_start_split[1], $location_date_start_split[2], $location_date_start_split[0])) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.location_date_start_error');
             }
 
+            $date1 = new DateTime($purchase_date);
+            $date2 = new DateTime($location_date_start);
+            if($date1 > $date2) {
+                $error = true;
+                $errors_list[] = trans('truck_creation.date_timeline_error');
+            }
+
             if (!$error) {
                 $result = $this->get_truck($license_plate, $registration_document, $insurance_number, $chassis_number, $engine_number);
-                if (!empty($result)) {
+                if (count($result) != 0) {
                     $error = true;
                     $errors_list[] = trans('truck_creation.duplicate_entry_error');
                 }
             }
 
-            //htmlspecialchars() expects parameter 1 to be string, array given (
-            //View: E:\Travail\Ecole\ESGI\Projet Annuel\DriveNCook\drivencook\resources\views\corporate\truck\truck_creation.blade.php
-            //)
-            die;
-
             if($error) {
                 return redirect()->back()->with('error', $errors_list);
             } else {
-                $truck = [$brand, $model, $functional, $purchase_date, $license_plate, $registration_document,
-                    $insurance_number, $fuel_type, $chassis_number, $engine_number, $horsepower, $weight_empty,
-                    $payload, $general_state, $location_name, $location_date_start
+                $truck = [
+                    'brand' => $brand, 'model' => $model, 'functional' => $functional,
+                    'purchase_date' => $purchase_date, 'license_plate' => $license_plate,
+                    'registration_document' => $registration_document, 'insurance_number' => $insurance_number,
+                    'fuel_type' => $fuel_type, 'chassis_number' => $chassis_number, 'engine_number' => $engine_number,
+                    'horsepower' => $horsepower, 'weight_empty' => $weight_empty,
+                    'payload' => $payload, 'general_state' => $general_state, 'location_id' => $location_id,
+                    'location_date_start' => $location_date_start
                 ];
-                Truck::create($truck);
+                Truck::insert($truck);
                 return redirect()->route('truck_creation')->with('success', trans('truck_creation.new_truck_success'));
             }
+        } else {
+            $errors_list[] = trans('truck_creation.empty_fields');
+            return redirect()->back()->with('error', $errors_list);
         }
     }
 }
