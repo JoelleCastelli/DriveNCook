@@ -46,10 +46,13 @@ class FranchiseeController extends Controller
 
     public function get_franchisee_by_email($email)
     {
-        return User::where([
-                ['email', $email],
-                ['role', 'Franchisé']
-            ])->first()->toArray();
+        $user = User::where([
+            ['email', $email],
+            ['role', 'Franchisé']
+        ])->first();
+        if (!empty($user))
+            return $user->toArray();
+        return $user;
     }
 
     public function get_franchisee_by_id($id)
@@ -101,8 +104,8 @@ class FranchiseeController extends Controller
             if ($error) {
                 return redirect()->back()->with('error', $errors_list);
             } else {
-                $user = [$lastname, $firstname, $email, $role];
-                User::create($user);
+                $user = ['lastname' => $lastname, 'firstname' => $firstname, 'email' => $email, 'role' => $role];
+                User::insert($user);
                 return redirect()->route('franchisee_creation')->with('success', trans('franchisee_creation.new_franchisee_success'));
             }
         }
@@ -170,7 +173,7 @@ class FranchiseeController extends Controller
             }
 
             // check telephone
-            if(strlen($telephone) != 0 && !preg_match('/^(0|\+33)[1-9]([-. ]?[0-9]{2}){4}$/', $telephone)) {
+            if (strlen($telephone) != 0 && !preg_match('/^(0|\+33)[1-9]([-. ]?[0-9]{2}){4}$/', $telephone)) {
                 $error = true;
                 $errors_list[] = trans('franchisee_update.phone_error');
             }
@@ -192,12 +195,12 @@ class FranchiseeController extends Controller
             } else {
                 $user = [$lastname, $firstname, $email, $role];
                 User::where('id', $id)->update(['lastname' => $lastname,
-                                                'firstname' => $firstname,
-                                                'birthdate' => $birthdate,
-                                                'pseudo_id' => $pseudo,
-                                                'email' => $email,
-                                                'telephone' => $telephone,
-                                                'driving_licence' => $driving_licence]);
+                    'firstname' => $firstname,
+                    'birthdate' => $birthdate,
+                    'pseudo_id' => $pseudo,
+                    'email' => $email,
+                    'telephone' => $telephone,
+                    'driving_licence' => $driving_licence]);
 
 
                 return redirect()->back()->with('success', trans('franchisee_update.update_success'));
