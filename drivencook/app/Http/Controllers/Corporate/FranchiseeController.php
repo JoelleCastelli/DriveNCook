@@ -137,22 +137,22 @@ class FranchiseeController extends Controller
             }
 
             // check telephone
-            /*if(!preg_match('/^(0|\+33)[1-9]([-. ]?[0-9]{2}){4}$/', $telephone)) {
+            if(strlen($telephone) != 0 && !preg_match('/^(0|\+33)[1-9]([-. ]?[0-9]{2}){4}$/', $telephone)) {
                 $error = true;
                 $errors_list[] = trans('franchisee_update.phone_error');
             }
 
             // check social security number
-            if (strlen($social_security) != 15) {
+            if (strlen($social_security) != 0 && strlen($social_security) != 15) {
                 $error = true;
                 $errors_list[] = trans('franchisee_update.social_security_error');
             }
 
             // check driving licence number
-            if (strlen($driving_licence) > 15) {
+            if (strlen($driving_licence) != 0 && strlen($driving_licence) > 15) {
                 $error = true;
                 $errors_list[] = trans('franchisee_update.driving_licence_error');
-            }*/
+            }
 
             if($error) {
                 return redirect()->back()->with('error', $errors_list);
