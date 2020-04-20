@@ -75,12 +75,20 @@
                             <td>{{$franchisee['telephone']}}</td>
                             <td>{{$franchisee['email']}}</td>
                             <td>{{empty($franchisee['pseudo'])?'Inactif':'Actif ('.$franchisee['pseudo']['name'].')'}}</td>
-                            <td>{{empty($franchisee['last_paid_licence_fees'])?'Jamais'
-                                :DateTime::createFromFormat('Y-m-d',$franchisee['last_paid_licence_fees']['date_paid'])->format('d-m-Y')}}</td>
+                            <td>{{empty($franchisee['last_paid_licence_fee'])?'Jamais'
+                                :DateTime::createFromFormat('Y-m-d',$franchisee['last_paid_licence_fee']['date_paid'])->format('d-m-Y')}}</td>
                             <td>A faire camion</td>
-                            <td><a href="#">
+                            <td>
+                                <a href="#">
+                                    <button class="text-light fa fa-eye"></button>
+                                </a>
+                                <a class="ml-2" href="{{route('franchisee_update',['id'=>$franchisee['id']])}}">
+                                    <button class="text-light fa fa-edit"></button>
+                                </a>
+                                <a class="ml-2" href="#">
                                     <button class="text-light fa fa-trash"></button>
-                                </a></td>
+                                </a>
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>

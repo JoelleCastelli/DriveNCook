@@ -17,7 +17,7 @@ class FranchiseeController extends Controller
     public function franchisee_list()
     {
         $franchisees = User::with('pseudo')
-            ->with('last_paid_licence_fees')
+            ->with('last_paid_licence_fee')
             ->where('role', 'Franchisé')
             ->get()->toArray();
         $nextPaiement = $this->getNextPaiementDate(
@@ -111,14 +111,13 @@ class FranchiseeController extends Controller
     public function franchisee_update($id)
     {
         $franchisee = $this->get_franchisee_by_id($id);
-        $unavailable_pseudos = User::whereNotNull('pseudo')->get(['pseudo'])->toArray();
+        $unavailable_pseudos = User::whereNotNull('pseudo_id')->get(['pseudo_id'])->toArray();
         $pseudos = Pseudo::whereNotIn('id', $unavailable_pseudos)->get();
         return view('corporate/franchisee/franchisee_update')->with('franchisee', $franchisee)->with('pseudos', $pseudos);
     }
 
     public function franchisee_update_submit(Request $request)
     {
-
         $parameters = $request->except(['_token']);
         $error = false;
         $errors_list = [];
@@ -195,7 +194,7 @@ class FranchiseeController extends Controller
                 User::where('id', $id)->update(['lastname' => $lastname,
                                                 'firstname' => $firstname,
                                                 'birthdate' => $birthdate,
-                                                //'pseudo' => $pseudo,
+                                                'pseudo_id' => $pseudo,
                                                 'email' => $email,
                                                 'telephone' => $telephone,
                                                 'driving_licence' => $driving_licence]);

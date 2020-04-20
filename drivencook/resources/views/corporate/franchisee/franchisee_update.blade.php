@@ -1,5 +1,8 @@
-@extends('app')
-
+@extends('corporate.layout_corporate')
+@section('style')
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet" >
+@endsection
 @section('title')
     Modification d'un franchisé
 @endsection
@@ -46,7 +49,7 @@
                     <select class="custom-select" name="pseudo" id="pseudo">
 
                         @if ($franchisee->pseudo)
-                            <option selected value="{{ $franchisee->pseudo }}">{{ $franchisee->getRelation('pseudo')->name }}</option>
+                            <option selected value="{{ $franchisee->getRelation('pseudo')->id }}">{{ $franchisee->getRelation('pseudo')->name }}</option>
                         @else
                             <option selected value="null">{{ trans('franchisee_update.set_pseudo') }}</option>
                         @endif
@@ -100,5 +103,14 @@
         </form>
 
     </div>
+
+@endsection
+
+@section('script')
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/js/franchisee_update.js"></script>
 
 @endsection

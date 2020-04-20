@@ -108,12 +108,17 @@
                                 <i class="fa fa-address-card"></i>&nbsp;&nbsp;&nbsp;Gestion des pseudo
                             </a>
                         </li>
-
                         @break
-
                         @default
                         @break
                     @endswitch
+                    @if (!strpos(url()->current(),route('franchisee_update',['id'=>''])))
+                        <li class="nav-item">
+                            <a class="nav-link text-light2" href="{{route('franchisee_list')}}">
+                                <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des franchisés
+                            </a>
+                        </li>
+                    @endif
                 </ul>
             </div>
         </nav>
