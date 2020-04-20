@@ -99,7 +99,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light2" href="#">
+                            <a class="nav-link text-light2" href="{{route('franchisee_obligation_update')}}">
                                 <i class="fa fa-cogs"></i>&nbsp;&nbsp;&nbsp;Modifier les obligations des franchisés
                             </a>
                         </li>
@@ -110,6 +110,13 @@
                         </li>
                         @break
                         @case(route('franchisee_creation'))
+                        <li class="nav-item">
+                            <a class="nav-link text-light2" href="{{route('franchisee_list')}}">
+                                <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des franchisés
+                            </a>
+                        </li>
+                        @break
+                        @case(route('franchisee_obligation_update'))
                         <li class="nav-item">
                             <a class="nav-link text-light2" href="{{route('franchisee_list')}}">
                                 <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des franchisés

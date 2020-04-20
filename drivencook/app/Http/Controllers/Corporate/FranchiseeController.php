@@ -219,6 +219,22 @@ class FranchiseeController extends Controller
             ->with('pseudo')
             ->with('monthly_licence_fees')
             ->first()->toArray();
-        return view('corporate.franchisee.franchisee_view')->with('franchisee',$franchisee);
+        return view('corporate.franchisee.franchisee_view')->with('franchisee', $franchisee);
+    }
+
+    public function update_franchise_obligation()
+    {
+        $last_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
+        $franchisee_obligations = FranchiseObligation::all()->sortByDesc('id')->toArray();
+        return view('corporate.franchisee.franchisee_obligations_update')
+            ->with('obligations', $franchisee_obligations)
+            ->with('last_obligation', $last_obligation);
+    }
+
+    public function update_franchise_obligation_submit(Request $request)
+    {
+        $parameters = $request->except(['_token']);
+        var_dump($parameters);
+        die;
     }
 }

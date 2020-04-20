@@ -35,6 +35,15 @@ Route::get('/corporate/franchisee_creation', [
     'uses' => 'Corporate\FranchiseeController@franchisee_creation'
 ]);
 
+Route::get('/corporate/franchisee_obligation', [
+    'as' => 'franchisee_obligation_update',
+    'uses' => 'Corporate\FranchiseeController@update_franchise_obligation'
+]);
+Route::post('/corporate/franchisee_obligation/submit', [
+    'as' => 'franchisee_obligation_update_submit',
+    'uses' => 'Corporate\FranchiseeController@update_franchise_obligation_submit'
+]);
+
 Route::post('/corporate/franchisee_creation_submit', [
     'as' => 'franchisee_creation_submit',
     'uses' => 'Corporate\FranchiseeController@franchisee_creation_submit'
