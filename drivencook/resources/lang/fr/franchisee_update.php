@@ -29,7 +29,7 @@ return [
     // Placeholders
     'set_name' => 'Entrez un nom',
     'set_firstname' => 'Entrez un prénom',
-    'set_pseudo' => 'Choisissez un pseudonyme',
+    'no_pseudo' => 'Aucun pseudonyme',
     'set_email' => 'Entrez un e-mail',
     'set_telephone' => 'Entrez un numéro de téléphone',
     'set_driving_licence' => 'Entrez un numéro de permis',

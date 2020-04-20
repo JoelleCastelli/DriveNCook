@@ -29,7 +29,7 @@ return [
     // Placeholders
     'set_name' => 'Enter a name',
     'set_firstname' => 'Enter a firstname',
-    'set_pseudo' => 'Select a pseudonyme',
+    'no_pseudo' => 'No pseudonyme',
     'set_email' => 'Enter an email address',
     'set_telephone' => 'Enter a phone number',
     'set_driving_licence' => 'Enter a driving license number',

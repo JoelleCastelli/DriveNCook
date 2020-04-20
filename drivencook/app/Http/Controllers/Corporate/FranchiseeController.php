@@ -57,7 +57,7 @@ class FranchiseeController extends Controller
 
     public function get_franchisee_by_id($id)
     {
-        return User::with('pseudo')->where('id', $id)->first();
+        return User::with('pseudo')->where('id', $id)->first()->toArray();
     }
 
     public function franchisee_creation()
@@ -115,13 +115,13 @@ class FranchiseeController extends Controller
     {
         $franchisee = $this->get_franchisee_by_id($id);
         $unavailable_pseudos = User::whereNotNull('pseudo_id')->get(['pseudo_id'])->toArray();
-        $pseudos = Pseudo::whereNotIn('id', $unavailable_pseudos)->get();
+        $pseudos = Pseudo::whereNotIn('id', $unavailable_pseudos)->get()->toArray();
+
         return view('corporate/franchisee/franchisee_update')->with('franchisee', $franchisee)->with('pseudos', $pseudos);
     }
 
     public function franchisee_update_submit(Request $request)
     {
-        //TODO Gérer quand aucun pseudo n'est choisi
         $parameters = $request->except(['_token']);
         $error = false;
         $errors_list = [];
@@ -130,7 +130,7 @@ class FranchiseeController extends Controller
             $id = trim($parameters["id"]);
             $firstname = ucwords(strtolower(trim($parameters["firstname"])));
             $lastname = strtoupper(trim($parameters["lastname"]));
-            $pseudo = ucwords(strtolower(trim($parameters["pseudo"])));
+            $pseudo_id = trim($parameters["pseudo"]);
             $birthdate = date_create_from_format('Y-m-d', $parameters["birthdate"]);
             $email = strtolower(trim($parameters["email"]));
             $telephone = trim($parameters["telephone"]);
@@ -138,17 +138,21 @@ class FranchiseeController extends Controller
             $social_security = strtoupper(trim($parameters["social_security"]));
             $role = "Franchisé";
 
+            // check lastname
+            if (strlen($lastname) < 2 || strlen($lastname) > 30) {
+                $error = true;
+                $errors_list[] = trans('franchisee_update.lastname_error');
+            }
+
             // check firstname
             if (strlen($firstname) < 2 || strlen($firstname) > 30) {
                 $error = true;
                 $errors_list[] = trans('franchisee_update.firstname_error');
             }
 
-            // check lastname
-            if (strlen($lastname) < 2 || strlen($lastname) > 30) {
-                $error = true;
-                $errors_list[] = trans('franchisee_update.lastname_error');
-            }
+            // check pseudo
+            if(!$pseudo_id)
+                $pseudo_id=NULL;
 
             // check age
             $today = date("Y-m-d");
@@ -194,16 +198,13 @@ class FranchiseeController extends Controller
             if ($error) {
                 return redirect()->back()->with('error', $errors_list);
             } else {
-                $user = [$lastname, $firstname, $email, $role];
                 User::where('id', $id)->update(['lastname' => $lastname,
                     'firstname' => $firstname,
                     'birthdate' => $birthdate,
-                    'pseudo_id' => $pseudo,
+                    'pseudo_id' => $pseudo_id,
                     'email' => $email,
                     'telephone' => $telephone,
                     'driving_licence' => $driving_licence]);
-
-
                 return redirect()->back()->with('success', trans('franchisee_update.update_success'));
             }
         } else {
@@ -219,10 +220,5 @@ class FranchiseeController extends Controller
             ->with('monthly_licence_fees')
             ->first()->toArray();
         return view('corporate.franchisee.franchisee_view')->with('franchisee',$franchisee);
-    }
-
-    public function test()
-    {
-        return view('test');
     }
 }
