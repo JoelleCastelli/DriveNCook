@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <link href="/css/app.css" rel="stylesheet">
+    @yield('style')
     <style>
 
         .sidebar-sticky {
@@ -126,5 +127,6 @@
 </div>
 
 <script type="text/javascript" src="/js/app.js"></script>
+@yield('script')
 </body>
 </html>
