@@ -63,6 +63,7 @@
                                 <th>Status</th>
                                 <th>Date d'émission</th>
                                 <th>Date de paiement</th>
+                                <th><i class="fa fa-edit"></i></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -72,6 +73,7 @@
                                     <td>{{$license_fee['status']}}</td>
                                     <td>{{$license_fee['date_emitted']}}</td>
                                     <td>{{$license_fee['date_paid']}}</td>
+                                    <td><i class="fa fa-edit"></i>{{$license_fee['id']}}</td>
                                 </tr>
                             @endforeach
                             </tbody>
