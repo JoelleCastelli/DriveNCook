@@ -79,7 +79,7 @@
                                 :DateTime::createFromFormat('Y-m-d',$franchisee['last_paid_licence_fee']['date_paid'])->format('d-m-Y')}}</td>
                             <td>A faire camion</td>
                             <td>
-                                <a href="#">
+                                <a href="{{route('franchisee_view',['id'=>$franchisee['id']])}}">
                                     <button class="text-light fa fa-eye"></button>
                                 </a>
                                 <a class="ml-2" href="{{route('franchisee_update',['id'=>$franchisee['id']])}}">

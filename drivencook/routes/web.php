@@ -25,6 +25,11 @@ Route::get('/corporate/franchisee_list', [
     'uses' => 'Corporate\FranchiseeController@franchisee_list'
 ]);
 
+Route::get('/corporate/franchisee_view/{id}', [
+    'as' => 'franchisee_view',
+    'uses' => 'Corporate\FranchiseeController@franchisee_view'
+]);
+
 Route::get('/corporate/franchisee_creation', [
     'as' => 'franchisee_creation',
     'uses' => 'Corporate\FranchiseeController@franchisee_creation'

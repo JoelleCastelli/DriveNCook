@@ -126,6 +126,13 @@
                             </a>
                         </li>
                     @endif
+                    @if (strpos(url()->current(),route('franchisee_view',['id'=>''])) !== false)
+                        <li class="nav-item">
+                            <a class="nav-link text-light2" href="{{route('franchisee_list')}}">
+                                <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des franchisés
+                            </a>
+                        </li>
+                    @endif
                 </ul>
             </div>
         </nav>

@@ -121,6 +121,7 @@ class FranchiseeController extends Controller
 
     public function franchisee_update_submit(Request $request)
     {
+        //TODO Gérer quand aucun pseudo n'est choisi
         $parameters = $request->except(['_token']);
         $error = false;
         $errors_list = [];
@@ -211,6 +212,14 @@ class FranchiseeController extends Controller
         }
     }
 
+    public function franchisee_view($id)
+    {
+        $franchisee = User::whereId($id)
+            ->with('pseudo')
+            ->with('monthly_licence_fees')
+            ->first()->toArray();
+        return view('corporate.franchisee.franchisee_view')->with('franchisee',$franchisee);
+    }
 
     public function test()
     {
