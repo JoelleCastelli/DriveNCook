@@ -109,10 +109,17 @@
                             </a>
                         </li>
                         @break
+                        @case(route('franchisee_creation'))
+                        <li class="nav-item">
+                            <a class="nav-link text-light2" href="{{route('franchisee_list')}}">
+                                <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des franchisés
+                            </a>
+                        </li>
+                        @break
                         @default
                         @break
                     @endswitch
-                    @if (!strpos(url()->current(),route('franchisee_update',['id'=>''])))
+                    @if (strpos(url()->current(),route('franchisee_update',['id'=>''])) !== false)
                         <li class="nav-item">
                             <a class="nav-link text-light2" href="{{route('franchisee_list')}}">
                                 <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des franchisés
@@ -124,7 +131,7 @@
         </nav>
         <div class="col-10 pt-3 px-4">
 
-            <h1>@yield('title', 'DriveNCook.fr')</h1>
+            <h1 class="mb-3">@yield('title', 'DriveNCook.fr')</h1>
 
 
             @yield('content')
