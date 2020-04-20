@@ -15,7 +15,7 @@
         @if(Session::has('error'))
 
             <div class="alert-danger">
-                {{ trans('franchisee_creation.new_franchisee_error') }}
+                {{ trans('franchisee_update.update_error') }}
                 @foreach(Session::get('error') as $error)
                     <li>{{ $error }}</li>
                 @endforeach
@@ -79,9 +79,9 @@
             </div>
 
             <div class="form-group">
-                <label for="driving_license">{{ trans('franchisee_update.driving_license') }}</label>
-                <input type="text" name="driving_license" id="driving_license"
-                       value="{{ $franchisee->driving_license }}" placeholder="{{ trans('franchisee_update.set_driving_license') }}"
+                <label for="driving_licence">{{ trans('franchisee_update.driving_licence') }}</label>
+                <input type="text" name="driving_licence" id="driving_licence"
+                       value="{{ $franchisee->driving_licence }}" placeholder="{{ trans('franchisee_update.set_driving_licence') }}"
                        class="form-control">
             </div>
 
