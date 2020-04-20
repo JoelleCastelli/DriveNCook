@@ -8,7 +8,7 @@ return [
     'birthdate' => 'Date de naissance',
     'pseudo' => 'Pseudonyme',
     'telephone' => 'Numéro de téléphone',
-    'driving_license' => 'Numéro de permis de conduire',
+    'driving_licence' => 'Numéro de permis de conduire',
     'social_security' => 'Numéro de sécurité sociale',
     'submit' => 'Valider',
 
@@ -22,6 +22,7 @@ return [
     'phone_error' => 'Le format de numéro de téléphone est incorrect',
     'social_security_error' => 'Le numéro de sécurité social est incorrect',
     'driving_licence_error' => 'Le numéro de permis de conduire est incorrect',
+    'arguments_error' => 'Le nombre de champs de formulaire est incorrect',
     'update_success' => 'La modification a correctement été effectuée',
     'update_error' => 'Erreur de la mise à jour des informations :',
 
@@ -31,7 +32,7 @@ return [
     'set_pseudo' => 'Choisissez un pseudonyme',
     'set_email' => 'Entrez un e-mail',
     'set_telephonee' => 'Entrez un numéro de téléphone',
-    'set_driving_license' => 'Entrez un numéro de permis',
+    'set_driving_licence' => 'Entrez un numéro de permis',
     'set_social_security' => 'Entrez un numéro de sécurité sociale',
 
 ];

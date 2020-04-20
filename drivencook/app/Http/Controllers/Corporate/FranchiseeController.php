@@ -20,7 +20,7 @@ class FranchiseeController extends Controller
         return User::where([
                 ['email', $email],
                 ['role', 'Franchisé']
-            ])->get();
+            ])->first()->toArray();
     }
 
     public function get_franchisee_by_id($id){
@@ -89,16 +89,16 @@ class FranchiseeController extends Controller
         $error = false;
         $errors_list = [];
 
-        var_dump($parameters);
-
-        if (count($parameters) == 8) {
+        if (count($parameters) == 9) {
+            $id = trim($parameters["id"]);
             $firstname = ucwords(strtolower(trim($parameters["firstname"])));
             $lastname = strtoupper(trim($parameters["lastname"]));
+            $pseudo = ucwords(strtolower(trim($parameters["pseudo"])));
             $birthdate = date_create_from_format('Y-m-d', $parameters["birthdate"]);
             $email = strtolower(trim($parameters["email"]));
             $telephone = trim($parameters["telephone"]);
-            $driving_licence = trim($parameters["driving_license"]);
-            $social_security = trim($parameters["social_security"]);
+            $driving_licence = strtoupper(trim($parameters["driving_licence"]));
+            $social_security = strtoupper(trim($parameters["social_security"]));
             $role = "Franchisé";
 
             // check firstname
@@ -130,14 +130,14 @@ class FranchiseeController extends Controller
                 $errors_list[] = trans('franchisee_update.email_format_error');
             } else if (!$error) {
                 $result = $this->get_franchisee_by_email($email);
-                if (!empty($result)) {
+                if ($result['id'] != $id) {
                     $error = true;
                     $errors_list[] = trans('franchisee_update.email_error');
                 }
             }
 
             // check telephone
-            if(!preg_match('/^(0|\+33)[1-9]([-. ]?[0-9]{2}){4}$/', $telephone)) {
+            /*if(!preg_match('/^(0|\+33)[1-9]([-. ]?[0-9]{2}){4}$/', $telephone)) {
                 $error = true;
                 $errors_list[] = trans('franchisee_update.phone_error');
             }
@@ -152,15 +152,26 @@ class FranchiseeController extends Controller
             if (strlen($driving_licence) > 15) {
                 $error = true;
                 $errors_list[] = trans('franchisee_update.driving_licence_error');
-            }
+            }*/
 
             if($error) {
                 return redirect()->back()->with('error', $errors_list);
             } else {
                 $user = [$lastname, $firstname, $email, $role];
-                User::create($user);
-                return redirect()->route('franchisee_creation')->with('success', trans('franchisee_update.new_franchisee_success'));
+                User::where('id', $id)->update(['lastname' => $lastname,
+                                                'firstname' => $firstname,
+                                                'birthdate' => $birthdate,
+                                                //'pseudo' => $pseudo,
+                                                'email' => $email,
+                                                'telephone' => $telephone,
+                                                'driving_licence' => $driving_licence]);
+
+
+                return redirect()->back()->with('success', trans('franchisee_update.update_success'));
             }
+        } else {
+            $errors_list[] = trans('franchisee_update.arguments_error');
+            return redirect()->back()->with('error', $errors_list);
         }
     }
 
