@@ -14,13 +14,18 @@ int main(int argc, char **argv) {
     if(!logFd) exit(EXIT_FAILURE);
 
     toLog(logFd, INFO, "Program start...");
-    if(argc != 2) {
-        fprintf(stderr, "Usage: ./listener [listen_folder]\n");
-        toLog(logFd, ERROR, "Usage: ./listener [listen_folder]");
+    if(argc != 2 && argc != 3) {
+        fprintf(stderr, "Usage: ./listener [listen_folder] (program_path)\n");
+        toLog(logFd, ERROR, "Usage: ./listener [listen_folder] (program_path)");
         return EXIT_FAILURE;
     }
 
-    startListener(logFd, argv[1]);
+    if(argc == 2) {
+        startListener(logFd, argv[1], "");
+    } else {
+        startListener(logFd, argv[1], argv[2]);
+    }
+
 
     toLog(logFd, INFO, "Program stop...");
 

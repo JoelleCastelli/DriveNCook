@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
     toLog(logFd, INFO, "Program start...");
 
     if(argc == 2) {
-        readImage("code.png", &imageData, &height, &width);
+        readImage(argv[1], &imageData, &height, &width);
 
         text = decodeImage((int) width, (int) height, imageData);
         registerFranchisee((char *)text, logFd);

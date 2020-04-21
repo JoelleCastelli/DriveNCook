@@ -7,10 +7,10 @@
 
 #include "useful.h"
 
-void startListener(FILE *logFd, char *dirPath);
+void startListener(FILE *logFd, char *dirPath, char *toExecProgramPath);
 
-void listen(FILE *logFd, DIR *rep, char *dirPath);
+void listen(FILE *logFd, DIR *rep, char *dirPath, char *toExecProgramPath);
 
-int fileProcessing(FILE *logFd, struct dirent *readFile, char *dirPath);
+int fileProcessing(FILE *logFd, struct dirent *readFile, char *dirPath, char *toExecProgramPath);
 
 #endif //FILE_LISTENER_FILELISTENER_H
