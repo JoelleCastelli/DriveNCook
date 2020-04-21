@@ -14,16 +14,18 @@ class TruckController extends Controller
 {
     use EnumValue;
 
-    public function truck_creation() {
+    public function truck_creation()
+    {
         $fuels = $this->get_enum_column_values('truck', 'fuel_type');
         $locations = Location::select('name', 'address')->get();
-        if(!empty($locations)) {
+        if (!empty($locations)) {
             $locations = $locations->toArray();
         }
         return view('corporate/truck/truck_creation')->with('locations', $locations)->with('fuels', $fuels);
     }
 
-    public function get_truck($license_plate, $registration_document, $insurance_number, $chassis_number, $engine_number) {
+    public function get_truck($license_plate, $registration_document, $insurance_number, $chassis_number, $engine_number)
+    {
         return Truck::where('license_plate', $license_plate)
             ->orWhere('registration_document', $registration_document)
             ->orWhere('insurance_number', $insurance_number)
@@ -32,11 +34,13 @@ class TruckController extends Controller
             ->get();
     }
 
-    public function get_location_id_by_name($location_name) {
+    public function get_location_id_by_name($location_name)
+    {
         return $location = Location::where('name', $location_name)->first()->id;
     }
 
-    public function truck_creation_submit(Request $request) {
+    public function truck_creation_submit(Request $request)
+    {
         $parameters = $request->except(['_token']);
         $error = false;
         $errors_list = [];
@@ -83,7 +87,7 @@ class TruckController extends Controller
                 $error = true;
                 $errors_list[] = trans('truck_creation.functional_error');
             } else {
-                if($functional === 'on') {
+                if ($functional === 'on') {
                     $functional = true;
                 } else {
                     $functional = false;
@@ -96,62 +100,62 @@ class TruckController extends Controller
                 $errors_list[] = trans('truck_creation.purchase_date_error');
             }
 
-            if(!preg_match('/^[A-Z]{2}-[0-9]{3}-[A-Z]{2}$/', $license_plate)) {
+            if (!preg_match('/^[A-Z]{2}-[0-9]{3}-[A-Z]{2}$/', $license_plate)) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.license_plate_error');
             }
 
-            if(!preg_match('/^[A-Z0-9]{15}$/', $registration_document)) {
+            if (!preg_match('/^[A-Z0-9]{15}$/', $registration_document)) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.registration_document_error');
             }
 
-            if(!preg_match('/^[A-Z0-9]{20}$/', $insurance_number)) {
+            if (!preg_match('/^[A-Z0-9]{20}$/', $insurance_number)) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.insurance_number_error');
             }
 
-            if(!in_array($fuel_type, $fuel_type_options)) {
+            if (!in_array($fuel_type, $fuel_type_options)) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.fuel_type_error');
             }
 
-            if(!preg_match('/^[0-9]{20}$/', $chassis_number)) {
+            if (!preg_match('/^[0-9]{20}$/', $chassis_number)) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.chassis_number_error');
             }
 
-            if(!preg_match('/^[0-9]{20}$/', $engine_number)) {
+            if (!preg_match('/^[0-9]{20}$/', $engine_number)) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.engine_number_error');
             }
 
-            if($horsepower < 1) {
+            if ($horsepower < 1) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.horsepower_error');
             }
 
-            if($weight_empty < 1) {
+            if ($weight_empty < 1) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.weight_empty_error');
             }
 
-            if($payload < 2) {
+            if ($payload < 2) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.payload_error');
             }
 
-            if(strlen($general_state) < 1 || strlen($general_state) > 255) {
+            if (strlen($general_state) < 1 || strlen($general_state) > 255) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.general_state_error');
             }
 
-            if(!preg_match('/^[A-Za-z -_]+$/', $location_name)) {
+            if (!preg_match('/^[A-Za-z -_]+$/', $location_name)) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.location_name_error');
             } else {
                 $location_id = $this->get_location_id_by_name($location_name);
-                if(empty($location_id)) {
+                if (empty($location_id)) {
                     $error = true;
                     $errors_list[] = trans('truck_creation.location_name_error');
                 }
@@ -165,7 +169,7 @@ class TruckController extends Controller
 
             $date1 = new DateTime($purchase_date);
             $date2 = new DateTime($location_date_start);
-            if($date1 > $date2) {
+            if ($date1 > $date2) {
                 $error = true;
                 $errors_list[] = trans('truck_creation.date_timeline_error');
             }
@@ -178,7 +182,7 @@ class TruckController extends Controller
                 }
             }
 
-            if($error) {
+            if ($error) {
                 return redirect()->back()->with('error', $errors_list);
             } else {
                 $truck = [
@@ -197,5 +201,14 @@ class TruckController extends Controller
             $errors_list[] = trans('truck_creation.empty_fields');
             return redirect()->back()->with('error', $errors_list);
         }
+    }
+
+    public function truck_list()
+    {
+        $trucks = Truck::with('user')
+            ->with('location')
+            ->with('last_safety_inspection')
+            ->get()->toArray();
+        return view('corporate.truck.truck_list')->with('trucks', $trucks);
     }
 }

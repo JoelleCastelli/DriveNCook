@@ -27,8 +27,27 @@ class Truck extends Model
     /*protected $hidden = [
 
     ];*/
-    function user()
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class, 'location_id');
+    }
+
+    public function breakdowns()
+    {
+        return $this->hasMany(Breakdown::class, 'truck_id');
+    }
+
+    public function safety_inspection()
+    {
+        return $this->hasMany(SafetyInspection::class, 'truck_id');
+    }
+    public function last_safety_inspection()
+    {
+        return $this->hasOne(SafetyInspection::class, 'truck_id')->orderByDesc('id');
     }
 }

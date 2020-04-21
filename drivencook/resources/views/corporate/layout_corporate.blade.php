@@ -62,7 +62,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light2" href="#">
+                            <a class="nav-link text-light2" href="{{route('truck_list')}}">
                                 <i class="fa fa-truck"></i>&nbsp;&nbsp;&nbsp;Camions
                             </a>
                         </li>
@@ -115,6 +115,26 @@
                         <li class="nav-item">
                             <a class="nav-link text-light2" href="{{route('franchisee_list')}}">
                                 <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des franchisés
+                            </a>
+                        </li>
+                        @break
+                        @case(route('truck_list'))
+                        <li class="nav-item">
+                            <a class="nav-link text-light2" href="{{route('corporate_dashboard')}}">
+                                <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir au tableau de bord
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light2" href="{{route('truck_creation')}}">
+                                <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Ajouter un camion
+                            </a>
+                        </li>
+
+                        @break
+                        @case(route('truck_creation'))
+                        <li class="nav-item">
+                            <a class="nav-link text-light2" href="{{route('truck_list')}}">
+                                <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des camions
                             </a>
                         </li>
                         @break

@@ -95,6 +95,10 @@ Route::get('/test/get-by-email/{email}', [
 //
 
 // Truck
+Route::get('/corporate/truck_list', [
+    'as' => 'truck_list',
+    'uses' => 'Corporate\TruckController@truck_list'
+]);
 Route::get('/corporate/truck_creation', [
     'as' => 'truck_creation',
     'uses' => 'Corporate\TruckController@truck_creation'
