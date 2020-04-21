@@ -40,7 +40,26 @@ int fillMatrixDecode() {
     return 0;
 }
 
-char * decode(char *filePath) {
+int fillMatrixEncode() {
+    char array1[8], array2[8];
+    int i, j;
+
+    for (i = 0; i < 256; ++i) {
+        // XOR, equivalent to a matrix product
+        for (j = 0; j < 8; ++j) {
+            array1[j] = (c2b[i][0] && codecKey[0][j]) ^ (c2b[i][1] && codecKey[1][j]) ^ (c2b[i][2] && codecKey[2][j]) ^
+                        (c2b[i][3] && codecKey[3][j]);
+            array2[j] = (c2b[i][4] && codecKey[0][j]) ^ (c2b[i][5] && codecKey[1][j]) ^ (c2b[i][6] && codecKey[2][j]) ^
+                        (c2b[i][7] && codecKey[3][j]);
+        }
+        encodeMatrix[i][0] = b2C(array1);
+        encodeMatrix[i][1] = b2C(array2);
+    }
+
+    return 0;
+}
+
+char *decode(char *filePath) {
     char *result;
     result = malloc(1);
     strcpy(result, "");
@@ -78,10 +97,43 @@ char * decode(char *filePath) {
     readBuffer = realloc(readBuffer, readBufferSize);
 
     while (fread(readBuffer, 1, readBufferSize, fp) == readBufferSize) {
-        strncat(result, (const char*)&(decodeMatrix[readBuffer[0]][readBuffer[1]]),1);
+        strncat(result, (const char *) &(decodeMatrix[readBuffer[0]][readBuffer[1]]), 1);
     }
 
     return result;
+}
+
+int encode(char *configFilePath, char *content) {
+    // Check if there's a file to encode
+    if (configFilePath == NULL || strlen(configFilePath) == 0) {
+        return 1;
+    }
+
+    // Create destination path (sourcePath + "e")
+
+    // Open the file to encode
+
+    // Create the new encoded file
+    FILE *dest = fopen(configFilePath, "wb");
+    if (dest == NULL) {
+        return 1;
+    }
+
+    // Get size of file, method depending on the OS
+    if (strlen(content) > 1000000) {
+        return 1;
+    }
+
+    unsigned char writeBuffer[2];
+
+    for (int i = 0; i < strlen(content); ++i) {
+        writeBuffer[0] = encodeMatrix[content[i]][0];
+        writeBuffer[1] = encodeMatrix[content[i]][1];
+        assert(fwrite(writeBuffer, sizeof(char), 2, dest) == 2);
+    }
+
+    fclose(dest);
+    return 0;
 }
 
 void fillC2B() {

@@ -28,9 +28,3 @@ void toLog(FILE * logFd, const short logFlag, const char * logMessage) {
         flag, logMessage
     );
 }
-/*
-int checkEmail(const char *email) {
-    char *occ;
-
-    if(strchr(email, '@'))
-}*/
