@@ -64,7 +64,9 @@ class FranchiseeController extends Controller
 
     public function get_franchisee_by_id($id)
     {
-        return User::with('pseudo')->where('id', $id)->first()->toArray();
+        $user= User::with('pseudo')->where('id', $id)->first();
+        if (!empty($user))
+            return $user->toArray();
     }
 
     public function franchisee_creation()
