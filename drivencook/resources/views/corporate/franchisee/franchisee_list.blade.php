@@ -112,7 +112,6 @@
                 if (!isNaN(id)) {
                     let urlB = '{{route('franchisee_delete',['id'=>':id'])}}';
                     urlB = urlB.replace(':id', id);
-                    console.log(urlB)
                     $.ajax({
                         url: urlB,
                         method: "delete",

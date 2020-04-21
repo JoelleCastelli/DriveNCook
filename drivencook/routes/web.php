@@ -66,6 +66,22 @@ Route::delete('/corporate/franchisee_delete/{id}', [
     'uses' => 'Corporate\FranchiseeController@delete_franchise'
 ]);
 
+Route::get('/corporate/franchisee_pseudo', [
+    'as' => 'franchisee_pseudo',
+    'uses' => 'Corporate\FranchiseeController@pseudo_list'
+]);
+
+Route::post('/corporate/franchisee_pseudo_submit', [
+    'as' => 'franchisee_pseudo_submit',
+    'uses' => 'Corporate\FranchiseeController@pseudo_submit'
+]);
+
+
+Route::delete('/corporate/franchisee_pseudo_delete/{id}', [
+    'as' => 'franchisee_pseudo_delete',
+    'uses' => 'Corporate\FranchiseeController@pseudo_delete'
+]);
+
 
 Route::post('/test', [
     'as' => 'test',

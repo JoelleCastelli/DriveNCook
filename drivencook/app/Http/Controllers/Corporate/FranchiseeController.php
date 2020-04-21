@@ -310,4 +310,35 @@ class FranchiseeController extends Controller
         User::find($id)->delete();
         return $id;
     }
+
+    public function pseudo_list()
+    {
+        return view('corporate.franchisee.franchisee_pseudo')
+            ->with('pseudos', Pseudo::with('users')->get()->toArray());
+    }
+
+    public function pseudo_submit(Request $request)
+    {
+        $parameters = $request->except(['_token']);
+        if (empty($parameters['id'])) {
+            $response['isNew'] = true;
+            $id = Pseudo::insertGetId(['name' => $parameters['name']]);
+            $response['id'] = $id;
+        } else {
+            $response['isNew'] = false;
+            $response['id'] = $parameters['id'];
+            Pseudo::find($parameters['id'])->update(['name' => $parameters['name']]);
+        }
+
+        $response['response'] = 'success';
+
+        return json_encode($response);
+    }
+
+    public function pseudo_delete($id)
+    {
+        User::where('pseudo_id', $id)->update(['pseudo_id' => NULL]);
+        Pseudo::find($id)->delete();
+        return $id;
+    }
 }

@@ -104,19 +104,14 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light2" href="#">
+                            <a class="nav-link text-light2" href="{{route('franchisee_pseudo')}}">
                                 <i class="fa fa-address-card"></i>&nbsp;&nbsp;&nbsp;Gestion des pseudo
                             </a>
                         </li>
                         @break
                         @case(route('franchisee_creation'))
-                        <li class="nav-item">
-                            <a class="nav-link text-light2" href="{{route('franchisee_list')}}">
-                                <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des franchisés
-                            </a>
-                        </li>
-                        @break
                         @case(route('franchisee_obligation_update'))
+                        @case(route('franchisee_pseudo'))
                         <li class="nav-item">
                             <a class="nav-link text-light2" href="{{route('franchisee_list')}}">
                                 <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des franchisés
