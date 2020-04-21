@@ -18,7 +18,9 @@ return [
     'general_state' => 'État général',
     'location_name' => 'Nom de l\'emplacement',
     'location_date_start' => 'Date de début à l\'emplacement',
+    'location_date_end' => 'Date de fin à l\'emplacement',
     'submit' => 'Ajouter',
+    'update_submit' => 'Modifier',
 
     'brand_error' => 'Marque : format invalide',
     'model_error' => 'Modèle : format invalide',

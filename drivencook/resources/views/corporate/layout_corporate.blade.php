@@ -155,6 +155,13 @@
                             </a>
                         </li>
                     @endif
+                    @if (strpos(url()->current(),route('truck_update',['id'=>''])) !== false)
+                            <li class="nav-item">
+                                <a class="nav-link text-light2" href="{{route('truck_list')}}">
+                                    <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des camions
+                                </a>
+                            </li>
+                    @endif
                 </ul>
             </div>
         </nav>

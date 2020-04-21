@@ -56,7 +56,10 @@
                                         'Utilisé par '.strtoupper($truck['user']['firstname'].' - '.$truck['user']['lastname'])}}</td>
                                             <td>
                                                 <i class="fa fa-eye"></i>
-                                                <i class="fa fa-edit ml-2"></i>
+                                                <a href="{{route('truck_update',['id'=>$truck['id']])}}">
+                                                    <button class="fa fa-edit ml-2"></button>
+                                                </a>
+
                                                 <button onclick="deleteTruck({{$truck['id']}})"
                                                         class="fa fa-trash ml-2"></button>
                                             </td>

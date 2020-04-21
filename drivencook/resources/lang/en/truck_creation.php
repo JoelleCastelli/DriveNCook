@@ -18,7 +18,9 @@ return [
     'general_state' => 'General state',
     'location_name' => 'Location name',
     'location_date_start' => 'Location date start',
+    'location_date_end' => 'Location date end',
     'submit' => 'Add',
+    'update_submit' => 'Update',
 
     'brand_error' => 'Brand invalid format',
     'model_error' => 'Model invalid format',
