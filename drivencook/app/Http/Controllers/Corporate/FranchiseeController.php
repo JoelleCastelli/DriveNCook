@@ -152,17 +152,22 @@ class FranchiseeController extends Controller
 
             // check pseudo
             if(!$pseudo_id)
-                $pseudo_id=NULL;
+                $pseudo_id = NULL;
+
 
             // check age
-            $today = date("Y-m-d");
-            $age = date_diff($birthdate, date_create($today))->format('%y');
-            if ($age < 18) {
-                $error = true;
-                $errors_list[] = trans('franchisee_update.too_young');
-            } else if ($age > 90) {
-                $error = true;
-                $errors_list[] = trans('franchisee_update.too_old');
+            if ($birthdate) {
+                $today = date("Y-m-d");
+                $age = date_diff($birthdate, date_create($today))->format('%y');
+                if ($age < 18) {
+                    $error = true;
+                    $errors_list[] = trans('franchisee_update.too_young');
+                } else if ($age > 90) {
+                    $error = true;
+                    $errors_list[] = trans('franchisee_update.too_old');
+                }
+            } else {
+                $birthdate = NULL;
             }
 
             // check email
