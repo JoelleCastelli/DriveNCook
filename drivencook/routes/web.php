@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Franchisee
+
 Route::get('/corporate', [
     'as' => 'corporate_dashboard',
     'uses' => 'Corporate\AccountController@dashboard'
@@ -68,3 +70,16 @@ Route::get('/test/get-by-email/{email}', [
     'as' => 'test_mail',
     'uses' => 'Corporate\FranchiseeController@get_franchisee_by_email'
 ]);
+//
+
+// Truck
+Route::get('/corporate/truck_creation', [
+    'as' => 'truck_creation',
+    'uses' => 'Corporate\TruckController@truck_creation'
+]);
+
+Route::post('/corporate/truck_creation_submit', [
+    'as' => 'truck_creation_submit',
+    'uses' => 'Corporate\TruckController@truck_creation_submit'
+]);
+//
