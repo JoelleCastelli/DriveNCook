@@ -9,6 +9,16 @@
 
 
 @section('content')
+    @if (Session::has('success'))
+        <div class="alert-success mb-3">{{ Session::get('success') }}</div>
+    @elseif(Session::has('error'))
+        <div class="alert-danger mb-3">
+            Erreur !
+            @foreach(Session::get('error') as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </div>
+    @endif
     <div class="row">
         <div class="col-12 col-md-6">
             <div class="card">

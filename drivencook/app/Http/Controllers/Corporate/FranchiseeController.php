@@ -151,7 +151,7 @@ class FranchiseeController extends Controller
             }
 
             // check pseudo
-            if(!$pseudo_id)
+            if (!$pseudo_id)
                 $pseudo_id = NULL;
 
 
@@ -239,7 +239,47 @@ class FranchiseeController extends Controller
     public function update_franchise_obligation_submit(Request $request)
     {
         $parameters = $request->except(['_token']);
-        var_dump($parameters);
-        die;
+        $error = false;
+        $errors_list = [];
+
+        if (count($parameters) == 4 && !empty($parameters["entrance_fee"]) && !empty($parameters["revenue_percentage"]) && !empty($parameters["warehouse_percentage"]) && !empty($parameters["billing_day"])) {
+            $entrance_fee = trim($parameters['entrance_fee']);
+            $revenue_percentage = trim($parameters['revenue_percentage']);
+            $warehouse_percentage = trim($parameters['warehouse_percentage']);
+            $billing_day = trim($parameters['billing_day']);
+
+            if (!ctype_digit($entrance_fee) || $entrance_fee < 0 || $entrance_fee > 9999999) {
+                $error = true;
+                $errors_list[] = 'Frais d\'entrées incorrect';
+            }
+            if (!ctype_digit($revenue_percentage) || $revenue_percentage < 0 || $revenue_percentage > 100) {
+                $error = true;
+                $errors_list[] = 'Taxes sur les revenues incorrect';
+            }
+            if (!ctype_digit($warehouse_percentage) || $warehouse_percentage < 0 || $warehouse_percentage > 100) {
+                $error = true;
+                $errors_list[] = 'Taxes sur les entrepôts incorrect';
+            }
+            if (!ctype_digit($billing_day) || $billing_day < 1 || $billing_day > 28) {
+                $error = true;
+                $errors_list[] = 'Jour de facturation mensuel incorrect';
+            }
+
+            if ($error) {
+                return redirect()->back()->with('error', $errors_list);
+            }
+
+            $obligation = ['entrance_fee' => $entrance_fee,
+                'revenue_percentage' => $revenue_percentage,
+                'warehouse_percentage' => $warehouse_percentage,
+                'billing_day' => $billing_day,
+                'date_updated' => date('Y-m-d')];
+            FranchiseObligation::insert($obligation);
+            return redirect()->route('franchisee_obligation_update')->with('success', 'Obligations du franchisé mises à jour !');
+
+        } else {
+            $errors_list[] = 'Erreur dans la requête Post !';
+            return redirect()->back()->with('error', $errors_list);
+        }
     }
 }
