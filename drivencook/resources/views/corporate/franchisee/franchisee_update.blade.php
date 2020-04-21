@@ -78,8 +78,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="birthdate">{{ trans('franchisee_update.birthdate') }}</label>
-                                <input type="date" name="birthdate" id="birthdate" class="form-control">
+                                {!! Form::label('birthdate', trans('franchisee_update.birthdate')) !!}
+                                {!! Form::date('birthdate', date($franchisee['birthdate']), ['class' => 'form-control']) !!}
                             </div>
 
                             <div class="form-group">
