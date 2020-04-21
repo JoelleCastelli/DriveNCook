@@ -81,10 +81,12 @@ int fileProcessing(FILE *logFd, struct dirent *readFile, char *dirPath, char *to
 
             execl(toExecProgramPath, program, tmpFilePath, (char *) NULL);
         }
+    } else {
+        remove(tmpFilePath);
+        strcat(strcpy(tmpLogMsg, "Deleted : "), tmpFilePath);
+        toLog(logFd, INFO, tmpLogMsg);
     }
-    remove(tmpFilePath);
-    strcat(strcpy(tmpLogMsg, "Deleted : "), tmpFilePath);
-    toLog(logFd, INFO, tmpLogMsg);
+
 
     return EXIT_SUCCESS;
 }

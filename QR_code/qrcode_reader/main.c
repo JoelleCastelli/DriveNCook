@@ -32,6 +32,7 @@ int main(int argc, char **argv) {
 
     toLog(logFd, INFO, "Program stop...");
 
+    remove(argv[1]);
     fclose(logFd);
     free(imageData);
 
