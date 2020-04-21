@@ -3,7 +3,7 @@ project(qrcode_reader C)
 
 set(CMAKE_C_STANDARD 99)
 
-include_directories(${CMAKE_SOURCE_DIR}/libs)
+include_directories(${CMAKE_SOURCE_DIR}/libs /usr/include/mariadb)
 
 set(PROJECT_FILES
         main.c
@@ -13,9 +13,10 @@ set(PROJECT_FILES
         libs/version_db.c
         libs/lodepng.c
         useful.c
-        readerFunctions.c)
+        readerFunctions.c
+        dBConnect.c saveToDatabaseFunctions.c saveToDatabaseFunctions.h)
 
-link_directories(${CMAKE_SOURCE_DIR}/libs)
+link_directories(${CMAKE_SOURCE_DIR}/libs /usr/include/mariadb)
 add_executable(qrcode_reader ${PROJECT_FILES})
 
-target_link_libraries(qrcode_reader m)
+target_link_libraries(qrcode_reader m mariadb)

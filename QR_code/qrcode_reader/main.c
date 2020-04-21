@@ -1,20 +1,40 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "readerFunctions.h"
+#include "useful.h"
+#include "saveToDatabaseFunctions.h"
 
-
-int main() {
+int main(int argc, char **argv) {
+    FILE *logFd;
     unsigned int height, width;
+    unsigned char *text;
     u_int8_t *imageData = 0;
+    char *qrFilePath;
 
-    readImage("code.png", &imageData, &height, &width);
+    logFd = fopen("qrcode_reader.log", "a");
+    if(!logFd) {
+        perror("Failed to open qrcode_reader.log");
+        return EXIT_FAILURE;
+    }
 
-    unsigned char *text = decodeImage((int) width, (int) height, imageData);
+    toLog(logFd, INFO, "Program start...");
 
-    printf("Result:\n%s", text);
+    if(argc == 2) {
+        readImage("code.png", &imageData, &height, &width);
 
-    free(text);
+        text = decodeImage((int) width, (int) height, imageData);
+        registerFranchisee((char *)text, logFd);
+
+        free(text);
+    } else {
+        toLog(logFd, ERROR, "Program usage: ./qrcode_reader [filepath]");
+    }
+
+    toLog(logFd, INFO, "Program stop...");
+
+    fclose(logFd);
     free(imageData);
-    return 0;
+
+    return EXIT_SUCCESS;
 }
 
