@@ -50,4 +50,9 @@ class User extends Model
     {
         return $this->hasOne(MonthlyLicenseFee::class, 'user_id')->where('status', '=', 'Payée')->orderByDesc('id');
     }
+
+    public function truck()
+    {
+        return $this->hasOne(Truck::class, 'user_id');
+    }
 }

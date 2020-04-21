@@ -5,7 +5,14 @@ namespace App\Http\Controllers\Corporate;
 
 use App\Http\Controllers\Controller;
 use App\Models\FranchiseObligation;
+use App\Models\MonthlyLicenseFee;
 use App\Models\Pseudo;
+use App\Models\PurchasedDish;
+use App\Models\PurchaseOrder;
+use App\Models\Sale;
+use App\Models\SoldDish;
+use App\Models\Stock;
+use App\Models\Truck;
 use App\Models\User;
 use DateTime;
 use Illuminate\Http\Request;
@@ -281,5 +288,26 @@ class FranchiseeController extends Controller
             $errors_list[] = 'Erreur dans la requête Post !';
             return redirect()->back()->with('error', $errors_list);
         }
+    }
+
+    public function delete_franchise($id)
+    {
+        Truck::where('user_id', $id)->update(['user_id' => NULL]);
+        MonthlyLicenseFee::where('user_id', $id)->delete();
+
+        $purchaseOrder = PurchaseOrder::where('user_id', $id)->get(['id']);
+        if (!empty($purchaseOrder)) {
+            PurchasedDish::whereIn('dish_id', $purchaseOrder->toArray())->delete();
+            PurchaseOrder::where('user_id', $id)->delete();
+        }
+
+        $sale = Sale::where('user_franchised', $id)->get(['id']);
+        if (!empty($sale)) {
+            SoldDish::whereIn('dish_id', $sale->toArray())->delete();
+            Sale::where('user_franchised', $id)->delete();
+        }
+        Stock::where('user_id', $id)->delete();
+        User::find($id)->delete();
+        return $id;
     }
 }

@@ -69,7 +69,7 @@
                     </thead>
                     <tbody>
                     @foreach($franchisees as $franchisee)
-                        <tr>
+                        <tr id="{{'row_'.$franchisee['id']}}">
                             <td>{{$franchisee['lastname']}}</td>
                             <td>{{$franchisee['firstname']}}</td>
                             <td>{{$franchisee['telephone']}}</td>
@@ -85,9 +85,8 @@
                                 <a class="ml-2" href="{{route('franchisee_update',['id'=>$franchisee['id']])}}">
                                     <button class="text-light fa fa-edit"></button>
                                 </a>
-                                <a class="ml-2" href="#">
-                                    <button class="text-light fa fa-trash"></button>
-                                </a>
+                                <button onclick="deleteFranchise({{$franchisee['id']}})"
+                                        class="text-light fa fa-trash ml-2"></button>
                             </td>
                         </tr>
                     @endforeach
@@ -107,5 +106,35 @@
         $(document).ready(function () {
             $('#allfranchisees').DataTable();
         });
+
+        function deleteFranchise(id) {
+            if (confirm("Voulez vous vraiment supprimer ce franchisé ? Toute les données associés seront supprimés")) {
+                if (!isNaN(id)) {
+                    let urlB = '{{route('franchisee_delete',['id'=>':id'])}}';
+                    urlB = urlB.replace(':id', id);
+                    console.log(urlB)
+                    $.ajax({
+                        url: urlB,
+                        method: "delete",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (data) {
+                            if (data == id) {
+                                alert("Franchisé supprimé");
+                                let row = document.getElementById('row_' + id);
+                                row.remove();
+                            } else {
+                                alert("Une erreur est survenue lors de la suppression, veuillez raffraichir la page");
+                            }
+                        },
+                        error: function () {
+                            alert("Une erreur est survenue lors de la suppression, veuillez raffraichir la page");
+                        }
+                    })
+                }
+            }
+            console.log("id : " + id);
+        }
     </script>
 @endsection

@@ -61,6 +61,12 @@ Route::post('/corporate/franchisee_update_submit', [
     'uses' => 'Corporate\FranchiseeController@franchisee_update_submit'
 ]);
 
+Route::delete('/corporate/franchisee_delete/{id}', [
+    'as' => 'franchisee_delete',
+    'uses' => 'Corporate\FranchiseeController@delete_franchise'
+]);
+
+
 Route::post('/test', [
     'as' => 'test',
     'uses' => 'Corporate\FranchiseeController@test'

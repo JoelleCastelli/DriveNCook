@@ -16,7 +16,7 @@ class Truck extends Model
     protected $fillable = [
         'brand', 'model', 'functional', 'purchase_date', 'license_plate', 'registration_document', 'insurance_number',
         'fuel_type', 'chassis_number', 'engine_number', 'horsepower', 'weight_empty', 'payload', 'general_state',
-        'user', 'location_id', 'location_date_start', 'location_date_end',
+        'user_id', 'location_id', 'location_date_start', 'location_date_end',
     ];
 
     /**
@@ -27,4 +27,8 @@ class Truck extends Model
     /*protected $hidden = [
 
     ];*/
+    function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
