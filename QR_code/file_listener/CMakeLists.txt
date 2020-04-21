@@ -11,7 +11,7 @@ set(PROJECT_NAME listener)
 
 add_executable(${PROJECT_NAME}
         main.c
-        useful.c)
+        useful.c fileListener.c fileListener.h)
 
 #target_link_libraries(${PROJECT_NAME} curl)
 

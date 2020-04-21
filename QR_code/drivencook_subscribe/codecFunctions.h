@@ -13,6 +13,7 @@
 #include <stdio.h>
 
 extern char codecKey[4][8];
+unsigned char encodeMatrix[256][2];
 unsigned char decodeMatrix[256][256];
 
 char c2b[256][8];
@@ -23,6 +24,10 @@ unsigned char b2C(const char *value);
 
 int fillMatrixDecode();
 
+int fillMatrixEncode();
+
 char * decode(char *filePath);
+
+int encode(char *configFilePath, char *content);
 
 #endif //CODECC_CODECFUNCTIONS_H
