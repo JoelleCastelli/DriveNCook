@@ -294,6 +294,9 @@ class FranchiseeController extends Controller
 
     public function delete_franchise($id)
     {
+        if (!ctype_digit($id)) {
+            return 'error';
+        }
         Truck::where('user_id', $id)->update(['user_id' => NULL]);
         MonthlyLicenseFee::where('user_id', $id)->delete();
 

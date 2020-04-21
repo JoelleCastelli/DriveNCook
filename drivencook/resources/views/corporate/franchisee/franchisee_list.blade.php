@@ -133,7 +133,6 @@
                     })
                 }
             }
-            console.log("id : " + id);
         }
     </script>
 @endsection

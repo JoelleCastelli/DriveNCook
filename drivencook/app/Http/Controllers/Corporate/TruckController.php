@@ -4,7 +4,9 @@
 namespace App\Http\Controllers\Corporate;
 
 use App\Http\Controllers\Controller;
+use App\Models\Breakdown;
 use App\Models\Location;
+use App\Models\SafetyInspection;
 use App\Models\Truck;
 use App\Traits\EnumValue;
 use DateTime;
@@ -210,5 +212,16 @@ class TruckController extends Controller
             ->with('last_safety_inspection')
             ->get()->toArray();
         return view('corporate.truck.truck_list')->with('trucks', $trucks);
+    }
+
+    public function truck_delete($id)
+    {
+        if (!ctype_digit($id)) {
+            return 'error';
+        }
+        Breakdown::where('truck_id', $id)->delete();
+        SafetyInspection::where('truck_id', $id)->delete();
+        Truck::find($id)->delete();
+        return $id;
     }
 }
