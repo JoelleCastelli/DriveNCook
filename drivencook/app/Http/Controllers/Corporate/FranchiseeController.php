@@ -59,14 +59,15 @@ class FranchiseeController extends Controller
         ])->first();
         if (!empty($user))
             return $user->toArray();
-        return $user;
+        return null;
     }
 
     public function get_franchisee_by_id($id)
     {
-        $user= User::with('pseudo')->where('id', $id)->first();
+        $user = User::with('pseudo')->where('id', $id)->first();
         if (!empty($user))
             return $user->toArray();
+        return null;
     }
 
     public function franchisee_creation()
@@ -185,7 +186,7 @@ class FranchiseeController extends Controller
                 $errors_list[] = trans('franchisee_update.email_format_error');
             } else if (!$error) {
                 $result = $this->get_franchisee_by_email($email);
-                if ($result['id'] != $id) {
+                if ($result != null && $result['id'] != $id) {
                     $error = true;
                     $errors_list[] = trans('franchisee_update.email_error');
                 }
