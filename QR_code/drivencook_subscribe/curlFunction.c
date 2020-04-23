@@ -59,6 +59,7 @@ int uploadFile(FILE *logFd, const CurlInfos *userArgs) {
 
     toLog(logFd, INFO, "Upload stop...");
 
+    fclose(logFd);
     fclose(fd);
     free(tmpLogMsg);
     return returnCode;
