@@ -7,7 +7,7 @@
     <property name="title" translatable="yes">Drive 'N' Cook subscription</property>
     <property name="resizable">False</property>
     <property name="default_width">550</property>
-    <property name="default_height">350</property>
+    <property name="default_height">380</property>
     <property name="icon">logo.png</property>
     <child>
       <placeholder/>
