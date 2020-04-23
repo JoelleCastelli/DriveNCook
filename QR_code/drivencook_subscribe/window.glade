@@ -372,7 +372,6 @@
                     <property name="can_focus">True</property>
                     <property name="max_length">50</property>
                     <property name="width_chars">30</property>
-                    <property name="text" translatable="yes">admin</property>
                     <property name="input_purpose">name</property>
                   </object>
                   <packing>
@@ -386,7 +385,6 @@
                     <property name="can_focus">True</property>
                     <property name="max_length">50</property>
                     <property name="width_chars">30</property>
-                    <property name="text" translatable="yes">admin</property>
                     <property name="input_purpose">name</property>
                   </object>
                   <packing>
