@@ -32,7 +32,6 @@
                 <div class="card">
                     <div class="card-body">
                         <form method="post" action="{{ route('franchisee_update_submit') }}">
-
                             <div class="form-group">
                                 <input type="hidden" name="id" id="id" value="{{ $franchisee['id'] }}">
                             </div>
