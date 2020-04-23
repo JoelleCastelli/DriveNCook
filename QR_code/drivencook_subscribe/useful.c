@@ -28,9 +28,18 @@ void toLog(FILE * logFd, const short logFlag, const char * logMessage) {
         flag, logMessage
     );
 }
-/*
-int checkEmail(const char *email) {
-    char *occ;
 
-    if(strchr(email, '@'))
-}*/
+int checkEmail(const char * email) {
+    regex_t regex;
+    char * pattern = "^[0-9A-Za-z]([-_.]?[0-9A-Za-z])+_?@[0-9A-Za-z]([-.]?[0-9A-Za-z])+\\.[A-Za-z]{2,6}$";
+    int code;
+
+    code = regcomp(&regex, pattern, REG_NOSUB | REG_EXTENDED);
+    if(code != 0) return EXIT_FAILURE;
+    code = regexec(&regex, email, 0, NULL, 0);
+    if(code != 0) return EXIT_FAILURE;
+
+    regfree(&regex);
+
+    return EXIT_SUCCESS;
+}

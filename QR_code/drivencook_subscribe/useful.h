@@ -12,6 +12,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <time.h>
+#include "regex.h"
 
 typedef struct CurlInfos {
     char *ipDest;
@@ -21,5 +22,7 @@ typedef struct CurlInfos {
 } CurlInfos;
 
 void toLog(FILE * logFd, const short logFlag, const char * logMessage);
+
+int checkEmail(const char * email);
 
 #endif
