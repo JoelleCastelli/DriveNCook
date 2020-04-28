@@ -239,6 +239,8 @@ class FranchiseeController extends Controller
             ->with('sales')
             ->first()->toArray();
 
+//        var_dump($franchisee);die;
+
         $revenues = $this->get_franchise_current_month_sale_revenues($id);
 
         return view('corporate.franchisee.franchisee_view')

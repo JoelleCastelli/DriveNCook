@@ -11,18 +11,6 @@
     <link href="/css/app.css" rel="stylesheet">
     <link href="/css/sidebar.css" rel="stylesheet">
     @yield('style')
-    <style>
-
-        .sidebar-sticky {
-            position: -webkit-sticky;
-            position: sticky;
-            top: 54px; /* Height of navbar */
-            height: calc(100vh - 54px);
-            padding-top: .5rem;
-            overflow-x: hidden;
-            overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-        }
-    </style>
 </head>
 <body>
 <nav class="navbar navbar-dark sticky-top bg-dark2 text-light justify-content-between">

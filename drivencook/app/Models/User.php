@@ -33,7 +33,7 @@ class User extends Model
 
     public function stocks()
     {
-        return $this->hasMany(Stock::class, 'user_id');
+        return $this->hasMany(Stock::class, 'user_id')->with('dish');
     }
 
     public function purchase_order()

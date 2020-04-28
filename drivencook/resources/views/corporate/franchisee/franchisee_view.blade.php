@@ -10,7 +10,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col-12 col-md-6 mb-5">
+        <div class="col-12 col-lg-6 mb-5">
             <div class="card">
                 <div class="card-header d-flex align-items-center">
                     <h2>Informations du franchisé</h2>
@@ -42,7 +42,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-6 mb-5">
+        <div class="col-12 col-lg-6 mb-5">
             <div class="card">
                 <div class="card-header">
                     <h2>Informations camion du franchisé</h2>
@@ -101,7 +101,7 @@
                 @endif
             </div>
         </div>
-        <div class="col-12 col-md-6 mb-5">
+        <div class="col-12 col-lg-6 mb-5">
             <div class="card">
                 <div class="card-header">
                     <h2>Temps réel (mois en cours)</h2>
@@ -117,19 +117,28 @@
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-md-4">
-                            Chiffre d'affaires<br>
-                            <h1>{{$revenues['revenues']}} €</h1>
+                            <div class="row d-flex justify-content-center">
+                                Chiffre d'affaires
+                            </div>
+                            <div class="row d-flex justify-content-center">
+                                <h1>{{$revenues['revenues']}} €</h1>
+                            </div>
                         </div>
+
                         <div class="col-12 col-sm-6 col-md-4">
-                            Prochaine facture<br>
-                            <h1>{{$revenues['revenues'] <= 0 ? 'CA négatif':
-                                $revenues['revenues']*$revenues['obligation']['warehouse_percentage']/100 .' €'}}</h1>
+                            <div class="row d-flex justify-content-center">
+                                Prochaine facture
+                            </div>
+                            <div class="row d-flex justify-content-center">
+                                <h1>{{$revenues['revenues'] <= 0 ? 'CA négatif' :
+                                $revenues['revenues'] * $revenues['obligation']['warehouse_percentage'] / 100 . ' €'}}</h1>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-6 mb-5">
+        <div class="col-12 col-lg-6 mb-5">
             <div class="card">
                 <div class="card-header">
                     <h2>Factures</h2>
@@ -144,7 +153,7 @@
                                 <th>Status</th>
                                 <th>Date d'émission</th>
                                 <th>Date de paiement</th>
-                                <th><i class="fa fa-edit"></i></th>
+                                <th>Actions</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -152,8 +161,13 @@
                                 <tr>
                                     <td>{{$license_fee['amount'].' €'}}</td>
                                     <td>{{$license_fee['status']}}</td>
-                                    <td>{{$license_fee['date_emitted']}}</td>
-                                    <td>{{$license_fee['date_paid']}}</td>
+                                    <td>
+                                        {{DateTime::createFromFormat('Y-m-d',$license_fee['date_emitted'])->format('d/m/Y')}}
+                                    </td>
+                                    <td>
+                                        {{!empty($license_fee['date_paid'])?
+                                        DateTime::createFromFormat('Y-m-d',$license_fee['date_paid'])->format('d/m/Y'):''}}
+                                    </td>
                                     <td><i class="fa fa-edit"></i>{{$license_fee['id']}}</td>
                                 </tr>
                             @endforeach
@@ -162,6 +176,149 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="col-12 col-lg-6 mb-5">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Stock</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="stocks" class="table table-hover table-striped table-bordered table-dark"
+                               style="width: 100%">
+                            <thead>
+                            <tr>
+                                <th>Produit</th>
+                                <th>Catégorie</th>
+                                <th>Quantité</th>
+                                <th>Prix de vente</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($franchisee['stocks'] as $stock)
+                                <tr>
+                                    <td>{{$stock['dish']['name']}}</td>
+                                    <td>{{$stock['dish']['category']}}</td>
+                                    <td>{{$stock['quantity']}}</td>
+                                    <td>{{$stock['unit_price']}}</td>
+                                    <td>
+                                        <i class="fa fa-edit"></i>
+                                        <i class="fa fa-trash ml-3"></i>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-12 col-lg-6 mb-5">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Commandes</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="purchase_orders" class="table table-hover table-striped table-bordered table-dark"
+                               style="width: 100%">
+                            <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Entrepôt</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Reference</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($franchisee['purchase_order'] as $purchase_order)
+                                <tr>
+                                    <td>
+                                        {{DateTime::createFromFormat('Y-m-d',$purchase_order['date'])->format('d/m/Y')}}
+                                    </td>
+                                    <td>{{$purchase_order['purchased_dishes'][0]['dish']['warehouse']['name']}}</td>
+                                    <td>
+                                        <?php
+                                        $total = 0;
+                                        foreach ($purchase_order['purchased_dishes'] as $purchased_dish) {
+                                            $total += $purchased_dish['dish']['warehouse_price'] * $purchased_dish['quantity'];
+                                        }
+                                        echo $total;
+                                        ?> €
+                                    </td>
+                                    <td>{{$purchase_order['status']}}</td>
+                                    <td>{{$purchase_order['reference']}}</td>
+                                    <td>
+                                        <i class="fa fa-edit"></i>
+                                        <i class="fa fa-trash ml-3"></i>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-12 col-lg-6 mb-5">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Ventes</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="sales" class="table table-hover table-striped table-bordered table-dark"
+                               style="width: 100%">
+                            <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Moyen de paiement</th>
+                                <th>Commande en ligne</th>
+                                <th>Total</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($franchisee['sales'] as $sale)
+                                <tr>
+                                    <td>
+                                        {{DateTime::createFromFormat('Y-m-d',$sale['date'])->format('d/m/Y')}}
+                                    </td>
+                                    <td>{{$sale['payment_method']}}</td>
+                                    <td>{{$sale['online_order']?'Oui' : 'Non'}}</td>
+                                    <td>
+                                        <?php
+                                        $total = 0;
+                                        foreach ($sale['sold_dishes'] as $dish) {
+                                            $price = 0;
+                                            foreach ($franchisee['stocks'] as $stock) {
+                                                if ($stock['dish_id'] == $dish['dish_id']) {
+                                                    $price = $stock['unit_price'];
+                                                    break;
+                                                }
+                                            }
+                                            $total += $price * $dish['quantity'];
+                                        }
+                                        echo $total;
+                                        ?> €
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-edit"></i>
+                                        <i class="fa fa-trash ml-3"></i>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 @endsection
@@ -174,6 +331,9 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#licencefees').DataTable();
+            $('#stocks').DataTable();
+            $('#purchase_orders').DataTable();
+            $('#sales').DataTable();
         });
     </script>
 @endsection

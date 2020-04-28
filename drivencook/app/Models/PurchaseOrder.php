@@ -8,7 +8,7 @@ class PurchaseOrder extends \Illuminate\Database\Eloquent\Model
 {
     protected $table = 'purchase_order';
 
-    protected $fillable = ['user_id', 'date'];
+    protected $fillable = ['user_id', 'date', 'reference', 'status'];
 
     public function purchased_dishes()
     {

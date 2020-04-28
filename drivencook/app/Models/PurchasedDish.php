@@ -17,6 +17,6 @@ class PurchasedDish extends \Illuminate\Database\Eloquent\Model
 
     public function dish()
     {
-        return $this->belongsTo(Dish::class, 'dish_id');
+        return $this->belongsTo(Dish::class, 'dish_id')->with('warehouse');
     }
 }
