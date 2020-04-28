@@ -233,8 +233,17 @@ class FranchiseeController extends Controller
         $franchisee = User::whereId($id)
             ->with('pseudo')
             ->with('monthly_licence_fees')
+            ->with('truck')
+            ->with('stocks')
+            ->with('purchase_order')
+            ->with('sales')
             ->first()->toArray();
-        return view('corporate.franchisee.franchisee_view')->with('franchisee', $franchisee);
+
+        $revenues = $this->get_franchise_current_month_sale_revenues($id);
+
+        return view('corporate.franchisee.franchisee_view')
+            ->with('franchisee', $franchisee)
+            ->with('revenues', $revenues);
     }
 
     public function update_franchise_obligation()
@@ -347,4 +356,51 @@ class FranchiseeController extends Controller
         Pseudo::find($id)->delete();
         return $id;
     }
+
+    public function get_franchise_current_month_sale_revenues($franchise_id)
+    {
+        $franchise_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
+        $date_max = DateTime::createFromFormat("d-m-Y", $this->getNextPaiementDate($franchise_obligation));
+        $date_min = clone $date_max;
+        $date_min->modify('-1 month');
+
+        $date_max = $date_max->format("Y-m-d");
+        $date_min = $date_min->format("Y-m-d");
+
+        $stocks = Stock::where('user_id', $franchise_id)->get()->toArray();
+
+        $sales = Sale::whereBetween('date', [$date_min, $date_max])->with('sold_dishes')->get()->toArray();
+        $sales_total = 0;
+        $purchase_orders = PurchaseOrder::whereBetween('date', [$date_min, $date_max])->with('purchased_dishes')->get()->toArray();
+        $purchase_orders_total = 0;
+
+        foreach ($sales as $sale) {
+            foreach ($sale['sold_dishes'] as $sold_dish) {
+                $unit_price = 0;
+                foreach ($stocks as $stock) {
+                    if ($stock['dish_id'] == $sold_dish['dish_id']) {
+                        $unit_price = $stock['unit_price'];
+                        break;
+                    }
+                }
+                $sales_total += $sold_dish['quantity'] * $unit_price;
+            }
+        }
+
+        foreach ($purchase_orders as $purchase_order) {
+            foreach ($purchase_order['purchased_dishes'] as $purchased_dish) {
+                $purchase_orders_total += $purchased_dish['dish']['warehouse_price'] * $purchased_dish['quantity'];
+            }
+        }
+
+        return array(
+            "sales_total" => $sales_total,
+            "sales_count" => count($sales),
+            "purchase_orders_total" => $purchase_orders_total,
+            "purchase_orders_count" => count($purchase_orders),
+            "revenues" => $sales_total - $purchase_orders_total,
+            "obligation" => $franchise_obligation
+        );
+    }
+
 }

@@ -12,7 +12,7 @@ class PurchaseOrder extends \Illuminate\Database\Eloquent\Model
 
     public function purchased_dishes()
     {
-        return $this->hasMany(PurchasedDish::class, 'purchase_order_id');
+        return $this->hasMany(PurchasedDish::class, 'purchase_order_id')->with('dish');
     }
 
     public function user()

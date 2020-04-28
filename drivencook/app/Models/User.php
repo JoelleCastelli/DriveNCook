@@ -36,6 +36,11 @@ class User extends Model
         return $this->hasMany(Stock::class, 'user_id');
     }
 
+    public function purchase_order()
+    {
+        return $this->hasMany(PurchaseOrder::class, 'user_id')->with('purchased_dishes');
+    }
+
     public function monthly_licence_fees()
     {
         return $this->hasMany(MonthlyLicenseFee::class, 'user_id');
@@ -53,6 +58,11 @@ class User extends Model
 
     public function truck()
     {
-        return $this->hasOne(Truck::class, 'user_id')->with('location');
+        return $this->hasOne(Truck::class, 'user_id')->with('location')->with('last_safety_inspection');
+    }
+
+    public function sales()
+    {
+        return $this->hasMany(Sale::class, 'user_franchised')->with('sold_dishes');
     }
 }
