@@ -34,7 +34,7 @@
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item bg-indigo">Prochain paiement des taxes : {{$nextPaiement}}</li>
                             <li class="list-group-item bg-indigo align-content-arround">
-                                <a href="#" class="row text-light2">
+                                <a href="{{route('franchisee_obligation_update')}}" class="row text-light2">
                                     <div class="col-10">
                                         Consulter les details
                                     </div>
