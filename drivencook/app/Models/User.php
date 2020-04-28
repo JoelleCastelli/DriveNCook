@@ -53,6 +53,6 @@ class User extends Model
 
     public function truck()
     {
-        return $this->hasOne(Truck::class, 'user_id');
+        return $this->hasOne(Truck::class, 'user_id')->with('location');
     }
 }

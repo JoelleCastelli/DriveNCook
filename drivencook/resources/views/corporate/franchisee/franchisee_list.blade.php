@@ -64,6 +64,7 @@
                         <th>Actif</th>
                         <th>Dernier paiement</th>
                         <th>Emplacement camion</th>
+                        <th>Inscrit depuis le</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -75,9 +76,15 @@
                             <td>{{$franchisee['telephone']}}</td>
                             <td>{{$franchisee['email']}}</td>
                             <td>{{empty($franchisee['pseudo'])?'Inactif':'Actif ('.$franchisee['pseudo']['name'].')'}}</td>
+
                             <td>{{empty($franchisee['last_paid_licence_fee'])?'Jamais'
                                 :DateTime::createFromFormat('Y-m-d',$franchisee['last_paid_licence_fee']['date_paid'])->format('d-m-Y')}}</td>
-                            <td>A faire camion</td>
+
+                            <td>{{(empty($franchisee['truck'])?'Camion non attribué':
+                                (empty($franchisee['truck']['location'])?'Pas d\'emplacement':
+                                $franchisee['truck']['location']['address'].' ('.$franchisee['truck']['location']['city']['postcode'].')'))}}</td>
+
+                            <td>{{$franchisee['created_at']}}</td>
                             <td>
                                 <a href="{{route('franchisee_view',['id'=>$franchisee['id']])}}">
                                     <button class="text-light fa fa-eye"></button>

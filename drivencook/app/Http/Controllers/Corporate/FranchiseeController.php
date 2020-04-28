@@ -25,11 +25,11 @@ class FranchiseeController extends Controller
     {
         $franchisees = User::with('pseudo')
             ->with('last_paid_licence_fee')
+            ->with('truck')
             ->where('role', 'Franchisé')
             ->get()->toArray();
         $nextPaiement = $this->getNextPaiementDate(
             FranchiseObligation::all()->sortByDesc('id')->first()->toArray());
-
         return view('corporate/franchisee/franchisee_list')
             ->with('franchisees', $franchisees)
             ->with('nextPaiement', $nextPaiement);
