@@ -14,8 +14,24 @@
 Route::get('/', function () {
     return view('welcome');
 });
+// Corporate - Auth
 
-// Franchisee
+Route::get('/corporate/login', [
+    'as' => 'corporate_login',
+    'uses' => 'Corporate\CorporateAuthController@loginForm'
+]);
+Route::post('/corporate/login', [
+    'as' => 'corporate_login',
+    'uses' => 'Corporate\CorporateAuthController@processLoginForm'
+]);
+
+Route::get('/corporate/logout', [
+    'as' => 'corporate_logout',
+    'uses' => 'Corporate\CorporateAuthController@logout'
+]);
+
+
+// Corporate - Franchise
 
 Route::get('/corporate', [
     'as' => 'corporate_dashboard',
@@ -83,18 +99,18 @@ Route::delete('/corporate/franchisee_pseudo_delete/{id}', [
 ]);
 
 
-Route::post('/test', [
-    'as' => 'test',
-    'uses' => 'Corporate\FranchiseeController@test'
-]);
-
-Route::get('/test/get-by-email/{email}', [
-    'as' => 'test_mail',
-    'uses' => 'Corporate\FranchiseeController@get_franchisee_by_email'
-]);
+//Route::post('/test', [
+//    'as' => 'test',
+//    'uses' => 'Corporate\FranchiseeController@test'
+//]);
+//
+//Route::get('/test/get-by-email/{email}', [
+//    'as' => 'test_mail',
+//    'uses' => 'Corporate\FranchiseeController@get_franchisee_by_email'
+//]);
 //
 
-// Truck
+// Corporate - Truck
 Route::get('/corporate/truck_list', [
     'as' => 'truck_list',
     'uses' => 'Corporate\TruckController@truck_list'
