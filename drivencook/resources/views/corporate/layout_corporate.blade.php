@@ -132,6 +132,13 @@
                     </a>
                 </li>
                 @break
+                @case(route('warehouse_creation'))
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{route('warehouse_list')}}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('back_warehouse_list') }}
+                    </a>
+                </li>
+                @break
                 @default
                 @break
             @endswitch
