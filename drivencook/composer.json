@@ -6,11 +6,12 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
+        "ext-json": "*",
         "fideloper/proxy": "~3.3",
+        "laracasts/flash": "^3.1",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
-        "yajra/laravel-datatables": "1.5",
-      "ext-json": "*"
+        "yajra/laravel-datatables": "1.5"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",
@@ -23,7 +24,8 @@
     "autoload": {
         "classmap": [
             "database/seeds",
-            "database/factories"
+            "database/factories",
+            "app/libraries"
         ],
         "psr-4": {
             "App\\": "app/"
