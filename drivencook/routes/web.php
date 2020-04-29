@@ -30,9 +30,7 @@ Route::get('/corporate/logout', [
     'uses' => 'Corporate\CorporateAuthController@logout'
 ]);
 
-
 // Corporate - Franchise
-
 Route::get('/corporate', [
     'as' => 'corporate_dashboard',
     'uses' => 'Corporate\AccountController@dashboard'
@@ -115,6 +113,7 @@ Route::get('/corporate/truck_list', [
     'as' => 'truck_list',
     'uses' => 'Corporate\TruckController@truck_list'
 ]);
+
 Route::get('/corporate/truck_creation', [
     'as' => 'truck_creation',
     'uses' => 'Corporate\TruckController@truck_creation'
@@ -138,5 +137,22 @@ Route::post('/corporate/truck_update_submit', [
 Route::delete('/corporate/truck_delete/{id}', [
     'as' => 'truck_delete',
     'uses' => 'Corporate\TruckController@truck_delete'
+]);
+//
+
+// Corporate - Warehouse
+Route::get('/corporate/warehouse_list', [
+    'as' => 'warehouse_list',
+    'uses' => 'Corporate\WarehouseController@warehouse_list'
+]);
+
+Route::get('/corporate/warehouse_creation', [
+    'as' => 'warehouse_creation',
+    'uses' => 'Corporate\WarehouseController@warehouse_creation'
+]);
+
+Route::post('/corporate/warehouse_creation_submit', [
+    'as' => 'warehouse_creation_submit',
+    'uses' => 'Corporate\WarehouseController@warehouse_creation_submit'
 ]);
 //
