@@ -16,6 +16,11 @@ class TruckController extends Controller
 {
     use EnumValue;
 
+    public function __construct()
+    {
+        $this->middleware('App\Http\Middleware\AuthCorporate');
+    }
+
     public function truck_creation()
     {
         $fuels = $this->get_enum_column_values('truck', 'fuel_type');

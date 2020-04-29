@@ -20,6 +20,11 @@ use Yajra\DataTables\DataTables;
 
 class FranchiseeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('App\Http\Middleware\AuthCorporate');
+    }
+
 
     public function franchisee_list()
     {

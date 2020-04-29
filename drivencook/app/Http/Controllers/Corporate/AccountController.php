@@ -9,6 +9,11 @@ use App\Http\Controllers\Controller;
 
 class AccountController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('App\Http\Middleware\AuthCorporate');
+    }
+
     public function dashboard()
     {
         $franchisees = User::where('role', 'Franchisé')->count();

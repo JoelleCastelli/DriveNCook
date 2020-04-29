@@ -19,18 +19,19 @@
         <button href="#menu-toggle" class="btn text-light" id="menu-toggle"><i class="fa fa-bars"></i></button>
     </span>
 
-
-    <div class="nav-item dropdown" style="margin-right: 10em;">
-        <button class="btn btn-dark dropdown-toggle" type="button" id="userDropdownMenuButton" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-user"></i>
-        </button>
-        <div class="dropdown-menu bg-dark" aria-labelledby="userDropdownMenuButton">
-            <a class="dropdown-item text-light" href="#">Mon compte</a>
-            <a class="dropdown-item text-light" href="#">Paramètres</a>
-            <a class="dropdown-item text-light" href="#">Se déconnecter</a>
+@if (!auth()->guest())
+        <div class="nav-item dropdown" style="margin-right: 10em;">
+            <button class="btn btn-dark dropdown-toggle" type="button" id="userDropdownMenuButton" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-user"></i>
+            </button>
+            <div class="dropdown-menu bg-dark" aria-labelledby="userDropdownMenuButton">
+                <a class="dropdown-item text-light" href="#">Mon compte</a>
+                <a class="dropdown-item text-light" href="#">Paramètres</a>
+                <a class="dropdown-item text-light" href="{{route('corporate_logout')}}">Se déconnecter</a>
+            </div>
         </div>
-    </div>
+    @endif
 </nav>
 
 <div id="wrapper">
@@ -162,7 +163,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="mb-3">@yield('title', 'DriveNCook.fr')</h1>
-
+                    @include('flash::message')
 
                     @yield('content')
                 </div>

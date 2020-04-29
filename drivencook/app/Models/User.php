@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Auth\Authenticatable as BasicAuthenticatable;
 
-class User extends Model
+class User extends Model implements Authenticatable
 {
+    use BasicAuthenticatable;
+
     protected $table = 'user';
 
     /**
@@ -13,6 +17,7 @@ class User extends Model
      *
      * @var array
      */
+
     protected $fillable = [
         'lastname', 'firstname', 'birthdate', 'pseudo_id', 'email', 'role', 'driving_licence', 'social_security', 'password',
     ];
@@ -23,7 +28,7 @@ class User extends Model
      * @var array
      */
     protected $hidden = [
-        'password', 'new_pwd_code',
+        'new_pwd_code',
     ];
 
     public function pseudo()
