@@ -136,4 +136,20 @@ class WarehouseController extends Controller
             return redirect()->back()->with('error', $errors_list);
         }
     }
+
+    public function warehouse_list()
+    {
+        $warehouses = Warehouse::with('city')
+            ->get()->toArray();
+        return view('corporate.warehouse.warehouse_list')->with('warehouses', $warehouses);
+    }
+
+    public function truck_delete($id)
+    {
+        if (!ctype_digit($id)) {
+            return 'error';
+        }
+        Warehouse::find($id)->delete();
+        return $id;
+    }
 }

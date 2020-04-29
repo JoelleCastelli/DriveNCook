@@ -165,4 +165,9 @@ Route::post('/corporate/warehouse_update_submit', [
     'as' => 'warehouse_update_submit',
     'uses' => 'Corporate\WarehouseController@warehouse_update_submit'
 ]);
+
+Route::delete('/corporate/warehouse_delete/{id}', [
+    'as' => 'warehouse_delete',
+    'uses' => 'Corporate\WarehouseController@warehouse_delete'
+]);
 //

@@ -38,6 +38,15 @@
                                    maxlength="30">
                         </div>
 
+
+                        <div class="form-group">
+                            <label for="address">{{ trans('warehouse_creation.address') }}</label>
+                            <input type="text" name="address" id="address"
+                                   placeholder="{{ trans('warehouse_creation.set_address') }}" class="form-control"
+                                   minlength="1"
+                            maxlength="100">
+                        </div>
+
                         <div class="form-group">
                             <label for="city">{{ trans('warehouse_creation.city') }}</label>
                             <div class="input-group mb-3">
@@ -49,14 +58,6 @@
                                     @endforeach
                                 </select>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="address">{{ trans('warehouse_creation.address') }}</label>
-                            <input type="text" name="address" id="address"
-                                   placeholder="{{ trans('warehouse_creation.set_address') }}" class="form-control"
-                                   minlength="1"
-                                   maxlength="100">
                         </div>
 
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">

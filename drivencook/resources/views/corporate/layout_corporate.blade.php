@@ -41,8 +41,8 @@
             @switch(url()->current())
                 @case(route('corporate_dashboard'))
                 <li class="nav-item">
-                    <a class="nav-link text-light2" href="#">
-                        <i class="fa fa-warehouse"></i>&nbsp;&nbsp;&nbsp;Entrepôts
+                    <a class="nav-link text-light2" href="{{ route('warehouse_list') }}">
+                        <i class="fa fa-warehouse"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.warehouse') }}
                     </a>
                 </li>
                 <li class="nav-item">
@@ -132,10 +132,23 @@
                     </a>
                 </li>
                 @break
+                @case(route('warehouse_list'))
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{route('corporate_dashboard')}}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ 'corporate.back_dashboard' }}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{route('warehouse_creation')}}">
+                        <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{{ 'corporate.add_warehouse' }}
+                    </a>
+                </li>
+
+                @break
                 @case(route('warehouse_creation'))
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('warehouse_list')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('back_warehouse_list') }}
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_warehouse_list') }}
                     </a>
                 </li>
                 @break

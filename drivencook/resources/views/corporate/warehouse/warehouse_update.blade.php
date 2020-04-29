@@ -43,6 +43,14 @@
                                    maxlength="30">
                         </div>
 
+
+                        <div class="form-group">
+                            <label for="address">{{ trans('warehouse_creation.address') }}</label>
+                            <input type="text" name="address" id="address" value="{{$warehouse['address']}}"
+                                   class="form-control"
+                            maxlength="30">
+                        </div>
+
                         <div class="form-group">
                             <label for="city">{{ trans('warehouse_creation.city') }}</label>
                             <div class="input-group mb-3">
@@ -54,13 +62,6 @@
                                     @endforeach
                                 </select>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="address">{{ trans('warehouse_creation.address') }}</label>
-                            <input type="text" name="address" id="address" value="{{$warehouse['address']}}"
-                                   class="form-control"
-                                   maxlength="30">
                         </div>
 
                         <div class="form-group">
