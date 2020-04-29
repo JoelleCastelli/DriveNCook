@@ -155,4 +155,14 @@ Route::post('/corporate/warehouse_creation_submit', [
     'as' => 'warehouse_creation_submit',
     'uses' => 'Corporate\WarehouseController@warehouse_creation_submit'
 ]);
+
+Route::get('/corporate/warehouse_update/{id}', [
+    'as' => 'warehouse_update',
+    'uses' => 'Corporate\WarehouseController@warehouse_update'
+]);
+
+Route::post('/corporate/warehouse_update_submit', [
+    'as' => 'warehouse_update_submit',
+    'uses' => 'Corporate\WarehouseController@warehouse_update_submit'
+]);
 //
