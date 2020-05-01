@@ -3,8 +3,8 @@
     Franchisé : {{strtoupper($franchisee['firstname'].' '.$franchisee['lastname'])}}
 @endsection
 @section('style')
-    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet">
+    {{--    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet">--}}
+    {{--    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet">--}}
 @endsection
 
 
@@ -88,7 +88,10 @@
                         </li>
                     </ul>
                     <div class="card-footer d-flex justify-content-between">
-                        <button class="btn btn-danger">Retirer le camion du franchisé #TODO</button>
+                        <button class="btn btn-danger" onclick="unsetTruck({{$franchisee['truck']['id']}})">Retirer le
+                            camion du franchisé
+                        </button>
+
                         <a href="{{route('truck_update',['id'=>$franchisee['truck']['id']])}}">
                             <button class="btn btn-light_blue">Aller à la page modification</button>
                         </a>
@@ -121,7 +124,7 @@
                                 Chiffre d'affaires
                             </div>
                             <div class="row d-flex justify-content-center">
-                                <h1>{{$revenues['revenues']}} €</h1>
+                                <h1>{{$revenues['sales_total']}} €</h1>
                             </div>
                         </div>
 
@@ -130,8 +133,8 @@
                                 Prochaine facture
                             </div>
                             <div class="row d-flex justify-content-center">
-                                <h1>{{$revenues['revenues'] <= 0 ? 'CA négatif' :
-                                $revenues['revenues'] * $revenues['obligation']['warehouse_percentage'] / 100 . ' €'}}</h1>
+                                <h1>{{$revenues['revenues'] == 0 ? 'Pas de CA' :
+                                $revenues['sales_total'] * $revenues['obligation']['revenue_percentage'] / 100 . ' €'}}</h1>
                             </div>
                         </div>
                     </div>
@@ -324,10 +327,10 @@
 @endsection
 
 @section('script')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    {{--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>--}}
+    {{--    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>--}}
+    {{--    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>--}}
+    {{--    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>--}}
     <script type="text/javascript">
         $(document).ready(function () {
             $('#licencefees').DataTable();
@@ -335,5 +338,32 @@
             $('#purchase_orders').DataTable();
             $('#sales').DataTable();
         });
+
+        function unsetTruck(id) {
+            if (confirm("Voulez vous vraiment retirer le camion au franchisé ?")) {
+                if (!isNaN(id)) {
+                    let urlB = '{{route('unset_franchisee_truck',['id'=>':id'])}}';
+                    urlB = urlB.replace(':id', id);
+                    $.ajax({
+                        url: urlB,
+                        method: "delete",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (data) {
+                            if (data == id) {
+                                window.location.reload();
+                            } else {
+                                alert("Une erreur est survenue lors de la suppression, veuillez raffraichir la page");
+                            }
+                        },
+                        error: function () {
+                            alert("Une erreur est survenue lors de la suppression, veuillez raffraichir la page");
+                        }
+                    })
+                }
+            }
+        }
+
     </script>
 @endsection

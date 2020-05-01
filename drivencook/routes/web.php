@@ -96,6 +96,11 @@ Route::delete('/corporate/franchisee_pseudo_delete/{id}', [
     'uses' => 'Corporate\FranchiseeController@pseudo_delete'
 ]);
 
+Route::delete('/corporate/unset_franchisee_truck/{id}', [
+    'as' => 'unset_franchisee_truck',
+    'uses' => 'Corporate\FranchiseeController@unset_franchise_truck'
+]);
+
 
 //Route::post('/test', [
 //    'as' => 'test',

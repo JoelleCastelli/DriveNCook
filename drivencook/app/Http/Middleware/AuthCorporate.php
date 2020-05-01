@@ -12,10 +12,14 @@ class AuthCorporate
     {
         if (auth()->guest()) {
             flash("Vous devez être connecté en tant que Corporate pour acceder à cette page")->error();
-
             return redirect(route('corporate_login'));
         }
 
+        if (auth()->user()->role != "Corporate" && auth()->user()->role != "Administrateur") {
+            auth()->logout();
+            flash("Vous devez être connecté en tant que Corporate pour acceder à cette page")->error();
+            return redirect(route('corporate_login'));
+        }
         return $next($request);
     }
 }

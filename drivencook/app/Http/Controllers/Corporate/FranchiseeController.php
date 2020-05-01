@@ -410,4 +410,9 @@ class FranchiseeController extends Controller
         );
     }
 
+    public function unset_franchise_truck($truckId)
+    {
+        Truck::find($truckId)->update(['user_id' => null]);
+        return $truckId;
+    }
 }
