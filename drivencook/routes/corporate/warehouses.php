@@ -29,3 +29,13 @@ Route::delete('/corporate/warehouse_delete/{id}', [
     'as' => 'warehouse_delete',
     'uses' => 'Corporate\WarehouseController@warehouse_delete'
 ]);
+
+Route::get('/corporate/warehouse_view/{id}', [
+    'as' => 'warehouse_view',
+    'uses' => 'Corporate\WarehouseController@warehouse_view'
+]);
+
+Route::get('/corporate/warehouse_dishes/{id}', [
+    'as' => 'warehouse_dishes',
+    'uses' => 'Corporate\WarehouseController@warehouse_dishes'
+]);

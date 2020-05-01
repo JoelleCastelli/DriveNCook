@@ -6,10 +6,13 @@ namespace App\Http\Controllers\Corporate;
 use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Warehouse;
+use App\Traits\EnumValue;
 use Illuminate\Http\Request;
 
 class WarehouseController extends Controller
 {
+    use EnumValue;
+
     public function warehouse_creation() {
         $cities = City::all();
         if (!empty($cities)) {
@@ -144,12 +147,35 @@ class WarehouseController extends Controller
         return view('corporate.warehouse.warehouse_list')->with('warehouses', $warehouses);
     }
 
-    public function truck_delete($id)
+    public function warehouse_view($id)
+    {
+        $warehouse = Warehouse::whereId($id)
+            ->with('city')
+            ->with('dishes')
+            ->first()->toArray();
+
+        return view('corporate.warehouse.warehouse_view')
+            ->with('warehouse', $warehouse);
+    }
+
+    public function warehouse_delete($id)
     {
         if (!ctype_digit($id)) {
             return 'error';
         }
         Warehouse::find($id)->delete();
         return $id;
+    }
+
+    public function warehouse_dishes($id)
+    {
+        $warehouse = Warehouse::whereId($id)
+            ->with('dishes')
+            ->first()->toArray();
+
+        $categories = $this->get_enum_column_values('dish', 'category');
+        return view('corporate.warehouse.warehouse_dishes')
+            ->with('warehouse', $warehouse)
+            ->with('categories', $categories);
     }
 }

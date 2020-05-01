@@ -33,7 +33,9 @@
                                             <td>{{empty($warehouse['city'])?
                                         'Inconnu':$warehouse['city']['name']}}</td>
                                             <td>
-                                                <i class="fa fa-eye"></i>
+                                                <a href="{{route('warehouse_view',['id'=>$warehouse['id']])}}">
+                                                    <button class="text-light fa fa-eye"></button>
+                                                </a>
                                                 <a href="{{route('warehouse_update',['id'=>$warehouse['id']])}}">
                                                     <button class="fa fa-edit ml-2"></button>
                                                 </a>
@@ -70,7 +72,7 @@
         });
 
         function deleteWarehouse(id) {
-            if (confirm({{ trans('warehouse_list.ask_delete_warehouse') }}/*"Voulez vous vraiment supprimer ce camion ? Toute les données associés seront supprimés"*/)) {
+            if (confirm(Lang.get('warehouse_list.ask_delete_warehouse')/*"Voulez vous vraiment supprimer ce camion ? Toute les données associés seront supprimés"*/)) {
                 if (!isNaN(id)) {
                     let urlB = '{{route('warehouse_delete',['id'=>':id'])}}';
                     urlB = urlB.replace(':id', id);
@@ -82,15 +84,15 @@
                         },
                         success: function (data) {
                             if (data == id) {
-                                alert({{ trans('warehouse_list.warehouse_deleted_success') }});
+                                alert(Lang.get('warehouse_list.warehouse_deleted_success'));
                                 let row = document.getElementById('row_' + id);
                                 row.remove();
                             } else {
-                                alert({{ 'warehouse_list.warehouse_deleted_error' }}/*"Une erreur est survenue lors de la suppression, veuillez raffraichir la page"*/);
+                                alert(Lang.get('warehouse_list.warehouse_deleted_error')/*"Une erreur est survenue lors de la suppression, veuillez raffraichir la page"*/);
                             }
                         },
-                        error: function ({{ 'warehouse_list.warehouse_deleted_error' }}) {
-                            alert();
+                        error: function () {
+                            alert(Lang.get('warehouse_list.warehouse_deleted_error'));
                         }
                     })
                 }
