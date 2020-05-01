@@ -75,6 +75,11 @@ Route::post('/corporate/franchisee_update_submit', [
     'uses' => 'Corporate\FranchiseeController@franchisee_update_submit'
 ]);
 
+Route::post('/corporate/franchisee_update/password', [
+    'as' => 'franchisee_update_password',
+    'uses' => 'Corporate\FranchiseeController@franchise_update_password'
+]);
+
 Route::delete('/corporate/franchisee_delete/{id}', [
     'as' => 'franchisee_delete',
     'uses' => 'Corporate\FranchiseeController@delete_franchise'
@@ -94,6 +99,11 @@ Route::post('/corporate/franchisee_pseudo_submit', [
 Route::delete('/corporate/franchisee_pseudo_delete/{id}', [
     'as' => 'franchisee_pseudo_delete',
     'uses' => 'Corporate\FranchiseeController@pseudo_delete'
+]);
+
+Route::delete('/corporate/unset_franchisee_truck/{id}', [
+    'as' => 'unset_franchisee_truck',
+    'uses' => 'Corporate\FranchiseeController@unset_franchise_truck'
 ]);
 
 

@@ -9,7 +9,7 @@ class CorporateAuthController extends Controller
 {
     public function loginForm()
     {
-        return view('corporate.login_page');
+        return view('corporate.corporate_login_page');
     }
 
     public function processLoginForm()

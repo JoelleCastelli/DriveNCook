@@ -19,9 +19,10 @@
         <button href="#menu-toggle" class="btn text-light" id="menu-toggle"><i class="fa fa-bars"></i></button>
     </span>
 
-@if (!auth()->guest())
+    @if (!auth()->guest())
         <div class="nav-item dropdown" style="margin-right: 10em;">
-            <button class="btn btn-dark dropdown-toggle" type="button" id="userDropdownMenuButton" data-toggle="dropdown"
+            <button class="btn btn-dark dropdown-toggle" type="button" id="userDropdownMenuButton"
+                    data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-user"></i>
             </button>
@@ -179,7 +180,7 @@
             @if (strpos(url()->current(),route('warehouse_update',['id'=>''])) !== false)
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('warehouse_list')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('back_warehouse_list') }}
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_warehouse_list') }}
                     </a>
                 </li>
             @endif

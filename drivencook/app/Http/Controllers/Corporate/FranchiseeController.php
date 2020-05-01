@@ -233,6 +233,21 @@ class FranchiseeController extends Controller
         }
     }
 
+    public function franchise_update_password()
+    {
+        request()->validate([
+            'id' => ['required', 'integer'],
+            'password' => ['required', 'confirmed', 'min:6']
+        ]);
+
+        User::find(request('id'))->update([
+            'password' => hash('sha256', request('password'))
+        ]);
+
+        flash('Mot de passe du franchisé modifié')->success();
+        return back();
+    }
+
     public function franchisee_view($id)
     {
         $franchisee = User::whereId($id)
@@ -410,4 +425,9 @@ class FranchiseeController extends Controller
         );
     }
 
+    public function unset_franchise_truck($truckId)
+    {
+        Truck::find($truckId)->update(['user_id' => null]);
+        return $truckId;
+    }
 }
