@@ -84,7 +84,7 @@
                                 <select class="custom-select" name="fuel_type" id="fuel_type">
                                     <option value="" selected>{{ trans('truck_creation.select_menu_off') }}</option>
                                     @foreach($fuels as $fuel)
-                                        <option value={{ $fuel }}>{{ trans('truck_creation.fuel_type_' . strtolower($fuel) . '') }}</option>
+                                        <option value={{ $fuel }}>{{ trans('truck_creation.fuel_type_' . strtolower($fuel)) }}</option>
                                     @endforeach
                                 </select>
                             </div>
