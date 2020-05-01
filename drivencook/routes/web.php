@@ -75,6 +75,11 @@ Route::post('/corporate/franchisee_update_submit', [
     'uses' => 'Corporate\FranchiseeController@franchisee_update_submit'
 ]);
 
+Route::post('/corporate/franchisee_update/password', [
+    'as' => 'franchisee_update_password',
+    'uses' => 'Corporate\FranchiseeController@franchise_update_password'
+]);
+
 Route::delete('/corporate/franchisee_delete/{id}', [
     'as' => 'franchisee_delete',
     'uses' => 'Corporate\FranchiseeController@delete_franchise'

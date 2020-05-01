@@ -122,25 +122,51 @@
                     </div>
                 </div>
             </div>
+
             <div class="col-12 col-sm-10 col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        <h2>Camion</h2>
+                        <h3>Mise à jour du mot de passe</h3>
                     </div>
                     <div class="card-body">
-                        A faire
-                        #TODO
+                        <form action="{{route('franchisee_update_password')}}" method="post">
+                            {{csrf_field()}}
+                            <input type="hidden" name="id" id="id" value="{{ $franchisee['id'] }}">
+
+                            <div class="form-group">
+                                <label for="password">Nouveau mot de passe</label>
+                                <input class="form-control" type="password" name="password" id="password"
+                                       placeholder="nouveau mot de passe" minlength="6">
+                                @if ($errors->has('password'))
+                                    <span class="badge-danger">
+                                        {{$errors->first('password')}}
+                                    </span>
+                                @endif
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password_confirmation">Confirmation mot de passe</label>
+                                <input class="form-control" type="password" name="password_confirmation"
+                                       id="password_confirmation" placeholder="confirmation mot de passe" minlength="6">
+                                @if ($errors->has('password_confirmation'))
+                                    <span class="badge-danger">
+                                        {{$errors->first('password_confirmation')}}
+                                    </span>
+                                @endif
+                            </div>
+
+                            <button type="submit" class="btn btn-light_blue">Modifier</button>
+                        </form>
                     </div>
                 </div>
             </div>
-        </div>
 
-@endsection
+            @endsection
 
-@section('script')
-    <script type="text/javascript"
-            src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+            @section('script')
+                <script type="text/javascript"
+                        src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 @endsection
