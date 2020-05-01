@@ -8,6 +8,7 @@ use App\Models\Breakdown;
 use App\Models\Location;
 use App\Models\SafetyInspection;
 use App\Models\Truck;
+use App\Models\User;
 use App\Traits\EnumValue;
 use DateTime;
 use Illuminate\Http\Request;
@@ -404,4 +405,130 @@ class TruckController extends Controller
         Truck::find($id)->delete();
         return $id;
     }
+
+    public function truck_view($id)
+    {
+        $truck = Truck::whereKey($id)
+            ->with('user')
+            ->with('location')
+            ->with('breakdowns')
+            ->with('last_safety_inspection')
+            ->with('safety_inspection')
+            ->first()->toArray();
+
+//        var_dump($truck);die;
+
+        return view('corporate.truck.truck_view')->with("truck", $truck)->with("unassigned", $this->get_unassigned_truck_franchisees());
+    }
+
+    public function get_unassigned_truck_franchisees()
+    {
+        $assigned = Truck::select('user_id')->whereNotNull('user_id')->pluck('user_id')->toArray();
+        $unassigned = User::select('id', 'firstname', 'lastname', 'pseudo_id')
+            ->whereNotNull('pseudo_id')
+            ->whereNotIn('id', $assigned)
+            ->where("role", "Franchisé")
+            ->with('pseudo')
+            ->get()->toArray();
+
+        return ($unassigned);
+    }
+
+    public function unset_franchise_truck($truckId)
+    {
+        Truck::find($truckId)->update(['user_id' => null]);
+        return $truckId;
+    }
+
+    public function set_franchise_truck()
+    {
+        request()->validate([
+            'truckId' => ['required', 'integer'],
+            'userId' => ['required', 'integer']
+        ]);
+
+        Truck::find(request('truckId'))->update([
+            'user_id' => request('userId')
+        ]);
+        flash('Le camion a bien été assigné')->success();
+        return back();
+    }
+
+    public function delete_breakdown($id)
+    {
+        Breakdown::find($id)->delete();
+        return $id;
+    }
+
+    public function add_breakdown($truckId)
+    {
+        if (Truck::find($truckId) == null) {
+            flash('Erreur, l\'id est incorrect !')->error();
+            return back();
+        }
+        $breakdown_type = $this->get_enum_column_values('breakdown', 'type');
+        $breakdown_status = $this->get_enum_column_values('breakdown', 'status');
+        return view('corporate.truck.breakdown_form')
+            ->with('breakdown_type',$breakdown_type)
+            ->with('breakdown_status',$breakdown_status)
+            ->with('truckId', $truckId);
+    }
+
+    public function update_breakdown($truckId, $breakdownId)
+    {
+        $breakdown = Breakdown::find($breakdownId);
+        if (Truck::find($truckId) == null || $breakdown == null) {
+            flash('Erreur, l\'id est incorrect !')->error();
+            return back();
+        }
+        $breakdown = $breakdown->toArray();
+        $breakdown_type = $this->get_enum_column_values('breakdown', 'type');
+        $breakdown_status = $this->get_enum_column_values('breakdown', 'status');
+
+
+        return view('corporate.truck.breakdown_form')
+            ->with('breakdown_type',$breakdown_type)
+            ->with('breakdown_status',$breakdown_status)
+            ->with('truckId', $truckId)
+            ->with('breakdown', $breakdown);
+    }
+
+    public function breakdown_submit()
+    {
+        request()->validate([
+            'type' => ['required'],
+            'cost' => ['required'],
+            'date' => ['required', 'date'],
+            'status' => ['required'],
+            'truck_id' => ['required']
+        ]);
+
+        if (!empty(request('id'))) {
+            Breakdown::find(request('id'))->update
+            ([
+                'type' => request('type'),
+                'description' => request('description'),
+                'cost' => request('cost'),
+                'date' => request('date'),
+                'status' => request('status'),
+                'truck_id' => request('truck_id'),
+            ]);
+
+            flash('Panne modifié')->success();
+        } else {
+            Breakdown::insert([
+                'type' => request('type'),
+                'description' => request('description'),
+                'cost' => request('cost'),
+                'date' => request('date'),
+                'status' => request('status'),
+                'truck_id' => request('truck_id'),
+            ]);
+
+            flash('Nouvelle panne ajouté')->success();
+        }
+
+        return redirect()->route('truck_view',['id'=>request('truck_id')]);
+    }
+
 }

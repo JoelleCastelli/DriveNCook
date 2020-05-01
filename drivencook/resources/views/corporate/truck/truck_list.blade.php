@@ -55,7 +55,9 @@
                                         'Disponible':
                                         'Utilisé par '.strtoupper($truck['user']['firstname'].' - '.$truck['user']['lastname'])}}</td>
                                             <td>
-                                                <i class="fa fa-eye"></i>
+                                                <a href="{{route('truck_view',['id'=>$truck['id']])}}">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
                                                 <a href="{{route('truck_update',['id'=>$truck['id']])}}">
                                                     <button class="fa fa-edit ml-2"></button>
                                                 </a>

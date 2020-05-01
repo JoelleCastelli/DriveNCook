@@ -92,8 +92,12 @@
                             camion du franchisé
                         </button>
 
+                        <a href="{{route('truck_view',['id'=>$franchisee['truck']['id']])}}">
+                            <button class="btn btn-light_blue">Consulter</button>
+                        </a>
+
                         <a href="{{route('truck_update',['id'=>$franchisee['truck']['id']])}}">
-                            <button class="btn btn-light_blue">Aller à la page modification</button>
+                            <button class="btn btn-light_blue">Modifier</button>
                         </a>
                     </div>
 
@@ -339,31 +343,8 @@
             $('#sales').DataTable();
         });
 
-        function unsetTruck(id) {
-            if (confirm("Voulez vous vraiment retirer le camion au franchisé ?")) {
-                if (!isNaN(id)) {
-                    let urlB = '{{route('unset_franchisee_truck',['id'=>':id'])}}';
-                    urlB = urlB.replace(':id', id);
-                    $.ajax({
-                        url: urlB,
-                        method: "delete",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function (data) {
-                            if (data == id) {
-                                window.location.reload();
-                            } else {
-                                alert("Une erreur est survenue lors de la suppression, veuillez raffraichir la page");
-                            }
-                        },
-                        error: function () {
-                            alert("Une erreur est survenue lors de la suppression, veuillez raffraichir la page");
-                        }
-                    })
-                }
-            }
-        }
-
+        let urlB = "{{route('unset_franchisee_truck',['id'=>':id'])}}";
     </script>
+
+    <script type="text/javascript" src="{{asset('js/truckScript.js')}}"></script>
 @endsection
