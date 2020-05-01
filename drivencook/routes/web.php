@@ -25,10 +25,7 @@ Route::delete('/corporate/unset_franchisee_truck/{id}', [
     'uses' => 'Corporate\TruckController@unset_franchise_truck'
 ]);
 
-//Route::post('/test', [
-//    'as' => 'test',
-//    'uses' => 'Corporate\FranchiseeController@test'
-//]);
+
 Route::get('/corporate/truck_view/{id}', [
     'as' => 'truck_view',
     'uses' => 'Corporate\TruckController@truck_view'
@@ -36,8 +33,8 @@ Route::get('/corporate/truck_view/{id}', [
 
 Route::get('/corporate/truck_unassigned_franchisee_list', [
     'as' => 'truck_unassigned_franchisee',
-]);
     'uses' => 'Corporate\TruckController@get_unassigned_truck_franchisees'
+]);
 
 Route::get('/corporate/add_breakdown/{truckId}', [
     'as' => 'add_breakdown',
@@ -50,12 +47,11 @@ Route::get('/corporate/update_breakdown/{truckId}/{breakdownId}', [
 ]);
 
 Route::post('/corporate/update_breakdown', [
-    'uses' => 'Corporate\TruckController@breakdown_submit'
+    'uses' => 'Corporate\TruckController@breakdown_submit',
     'as' => 'breakdown_submit',
 ]);
 
-    'as' => 'delete_breakdown',
 Route::delete('/corporate/delete_breakdown/{id}', [
-    'uses' => 'Corporate\TruckController@delete_breakdown'
-
+    'uses' => 'Corporate\TruckController@delete_breakdown',
+    'as' => 'delete_breakdown'
 ]);
