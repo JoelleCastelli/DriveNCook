@@ -15,6 +15,7 @@ require_once('corporate/auth.php');
 require_once('corporate/franchisees.php');
 require_once('corporate/trucks.php');
 require_once('corporate/warehouses.php');
+require_once('corporate/dishes.php');
 
 Route::get('/', function () {
     return view('welcome');
@@ -47,11 +48,12 @@ Route::get('/corporate/update_breakdown/{truckId}/{breakdownId}', [
 ]);
 
 Route::post('/corporate/update_breakdown', [
-    'uses' => 'Corporate\TruckController@breakdown_submit',
     'as' => 'breakdown_submit',
+    'uses' => 'Corporate\TruckController@breakdown_submit',
 ]);
 
 Route::delete('/corporate/delete_breakdown/{id}', [
     'uses' => 'Corporate\TruckController@delete_breakdown',
     'as' => 'delete_breakdown'
 ]);
+//

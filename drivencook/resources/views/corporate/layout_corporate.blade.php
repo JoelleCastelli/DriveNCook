@@ -16,8 +16,8 @@
 <body>
 <nav class="navbar navbar-dark sticky-top bg-dark2 text-light justify-content-between">
     <span class="d-flex align-items-center">
-        <a class="navbar-brand" href="{{route('corporate_dashboard')}}">Administration Drive 'N' Cook</a>
         <button href="#menu-toggle" class="btn text-light" id="menu-toggle"><i class="fa fa-bars"></i></button>
+        <a class="navbar-brand" href="{{route('corporate_dashboard')}}">&nbsp;&nbsp;&nbsp;Administration Drive 'N' Cook</a>
     </span>
 
     @if (!auth()->guest())
@@ -157,37 +157,51 @@
                 @default
                 @break
             @endswitch
-            @if (strpos(url()->current(),route('franchisee_update',['id'=>''])) !== false)
+            @if (strpos(url()->current(), route('franchisee_update', ['id'=>''])) !== false)
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('franchisee_list')}}">
                         <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des franchisés
                     </a>
                 </li>
             @endif
-            @if (strpos(url()->current(),route('franchisee_view',['id'=>''])) !== false)
+            @if (strpos(url()->current(), route('franchisee_view', ['id'=>''])) !== false)
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('franchisee_list')}}">
                         <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des franchisés
                     </a>
                 </li>
             @endif
-            @if (strpos(url()->current(),route('truck_update',['id'=>''])) !== false)
+            @if (strpos(url()->current(), route('truck_update', ['id'=>''])) !== false)
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('truck_list')}}">
                         <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des camions
                     </a>
                 </li>
             @endif
-            @if (strpos(url()->current(),route('truck_view',['id'=>''])) !== false)
+            @if (strpos(url()->current(), route('truck_view',['id'=>''])) !== false)
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('truck_list')}}">
                         <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des camions
                     </a>
                 </li>
             @endif
-            @if (strpos(url()->current(),route('warehouse_update',['id'=>''])) !== false)
+            @if (strpos(url()->current(), route('warehouse_update', ['id'=>''])) !== false)
                 <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('warehouse_list')}}">
+                    <a class="nav-link text-light2" href="{{ route('warehouse_list') }}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_warehouse_list') }}
+                    </a>
+                </li>
+            @endif
+            @if (strpos(url()->current(),route('warehouse_view',['id'=>''])) !== false)
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{ route('warehouse_list') }}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_warehouse_list') }}
+                    </a>
+                </li>
+            @endif
+            @if (strpos(url()->current(), route('warehouse_dishes',['id'=>''])) !== false)
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{ route('warehouse_view',['id'=> $warehouse['id']]) }}">
                         <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_warehouse_list') }}
                     </a>
                 </li>
