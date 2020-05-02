@@ -61,6 +61,7 @@ void on_cancel_loginButton_clicked() {
     gtk_entry_set_text(widgets->userPwdEntry, "");
     gtk_label_set_text(widgets->passRequestErr, "");
     gtk_widget_set_sensitive(widgets->window, TRUE);
+    gtk_window_set_accept_focus(GTK_WINDOW(widgets->window), TRUE);
 }
 
 void on_saveButton_clicked() {
@@ -126,6 +127,7 @@ void on_closeButton_clicked() {
     gtk_widget_set_sensitive(GTK_WIDGET(widgets->editBtn), TRUE);
     gtk_widget_set_sensitive(GTK_WIDGET(widgets->saveBtn), FALSE);
     gtk_widget_set_sensitive(widgets->window, TRUE);
+    gtk_window_set_accept_focus(GTK_WINDOW(widgets->window), TRUE);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -230,7 +232,7 @@ char *checkInputs(const char *name, const char *firstName, const char *email) {
         strcat(errorMessage, "Prénom incorrect. ");
     }
 
-    if (strlen(email) == 0) {
+    if (strlen(email) == 0 || checkEmail(email) != 0) {
         errorMessage = realloc(errorMessage, strlen(errorMessage) + 17 + 1);
         strcat(errorMessage, "Email incorrect. ");
     }

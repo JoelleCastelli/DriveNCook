@@ -3,7 +3,7 @@ project(drivencook_subscribe C)
 
 set(CMAKE_C_STANDARD 99)
 
-set(PROJECT_FILES main.c gtkFunctions.c qrFunctions.c libs/lodepng.c libs/qrcode.c codecFunctions.c curlFunction.c useful.c)
+set(PROJECT_FILES main.c gtkFunctions.c qrFunctions.c libs/lodepng.c libs/qrcode.c codecFunctions.c curlFunction.c useful.c libs/regex.c)
 set(PROJECT_NAME drivencook_subscribe)
 
 include_directories(${CMAKE_SOURCE_DIR}/libcurl/include)
