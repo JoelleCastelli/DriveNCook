@@ -25,7 +25,6 @@ class FranchiseeController extends Controller
         $this->middleware('App\Http\Middleware\AuthCorporate');
     }
 
-
     public function franchisee_list()
     {
         $franchisees = User::with('pseudo')
@@ -35,6 +34,7 @@ class FranchiseeController extends Controller
             ->get()->toArray();
         $nextPaiement = $this->getNextPaiementDate(
             FranchiseObligation::all()->sortByDesc('id')->first()->toArray());
+
         return view('corporate/franchisee/franchisee_list')
             ->with('franchisees', $franchisees)
             ->with('nextPaiement', $nextPaiement);
@@ -423,5 +423,30 @@ class FranchiseeController extends Controller
             "revenues" => $sales_total - $purchase_orders_total,
             "obligation" => $franchise_obligation
         );
+    }
+
+    public function get_franchisees_current_month_sale_revenues()
+    {
+        $franchisees = User::where('role', 'Franchisé')->get()->toArray();
+        $total = array(
+            "sales_total" => 0,
+            "sales_count" => 0,
+            "purchase_orders_total" => 0,
+            "purchase_orders_count" => 0,
+            "revenues" => 0,
+            "obligation" => 0
+        );
+
+        foreach ($franchisees as $franchisee) {
+            $franchisee_revenues = $this->get_franchise_current_month_sale_revenues($franchisee['id']);
+
+            $total['sales_total'] += $franchisee_revenues['sales_total'];
+            $total['sales_count'] += $franchisee_revenues['sales_count'];
+            $total['purchase_orders_total'] += $franchisee_revenues['purchase_orders_total'];
+            $total['purchase_orders_count'] += $franchisee_revenues['purchase_orders_count'];
+            $total['revenues'] += $franchisee_revenues['revenues'];
+            $total['obligation'] = $franchisee_revenues['obligation'];
+        }
+        return $total;
     }
 }
