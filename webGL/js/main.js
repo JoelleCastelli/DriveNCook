@@ -35,19 +35,20 @@ function init() {
     /**
      * init camera
      */
-    camera = functions.createCamera(60, 1, terrainDim.width + terrainDim.height, terrainDim.width / 2, terrainDim.height / 2, 10)
+    camera = functions.createCamera(60, 1, terrainDim.width + terrainDim.height,
+        terrainDim.width / 2, terrainDim.height / 2, 10)
 
     /**
      * init terrain
      */
-    terrain = functions.createTerrain(terrainDim.width, terrainDim.height, greenMat, terrainDim.width / 2, terrainDim.height / 2, -80);
+    terrain = functions.createTerrain(terrainDim.width, terrainDim.height, greenMat,
+        terrainDim.width / 2, terrainDim.height / 2, -80);
 
     scene.add(terrain);
 
     /**
      * light
      */
-
     light1 = functions.createPointLight(2, 0xFEFEFE, 0.5, 0, 20, 0);
 
     scene.add(light1);
