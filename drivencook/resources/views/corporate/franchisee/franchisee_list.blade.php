@@ -1,7 +1,7 @@
 @extends('corporate.layout_corporate')
 @section('style')
-    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet">
+    {{--    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet">--}}
+    {{--    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet">--}}
 @endsection
 @section('title')
     Liste des franchisés
@@ -34,7 +34,7 @@
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item bg-indigo">Prochain paiement des taxes : {{$nextPaiement}}</li>
                             <li class="list-group-item bg-indigo align-content-arround">
-                                <a href="#" class="row text-light2">
+                                <a href="{{route('franchisee_obligation_update')}}" class="row text-light2">
                                     <div class="col-10">
                                         Consulter les details
                                     </div>
@@ -64,6 +64,7 @@
                         <th>Actif</th>
                         <th>Dernier paiement</th>
                         <th>Emplacement camion</th>
+                        <th>Inscrit depuis le</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -75,9 +76,15 @@
                             <td>{{$franchisee['telephone']}}</td>
                             <td>{{$franchisee['email']}}</td>
                             <td>{{empty($franchisee['pseudo'])?'Inactif':'Actif ('.$franchisee['pseudo']['name'].')'}}</td>
+
                             <td>{{empty($franchisee['last_paid_licence_fee'])?'Jamais'
                                 :DateTime::createFromFormat('Y-m-d',$franchisee['last_paid_licence_fee']['date_paid'])->format('d-m-Y')}}</td>
-                            <td>A faire camion</td>
+
+                            <td>{{(empty($franchisee['truck'])?'Camion non attribué':
+                                (empty($franchisee['truck']['location'])?'Pas d\'emplacement':
+                                $franchisee['truck']['location']['address'].' ('.$franchisee['truck']['location']['city']['postcode'].')'))}}</td>
+
+                            <td>{{$franchisee['created_at']}}</td>
                             <td>
                                 <a href="{{route('franchisee_view',['id'=>$franchisee['id']])}}">
                                     <button class="text-light fa fa-eye"></button>
@@ -98,11 +105,12 @@
 @endsection
 
 @section('script')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    {{--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>--}}
+    {{--    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>--}}
+    {{--    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>--}}
+    {{--    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>--}}
     <script type="text/javascript">
+
         $(document).ready(function () {
             $('#allfranchisees').DataTable();
         });

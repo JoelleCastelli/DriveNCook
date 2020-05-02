@@ -55,7 +55,9 @@
                                         'Disponible':
                                         'Utilisé par '.strtoupper($truck['user']['firstname'].' - '.$truck['user']['lastname'])}}</td>
                                             <td>
-                                                <i class="fa fa-eye"></i>
+                                                <a href="{{route('truck_view',['id'=>$truck['id']])}}">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
                                                 <a href="{{route('truck_update',['id'=>$truck['id']])}}">
                                                     <button class="fa fa-edit ml-2"></button>
                                                 </a>
@@ -80,10 +82,12 @@
 
 
 @section('script')
+    <!--
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    -->
     <script type="text/javascript">
         $(document).ready(function () {
             $('#alltrucks').DataTable();

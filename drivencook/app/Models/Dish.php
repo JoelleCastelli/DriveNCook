@@ -14,7 +14,7 @@ class Dish extends \Illuminate\Database\Eloquent\Model
 
     public function warehouse()
     {
-        return $this->belongsTo(Warehouse::class, 'warehouse');
+        return $this->belongsTo(Warehouse::class, 'warehouse_id')->with('city');
     }
 
     public function stocks()

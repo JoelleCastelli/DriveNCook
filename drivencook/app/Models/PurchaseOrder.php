@@ -8,11 +8,11 @@ class PurchaseOrder extends \Illuminate\Database\Eloquent\Model
 {
     protected $table = 'purchase_order';
 
-    protected $fillable = ['user_id', 'date'];
+    protected $fillable = ['user_id', 'date', 'reference', 'status'];
 
     public function purchased_dishes()
     {
-        return $this->hasMany(PurchasedDish::class, 'purchase_order_id');
+        return $this->hasMany(PurchasedDish::class, 'purchase_order_id')->with('dish');
     }
 
     public function user()

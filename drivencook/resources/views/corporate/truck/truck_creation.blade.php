@@ -82,9 +82,9 @@
                             <label for="fuel_type">{{ trans('truck_creation.fuel_type') }}</label>
                             <div class="input-group mb-3">
                                 <select class="custom-select" name="fuel_type" id="fuel_type">
-                                    <option selected>{{ trans('truck_creation.select_menu_off') }}</option>
+                                    <option value="" selected>{{ trans('truck_creation.select_menu_off') }}</option>
                                     @foreach($fuels as $fuel)
-                                        <option value={{ $fuel }}>{{ trans('truck_creation.fuel_type_' . strtolower($fuel) . '') }}</option>
+                                        <option value={{ $fuel }}>{{ trans('truck_creation.fuel_type_' . strtolower($fuel)) }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -136,7 +136,7 @@
                             <label for="location_name">{{ trans('truck_creation.location_name') }}</label>
                             <div class="input-group mb-3">
                                 <select class="custom-select" name="location_name" id="location_name">
-                                    <option selected>{{ trans('truck_creation.select_menu_off') }}</option>
+                                    <option value="" selected>{{ trans('truck_creation.select_menu_off') }}</option>
                                     @foreach($locations as $location)
                                         <option value={{ $location['name'] }}>{{ $location['name'] }}
                                             - {{ $location['address'] }}</option>

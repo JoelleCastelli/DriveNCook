@@ -20,11 +20,16 @@ use Yajra\DataTables\DataTables;
 
 class FranchiseeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('App\Http\Middleware\AuthCorporate');
+    }
 
     public function franchisee_list()
     {
         $franchisees = User::with('pseudo')
             ->with('last_paid_licence_fee')
+            ->with('truck')
             ->where('role', 'Franchisé')
             ->get()->toArray();
         $nextPaiement = $this->getNextPaiementDate(
@@ -59,14 +64,15 @@ class FranchiseeController extends Controller
         ])->first();
         if (!empty($user))
             return $user->toArray();
-        return $user;
+        return null;
     }
 
     public function get_franchisee_by_id($id)
     {
-        $user= User::with('pseudo')->where('id', $id)->first();
+        $user = User::with('pseudo')->where('id', $id)->first();
         if (!empty($user))
             return $user->toArray();
+        return null;
     }
 
     public function franchisee_creation()
@@ -185,7 +191,7 @@ class FranchiseeController extends Controller
                 $errors_list[] = trans('franchisee_update.email_format_error');
             } else if (!$error) {
                 $result = $this->get_franchisee_by_email($email);
-                if ($result['id'] != $id) {
+                if ($result != null && $result['id'] != $id) {
                     $error = true;
                     $errors_list[] = trans('franchisee_update.email_error');
                 }
@@ -227,13 +233,39 @@ class FranchiseeController extends Controller
         }
     }
 
+    public function franchise_update_password()
+    {
+        request()->validate([
+            'id' => ['required', 'integer'],
+            'password' => ['required', 'confirmed', 'min:6']
+        ]);
+
+        User::find(request('id'))->update([
+            'password' => hash('sha256', request('password'))
+        ]);
+
+        flash('Mot de passe du franchisé modifié')->success();
+        return back();
+    }
+
     public function franchisee_view($id)
     {
         $franchisee = User::whereId($id)
             ->with('pseudo')
             ->with('monthly_licence_fees')
+            ->with('truck')
+            ->with('stocks')
+            ->with('purchase_order')
+            ->with('sales')
             ->first()->toArray();
-        return view('corporate.franchisee.franchisee_view')->with('franchisee', $franchisee);
+
+//        var_dump($franchisee);die;
+
+        $revenues = $this->get_franchise_current_month_sale_revenues($id);
+
+        return view('corporate.franchisee.franchisee_view')
+            ->with('franchisee', $franchisee)
+            ->with('revenues', $revenues);
     }
 
     public function update_franchise_obligation()
@@ -345,5 +377,76 @@ class FranchiseeController extends Controller
         User::where('pseudo_id', $id)->update(['pseudo_id' => NULL]);
         Pseudo::find($id)->delete();
         return $id;
+    }
+
+    public function get_franchise_current_month_sale_revenues($franchise_id)
+    {
+        $franchise_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
+        $date_max = DateTime::createFromFormat("d-m-Y", $this->getNextPaiementDate($franchise_obligation));
+        $date_min = clone $date_max;
+        $date_min->modify('-1 month');
+
+        $date_max = $date_max->format("Y-m-d");
+        $date_min = $date_min->format("Y-m-d");
+
+        $stocks = Stock::where('user_id', $franchise_id)->get()->toArray();
+
+        $sales = Sale::whereBetween('date', [$date_min, $date_max])->with('sold_dishes')->get()->toArray();
+        $sales_total = 0;
+        $purchase_orders = PurchaseOrder::whereBetween('date', [$date_min, $date_max])->with('purchased_dishes')->get()->toArray();
+        $purchase_orders_total = 0;
+
+        foreach ($sales as $sale) {
+            foreach ($sale['sold_dishes'] as $sold_dish) {
+                $unit_price = 0;
+                foreach ($stocks as $stock) {
+                    if ($stock['dish_id'] == $sold_dish['dish_id']) {
+                        $unit_price = $stock['unit_price'];
+                        break;
+                    }
+                }
+                $sales_total += $sold_dish['quantity'] * $unit_price;
+            }
+        }
+
+        foreach ($purchase_orders as $purchase_order) {
+            foreach ($purchase_order['purchased_dishes'] as $purchased_dish) {
+                $purchase_orders_total += $purchased_dish['dish']['warehouse_price'] * $purchased_dish['quantity'];
+            }
+        }
+
+        return array(
+            "sales_total" => $sales_total,
+            "sales_count" => count($sales),
+            "purchase_orders_total" => $purchase_orders_total,
+            "purchase_orders_count" => count($purchase_orders),
+            "revenues" => $sales_total - $purchase_orders_total,
+            "obligation" => $franchise_obligation
+        );
+    }
+
+    public function get_franchisees_current_month_sale_revenues()
+    {
+        $franchisees = User::where('role', 'Franchisé')->get()->toArray();
+        $total = array(
+            "sales_total" => 0,
+            "sales_count" => 0,
+            "purchase_orders_total" => 0,
+            "purchase_orders_count" => 0,
+            "revenues" => 0,
+            "obligation" => 0
+        );
+
+        foreach ($franchisees as $franchisee) {
+            $franchisee_revenues = $this->get_franchise_current_month_sale_revenues($franchisee['id']);
+
+            $total['sales_total'] += $franchisee_revenues['sales_total'];
+            $total['sales_count'] += $franchisee_revenues['sales_count'];
+            $total['purchase_orders_total'] += $franchisee_revenues['purchase_orders_total'];
+            $total['purchase_orders_count'] += $franchisee_revenues['purchase_orders_count'];
+            $total['revenues'] += $franchisee_revenues['revenues'];
+            $total['obligation'] = $franchisee_revenues['obligation'];
+        }
+        return $total;
     }
 }

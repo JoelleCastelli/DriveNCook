@@ -67,7 +67,7 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div class="card text-light2">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item bg-success">Prévision chiffre d'affaire (mensuel) : undefined</li>
+                            <li class="list-group-item bg-success">Prévision chiffre d'affaire (mensuel) : {{$revenues['sales_total']}} €</li>
                             <li class="list-group-item bg-success align-content-arround">
                                 <a href="#" class="row text-light2">
                                     <div class="col-10">
