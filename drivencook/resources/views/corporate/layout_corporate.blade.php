@@ -205,6 +205,11 @@
                         <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_warehouse_list') }}
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light2" id="addDish" data-toggle="modal" data-target="#addDishModal">
+                        <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{{ 'corporate.add_dish' }}
+                    </a>
+                </li>
             @endif
         </ul>
     </div>

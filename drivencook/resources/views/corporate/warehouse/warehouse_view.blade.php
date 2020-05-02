@@ -44,7 +44,6 @@
                                 <th>{{ trans('warehouse_view.category') }}</th>
                                 <th>{{ trans('warehouse_view.quantity') }}</th>
                                 <th>{{ trans('warehouse_view.warehouse_price') }}</th>
-                                <th>{{ trans('warehouse_view.actions') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -55,10 +54,6 @@
                                     <td>{{ trans($GLOBALS['DISH_TYPE'][$dish['category']]) }}</td>
                                     <td>{{$dish['quantity']}}</td>
                                     <td>{{$dish['warehouse_price']}}</td>
-                                    <td>
-                                        <i class="fa fa-edit"></i>
-                                        <i class="fa fa-trash ml-3"></i>
-                                    </td>
                                 </tr>
                                 @endif
                             @endforeach
