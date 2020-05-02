@@ -136,7 +136,8 @@
                                         <a href="{{route('update_breakdown',["truckId"=>$truck['id'], "breakdownId"=>$breakdown['id']])}}">
                                             <i class="fa fa-edit ml-3"></i>
                                         </a>
-                                        <button onclick="onDeleteBreakdown({{$breakdown['id']}})" class="fa fa-trash ml-3"></button>
+                                        <button onclick="onDeleteBreakdown({{$breakdown['id']}})"
+                                                class="fa fa-trash ml-3"></button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -165,14 +166,14 @@
                             <tr>
                                 <th>Date</th>
                                 <th>Kilométrage</th>
-                                <th>Pièces remplacés</th>
+                                <th>Parties remplacés</th>
                                 <th>Drainage</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($truck['safety_inspection'] as $inspection)
-                                <tr>
+                                <tr id="row_{{$inspection['id']}}">
                                     <td>
                                         {{DateTime::createFromFormat('Y-m-d',$inspection['date'])->format('d/m/Y')}}
                                     </td>
@@ -180,16 +181,24 @@
                                     <td>{{$inspection['replaced_parts']}}</td>
                                     <td>{{$inspection['drained_fluids']}}</td>
                                     <td>
-                                        <i class="fa fa-edit"></i>
-                                        <i class="fa fa-trash ml-3"></i>
+                                        <a href="{{route('update_safety_inspection',['truckId'=>$truck['id'], "safetyInspectionId"=> $inspection['id']])}}">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <button onclick="onDeleteSafetyInspection({{$inspection['id']}})"
+                                                class="fa fa-trash ml-3"></button>
                                     </td>
                                 </tr>
                             @endforeach
                             </tbody>
                         </table>
                     </div>
-
                 </div>
+                <div class="card-footer">
+                    <a href="{{route('add_safety_inspection',["truckId"=>$truck['id']])}}">
+                        <button class="btn btn-light_blue"> Ajouter un contrôle technique</button>
+                    </a>
+                </div>
+
             </div>
         </div>
     </div>
@@ -205,7 +214,7 @@
         let urlB = "{{route('unset_franchisee_truck',['id'=>':id'])}}";
 
         function onDeleteBreakdown(id) {
-            if (confirm("Voulez vous vraiment supprimer ce pseudo ?")) {
+            if (confirm("Voulez vous vraiment supprimer cette panne ?")) {
                 if (!isNaN(id)) {
                     let urlD = '{{route('delete_breakdown',['id'=>':id'])}}';
                     urlD = urlD.replace(':id', id);
@@ -218,6 +227,35 @@
                         success: function (data) {
                             if (data == id) {
                                 alert("Panne supprimé");
+                                let row = document.getElementById('row_' + id);
+                                row.remove();
+                            } else {
+                                alert("Une erreur est survenue lors de la suppression, veuillez raffraichir la page");
+                            }
+                        },
+                        error: function () {
+                            alert("Une erreur est survenue lors de la suppression, veuillez raffraichir la page");
+                        }
+                    })
+
+                }
+            }
+        }
+
+        function onDeleteSafetyInspection(id) {
+            if (confirm("Voulez vous vraiment supprimer ce contrôle technique ?")) {
+                if (!isNaN(id)) {
+                    let urlD = '{{route('delete_safety_inspection',['id'=>':id'])}}';
+                    urlD = urlD.replace(':id', id);
+                    $.ajax({
+                        url: urlD,
+                        method: "delete",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (data) {
+                            if (data == id) {
+                                alert("Contrôle technique supprimé");
                                 let row = document.getElementById('row_' + id);
                                 row.remove();
                             } else {

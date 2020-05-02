@@ -434,10 +434,10 @@ class TruckController extends Controller
         return ($unassigned);
     }
 
-    public function unset_franchise_truck($truckId)
+    public function unset_franchise_truck($truck_id)
     {
-        Truck::find($truckId)->update(['user_id' => null]);
-        return $truckId;
+        Truck::find($truck_id)->update(['user_id' => null]);
+        return $truck_id;
     }
 
     public function set_franchise_truck()
@@ -460,24 +460,24 @@ class TruckController extends Controller
         return $id;
     }
 
-    public function add_breakdown($truckId)
+    public function add_breakdown($truck_id)
     {
-        if (Truck::find($truckId) == null) {
+        if (Truck::find($truck_id) == null) {
             flash('Erreur, l\'id est incorrect !')->error();
             return back();
         }
         $breakdown_type = $this->get_enum_column_values('breakdown', 'type');
         $breakdown_status = $this->get_enum_column_values('breakdown', 'status');
         return view('corporate.truck.breakdown_form')
-            ->with('breakdown_type',$breakdown_type)
-            ->with('breakdown_status',$breakdown_status)
-            ->with('truckId', $truckId);
+            ->with('breakdown_type', $breakdown_type)
+            ->with('breakdown_status', $breakdown_status)
+            ->with('truckId', $truck_id);
     }
 
-    public function update_breakdown($truckId, $breakdownId)
+    public function update_breakdown($truck_id, $breakdown_id)
     {
-        $breakdown = Breakdown::find($breakdownId);
-        if (Truck::find($truckId) == null || $breakdown == null) {
+        $breakdown = Breakdown::find($breakdown_id);
+        if (Truck::find($truck_id) == null || $breakdown == null) {
             flash('Erreur, l\'id est incorrect !')->error();
             return back();
         }
@@ -487,9 +487,9 @@ class TruckController extends Controller
 
 
         return view('corporate.truck.breakdown_form')
-            ->with('breakdown_type',$breakdown_type)
-            ->with('breakdown_status',$breakdown_status)
-            ->with('truckId', $truckId)
+            ->with('breakdown_type', $breakdown_type)
+            ->with('breakdown_status', $breakdown_status)
+            ->with('truckId', $truck_id)
             ->with('breakdown', $breakdown);
     }
 
@@ -500,7 +500,7 @@ class TruckController extends Controller
             'cost' => ['required'],
             'date' => ['required', 'date'],
             'status' => ['required'],
-            'truck_id' => ['required']
+            'truck_id' => ['required', 'integer']
         ]);
 
         if (!empty(request('id'))) {
@@ -528,7 +528,71 @@ class TruckController extends Controller
             flash('Nouvelle panne ajouté')->success();
         }
 
-        return redirect()->route('truck_view',['id'=>request('truck_id')]);
+        return redirect()->route('truck_view', ['id' => request('truck_id')]);
     }
 
+    public function delete_safety_inspection($id)
+    {
+        SafetyInspection::find($id)->delete();
+        return $id;
+    }
+
+    public function add_safety_inspection($truck_id)
+    {
+        if (Truck::find($truck_id) == null) {
+            flash('Erreur, l\'id est incorrect !')->error();
+            return back();
+        }
+
+        return view('corporate.truck.safety_inspection_form')
+            ->with('truckId', $truck_id);
+    }
+
+    public function update_safety_inspection($truck_id, $safety_inspection_id)
+    {
+        $safety_inspection = SafetyInspection::find($safety_inspection_id);
+        if (Truck::find($truck_id) == null || $safety_inspection == null) {
+            flash('Erreur, l\'id est incorrect !')->error();
+            return back();
+        }
+        $safety_inspection = $safety_inspection->toArray();
+        return view('corporate.truck.safety_inspection_form')
+            ->with('safety_inspection', $safety_inspection)
+            ->with('truck_id', $truck_id);
+    }
+
+    public function safety_inspection_submit()
+    {
+        request()->validate([
+            'date' => ['required', 'date'],
+            'truck_age' => ['required', 'integer'],
+            'truck_mileage' => ['required', 'integer'],
+            'truck_id' => ['required', 'integer']
+        ]);
+
+        if (!empty(request('id'))) {
+            SafetyInspection::find(request('id'))->update([
+                'date' => request('date'),
+                'truck_age' => request('truck_age'),
+                'truck_mileage' => request('truck_mileage'),
+                'replaced_parts' => request('replaced_parts'),
+                'drained_fluids' => request('drained_fluids'),
+                'truck_id' => request('truck_id')
+            ]);
+
+            flash('Contrôle technique mis à jour')->success();
+        } else {
+            SafetyInspection::insert([
+                'date' => request('date'),
+                'truck_age' => request('truck_age'),
+                'truck_mileage' => request('truck_mileage'),
+                'replaced_parts' => request('replaced_parts'),
+                'drained_fluids' => request('drained_fluids'),
+                'truck_id' => request('truck_id')
+            ]);
+
+            flash('Contrôle technique ajouté')->success();
+        }
+        return redirect()->route('truck_view', ['id' => request('truck_id')]);
+    }
 }
