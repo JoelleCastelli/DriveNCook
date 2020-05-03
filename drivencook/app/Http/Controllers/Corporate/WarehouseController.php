@@ -13,6 +13,11 @@ class WarehouseController extends Controller
 {
     use EnumValue;
 
+    public function __construct()
+    {
+        $this->middleware('App\Http\Middleware\AuthCorporate');
+    }
+
     public function warehouse_creation() {
         $cities = City::all();
         if (!empty($cities)) {

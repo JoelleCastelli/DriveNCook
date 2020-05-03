@@ -12,6 +12,84 @@ class DishController extends Controller
 {
     use EnumValue;
 
+    public function __construct()
+    {
+        $this->middleware('App\Http\Middleware\AuthCorporate');
+    }
+
+    public function dish_creation_submit(Request $request)
+    {
+        $parameters = $request->except(['_token']);
+        $error = false;
+        $errors_list = [];
+
+        $categories = $this->get_enum_column_values('dish', 'category');
+
+        if (
+            count($parameters) == 5 && !empty($parameters["warehouseId"]) &&
+            !empty($parameters["name"]) && !empty($parameters["category"]) &&
+            !empty($parameters["quantity"]) && !empty($parameters["warehousePrice"])
+        ) {
+            $name = $parameters["name"];
+            $category = $parameters["category"];
+            $quantity = intval($parameters["quantity"]);
+            $warehousePrice = $parameters["warehousePrice"];
+            $warehouseId = intval($parameters["warehouseId"]);
+
+            if (strlen($name) < 1 || strlen($name) > 30) {
+                $error = true;
+                $errors_list[] = trans('dish_create.name_error');
+            }
+
+            if(!in_array($category, $categories)) {
+                $error = true;
+                $errors_list[] = trans('dish_create.category_error');
+            }
+
+            if (!is_int($quantity)) {
+                $error = true;
+                $errors_list[] = trans('dish_create.quantity_error');
+            }
+
+            if(!is_numeric($warehousePrice)) {
+                $error = true;
+                $errors_list[] = trans('dish_create.dish_price_error');
+            }
+
+            if (!is_int($warehouseId) && $warehouseId > 0) {
+                $error = true;
+                $errors_list[] = trans('dish_create.warehouse_id_error');
+            }
+
+            if ($error) {
+                $response_array = [
+                    'status' => 'error',
+                    'errorList' => $errors_list
+                ];
+            } else {
+                $dish = [
+                    'name' => $name, 'category' => $category,
+                    'quantity' => $quantity, 'warehouse_price' => $warehousePrice,
+                    'warehouse_id' => $warehouseId
+                ];
+                $lastId = Dish::insertGetId($dish);
+
+                $response_array = [
+                    'status' => 'success',
+                    'data' => Dish::find($lastId)
+                ];
+            }
+        } else {
+            $errors_list[] = trans('dish_create.empty_fields');
+
+            $response_array = [
+                'status' => 'error',
+                'errorList' => $errors_list
+            ];
+        }
+        echo json_encode($response_array);
+    }
+
     public function dish_update_submit(Request $request)
     {
         $parameters = $request->except(['_token']);
@@ -52,15 +130,21 @@ class DishController extends Controller
             }
 
             if ($error) {
-                return redirect()->back()->with('error', $errors_list);
+                $response_array = [
+                    'status' => 'error',
+                    'errorList' => $errors_list
+                ];
             } else {
                 $dish = [
                     'name' => $name, 'category' => $category,
                     'quantity' => $quantity, 'warehouse_price' => $warehousePrice
                 ];
                 Dish::find($id)->update($dish);
-                $response_array['status'] = 'success';
-                //return redirect()->back()->with('success', trans('dish_update.update_dish_success'));
+
+                $response_array = [
+                    'status' => 'success',
+                    'data' => Dish::find($id)
+                ];
             }
         } else {
             $errors_list[] = trans('dish_update.empty_fields');
@@ -69,8 +153,25 @@ class DishController extends Controller
                 'status' => 'error',
                 'errorList' => $errors_list
             ];
-            //return redirect()->back()->with('error', $errors_list);
         }
+        echo json_encode($response_array);
+    }
+
+    public function dish_delete($id)
+    {
+        if (!ctype_digit($id)) {
+            $response_array = [
+                'status' => 'error',
+                'error' => 'dish_delete.id_not_digit'
+            ];
+        } else {
+            Dish::find($id)->delete();
+
+            $response_array = [
+                'status' => 'success'
+            ];
+        }
+
         echo json_encode($response_array);
     }
 }

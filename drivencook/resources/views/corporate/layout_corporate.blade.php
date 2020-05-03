@@ -206,7 +206,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light2" id="addDish" data-toggle="modal" data-target="#addDishModal">
+                    <a class="nav-link text-light2" data-toggle="modal" data-target="#addDishModal">
                         <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{{ 'corporate.add_dish' }}
                     </a>
                 </li>
