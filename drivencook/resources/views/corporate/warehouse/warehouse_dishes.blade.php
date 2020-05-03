@@ -192,15 +192,24 @@
                     success: function (data) {
                         if (data['status'] === 'success') {
                             let table = $('#dishes').DataTable();
-
-                            table.row.add([
+                            let id = data['data']['id'];
+                            let row = table.row.add([
                                 data['data']['name'],
-                                data['data']['category'],
+                                Lang.get('warehouse_dishes.' + data['data']['category']),
                                 data['data']['quantity'],
                                 data['data']['warehouse_price'],
-                                '<i class="fa fa-edit" onclick="editDish(' + data['data']['id'] + ')"' + 'data-toggle="modal" data-target="#dishModal"></i> ' +
-                                '<i class="fa fa-trash ml-3" onclick="deleteDish(' + data['data']['id'] + ')"></i>'
+                                '<i class="fa fa-edit" onclick="editDish(' + id + ')"' + 'data-toggle="modal" data-target="#dishModal"></i> ' +
+                                '<i class="fa fa-trash ml-3" onclick="deleteDish(' + id + ')"></i>'
                             ]).draw().node();
+
+                            $(row).attr('id', 'rowId' + id);
+                            $(row).children().eq(0).attr('id', 'rowName' + id);
+                            $(row).children().eq(1).attr('id', 'rowCategory' + id);
+                            $(row).children().eq(1).attr('data-whatever', data['data']['category']);
+                            $(row).children().eq(2).attr('id', 'rowQuantity' + id);
+                            $(row).children().eq(3).attr('id', 'rowWarehousePrice' + id);
+
+                            $('#addDishModal').modal('hide');
                         } else {
                             alert('{{ trans('warehouse_dishes.create_dish_error') }}');
                         }
