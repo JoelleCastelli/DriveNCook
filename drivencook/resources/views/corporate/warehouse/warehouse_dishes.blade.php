@@ -124,10 +124,6 @@
 @endsection
 
 @section('script')
-    {{--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>--}}
-    {{--    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>--}}
-    {{--    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>--}}
-    {{--    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>--}}
     <script type="text/javascript">
         $(document).ready(function () {
             $('#dishes').DataTable();
@@ -211,11 +207,15 @@
 
                             $('#addDishModal').modal('hide');
                         } else {
-                            alert('{{ trans('warehouse_dishes.create_dish_error') }}');
+                            let str = '';
+                            for(let i = 0; i < data['errorList'].length; i++) {
+                                str += '\n' + data['errorList'][i];
+                            }
+                            alert(Lang.get('warehouse_dishes.create_dish_error') + str);
                         }
                     },
                     error: function () {
-                        alert('{{ trans('warehouse_dishes.create_dish_error') }}');
+                        alert(Lang.get('warehouse_dishes.create_dish_error'));
                     }
                 });
             });
@@ -246,11 +246,11 @@
                             if (data['status'] === 'success') {
                                 $('#dishes').DataTable().row('#rowId' + id).remove().draw();
                             } else {
-                                alert('{{ trans('warehouse_dishes.delete_dish_error') }}');
+                                alert(Lang.get('warehouse_dishes.delete_dish_error'));
                             }
                         },
                         error: function () {
-                            alert('{{ trans('warehouse_dishes.delete_dish_error') }}');
+                            alert(Lang.get('warehouse_dishes.delete_dish_error'));
                         }
                     });
                 }

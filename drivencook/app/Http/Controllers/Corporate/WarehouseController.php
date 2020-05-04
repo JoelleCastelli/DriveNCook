@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Corporate;
 
 use App\Http\Controllers\Controller;
 use App\Models\City;
+use App\Models\PurchaseOrder;
 use App\Models\Warehouse;
 use App\Traits\EnumValue;
 use Illuminate\Http\Request;
@@ -154,6 +155,14 @@ class WarehouseController extends Controller
 
     public function warehouse_view($id)
     {
+        //select * from purchase_order PO left join purchased_dish PD on PO.id = PD.purchase_order_id
+        // left join dish d on PD.dish_id = d.id where d.warehouse_id = 1;
+        /*$orders = PurchaseOrder::all()
+            ->leftJoin('purchased_dish', 'purchase_order.id', '=', 'purchased_dish.purchase_order_id')
+            ->leftJoin('dish', 'purchased_dish.dish_id', '=', 'dish.id')
+            ->where('dish.warehouse_id', '=', $id)
+            ->get()->toArray();*/
+
         $warehouse = Warehouse::whereId($id)
             ->with('city')
             ->with('dishes')
@@ -161,6 +170,7 @@ class WarehouseController extends Controller
 
         return view('corporate.warehouse.warehouse_view')
             ->with('warehouse', $warehouse);
+            /*->with('orders', $orders)*/
     }
 
     public function warehouse_delete($id)

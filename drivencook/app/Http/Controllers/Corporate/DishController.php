@@ -17,6 +17,11 @@ class DishController extends Controller
         $this->middleware('App\Http\Middleware\AuthCorporate');
     }
 
+    public function get_dish_by_name($dishName)
+    {
+        return Dish::where('name', $dishName)->get();
+    }
+
     public function dish_creation_submit(Request $request)
     {
         $parameters = $request->except(['_token']);
@@ -38,27 +43,32 @@ class DishController extends Controller
 
             if (strlen($name) < 1 || strlen($name) > 30) {
                 $error = true;
-                $errors_list[] = trans('dish_create.name_error');
+                $errors_list[] = trans('dish_creation.name_error');
             }
 
             if(!in_array($category, $categories)) {
                 $error = true;
-                $errors_list[] = trans('dish_create.category_error');
+                $errors_list[] = trans('dish_creation.category_error');
             }
 
             if (!is_int($quantity)) {
                 $error = true;
-                $errors_list[] = trans('dish_create.quantity_error');
+                $errors_list[] = trans('dish_creation.quantity_error');
             }
 
             if(!is_numeric($warehousePrice)) {
                 $error = true;
-                $errors_list[] = trans('dish_create.dish_price_error');
+                $errors_list[] = trans('dish_creation.dish_price_error');
             }
 
             if (!is_int($warehouseId) && $warehouseId > 0) {
                 $error = true;
-                $errors_list[] = trans('dish_create.warehouse_id_error');
+                $errors_list[] = trans('dish_creation.warehouse_id_error');
+            }
+
+            if (count($this->get_dish_by_name($name)) > 0) {
+                $error = true;
+                $errors_list[] = trans('dish_creation.duplicate_entry_error');
             }
 
             if ($error) {
@@ -80,7 +90,7 @@ class DishController extends Controller
                 ];
             }
         } else {
-            $errors_list[] = trans('dish_create.empty_fields');
+            $errors_list[] = trans('dish_creation.empty_fields');
 
             $response_array = [
                 'status' => 'error',

@@ -72,41 +72,10 @@
 @endsection
 
 @section('script')
-    {{--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>--}}
-    {{--    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>--}}
-    {{--    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>--}}
-    {{--    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>--}}
     <script type="text/javascript">
         $(document).ready(function () {
             $('#dishes').DataTable();
         });
-        /*
-        function unsetTruck(id) {
-            if (confirm("Voulez vous vraiment retirer le camion au franchisé ?")) {
-                if (!isNaN(id)) {
-                    let urlB = '{{route('unset_franchisee_truck',['id'=>':id'])}}';
-                    urlB = urlB.replace(':id', id);
-                    $.ajax({
-                        url: urlB,
-                        method: "delete",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function (data) {
-                            if (data == id) {
-                                window.location.reload();
-                            } else {
-                                alert("Une erreur est survenue lors de la suppression, veuillez raffraichir la page");
-                            }
-                        },
-                        error: function () {
-                            alert("Une erreur est survenue lors de la suppression, veuillez raffraichir la page");
-                        }
-                    })
-                }
-            }
-        }
-        */
 
     </script>
 @endsection
