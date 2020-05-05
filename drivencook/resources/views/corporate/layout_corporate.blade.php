@@ -161,6 +161,18 @@
                         <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir au tableau de bord
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{route('location_list')}}">
+                        <i class="fa fa-truck"></i>&nbsp;&nbsp;&nbsp;Consulter les emplacements de camions
+                    </a>
+                </li>
+                @break
+                @case(route('location_list'))
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{route('country_list')}}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des pays
+                    </a>
+                </li>
                 @break
                 @default
                 @break
@@ -220,11 +232,11 @@
                 </li>
             @endif
             @if (strpos(url()->current(), route('city_list',['id'=>''])) !== false)
-                    <li class="nav-item">
-                        <a class="nav-link text-light2" href="{{route('country_list')}}">
-                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('city.back_to_country_list')}}
-                        </a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{route('country_list')}}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('city.back_to_country_list')}}
+                    </a>
+                </li>
             @endif
         </ul>
     </div>

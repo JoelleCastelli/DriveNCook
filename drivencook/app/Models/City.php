@@ -12,12 +12,12 @@ class City extends \Illuminate\Database\Eloquent\Model
 
     public function country()
     {
-        return $this->belongsTo(Country::class, 'country');
+        return $this->belongsTo(Country::class, 'country_id');
     }
 
     public function warehouses()
     {
-        return $this->hasMany(Warehouse::class, 'city');
+        return $this->hasMany(Warehouse::class, 'city_id');
     }
 
 }
