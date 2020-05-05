@@ -121,7 +121,7 @@ class FranchiseeController extends Controller
                 return redirect()->back()->with('error', $errors_list);
             } else {
                 $user = ['lastname' => $lastname, 'firstname' => $firstname, 'email' => $email, 'role' => $role];
-                User::insert($user);
+                User::create($user);
                 return redirect()->route('franchisee_creation')->with('success', trans('franchisee_creation.new_franchisee_success'));
             }
         }
