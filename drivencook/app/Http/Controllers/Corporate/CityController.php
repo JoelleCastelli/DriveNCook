@@ -31,8 +31,8 @@ class CityController extends Controller
         $response['isNew'] = true;
         $response['name'] = strtoupper(trim($parameters['name']));
 
-        if (strlen($response['name']) > 15) {
-            return 'error, wrong name size';
+        if (strlen($check = $this->check_country_form($response)) > 0) {
+            return response($check, 400)->header('Content-Type', 'text/plain');
         }
         $response['id'] = Country::insertGetId(['name' => $response['name']]);
         $response['response'] = 'success';
@@ -46,12 +46,20 @@ class CityController extends Controller
         $response['id'] = $parameters['id'];
         $response['name'] = strtoupper(trim($parameters['name']));
 
-        if (strlen($response['name']) > 15) {
-            return 'error, wrong name size';
+        if (strlen($check = $this->check_country_form($response)) > 0) {
+            return response($check, 400)->header('Content-Type', 'text/plain');
         }
         Country::find($response['id'])->update(['name' => $response['name']]);
         $response['response'] = 'success';
         return json_encode($response);
+    }
+
+    public function check_country_form($response): string
+    {
+        if (empty($response['name']) || strlen($response['name']) > 15) {
+            return 'error, wrong name size';
+        }
+        return '';
     }
 
     public function country_delete($id)
@@ -74,27 +82,85 @@ class CityController extends Controller
 
     public function city_list($country_id)
     {
-
+        $country = Country::find($country_id)->toArray();
+        $city_list = City::where('country_id', $country_id)->get()->toArray();
+        return view('corporate.city_country.city_list')
+            ->with('country', $country)
+            ->with('city_list', $city_list);
     }
 
-    public function city_add()
+    public function city_add($parameters)
     {
+        $response = [];
+        $response['isNew'] = true;
+        $response['name'] = strtoupper(trim($parameters['name']));
+        $response['postcode'] = trim($parameters['postcode']);
+        $response['country_id'] = trim($parameters['country_id']);
 
+        if (strlen($check = $this->check_city_form($response)) > 0) {
+            return response($check, 400)->header('Content-Type', 'text/plain');
+        }
+
+        $response['id'] = City::insertGetId([
+            'name' => $response['name'],
+            'postcode' => $response['postcode'],
+            'country_id' => $response['country_id']
+        ]);
+        $response['response'] = 'success';
+        return json_encode($response);
     }
 
-    public function city_edit()
+    public function city_edit($parameters)
     {
+        $response = [];
+        $response['isNew'] = false;
+        $response['id'] = $parameters['id'];
+        $response['name'] = strtoupper(trim($parameters['name']));
+        $response['postcode'] = trim($parameters['postcode']);
+        $response['country_id'] = trim($parameters['country_id']);
 
+        if (strlen($check = $this->check_city_form($response)) > 0) {
+            return response($check, 400)->header('Content-Type', 'text/plain');
+        }
+
+        City::find($response['id'])->update([
+            'name' => $response['name'],
+            'postcode' => $response['postcode'],
+            'country_id' => $response['country_id']
+        ]);
+        $response['response'] = 'success';
+        return json_encode($response);
     }
 
-    public function city_submit()
-    {
 
+    public function check_city_form($response): string
+    {
+        if (empty($response['name']) || strlen($response['name']) > 15) {
+            return 'error, wrong name size';
+        }
+        if (empty($response['postcode']) || !ctype_digit($response['postcode'])) {
+            return 'error, wrong postcode';
+        }
+        if (empty($response['country_id']) || !ctype_digit($response['country_id'])) {
+            return 'error, wrong country_id';
+        }
+        return '';
     }
 
-    public function city_delete()
+    public function city_submit(Request $request)
     {
+        $parameters = $request->except(['_token']);
+        if (empty($parameters['id']))
+            return $this->city_add($parameters);
+        return $this->city_edit($parameters);
+    }
 
+    public function city_delete($id)
+    {
+        Warehouse::where('city_id', $id)->update(['city_id' => null]);
+        Location::where('city_id', $id)->update(['city_id' => null]);
+        City::find($id)->delete();
+        return $id;
     }
 
 }
