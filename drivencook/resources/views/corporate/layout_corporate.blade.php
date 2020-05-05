@@ -17,7 +17,8 @@
 <nav class="navbar navbar-dark sticky-top bg-dark2 text-light justify-content-between">
     <span class="d-flex align-items-center">
         <button href="#menu-toggle" class="btn text-light" id="menu-toggle"><i class="fa fa-bars"></i></button>
-        <a class="navbar-brand" href="{{route('corporate_dashboard')}}">&nbsp;&nbsp;&nbsp;Administration Drive 'N' Cook</a>
+        <a class="navbar-brand"
+           href="{{route('corporate_dashboard')}}">&nbsp;&nbsp;&nbsp;Administration Drive 'N' Cook</a>
     </span>
 
     @if (!auth()->guest())
@@ -73,7 +74,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light2" href="#">
+                    <a class="nav-link text-light2" href="{{route('country_list')}}">
                         <i class="fa fa-globe"></i>&nbsp;&nbsp;&nbsp;Pays & Villes
                     </a>
                 </li>
@@ -154,6 +155,13 @@
                     </a>
                 </li>
                 @break
+                @case(route('country_list'))
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{route('corporate_dashboard')}}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir au tableau de bord
+                    </a>
+                </li>
+                @break
                 @default
                 @break
             @endswitch
@@ -210,6 +218,13 @@
                         <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{{ 'corporate.add_dish' }}
                     </a>
                 </li>
+            @endif
+            @if (strpos(url()->current(), route('city_list',['id'=>''])) !== false)
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('country_list')}}">
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('city.back_to_country_list')}}
+                        </a>
+                    </li>
             @endif
         </ul>
     </div>

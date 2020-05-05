@@ -16,6 +16,7 @@ require_once('corporate/franchisees.php');
 require_once('corporate/trucks.php');
 require_once('corporate/warehouses.php');
 require_once('corporate/dishes.php');
+require_once('corporate/country_city.php');
 
 Route::get('/', function () {
     return view('welcome');
