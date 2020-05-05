@@ -4,7 +4,9 @@
 namespace App\Http\Controllers\Corporate;
 
 use App\Http\Controllers\Controller;
+use App\Models\Sale;
 use App\Models\User;
+use Carbon\Carbon;
 
 class ClientController extends Controller
 {
@@ -16,8 +18,11 @@ class ClientController extends Controller
     public function client_list()
     {
         $client_list = User::where('role', 'Client')->get()->toArray();
+        $sale_count = Sale::where("date", ">=", Carbon::today()->subDays(30))->count();
+
         return view('corporate.client.client_list')
-            ->with('client_list', $client_list);
+            ->with('client_list', $client_list)
+            ->with('sale_count', $sale_count);
     }
 
     public function add_client()

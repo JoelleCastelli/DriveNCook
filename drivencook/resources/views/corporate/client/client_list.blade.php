@@ -9,7 +9,7 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div class="card text-light2">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item bg-info">Nombre de clients : #todo</li>
+                            <li class="list-group-item bg-info">Nombre de clients : {{count($client_list)}}</li>
                             <li class="list-group-item bg-info align-content-arround">
                                 <a href="#" class="row text-light2">
                                     <div class="col-10">
@@ -26,7 +26,7 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div class="card text-light2">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item bg-indigo">Nombre de commandes (30 jours) : #todo</li>
+                            <li class="list-group-item bg-indigo">Nombre de commandes (30 jours) : {{$sale_count}}</li>
                             <li class="list-group-item bg-indigo align-content-arround">
                                 <a href="#" class="row text-light2">
                                     <div class="col-10">
