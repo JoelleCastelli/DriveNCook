@@ -54,7 +54,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light2" href="#">
+                    <a class="nav-link text-light2" href="{{route('client_list')}}">
                         <i class="fa fa-user"></i>&nbsp;&nbsp;&nbsp;Clients
                     </a>
                 </li>
@@ -171,6 +171,23 @@
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('country_list')}}">
                         <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des pays
+                    </a>
+                </li>
+                @break
+                @case(route('client_list'))
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{route('corporate_dashboard')}}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir au tableau de bord
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{route('client_create')}}">
+                        <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Ajouter un client
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="#">
+                        <i class="fa fa-credit-card"></i>&nbsp;&nbsp;&nbsp;Gestion de la fidelité
                     </a>
                 </li>
                 @break

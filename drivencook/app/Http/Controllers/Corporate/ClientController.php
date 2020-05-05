@@ -4,6 +4,7 @@
 namespace App\Http\Controllers\Corporate;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 
 class ClientController extends Controller
 {
@@ -14,7 +15,9 @@ class ClientController extends Controller
 
     public function client_list()
     {
-
+        $client_list = User::where('role', 'Client')->get()->toArray();
+        return view('corporate.client.client_list')
+            ->with('client_list', $client_list);
     }
 
     public function add_client()
@@ -31,6 +34,7 @@ class ClientController extends Controller
     {
 
     }
+
     public function update_client_submit()
     {
 
