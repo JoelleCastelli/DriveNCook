@@ -19,6 +19,10 @@ Route::post('/corporate/client/update/', [
     'as' => 'client_update_submit',
     'uses' => 'Corporate\ClientController@update_client_submit'
 ]);
+Route::post('/corporate/client/password/', [
+    'as' => 'client_update_password',
+    'uses' => 'Corporate\ClientController@client_update_password'
+]);
 
 Route::get('/corporate/client/create/', [
     'as' => 'client_create',

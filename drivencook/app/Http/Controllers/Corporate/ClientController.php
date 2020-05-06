@@ -7,10 +7,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Sale;
 use App\Models\Stock;
 use App\Models\User;
+use App\Traits\UserTools;
 use Carbon\Carbon;
 
 class ClientController extends Controller
 {
+    use UserTools;
+
     public function __construct()
     {
         $this->middleware('App\Http\Middleware\AuthCorporate');
@@ -38,17 +41,53 @@ class ClientController extends Controller
 
     public function update_client($client_id)
     {
-        return 'coucou';
+        $client = User::find($client_id)->toArray();
+//        var_dump($client);
+//        die;
+        return view('corporate.client.client_update')
+            ->with('client', $client);
     }
 
     public function update_client_submit()
     {
+        request()->validate([
+            'id' => ['required', 'numeric'],
+            'lastname' => ['required'],
+            'firstname' => ['required'],
+            'birthdate' => ['nullable', 'date'],
+            'email' => ['required', 'email'],
+            'telephone' => ['nullable', 'regex:/^(0|\+[1-9]{2}\s?)[1-9]([-. ]?\d{2}){4}$/u']
+        ]);
 
+        User::find(request('id'))->update([
+            'lastname' => request('lastname'),
+            'firstname' => request('firstname'),
+            'birthdate' => request('birthdate'),
+            'telephone' => request('telephone'),
+            'email' => request('email'),
+        ]);
+        //TODO la colonne telephone ne se met pas à jour
+
+        flash('Utilisateur modifié')->success();
+        return redirect()->route('client_update', ['id'=>request('id')]);
+    }
+
+    public function client_update_password()
+    {
+        request()->validate([
+            'id' => ['required', 'integer'],
+            'password' => ['required', 'confirmed', 'min:6']
+        ]);
+
+        $this->update_user_password(request('id'), request('password'));
+        flash('Mot de passe du client modifié')->success();
+        return back();
     }
 
     public function delete_client($client_id)
     {
-
+        Sale::where("user_client", $client_id)->delete();
+        $this->delete_user($client_id);
     }
 
     public function view_client($client_id)
@@ -58,7 +97,7 @@ class ClientController extends Controller
 //        var_dump($client_orders);
 //        die;
 
-        return view('corporate.client.client_view')
+        return view('corporate . client . client_view')
             ->with('client', $client)
             ->with('client_orders', $client_orders);
     }
