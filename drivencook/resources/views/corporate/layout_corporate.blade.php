@@ -255,6 +255,13 @@
                     </a>
                 </li>
             @endif
+            @if (strpos(url()->current(), route('client_view',['id'=>''])) !== false)
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{route('client_list')}}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('client.back_to_client_list')}}
+                    </a>
+                </li>
+            @endif
         </ul>
     </div>
     <div id="page-content-wrapper">

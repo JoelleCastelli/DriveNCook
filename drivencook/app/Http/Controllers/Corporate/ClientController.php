@@ -35,9 +35,9 @@ class ClientController extends Controller
 
     }
 
-    public function update_client()
+    public function update_client($client_id)
     {
-
+        return 'coucou';
     }
 
     public function update_client_submit()
@@ -52,7 +52,12 @@ class ClientController extends Controller
 
     public function view_client($client_id)
     {
+        $client = User::find($client_id)->toArray();
+        $client_orders = Sale::where("user_client", $client_id)->with('sold_dishes')->get()->toArray();
 
+        return view('corporate.client.client_view')
+            ->with('client', $client)
+            ->with('client_orders', $client_orders);
     }
 
 }

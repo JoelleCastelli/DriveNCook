@@ -5,7 +5,7 @@ Route::get('/corporate/client', [
     'uses' => 'Corporate\ClientController@client_list'
 ]);
 
-Route::get('/corporate/client/{id}', [
+Route::get('/corporate/client/view/{id}', [
     'as' => 'client_view',
     'uses' => 'Corporate\ClientController@view_client'
 ]);
