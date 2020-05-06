@@ -14,6 +14,7 @@ use App\Models\SoldDish;
 use App\Models\Stock;
 use App\Models\Truck;
 use App\Models\User;
+use App\Traits\UserTools;
 use Barryvdh\DomPDF\Facade as PDF;
 use DateTime;
 use Illuminate\Http\Request;
@@ -21,6 +22,8 @@ use Yajra\DataTables\DataTables;
 
 class FranchiseeController extends Controller
 {
+    use UserTools;
+
     public function __construct()
     {
         $this->middleware('App\Http\Middleware\AuthCorporate');
@@ -241,9 +244,7 @@ class FranchiseeController extends Controller
             'password' => ['required', 'confirmed', 'min:6']
         ]);
 
-        User::find(request('id'))->update([
-            'password' => hash('sha256', request('password'))
-        ]);
+        $this->update_user_password(request('id'), request('password'));
 
         flash('Mot de passe du franchisé modifié')->success();
         return back();
@@ -345,7 +346,7 @@ class FranchiseeController extends Controller
             Sale::where('user_franchised', $id)->delete();
         }
         Stock::where('user_id', $id)->delete();
-        User::find($id)->delete();
+        $this->delete_user($id);
         return $id;
     }
 
@@ -451,7 +452,8 @@ class FranchiseeController extends Controller
         return $total;
     }
 
-    public function franchisee_invoice_pdf($id){
+    public function franchisee_invoice_pdf($id)
+    {
         $invoice = MonthlyLicenseFee::with('user')->where('id', $id)->first()->toArray();
         $pseudo = Pseudo::where('id', $invoice['user']['pseudo_id'])->first()->toArray();
         $pdf = PDF::loadView('corporate.franchisee.franchisee_invoice', array('invoice' => $invoice, 'pseudo' => $pseudo));
