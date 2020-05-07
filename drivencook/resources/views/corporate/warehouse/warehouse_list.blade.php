@@ -23,6 +23,7 @@
                                         <th>{{ trans('warehouse_list.name') }}</th>
                                         <th>{{ trans('warehouse_list.address') }}</th>
                                         <th>{{ trans('warehouse_list.city') }}</th>
+                                        <th>{{ trans('corporate.actions') }}</th>
                                     </tr>
                                     </thead>
                                     <tbody>

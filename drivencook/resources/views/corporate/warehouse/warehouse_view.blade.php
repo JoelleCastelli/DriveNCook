@@ -86,7 +86,7 @@
                                 <th>{{ trans('warehouse_order.date') }}</th>
                                 <th>{{ trans('warehouse_order.pseudo') }}</th>
                                 <th>{{ trans('warehouse_order.status') }}</th>
-                                <th>{{ trans('warehouse_dishes.actions') }}</th>
+                                <th>{{ trans('corporate.actions') }}</th>
                             </tr>
                             </thead>
                             <tbody>

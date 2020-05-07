@@ -23,4 +23,7 @@ return [
     'product' => 'Product',
     'category' => 'Category',
     'quantity_to_send' => 'Quantity sent',
+
+    'dish_update' => 'Save',
+    'dish_close' => 'Close',
 ];

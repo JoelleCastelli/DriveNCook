@@ -8,7 +8,7 @@ return [
 
     'title' => 'Commande',
     'order_details_section' => 'Détails de la commande',
-    'franchisee_details_section' => 'Information sur le franchisé',
+    'franchisee_details_section' => 'Informations sur le franchisé',
     'products_section' => 'Produits commandés',
 
     'reference' => 'Référence',
@@ -23,4 +23,7 @@ return [
     'product' => 'Produit',
     'category' => 'Catégorie',
     'quantity_to_send' => 'Quantité envoyée',
+
+    'dish_update' => 'Sauvegarder',
+    'dish_close' => 'Fermer',
 ];

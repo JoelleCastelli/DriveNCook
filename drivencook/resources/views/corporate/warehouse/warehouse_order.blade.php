@@ -96,8 +96,8 @@
                     <input type="number" class="form-control" id="dishQtySent" min="1">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('warehouse_dishes.dish_close') }}</button>
-                    <button type="button" class="btn btn-primary" id="updateDish">{{ trans('warehouse_dishes.dish_update') }}</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('warehouse_order.dish_close') }}</button>
+                    <button type="button" class="btn btn-primary" id="updateDish">{{ trans('warehouse_order.dish_update') }}</button>
                 </div>
             </div>
         </div>
