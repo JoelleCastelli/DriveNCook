@@ -138,12 +138,12 @@
                 @case(route('warehouse_list'))
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('corporate_dashboard')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ 'corporate.back_dashboard' }}
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_dashboard') }}
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('warehouse_creation')}}">
-                        <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{{ 'corporate.add_warehouse' }}
+                        <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.add_warehouse') }}
                     </a>
                 </li>
 
@@ -244,7 +244,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light2" data-toggle="modal" data-target="#addDishModal">
-                        <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{{ 'corporate.add_dish' }}
+                        <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.add_dish') }}
                     </a>
                 </li>
             @endif
