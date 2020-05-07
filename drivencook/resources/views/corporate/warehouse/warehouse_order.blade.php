@@ -55,6 +55,7 @@
                             <tr>
                                 <th>{{ trans('warehouse_order.product') }}</th>
                                 <th>{{ trans('warehouse_order.category') }}</th>
+                                <th>{{ trans('warehouse_order.quantity_ordered') }}</th>
                                 <th>{{ trans('warehouse_order.quantity_to_send') }}</th>
                                 <th>{{ trans('corporate.actions') }}</th>
                             </tr>
@@ -64,6 +65,7 @@
                                     <tr>
                                         <td id="rowName{{ $item->dish_id }}">{{ $item->name }}</td>
                                         <td id="rowCategory{{ $item->dish_id }}">{{ trans($GLOBALS['DISH_TYPE'][$item->category]) }}</td>
+                                        <td id="rowQty{{ $item->dish_id }}">{{ $item->pd_quantity }}</td>
                                         <td id="rowQtyToSend{{ $item->dish_id }}">{{ $item->pd_quantity - $item->quantity_sent }}</td>
                                         <td>
                                             <i class="fa fa-edit" onclick="editDish({{ $item->dish_id }})" data-toggle="modal" data-target="#dishModal"></i>

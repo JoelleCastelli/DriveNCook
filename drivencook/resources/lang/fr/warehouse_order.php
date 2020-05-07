@@ -22,7 +22,8 @@ return [
 
     'product' => 'Produit',
     'category' => 'Catégorie',
-    'quantity_to_send' => 'Quantité envoyée',
+    'quantity_to_send' => 'Quantité à envoyer',
+    'quantity_ordered' => 'Quantité commandée',
 
     'dish_update' => 'Sauvegarder',
     'dish_close' => 'Fermer',
