@@ -158,11 +158,15 @@
 
                             $('#dishModal').modal('hide');
                         } else {
-                            alert('{{ trans('warehouse_dishes.update_dish_error') }}');
+                            let str = '';
+                            for(let i = 0; i < data['errorList'].length; i++) {
+                                str += '\n' + data['errorList'][i];
+                            }
+                            alert(Lang.get('warehouse_dishes.update_dish_error') + str);
                         }
                     },
                     error: function () {
-                        alert('{{ trans('warehouse_dishes.update_dish_error') }}');
+                        alert(Lang.get('warehouse_dishes.update_dish_error'));
                     }
                 });
             });

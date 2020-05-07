@@ -239,12 +239,19 @@
             @if (strpos(url()->current(), route('warehouse_dishes',['id'=>''])) !== false)
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{ route('warehouse_view',['id'=> $warehouse['id']]) }}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_warehouse_list') }}
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_warehouse_view') }}
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light2" data-toggle="modal" data-target="#addDishModal">
                         <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{{ 'corporate.add_dish' }}
+                    </a>
+                </li>
+            @endif
+            @if (strpos(url()->current(), route('warehouse_order',['warehouse_id'=>'', 'id'=>''])) !== false)
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{ route('warehouse_view',['id'=> $warehouseId]) }}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_warehouse_view') }}
                     </a>
                 </li>
             @endif

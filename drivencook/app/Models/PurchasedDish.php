@@ -8,7 +8,7 @@ class PurchasedDish extends \Illuminate\Database\Eloquent\Model
 {
     protected $table = 'purchased_dish';
 
-    protected $fillable = ['purchase_order', 'dish_id', 'quantity'];
+    protected $fillable = ['purchase_order_id', 'dish_id', 'quantity', 'quantity_sent'];
 
     public function purchase_order()
     {
