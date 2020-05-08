@@ -4,6 +4,7 @@
 namespace App\Traits;
 
 
+use App\Models\Truck;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -27,5 +28,13 @@ trait UserTools
             return null;
         }
         return auth()->user()->toArray();
+    }
+
+    public function does_have_assigned_truck($user_id): bool
+    {
+        $truck = Truck::with('location')
+            ->where('user_id', $user_id)
+            ->count();
+        return $truck == 1;
     }
 }

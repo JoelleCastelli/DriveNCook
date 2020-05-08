@@ -14,7 +14,7 @@
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item bg-indigo">Emplacement du camion : #TODO</li>
                             <li class="list-group-item bg-indigo align-content-arround">
-                                <a href="#" target="_blank" class="row text-light2">
+                                <a href="{{route('franchise.truck_view')}}" target="_blank" class="row text-light2">
                                     <div class="col-10">
                                         Consulter les details
                                     </div>

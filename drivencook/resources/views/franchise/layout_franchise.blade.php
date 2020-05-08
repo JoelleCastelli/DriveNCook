@@ -44,7 +44,7 @@
             @switch(url()->current())
                 @case(route('franchise.dashboard'))
                 <li class="nav-item">
-                    <a class="nav-link text-light2" href="#">
+                    <a class="nav-link text-light2" href="{{route('franchise.truck_view')}}">
                         <i class="fa fa-truck"></i>&nbsp;&nbsp;&nbsp;Camion
                     </a>
                 </li>
@@ -71,6 +71,25 @@
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="#">
                         <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp;&nbsp;Evenements
+                    </a>
+                </li>
+                @break
+            @case(route('franchise.truck_view'))
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{route('franchise.dashboard')}}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir au tableau de bord
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{route('franchise.truck_location_update')}}">
+                        <i class="fa fa-map-pin"></i>&nbsp;&nbsp;&nbsp;Mettre à jour la position du camion
+                    </a>
+                </li>
+                @break
+            @case(route('franchise.truck_location_update'))
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{route('franchise.truck_view')}}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la gestion du camion
                     </a>
                 </li>
                 @break
