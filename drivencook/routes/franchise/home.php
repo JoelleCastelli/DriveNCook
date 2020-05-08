@@ -2,17 +2,17 @@
 
 Route::get('/franchise/login', [
     'as' => 'franchise.login',
-    'uses' => 'Franchise\AccountController@loginForm'
+    'uses' => 'Franchise\AuthController@loginForm'
 ]);
 
 Route::post('/franchise/login', [
     'as' => 'franchise.login_submit',
-    'uses' => 'Franchise\AccountController@processLoginForm'
+    'uses' => 'Franchise\AuthController@processLoginForm'
 ]);
 
 Route::get('/franchise/logout', [
     'as' => 'franchise.logout',
-    'uses' => 'Franchise\AccountController@logout'
+    'uses' => 'Franchise\AuthController@logout'
 ]);
 
 Route::get('/franchise', [
