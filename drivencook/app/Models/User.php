@@ -46,19 +46,22 @@ class User extends Model implements Authenticatable
         return $this->hasMany(PurchaseOrder::class, 'user_id')->with('purchased_dishes');
     }
 
-    public function monthly_licence_fees()
+    public function invoices()
     {
-        return $this->hasMany(MonthlyLicenseFee::class, 'user_id');
+        return $this->hasMany(Invoice::class, 'user_id');
     }
 
-    public function last_monthly_licence_fee()
+    public function last_invoice()
     {
-        return $this->hasOne(MonthlyLicenseFee::class, 'user_id')->orderByDesc('id');
+        return $this->hasOne(Invoice::class, 'user_id')->orderByDesc('id');
     }
 
-    public function last_paid_licence_fee()
+    public function last_paid_invoice_fee()
     {
-        return $this->hasOne(MonthlyLicenseFee::class, 'user_id')->where('status', '=', 'Payée')->orderByDesc('id');
+        return $this->hasOne(Invoice::class, 'user_id')
+                    ->where('status', 'Payée')
+                    ->where('monthly_licence_fee', 1)
+                    ->orderByDesc('id');
     }
 
     public function truck()

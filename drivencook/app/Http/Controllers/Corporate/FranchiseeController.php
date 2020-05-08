@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Corporate;
 
 use App\Http\Controllers\Controller;
 use App\Models\FranchiseObligation;
-use App\Models\MonthlyLicenseFee;
+use App\Models\Invoice;
 use App\Models\Pseudo;
 use App\Models\PurchasedDish;
 use App\Models\PurchaseOrder;
@@ -32,7 +32,7 @@ class FranchiseeController extends Controller
     public function franchisee_list()
     {
         $franchisees = User::with('pseudo')
-            ->with('last_paid_licence_fee')
+            ->with('last_paid_invoice_fee')
             ->with('truck')
             ->where('role', 'Franchisé')
             ->get()->toArray();
@@ -254,7 +254,7 @@ class FranchiseeController extends Controller
     {
         $franchisee = User::whereId($id)
             ->with('pseudo')
-            ->with('monthly_licence_fees')
+            ->with('invoices')
             ->with('truck')
             ->with('stocks')
             ->with('purchase_order')
@@ -330,7 +330,7 @@ class FranchiseeController extends Controller
             return 'error';
         }
         Truck::where('user_id', $id)->update(['user_id' => NULL]);
-        MonthlyLicenseFee::where('user_id', $id)->delete();
+        Invoice::where('user_id', $id)->delete();
 
         $purchaseOrder = PurchaseOrder::where('user_id', $id)->get(['id']);
         if (!empty($purchaseOrder)) {
@@ -452,7 +452,7 @@ class FranchiseeController extends Controller
 
     public function franchisee_invoice_pdf($id)
     {
-        $invoice = MonthlyLicenseFee::with('user')->where('id', $id)->first()->toArray();
+        $invoice = Invoice::with('user')->where('id', $id)->first()->toArray();
         $pseudo = Pseudo::where('id', $invoice['user']['pseudo_id'])->first()->toArray();
         $pdf = PDF::loadView('corporate.franchisee.franchisee_invoice', array('invoice' => $invoice, 'pseudo' => $pseudo));
         return $pdf->stream();

@@ -157,17 +157,19 @@
                             <thead>
                                 <tr>
                                     <th>Montant</th>
-                                    <th>Status</th>
+                                    <th>Statut</th>
+                                    <th>Type</th>
                                     <th>Date d'émission</th>
                                     <th>Date de paiement</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            @foreach($franchisee['monthly_licence_fees'] as $license_fee)
+                            @foreach($franchisee['invoices'] as $license_fee)
                                 <tr>
                                     <td>{{$license_fee['amount'].' €'}}</td>
                                     <td>{{$license_fee['status']}}</td>
+                                    <td>{{$license_fee['monthly_licence_fee']==1 ? 'Frais mensuels':'Réassort'}}</td>
                                     <td>
                                         {{DateTime::createFromFormat('Y-m-d',$license_fee['date_emitted'])->format('d/m/Y')}}
                                     </td>

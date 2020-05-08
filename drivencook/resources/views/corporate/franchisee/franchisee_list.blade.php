@@ -61,30 +61,31 @@
                         <th>Prénom</th>
                         <th>Téléphone</th>
                         <th>Email</th>
-                        <th>Actif</th>
-                        <th>Dernier paiement</th>
+                        <th>Pseudonyme</th>
+                        <th>Dernier paiement mensuel</th>
                         <th>Emplacement camion</th>
-                        <th>Inscrit depuis le</th>
+                        <th>Date d'inscription</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
+
                     @foreach($franchisees as $franchisee)
                         <tr id="{{'row_'.$franchisee['id']}}">
                             <td>{{$franchisee['lastname']}}</td>
                             <td>{{$franchisee['firstname']}}</td>
                             <td>{{$franchisee['telephone']}}</td>
                             <td>{{$franchisee['email']}}</td>
-                            <td>{{empty($franchisee['pseudo'])?'Inactif':'Actif ('.$franchisee['pseudo']['name'].')'}}</td>
+                            <td>{{empty($franchisee['pseudo'])?'Aucun': $franchisee['pseudo']['name']}}</td>
 
-                            <td>{{empty($franchisee['last_paid_licence_fee'])?'Jamais'
-                                :DateTime::createFromFormat('Y-m-d',$franchisee['last_paid_licence_fee']['date_paid'])->format('d-m-Y')}}</td>
+                            <td>{{empty($franchisee['last_paid_invoice_fee'])?'Jamais'
+                                :DateTime::createFromFormat('Y-m-d',$franchisee['last_paid_invoice_fee']['date_paid'])->format('d/m/Y')}}</td>
 
                             <td>{{(empty($franchisee['truck'])?'Camion non attribué':
                                 (empty($franchisee['truck']['location'])?'Pas d\'emplacement':
                                 $franchisee['truck']['location']['address'].' ('.$franchisee['truck']['location']['city']['postcode'].')'))}}</td>
 
-                            <td>{{$franchisee['created_at']}}</td>
+                            <td>{{ DateTime::createFromFormat('Y-m-d H:i:s',$franchisee['created_at'])->format('d/m/Y') }}</td>
                             <td>
                                 <a href="{{route('franchisee_view',['id'=>$franchisee['id']])}}">
                                     <button class="text-light fa fa-eye"></button>
@@ -116,7 +117,7 @@
         });
 
         function deleteFranchise(id) {
-            if (confirm("Voulez vous vraiment supprimer ce franchisé ? Toute les données associés seront supprimés")) {
+            if (confirm("Voulez-vous vraiment supprimer ce franchisé ? Toutes les données associées seront supprimées")) {
                 if (!isNaN(id)) {
                     let urlB = '{{route('franchisee_delete',['id'=>':id'])}}';
                     urlB = urlB.replace(':id', id);
@@ -131,11 +132,11 @@
                                 alert("Franchisé supprimé");
                                 $('#allfranchisees').DataTable().row('#row_' + id).remove().draw();
                             } else {
-                                alert("Une erreur est survenue lors de la suppression, veuillez raffraichir la page");
+                                alert("Une erreur est survenue lors de la suppression, veuillez rafraîchir la page");
                             }
                         },
                         error: function () {
-                            alert("Une erreur est survenue lors de la suppression, veuillez raffraichir la page");
+                            alert("Une erreur est survenue lors de la suppression, veuillez rafraîchir la page");
                         }
                     })
                 }
