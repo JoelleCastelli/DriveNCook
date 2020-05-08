@@ -20,4 +20,12 @@ trait UserTools
     {
         User::find($id)->delete();
     }
+
+    public function get_connected_user()
+    {
+        if (auth()->guest()) {
+            return null;
+        }
+        return auth()->user()->toArray();
+    }
 }
