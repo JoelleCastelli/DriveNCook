@@ -2,7 +2,7 @@
 @section('style')
 @endsection
 @section('title')
-    {{empty($safety_inspection)?'Ajout d\'un contrôle technique' : 'Mise à jour d\'un conrôle technique'}}
+    {{empty($safety_inspection)?'Ajout d\'un contrôle technique' : 'Mise à jour d\'un contrôle technique'}}
 @endsection
 
 @section('content')

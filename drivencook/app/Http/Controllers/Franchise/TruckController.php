@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Middleware\AuthFranchise;
 use App\Models\Breakdown;
 use App\Models\Location;
+use App\Models\SafetyInspection;
 use App\Models\Truck;
 use App\Traits\EnumValue;
 use App\Traits\UserTools;
@@ -44,6 +45,7 @@ class TruckController extends Controller
     {
         return Truck::with('location')
             ->with('breakdowns')
+            ->with('last_safety_inspection')
             ->with('safety_inspection')
             ->where('user_id', $this->get_connected_user())
             ->first()->toArray();
@@ -120,7 +122,6 @@ class TruckController extends Controller
             ->with('breakdown', $breakdown);
     }
 
-
     public function breakdown_submit()
     {
         request()->validate([
@@ -156,6 +157,68 @@ class TruckController extends Controller
 
         return redirect(route('franchise.truck_view'));
 
+    }
+
+    public function add_safety_inspection()
+    {
+        if (!$this->check_truck_assignation())
+            return redirect(route('franchise.dashboard'));
+
+        return view('franchise.truck.safety_inspection_form')
+            ->with('franchise', $this->get_connected_user());
+    }
+
+    public function update_safety_inspection($safety_inspecton_id)
+    {
+        if (!$this->check_truck_assignation())
+            return redirect(route('franchise.dashboard'));
+
+        $safety_inspection = SafetyInspection::find($safety_inspecton_id);
+        if ($safety_inspection == null) {
+            flash('Erreur, la pane n\'existe pas !')->error();
+            return back();
+        }
+        $safety_inspection = $safety_inspection->toArray();
+
+        return view('franchise.truck.safety_inspection_form')
+            ->with('franchise', $this->get_connected_user())
+            ->with('safety_inspection', $safety_inspection);
+    }
+
+    public function safety_inspection_submit()
+    {
+
+        request()->validate([
+            'date' => ['required', 'date'],
+            'truck_age' => ['required', 'integer'],
+            'truck_mileage' => ['required', 'integer'],
+        ]);
+
+        if (!empty(request('id'))) {
+            SafetyInspection::find(request('id'))->update([
+                'date' => request('date'),
+                'truck_age' => request('truck_age'),
+                'truck_mileage' => request('truck_mileage'),
+                'replaced_parts' => request('replaced_parts'),
+                'drained_fluids' => request('drained_fluids'),
+                'truck_id' => $this->get_franchises_truck()['id']
+            ]);
+
+            flash('Contrôle technique modifié')->success();
+        } else {
+            SafetyInspection::insert([
+                'date' => request('date'),
+                'truck_age' => request('truck_age'),
+                'truck_mileage' => request('truck_mileage'),
+                'replaced_parts' => request('replaced_parts'),
+                'drained_fluids' => request('drained_fluids'),
+                'truck_id' => $this->get_franchises_truck()['id']
+            ]);
+
+            flash('Contrôle technique ajouté')->success();
+        }
+
+        return redirect(route('franchise.truck_view'));
     }
 
 }

@@ -140,8 +140,8 @@
                                     <td>{{$inspection['replaced_parts']}}</td>
                                     <td>{{$inspection['drained_fluids']}}</td>
                                     <td>
-                                        <a href="{{route('update_safety_inspection',['truckId'=>$truck['id'], "safetyInspectionId"=> $inspection['id']])}}">
-                                            <i class="fa fa-edit"></i>TODO
+                                        <a href="{{route('franchise.truck_safety_inspection_update',["safety_inspection_id"=> $inspection['id']])}}">
+                                            <i class="fa fa-edit"></i>
                                         </a>
                                     </td>
                                 </tr>
@@ -151,8 +151,8 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <a href="{{route('add_safety_inspection',["truckId"=>$truck['id']])}}">
-                        <button class="btn btn-light_blue"> Ajouter un contrôle technique #TODO</button>
+                    <a href="{{route('franchise.truck_safety_inspection_add')}}">
+                        <button class="btn btn-light_blue"> Ajouter un contrôle technique</button>
                     </a>
                 </div>
 

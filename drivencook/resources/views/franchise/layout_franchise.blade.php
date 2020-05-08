@@ -74,7 +74,7 @@
                     </a>
                 </li>
                 @break
-            @case(route('franchise.truck_view'))
+                @case(route('franchise.truck_view'))
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('franchise.dashboard')}}">
                         <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir au tableau de bord
@@ -86,7 +86,7 @@
                     </a>
                 </li>
                 @break
-            @case(route('franchise.truck_location_update'))
+                @case(route('franchise.truck_location_update'))
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('franchise.truck_view')}}">
                         <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la gestion du camion
@@ -96,6 +96,14 @@
                 @default
                 @break
             @endswitch
+                @if (strpos(url()->current(), route('franchise.truck_safety_inspection_update', ['id'=>''])) !== false)
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('franchise.truck_view')}}">
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la gestion du camion
+                        </a>
+                    </li>
+                @endif
+
         </ul>
     </div>
     <div id="page-content-wrapper">
