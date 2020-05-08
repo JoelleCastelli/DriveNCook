@@ -82,7 +82,7 @@
                                 <th>Description</th>
                                 <th>Coût</th>
                                 <th>Statut</th>
-                                <th>Actions</th>
+                                <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -93,12 +93,11 @@
                                     </td>
                                     <td>{{$breakdown['type']}}</td>
                                     <td>{{$breakdown['description']}}</td>
-                                    <td>{{$breakdown['cost']}}</td>
+                                    <td>{{$breakdown['cost']}} €</td>
                                     <td>{{$breakdown['status']}}</td>
                                     <td>
-                                        <!--TODO-->
-                                        <a href="{{route('update_breakdown',["truckId"=>$truck['id'], "breakdownId"=>$breakdown['id']])}}">
-                                            <i class="fa fa-edit ml-3"></i>TODO
+                                        <a href="{{route('franchise.truck_breakdown_update',["breakdown_id"=>$breakdown['id']])}}">
+                                            <i class="fa fa-edit"></i>
                                         </a>
                                     </td>
                                 </tr>
@@ -108,9 +107,8 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <!--TODO-->
-                    <a href="{{route('add_breakdown',["truckId"=>$truck['id']])}}">
-                        <button class="btn btn-light_blue"> Ajouter une panne #TODO</button>
+                    <a href="{{route('franchise.truck_breakdown_add')}}">
+                        <button class="btn btn-light_blue"> Ajouter une panne</button>
                     </a>
                 </div>
             </div>

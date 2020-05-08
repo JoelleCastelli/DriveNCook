@@ -5,13 +5,16 @@ namespace App\Http\Controllers\Franchise;
 
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\AuthFranchise;
+use App\Models\Breakdown;
 use App\Models\Location;
 use App\Models\Truck;
+use App\Traits\EnumValue;
 use App\Traits\UserTools;
 
 class TruckController extends Controller
 {
     use UserTools;
+    use EnumValue;
 
     public function __construct()
     {
@@ -32,7 +35,6 @@ class TruckController extends Controller
         if (!$this->check_truck_assignation())
             return redirect(route('franchise.dashboard'));
 
-//        var_dump($this->get_franchises_truck());die;
         return view('franchise.truck.truck_view')
             ->with('franchise', $this->get_connected_user())
             ->with('truck', $this->get_franchises_truck());
@@ -78,6 +80,82 @@ class TruckController extends Controller
         ]);
         flash('Position mis à jour')->success();
         return redirect(route('franchise.truck_view'));
+    }
+
+    public function add_breakdown()
+    {
+        if (!$this->check_truck_assignation())
+            return redirect(route('franchise.dashboard'));
+
+        $breakdown_type = $this->get_enum_column_values('breakdown', 'type');
+        $breakdown_status = $this->get_enum_column_values('breakdown', 'status');
+
+
+        return view('franchise.truck.breakdown_form')
+            ->with('franchise', $this->get_connected_user())
+            ->with('breakdown_type', $breakdown_type)
+            ->with('breakdown_status', $breakdown_status);
+    }
+
+    public function update_breakdown($breakdown_id)
+    {
+        if (!$this->check_truck_assignation())
+            return redirect(route('franchise.dashboard'));
+
+        $breakdown = Breakdown::find($breakdown_id);
+        if ($breakdown == null) {
+            flash('Erreur, la pane n\'existe pas !')->error();
+            return back();
+        }
+        $breakdown = $breakdown->toArray();
+
+        $breakdown_type = $this->get_enum_column_values('breakdown', 'type');
+        $breakdown_status = $this->get_enum_column_values('breakdown', 'status');
+
+
+        return view('franchise.truck.breakdown_form')
+            ->with('franchise', $this->get_connected_user())
+            ->with('breakdown_type', $breakdown_type)
+            ->with('breakdown_status', $breakdown_status)
+            ->with('breakdown', $breakdown);
+    }
+
+
+    public function breakdown_submit()
+    {
+        request()->validate([
+            'type' => ['required'],
+            'cost' => ['required'],
+            'date' => ['required', 'date'],
+            'status' => ['required'],
+        ]);
+
+        if (!empty(request('id'))) {
+            Breakdown::find(request('id'))->update
+            ([
+                'type' => request('type'),
+                'description' => request('description'),
+                'cost' => request('cost'),
+                'date' => request('date'),
+                'status' => request('status'),
+            ]);
+
+            flash('Panne modifié')->success();
+        } else {
+            Breakdown::insert([
+                'type' => request('type'),
+                'description' => request('description'),
+                'cost' => request('cost'),
+                'date' => request('date'),
+                'status' => request('status'),
+                'truck_id' => $this->get_franchises_truck()['id'],
+            ]);
+
+            flash('Nouvelle panne ajouté')->success();
+        }
+
+        return redirect(route('franchise.truck_view'));
+
     }
 
 }
