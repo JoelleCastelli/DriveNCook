@@ -27,27 +27,27 @@
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                         <div class="form-group">
-                            <label for="entrance_fee">Frais d'entrées (€)</label>
+                            <label for="entrance_fee">Redevance initiale forfaitaire (€)</label>
                             <input type="number" min="0" max="1000000" step="1" name="entrance_fee" id="entrance_fee"
                                    value="{{ $last_obligation['entrance_fee'] }}"
                                    class="form-control">
                         </div>
                         <div class="form-group">
-                            <label for="revenue_percentage">Taxes sur les revenues (%)</label>
+                            <label for="revenue_percentage">Redevance périodique (%)</label>
                             <input type="number" min="0" max="100" step="1" name="revenue_percentage"
                                    id="revenue_percentage"
                                    value="{{ $last_obligation['revenue_percentage'] }}"
                                    class="form-control">
                         </div>
                         <div class="form-group">
-                            <label for="warehouse_percentage">Taxes sur les entrepôts (%)</label>
+                            <label for="warehouse_percentage">Stock corporate (%)</label>
                             <input type="number" min="0" max="100" step="1" name="warehouse_percentage"
                                    id="warehouse_percentage"
                                    value="{{ $last_obligation['warehouse_percentage'] }}"
                                    class="form-control">
                         </div>
                         <div class="form-group">
-                            <label for="billing_day">Jour de facturation mensuel (< 28)</label>
+                            <label for="billing_day">Jour de facturation mensuelle (< 28)</label>
                             <input type="number" min="1" max="28" step="1" name="billing_day" id="billing_day"
                                    value="{{ $last_obligation['billing_day'] }}"
                                    class="form-control">
@@ -63,7 +63,7 @@
         <div class="col-12 col-md-6 mt-5 mt-md-0">
             <div class="card">
                 <div class="card-header">
-                    <h2>Historique :</h2>
+                    <h2>Historique</h2>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -72,19 +72,19 @@
                             <thead>
                             <tr>
                                 <th>Date de mise à jour</th>
-                                <th>Frais d'entrées</th>
-                                <th>Taxes sur les revenues</th>
-                                <th>Taxes sur les entrepôts</th>
-                                <th>Jour de facturation mensuel</th>
+                                <th>Redevance initiale forfaitaire</th>
+                                <th>Redevance périodique</th>
+                                <th>Stock corporate</th>
+                                <th>Jour de facturation mensuelle</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($obligations as $obligation)
                                 <tr>
                                     <td>{{$obligation['date_updated']}}</td>
-                                    <td>{{$obligation['entrance_fee']}}</td>
-                                    <td>{{$obligation['revenue_percentage']}}</td>
-                                    <td>{{$obligation['warehouse_percentage']}}</td>
+                                    <td>{{ number_format($obligation['entrance_fee'], 2, ',', ' ') }} €</td>
+                                    <td>{{$obligation['revenue_percentage']}} %</td>
+                                    <td>{{$obligation['warehouse_percentage']}} %</td>
                                     <td>{{$obligation['billing_day']}}</td>
                                 </tr>
                             @endforeach

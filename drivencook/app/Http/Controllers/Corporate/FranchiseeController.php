@@ -36,7 +36,7 @@ class FranchiseeController extends Controller
             ->with('truck')
             ->where('role', 'Franchisé')
             ->get()->toArray();
-        $nextPaiement = $this->getNextPaiementDate(
+        $nextPaiement = $this->getNextPaymentDate(
             FranchiseObligation::all()->sortByDesc('id')->first()->toArray());
 
         return view('corporate/franchisee/franchisee_list')
@@ -44,7 +44,7 @@ class FranchiseeController extends Controller
             ->with('nextPaiement', $nextPaiement);
     }
 
-    public function getNextPaiementDate($franchiseObligation)
+    public function getNextPaymentDate($franchiseObligation)
     {
         $currentDay = new DateTime();
         $currentDay->setDate(date('Y'), date('m'), date('d'));
@@ -52,12 +52,12 @@ class FranchiseeController extends Controller
         if ($currentDay->format('d') <= $franchiseObligation['billing_day']) {
             return $currentDay
                 ->setDate(date('Y'), date('m'), $franchiseObligation['billing_day'])
-                ->format('d-m-Y');
+                ->format('d/m/Y');
         }
         return $currentDay
             ->setDate(date('Y'), date('m'), $franchiseObligation['billing_day'])
             ->modify('+1 month')
-            ->format('d-m-Y');
+            ->format('d/m/Y');
     }
 
     public function get_franchisee_by_email($email)
@@ -124,7 +124,8 @@ class FranchiseeController extends Controller
                 return redirect()->back()->with('error', $errors_list);
             } else {
                 $user = ['lastname' => $lastname, 'firstname' => $firstname, 'email' => $email, 'role' => $role];
-                User::create($user);
+                $data = User::create($user);
+                $this->generate_first_invoice($data->id);
                 return redirect()->route('franchisee_creation')->with('success', trans('franchisee_creation.new_franchisee_success'));
             }
         }
@@ -382,12 +383,12 @@ class FranchiseeController extends Controller
     public function get_franchise_current_month_sale_revenues($franchise_id)
     {
         $franchise_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
-        $date_max = DateTime::createFromFormat("d-m-Y", $this->getNextPaiementDate($franchise_obligation));
+        $date_max = DateTime::createFromFormat("d/m/Y", $this->getNextPaymentDate($franchise_obligation));
         $date_min = clone $date_max;
         $date_min->modify('-1 month');
 
-        $date_max = $date_max->format("Y-m-d");
-        $date_min = $date_min->format("Y-m-d");
+        $date_max = $date_max->format("Y/m/d");
+        $date_min = $date_min->format("Y/m/d");
 
         $stocks = Stock::where('user_id', $franchise_id)->get()->toArray();
 

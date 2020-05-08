@@ -2,12 +2,12 @@
 <html lang="fr">
 
     <head>
-        <invoice http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+        <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
         <title>Drive 'N' Cook - Facture</title>
-        <invoice charset="UTF-8">
-        <invoice name="viewport"
+        <meta charset="UTF-8">
+        <meta name="viewport"
               content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <invoice http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
     </head>
 
 
@@ -46,6 +46,13 @@
         #terms h5 { text-transform: uppercase; font: 13px Helvetica, Sans-Serif; letter-spacing: 5px; border-bottom: 1px solid black; padding: 0 0 8px 0; margin: 0 0 8px 0; }
         #terms div { width: 100%; text-align: center;}
     </style>
+
+    @php
+        $date = new DateTime($invoice['date_emitted']);
+        $invoice_date = $date->format('d/m/Y');
+        $end_date = $date->sub(new DateInterval('P1D'))->format('d/m/Y');
+        $start_date = $date->sub(new DateInterval('P1M'))->format('d/m/Y');
+    @endphp
 
     <body>
     
@@ -86,7 +93,7 @@
                     <tr>
 
                         <td class="invoice-head">Date</td>
-                        <td>{{ DateTime::createFromFormat('Y-m-d', $invoice['date_emitted'])->format('d/m/Y') }}</td>
+                        <td>{{ $invoice_date }}</td>
                     </tr>
                 </table>
 
@@ -103,30 +110,29 @@
                     <th>Prix</th>
                 </tr>
 
-                @for ($i = 0; $i < 10; $i++)
+                @if ($invoice['monthly_licence_fee'] == 1)
                     <tr class="item-row">
-                        <td>Lasagnes</td>
-                        <td class="nb">4 €</td>
+                        <td>Redevance périodique pour la période
+                            du {{ $start_date }}
+                            au {{ $end_date }}</td>
+                        <td class="nb">{{ $invoice['amount'] }} €</td>
                         <td class="nb">1</td>
-                        <td class="nb">4 €</td>
+                        <td class="nb">{{ $invoice['amount'] }}  €</td>
                     </tr>
-                @endfor
+                @else
+                    @for ($i = 0; $i < 10; $i++)
+                        <tr class="item-row">
+                            <td>Lasagnes</td>
+                            <td class="nb">4 €</td>
+                            <td class="nb">1</td>
+                            <td class="nb">4 €</td>
+                        </tr>
+                    @endfor
+                @endif
 
                 <tr>
                     <td colspan="2" class="blank"></td>
-                    <td colspan="1" class="total-line">Total HT</td>
-                    <td class="total-value nb">{{ $invoice['amount'] }} €</td>
-                </tr>
-
-                <tr>
-                    <td colspan="2" class="blank"></td>
-                    <td colspan="1" class="total-line">TVA</td>
-                    <td class="total-value nb">20%</td>
-                </tr>
-
-                <tr>
-                    <td colspan="2" class="blank"></td>
-                    <td colspan="1" class="total-line ttc">Total TTC</td>
+                    <td colspan="1" class="total-line ttc">Total</td>
                     <td class="total-value ttc nb">{{ $invoice['amount'] }} €</td>
                 </tr>
 
