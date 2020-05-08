@@ -39,3 +39,13 @@ Route::get('/corporate/warehouse_dishes/{id}', [
     'as' => 'warehouse_dishes',
     'uses' => 'Corporate\WarehouseController@warehouse_dishes'
 ]);
+
+Route::get('/corporate/warehouse_order/{warehouse_id}/{id}', [
+    'as' => 'warehouse_order',
+    'uses' => 'Corporate\WarehouseController@warehouse_order'
+]);
+
+Route::post('/corporate/warehouse_order_update_product_qty_sent', [
+    'as' => 'warehouse_order_update_product_qty_sent',
+    'uses' => 'Corporate\WarehouseController@warehouse_order_update_product_qty_sent'
+]);

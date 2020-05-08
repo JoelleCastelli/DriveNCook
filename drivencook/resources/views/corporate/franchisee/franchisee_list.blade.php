@@ -129,8 +129,7 @@
                         success: function (data) {
                             if (data == id) {
                                 alert("Franchisé supprimé");
-                                let row = document.getElementById('row_' + id);
-                                row.remove();
+                                $('#allfranchisees').DataTable().row('#row_' + id).remove().draw();
                             } else {
                                 alert("Une erreur est survenue lors de la suppression, veuillez raffraichir la page");
                             }

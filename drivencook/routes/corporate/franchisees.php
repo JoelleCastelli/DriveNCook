@@ -69,3 +69,8 @@ Route::delete('/corporate/unset_franchisee_truck/{id}', [
     'as' => 'unset_franchisee_truck',
     'uses' => 'Corporate\FranchiseeController@unset_franchise_truck'
 ]);
+
+Route::get('/corporate/franchisee_invoice_pdf/{id}', [
+    'as' => 'franchisee_invoice_pdf',
+    'uses' => 'Corporate\FranchiseeController@franchisee_invoice_pdf'
+]);

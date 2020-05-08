@@ -155,13 +155,13 @@
                         <table id="licencefees" class="table table-hover table-striped table-bordered table-dark"
                                style="width: 100%">
                             <thead>
-                            <tr>
-                                <th>Montant</th>
-                                <th>Status</th>
-                                <th>Date d'émission</th>
-                                <th>Date de paiement</th>
-                                <th>Actions</th>
-                            </tr>
+                                <tr>
+                                    <th>Montant</th>
+                                    <th>Status</th>
+                                    <th>Date d'émission</th>
+                                    <th>Date de paiement</th>
+                                    <th>Actions</th>
+                                </tr>
                             </thead>
                             <tbody>
                             @foreach($franchisee['monthly_licence_fees'] as $license_fee)
@@ -175,8 +175,13 @@
                                         {{!empty($license_fee['date_paid'])?
                                         DateTime::createFromFormat('Y-m-d',$license_fee['date_paid'])->format('d/m/Y'):''}}
                                     </td>
-                                    <td><i class="fa fa-edit"></i>{{$license_fee['id']}}</td>
+                                    <td>
+                                        <a class="ml-2" href="{{route('franchisee_invoice_pdf',['id'=>$license_fee['id']])}}">
+                                            <button class="text-light fa fa-file-pdf ml-3"></button>
+                                        </a>
+                                    </td>
                                 </tr>
+
                             @endforeach
                             </tbody>
                         </table>

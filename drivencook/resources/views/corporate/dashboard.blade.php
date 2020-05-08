@@ -16,9 +16,9 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div class="card text-light2">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item bg-info">Nombre d'entrepôts : undefined</li>
+                            <li class="list-group-item bg-info">Nombre d'entrepôts : {{ $nbWarehouses }}</li>
                             <li class="list-group-item bg-info align-content-arround">
-                                <a href="#" class="row text-light2">
+                                <a href="{{ route('warehouse_list') }}" target="_blank" class="row text-light2">
                                     <div class="col-10">
                                         Consulter les details
                                     </div>

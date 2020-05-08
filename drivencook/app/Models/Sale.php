@@ -14,7 +14,7 @@ class Sale extends \Illuminate\Database\Eloquent\Model
 
     public function user_franchised()
     {
-        return $this->belongsTo(User::class, 'user_franchised');
+        return $this->belongsTo(User::class, 'user_franchised')->with('pseudo');
     }
 
     public function user_client()
