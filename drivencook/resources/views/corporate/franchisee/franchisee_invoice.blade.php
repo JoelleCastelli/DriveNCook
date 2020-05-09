@@ -81,7 +81,7 @@
 
                 <div id="franchisee-title">
                     <span id="franchisee_name">{{ $invoice['user']['firstname'] }} {{ $invoice['user']['lastname'] }}</span><br>
-                    Pseudonyme : {{ $pseudo['name'] }}<br>
+                    Pseudonyme : {{ $pseudo ? $pseudo['name'] : 'aucun' }}<br>
                     ID franchisé : {{ $invoice['user']['id'] }}
                 </div>
 
@@ -110,14 +110,21 @@
                     <th>Prix</th>
                 </tr>
 
-                @if ($invoice['monthly_licence_fee'] == 1)
+                @if ($invoice['monthly_fee'] == 1)
                     <tr class="item-row">
                         <td>Redevance périodique pour la période
                             du {{ $start_date }}
                             au {{ $end_date }}</td>
-                        <td class="nb">{{ $invoice['amount'] }} €</td>
+                        <td class="nb">{{ number_format($invoice['amount'], 2, ',', ' ') }} €</td>
                         <td class="nb">1</td>
-                        <td class="nb">{{ $invoice['amount'] }}  €</td>
+                        <td class="nb">{{ number_format($invoice['amount'], 2, ',', ' ') }} €</td>
+                    </tr>
+                @elseif ($invoice['initial_fee'] == 1)
+                    <tr class="item-row">
+                        <td>Redevance initiale forfaitaire</td>
+                        <td class="nb">{{ number_format($invoice['amount'], 2, ',', ' ') }} €</td>
+                        <td class="nb">1</td>
+                        <td class="nb">{{ number_format($invoice['amount'], 2, ',', ' ') }} €</td>
                     </tr>
                 @else
                     @for ($i = 0; $i < 10; $i++)
@@ -133,7 +140,7 @@
                 <tr>
                     <td colspan="2" class="blank"></td>
                     <td colspan="1" class="total-line ttc">Total</td>
-                    <td class="total-value ttc nb">{{ $invoice['amount'] }} €</td>
+                    <td class="total-value ttc nb">{{ number_format($invoice['amount'], 2, ',', ' ') }} €</td>
                 </tr>
 
             </table>

@@ -455,7 +455,9 @@ class FranchiseeController extends Controller
     public function franchisee_invoice_pdf($id)
     {
         $invoice = Invoice::with('user')->where('id', $id)->first()->toArray();
-        $pseudo = Pseudo::where('id', $invoice['user']['pseudo_id'])->first()->toArray();
+        $pseudo = Pseudo::where('id', $invoice['user']['pseudo_id'])->first();
+        if (!empty($pseudo))
+            $pseudo->toArray();
         $pdf = PDF::loadView('corporate.franchisee.franchisee_invoice', array('invoice' => $invoice, 'pseudo' => $pseudo));
         return $pdf->stream();
     }
