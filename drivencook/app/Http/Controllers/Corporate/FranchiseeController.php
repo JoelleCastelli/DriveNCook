@@ -476,14 +476,7 @@ class FranchiseeController extends Controller
                             'initial_fee' => 0,
                             'user_id' => $franchisee['id']];
                 $invoice = Invoice::create($invoice)->toArray();
-
-                // Reference creation
-                $reference_start = 'MF-'.$franchisee['id'].'-';
-                $variable_type = DB::select(DB::raw("SHOW COLUMNS FROM invoice WHERE Field = 'reference'"))[0]->Type;
-                $variable_length = substr(ltrim($variable_type, 'varchar('), 0, -1);
-                $pad_length = $variable_length - strlen($reference_start);
-                $reference = $reference_start.str_pad($invoice['id'], $pad_length, "0", STR_PAD_LEFT);
-                Invoice::where('id', $invoice['id'])->update(['reference' => $reference]);
+                $this->create_invoice_reference('MF', $franchisee['id'], $invoice['id']);
             }
         }
     }
