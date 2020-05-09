@@ -9,7 +9,7 @@ return [
     'warehouse_city' => 'Ville',
     'warehouse_edit' => 'Modifier',
 
-    'dishes_section' => 'Plats',
+    'dishes_section' => 'Plats (quantité restante inférieure à 6)',
     'product' => 'Produit',
     'category' => 'Catégorie',
     'quantity' => 'Quantité',

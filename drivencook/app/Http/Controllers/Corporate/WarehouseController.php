@@ -11,8 +11,8 @@ use App\Models\PurchaseOrder;
 use App\Models\Warehouse;
 use App\Models\WarehousStock;
 use App\Traits\EnumValue;
+use App\Traits\UserTools;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class WarehouseController extends Controller
 {
@@ -165,15 +165,6 @@ class WarehouseController extends Controller
 
     public function warehouse_view($id)
     {
-        //select * from purchase_order PO left join purchased_dish PD on PO.id = PD.purchase_order_id
-        // left join dish d on PD.dish_id = d.id where d.warehouse_id = 1;
-        /*$orders = DB::table('purchase_order')
-            ->select('purchase_order.*', 'purchased_dish.quantity as pd_quantity', 'purchased_dish.*', 'dish.*')
-            ->leftJoin('purchased_dish', 'purchase_order.id', '=', 'purchased_dish.purchase_order_id')
-            ->leftJoin('dish', 'purchased_dish.dish_id', '=', 'dish.id')
-            ->where('dish.warehouse_id', '=', $id)
-            ->get();*/
-
         $warehouse = Warehouse::whereKey($id)
             ->with('city')
             ->with('stock')
@@ -210,31 +201,16 @@ class WarehouseController extends Controller
 
     public function warehouse_order($warehouseId, $id)
     {
-        $order = DB::table('purchase_order')
-            ->select('purchase_order.*', 'purchase_order.id as po_id',
-                'purchased_dish.*', 'purchased_dish.quantity as pd_quantity',
-                'dish.*')
-            ->leftJoin('purchased_dish', 'purchase_order.id', '=', 'purchased_dish.purchase_order_id')
-            ->leftJoin('dish', 'purchased_dish.dish_id', '=', 'dish.id')
-            ->where('purchase_order.id', '=', $id)
-            ->get();
+        $order = PurchaseOrder::whereKey($id)
+            ->with('purchased_dishes')
+            ->with('user')
+            ->first();
         if (!empty($order)) {
-            $order->toArray();
-        }
-
-        $franchisee = DB::table('user')
-            ->select('pseudo.name', 'user.firstname', 'user.lastname', 'user.email')
-            ->leftJoin('purchase_order', 'user_id', '=', 'user.id')
-            ->leftJoin('pseudo', 'user.pseudo_id', '=', 'pseudo.id')
-            ->where('purchase_order.id', '=', $id)
-            ->get();
-        if (!empty($franchisee)) {
-            $franchisee->toArray();
+            $order = $order->toArray();
         }
 
         return view('corporate.warehouse.warehouse_order')
             ->with('order', $order)
-            ->with('franchisee', $franchisee)
             ->with('warehouseId', $warehouseId);
     }
 

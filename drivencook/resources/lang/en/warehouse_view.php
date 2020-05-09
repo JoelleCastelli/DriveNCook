@@ -9,7 +9,7 @@ return [
     'warehouse_city' => 'City',
     'warehouse_edit' => 'Edit',
 
-    'dishes_section' => 'Dishes',
+    'dishes_section' => 'Dishes (remaining quantity less than 6)',
     'product' => 'Product',
     'category' => 'Category',
     'quantity' => 'Quantity',
