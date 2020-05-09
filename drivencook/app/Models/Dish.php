@@ -9,16 +9,21 @@ class Dish extends \Illuminate\Database\Eloquent\Model
     protected $table = 'dish';
 
     protected $fillable = [
-        'name', 'category', 'warehouse_price', 'quantity', 'warehouse'
+        'name', 'category'
     ];
 
-    public function warehouse()
+    public function warehouse_stock()
     {
-        return $this->belongsTo(Warehouse::class, 'warehouse_id')->with('city');
+        return $this->hasMany(WarehousStock::class, 'dish_id');
     }
 
-    public function stocks()
+    public function franchisee_stock()
     {
-        return $this->hasMany(Stock::class, 'dish');
+        return $this->hasMany(FranchiseeStock::class, 'dish_id');
+    }
+
+    public function purchased_dish()
+    {
+        return $this->hasMany(PurchasedDish::class, 'dish_id');
     }
 }

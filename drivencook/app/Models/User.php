@@ -38,7 +38,7 @@ class User extends Model implements Authenticatable
 
     public function stocks()
     {
-        return $this->hasMany(Stock::class, 'user_id')->with('dish');
+        return $this->hasMany(FranchiseeStock::class, 'user_id')->with('dish');
     }
 
     public function purchase_order()

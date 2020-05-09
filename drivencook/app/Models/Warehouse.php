@@ -17,8 +17,13 @@ class Warehouse extends Model
         return $this->belongsTo(City::class, 'city_id');
     }
 
-    public function dishes()
+    public function stock()
     {
-        return $this->hasMany(Dish::class, 'warehouse_id');
+        return $this->hasMany(WarehousStock::class, 'warehouse_id');
+    }
+
+    public function purchase_order()
+    {
+        return $this->hasMany(PurchaseOrder::class, 'warehouse_id');
     }
 }

@@ -11,7 +11,7 @@ use App\Models\PurchasedDish;
 use App\Models\PurchaseOrder;
 use App\Models\Sale;
 use App\Models\SoldDish;
-use App\Models\Stock;
+use App\Models\FranchiseeStock;
 use App\Models\Truck;
 use App\Models\User;
 use App\Traits\UserTools;
@@ -345,7 +345,7 @@ class FranchiseeController extends Controller
             SoldDish::whereIn('dish_id', $sale->toArray())->delete();
             Sale::where('user_franchised', $id)->delete();
         }
-        Stock::where('user_id', $id)->delete();
+        FranchiseeStock::where('user_id', $id)->delete();
         $this->delete_user($id);
         return $id;
     }
@@ -393,7 +393,7 @@ class FranchiseeController extends Controller
 //        $date_max = $date_max->format("Y/m/d");
 //        $date_min = $date_min->format("Y/m/d");
 //
-//        $stocks = Stock::where('user_id', $franchise_id)->get()->toArray();
+//        $stocks = FranchiseeStock::where('user_id', $franchise_id)->get()->toArray();
 //
 //        $sales = Sale::whereBetween('date', [$date_min, $date_max])
 //                        ->where('user_franchised', $franchise_id)

@@ -8,7 +8,7 @@ class PurchasedDish extends \Illuminate\Database\Eloquent\Model
 {
     protected $table = 'purchased_dish';
 
-    protected $fillable = ['purchase_order_id', 'dish_id', 'quantity', 'quantity_sent'];
+    protected $fillable = ['purchase_order_id', 'dish_id', 'unit_price', 'quantity', 'quantity_sent'];
 
     public function purchase_order()
     {
@@ -17,6 +17,6 @@ class PurchasedDish extends \Illuminate\Database\Eloquent\Model
 
     public function dish()
     {
-        return $this->belongsTo(Dish::class, 'dish_id')->with('warehouse');
+        return $this->belongsTo(Dish::class, 'dish_id');
     }
 }

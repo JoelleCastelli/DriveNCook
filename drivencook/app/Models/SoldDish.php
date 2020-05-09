@@ -8,7 +8,7 @@ class SoldDish extends \Illuminate\Database\Eloquent\Model
 {
     protected $table = 'sold_dish';
 
-    protected $fillable = ['dish_id', 'sale', 'quantity'];
+    protected $fillable = ['dish_id', 'sale', 'quantity','unit_price'];
 
     public function sale()
     {

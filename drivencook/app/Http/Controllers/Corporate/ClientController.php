@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Corporate;
 
 use App\Http\Controllers\Controller;
 use App\Models\Sale;
-use App\Models\Stock;
+use App\Models\FranchiseeStock;
 use App\Models\User;
 use App\Traits\UserTools;
 use Carbon\Carbon;
@@ -111,7 +111,7 @@ class ClientController extends Controller
 //        for ($i = 0; $i < count($sales); $i++) {
 //            $franchisee_id = $sales[$i]['user_franchised']['id'];
 //            for ($j = 0; $j < count($sales[$i]['sold_dishes']); $j++) {
-//                $price = Stock::where([
+//                $price = FranchiseeStock::where([
 //                    ['user_id', $franchisee_id],
 //                    ['dish_id', $sales[$i]['sold_dishes'][$j]['dish_id']]
 //                ])->get(['unit_price'])->first()->toArray()['unit_price'];
