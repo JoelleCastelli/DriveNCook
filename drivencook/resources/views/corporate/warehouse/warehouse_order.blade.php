@@ -92,7 +92,7 @@
                 <div class="modal-body">
                     <input type="hidden" id="dishId">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item" id="dishCategory"><b>{{ trans('warehouse_order.category') }} : </b></li>
+                        <b>{{ trans('warehouse_order.category') }} : </b><li class="list-group-item" id="dishCategory"></li>
                     </ul>
                     <label for="dishQtySent" class="col-form-label">{{ trans('warehouse_order.quantity_to_send') }}</label>
                     <input type="number" class="form-control" id="dishQtySent" min="1">
@@ -118,8 +118,6 @@
                    $('#dishQtySent').val(-1);
                 }
             });
-
-            console.log($('#orderStatus').text());
 
             $('#updateDish').click(function () {
                 let formData = new FormData();

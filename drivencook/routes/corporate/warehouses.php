@@ -49,3 +49,18 @@ Route::post('/corporate/warehouse_order_update_product_qty_sent', [
     'as' => 'warehouse_order_update_product_qty_sent',
     'uses' => 'Corporate\WarehouseController@warehouse_order_update_product_qty_sent'
 ]);
+
+Route::post('/corporate/warehouse_stock_update_submit', [
+    'as' => 'warehouse_stock_update_submit',
+    'uses' => 'Corporate\WarehouseController@warehouse_stock_update_submit'
+]);
+
+Route::post('/corporate/warehouse_stock_creation_submit', [
+    'as' => 'warehouse_stock_creation_submit',
+    'uses' => 'Corporate\WarehouseController@warehouse_stock_creation_submit'
+]);
+
+Route::delete('/corporate/warehouse_stock_delete/{dishId}/{warehouseId}', [
+    'as' => 'warehouse_stock_delete',
+    'uses' => 'Corporate\WarehouseController@warehouse_stock_delete'
+]);
