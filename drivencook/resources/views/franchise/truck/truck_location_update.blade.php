@@ -46,7 +46,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="location_date_end">Date de début</label>
+                            <label for="location_date_end">Date de fin</label>
                             <input type="date" class="form-control" id="location_date_end" name="location_date_end"
                                    value="{{$truck['location_date_end']}}"/>
                             @if ($errors->has('location_date_end'))

@@ -10,12 +10,14 @@ use App\Models\Location;
 use App\Models\SafetyInspection;
 use App\Models\Truck;
 use App\Traits\EnumValue;
+use App\Traits\TruckTools;
 use App\Traits\UserTools;
 
 class TruckController extends Controller
 {
     use UserTools;
     use EnumValue;
+    use TruckTools;
 
     public function __construct()
     {
@@ -38,17 +40,7 @@ class TruckController extends Controller
 
         return view('franchise.truck.truck_view')
             ->with('franchise', $this->get_connected_user())
-            ->with('truck', $this->get_franchises_truck());
-    }
-
-    private function get_franchises_truck()
-    {
-        return Truck::with('location')
-            ->with('breakdowns')
-            ->with('last_safety_inspection')
-            ->with('safety_inspection')
-            ->where('user_id', $this->get_connected_user())
-            ->first()->toArray();
+            ->with('truck', $this->get_franchises_truck($this->get_connected_user()['id']));
     }
 
     private function get_locations_list()
@@ -63,7 +55,7 @@ class TruckController extends Controller
 
         return view('franchise.truck.truck_location_update')
             ->with('franchise', $this->get_connected_user())
-            ->with('truck', $this->get_franchises_truck())
+            ->with('truck', $this->get_franchises_truck($this->get_connected_user()['id']))
             ->with('location_list', $this->get_locations_list());
     }
 
@@ -75,7 +67,7 @@ class TruckController extends Controller
             'location_date_end' => ['nullable', 'date', 'after:location_date_start']
         ]);
 
-        Truck::find($this->get_franchises_truck()['id'])->update([
+        Truck::find($this->get_franchises_truck($this->get_connected_user()['id'])['id'])->update([
             'location_id' => request('location_id'),
             'location_date_start' => request('location_date_start'),
             'location_date_end' => request('location_date_end')
@@ -149,7 +141,7 @@ class TruckController extends Controller
                 'cost' => request('cost'),
                 'date' => request('date'),
                 'status' => request('status'),
-                'truck_id' => $this->get_franchises_truck()['id'],
+                'truck_id' => $this->get_franchises_truck($this->get_connected_user()['id']),
             ]);
 
             flash('Nouvelle panne ajouté')->success();
@@ -201,7 +193,7 @@ class TruckController extends Controller
                 'truck_mileage' => request('truck_mileage'),
                 'replaced_parts' => request('replaced_parts'),
                 'drained_fluids' => request('drained_fluids'),
-                'truck_id' => $this->get_franchises_truck()['id']
+                'truck_id' => $this->get_franchises_truck($this->get_connected_user()['id'])['id']
             ]);
 
             flash('Contrôle technique modifié')->success();
@@ -212,7 +204,7 @@ class TruckController extends Controller
                 'truck_mileage' => request('truck_mileage'),
                 'replaced_parts' => request('replaced_parts'),
                 'drained_fluids' => request('drained_fluids'),
-                'truck_id' => $this->get_franchises_truck()['id']
+                'truck_id' => $this->get_franchises_truck($this->get_connected_user()['id'])['id']
             ]);
 
             flash('Contrôle technique ajouté')->success();

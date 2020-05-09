@@ -50,7 +50,12 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="#">
-                        <i class="fa fa-chart-line"></i>&nbsp;&nbsp;&nbsp;Revenus & Statistiques
+                        <i class="fa fa-shopping-basket"></i>&nbsp;&nbsp;&nbsp;Commandes (client)
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="#">
+                        <i class="fa fa-cubes"></i>&nbsp;&nbsp;&nbsp;Stocks & commandes entrepôts
                     </a>
                 </li>
                 <li class="nav-item">
@@ -60,19 +65,15 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="#">
-                        <i class="fa fa-shopping-basket"></i>&nbsp;&nbsp;&nbsp;Commandes
+                        <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp;&nbsp;Évènements
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="#">
-                        <i class="fa fa-cubes"></i>&nbsp;&nbsp;&nbsp;Stocks
+                        <i class="fa fa-chart-line"></i>&nbsp;&nbsp;&nbsp;Revenus & Statistiques
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="#">
-                        <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp;&nbsp;Evenements
-                    </a>
-                </li>
+
                 @break
                 @case(route('franchise.truck_view'))
                 <li class="nav-item">
