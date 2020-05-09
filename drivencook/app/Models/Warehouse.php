@@ -19,11 +19,13 @@ class Warehouse extends Model
 
     public function stock()
     {
-        return $this->hasMany(WarehousStock::class, 'warehouse_id');
+        return $this->hasMany(WarehousStock::class, 'warehouse_id')->with('dish');
     }
 
     public function purchase_order()
     {
-        return $this->hasMany(PurchaseOrder::class, 'warehouse_id');
+        return $this->hasMany(PurchaseOrder::class, 'warehouse_id')
+            ->with('purchased_dishes')
+            ->with('user');
     }
 }

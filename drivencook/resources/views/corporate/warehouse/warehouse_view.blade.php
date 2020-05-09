@@ -48,11 +48,11 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($warehouse['dishes'] as $dish)
+                            @foreach($warehouse['stock'] as $dish)
                                 @if ($dish['quantity'] <= 5)
                                 <tr>
-                                    <td>{{ $dish['name'] }}</td>
-                                    <td>{{ trans($GLOBALS['DISH_TYPE'][$dish['category']]) }}</td>
+                                    <td>{{ $dish['dish']['name'] }}</td>
+                                    <td>{{ trans($GLOBALS['DISH_TYPE'][$dish['dish']['category']]) }}</td>
                                     <td>{{ $dish['quantity'] }}</td>
                                     <td>{{ $dish['warehouse_price'] }}</td>
                                 </tr>
@@ -82,7 +82,6 @@
                                style="width: 100%">
                             <thead>
                             <tr>
-                                <th>{{ trans('warehouse_order.reference') }}</th>
                                 <th>{{ trans('warehouse_order.date') }}</th>
                                 <th>{{ trans('warehouse_order.pseudo') }}</th>
                                 <th>{{ trans('warehouse_order.status') }}</th>
@@ -90,15 +89,14 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($orders as $order)
-                                @if($order->status != 'received')
-                                    <tr id="order_{{ $order->p_o_id }}">
-                                        <td>{{ $order->reference }}</td>
-                                        <td>{{ $order->date }}</td>
-                                        <td>{{ empty($order->name)?trans('corporate.unknown'):$order->name }}</td>
-                                        <td>{{ trans($GLOBALS['PURCHASE_ORDER_STATUS'][$order->status]) }}</td>
+                            @foreach($warehouse['purchase_order'] as $order)
+                                @if($order['status'] != 'received')
+                                    <tr id="order_{{ $order['id'] }}">
+                                        <td>{{ $order['date'] }}</td>
+                                        <td>{{ empty($order['user']['pseudo'])?trans('corporate.unknown'):$order['user']['pseudo']['name'] }}</td>
+                                        <td>{{ trans($GLOBALS['PURCHASE_ORDER_STATUS'][$order['status']]) }}</td>
                                         <td>
-                                            <a href="{{ route('warehouse_order', ['warehouse_id'=>$warehouse['id'], 'id'=>$order->p_o_id]) }}">
+                                            <a href="{{ route('warehouse_order', ['warehouse_id'=>$warehouse['id'], 'id'=>$order['id']]) }}">
                                                 <i class="fa fa-eye"></i>
                                             </a>
                                         </td>
