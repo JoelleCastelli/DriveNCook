@@ -252,7 +252,6 @@
                                 <th>Entrepôt</th>
                                 <th>Total</th>
                                 <th>Status</th>
-                                <th>Reference</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -262,18 +261,17 @@
                                     <td>
                                         {{DateTime::createFromFormat('Y-m-d',$purchase_order['date'])->format('d/m/Y')}}
                                     </td>
-                                    <td>{{$purchase_order['purchased_dishes'][0]['dish']['warehouse']['name']}}</td>
+                                    <td>{{$purchase_order['warehouse']['name']}}</td>
                                     <td>
                                         <?php
                                         $total = 0;
                                         foreach ($purchase_order['purchased_dishes'] as $purchased_dish) {
-                                            $total += $purchased_dish['dish']['warehouse_price'] * $purchased_dish['quantity'];
+                                            $total += $purchased_dish['unit_price'] * $purchased_dish['quantity'];
                                         }
                                         echo $total;
                                         ?> €
                                     </td>
                                     <td>{{$purchase_order['status']}}</td>
-                                    <td>{{$purchase_order['reference']}}</td>
                                     <td>
                                         <i class="fa fa-edit"></i>
                                         <i class="fa fa-trash ml-3"></i>

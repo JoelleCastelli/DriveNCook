@@ -264,7 +264,7 @@ class FranchiseeController extends Controller
             ->first()->toArray();
 
         $revenues = $this->get_franchise_current_month_sale_revenues($id);
-
+//var_dump($franchisee);die;
         return view('corporate.franchisee.franchisee_view')
             ->with('franchisee', $franchisee)
             ->with('revenues', $revenues);

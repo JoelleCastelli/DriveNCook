@@ -43,7 +43,7 @@ class User extends Model implements Authenticatable
 
     public function purchase_order()
     {
-        return $this->hasMany(PurchaseOrder::class, 'user_id')->with('purchased_dishes');
+        return $this->hasMany(PurchaseOrder::class, 'user_id')->with('purchased_dishes')->with('warehouse');
     }
 
     public function invoices()
