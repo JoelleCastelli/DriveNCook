@@ -115,7 +115,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-12 col-sm-6 col-md-4">
+                        <div class="col-12 col-sm-6 col-md-3">
                             <div class="row d-flex justify-content-center">
                                 Ventes
                             </div>
@@ -128,16 +128,15 @@
                                 Chiffre d'affaires
                             </div>
                             <div class="row d-flex justify-content-center">
-                                <h1>{{$revenues['sales_total']}} €</h1>
+                                <h1>{{ number_format($revenues['sales_total'], 2, ',', ' ')}} €</h1>
                             </div>
                         </div>
-
-                        <div class="col-12 col-sm-6 col-md-4">
+                        <div class="col-12 col-sm-6 col-md-5">
                             <div class="row d-flex justify-content-center">
                                 Prochaine facture
                             </div>
                             <div class="row d-flex justify-content-center">
-                                <h1>{{$revenues['next_invoice']}} €</h1>
+                                <h1>{{ number_format($revenues['next_invoice'], 2, ',', ' ')}} €</h1>
                             </div>
                         </div>
                     </div>
@@ -147,12 +146,15 @@
 
         <div class="col-12 col-lg-6 mb-5">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header d-flex justify-content-between">
                     <h2>Historique</h2>
+                    <button type="button" onclick="onCreateModal()" class="btn btn-light_blue" data-toggle="modal"
+                            data-target="#formModal">Exporter en PDF
+                    </button>
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-12 col-sm-6 col-md-4">
+                        <div class="col-12 col-sm-6 col-md-3">
                             <div class="row d-flex justify-content-center">
                                 Ventes
                             </div>
@@ -165,16 +167,15 @@
                                 Chiffre d'affaires
                             </div>
                             <div class="row d-flex justify-content-center">
-                                <h1>{{ $history['sales_total'] }} €</h1>
+                                <h1>{{ number_format($history['sales_total'], 2, ',', ' ') }} €</h1>
                             </div>
                         </div>
-
-                        <div class="col-12 col-sm-6 col-md-4">
+                        <div class="col-12 col-sm-6 col-md-5">
                             <div class="row d-flex justify-content-center">
                                 Total facturé
                             </div>
                             <div class="row d-flex justify-content-center">
-                                <h1>{{ $history['total_invoices'] }} €</h1>
+                                <h1>{{ number_format($history['total_invoices'], 2, ',', ' ') }} €</h1>
                             </div>
                         </div>
                     </div>
