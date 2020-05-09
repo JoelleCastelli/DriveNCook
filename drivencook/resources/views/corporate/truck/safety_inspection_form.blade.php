@@ -15,7 +15,7 @@
                         @if (!empty($safety_inspection))
                             <input type="hidden" id="id" name="id" value="{{$safety_inspection['id']}}">
                         @endif
-                        <input type="hidden" id="truck_id" name="truck_id" value="{{$truckId}}">
+                        <input type="hidden" id="truck_id" name="truck_id" value="{{$truck_id}}">
 
                         <div class="form-group">
                             <label for="date">Date</label>
@@ -55,7 +55,7 @@
 
                         <div class="form-group">
                             <label for="replaced_parts">Parties remplacés</label>
-                            <input {{!empty($safety_inspection)?'value='.$safety_inspection['replaced_parts']:''}}
+                            <input value="{{!empty($safety_inspection)?$safety_inspection['replaced_parts']:''}}"
                                    class="form-control" type="text" id="replaced_parts" name="replaced_parts"
                                    maxlength="150">
                             @if ($errors->has('replaced_parts'))
@@ -67,9 +67,9 @@
 
                         <div class="form-group">
                             <label for="drained_fluids">Drainage</label>
-                            <input {{!empty($safety_inspection)?'value='.$safety_inspection['drained_fluids']:''}}
-                                   class="form-control" type="text" id="drained_fluids" name="drained_fluids"
-                                   maxlength="150">
+                            <input class="form-control" type="text" id="drained_fluids" name="drained_fluids"
+                                   maxlength="150"
+                                    value="{{!empty($safety_inspection)?$safety_inspection['drained_fluids']:''}}">
                             @if ($errors->has('drained_fluids'))
                                 <span class="badge-danger">
                                     {{$errors->first('drained_fluids')}}
