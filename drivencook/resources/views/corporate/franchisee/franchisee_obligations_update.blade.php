@@ -83,8 +83,8 @@
                                 <tr>
                                     <td>{{$obligation['date_updated']}}</td>
                                     <td>{{ number_format($obligation['entrance_fee'], 2, ',', ' ') }} €</td>
-                                    <td>{{$obligation['revenue_percentage']}} %</td>
-                                    <td>{{$obligation['warehouse_percentage']}} %</td>
+                                    <td>{{ number_format($obligation['revenue_percentage'], 2, ',', ' ') }} %</td>
+                                    <td>{{ number_format($obligation['warehouse_percentage'], 2, ',', ' ') }} %</td>
                                     <td>{{$obligation['billing_day']}}</td>
                                 </tr>
                             @endforeach
