@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Corporate;
 
 use App\Http\Controllers\Controller;
 use App\Models\City;
+use App\Models\Dish;
 use App\Models\PurchasedDish;
 use App\Models\PurchaseOrder;
 use App\Models\Warehouse;
+use App\Models\WarehousStock;
 use App\Traits\EnumValue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -200,6 +202,7 @@ class WarehouseController extends Controller
             $warehouse = $warehouse->toArray();
         }
         $categories = $this->get_enum_column_values('dish', 'category');
+
         return view('corporate.warehouse.warehouse_dishes')
             ->with('warehouse', $warehouse)
             ->with('categories', $categories);
@@ -309,6 +312,193 @@ class WarehouseController extends Controller
             $response_array = [
                 'status' => 'error',
                 'errorList' => $errors_list
+            ];
+        }
+
+        echo json_encode($response_array);
+    }
+
+    public function warehouse_stock_creation_submit(Request $request)
+    {
+        $parameters = $request->except(['_token']);
+        $error = false;
+        $errors_list = [];
+
+        if (
+            count($parameters) == 5 && !empty($parameters["warehouseId"]) &&
+            !empty($parameters["name"]) && !empty($parameters["category"]) &&
+            !empty($parameters["quantity"]) && !empty($parameters["warehousePrice"])
+        ) {
+            $name = $parameters["name"];
+            $category = $parameters["category"];
+            $quantity = intval($parameters["quantity"]);
+            $warehousePrice = $parameters["warehousePrice"];
+            $warehouseId = intval($parameters["warehouseId"]);
+
+            $dish = Dish::where([
+                ['name', $name],
+                ['category', $category]
+            ])->first();
+            if(!empty($dish)) {
+                $dish = $dish->toArray();
+                $dishId = $dish['id'];
+
+                if (count($dish) < 1) {
+                    $error = true;
+                    $errors_list[] = trans('warehouse_stock.dish_not_exist_error');
+                }
+
+                if (!is_int($quantity)) {
+                    $error = true;
+                    $errors_list[] = trans('warehouse_stock.quantity_error');
+                }
+
+                if(!is_numeric($warehousePrice)) {
+                    $error = true;
+                    $errors_list[] = trans('warehouse_stock.warehouse_price_error');
+                }
+
+                if (!is_int($warehouseId) && $warehouseId > 0) {
+                    $error = true;
+                    $errors_list[] = trans('warehouse_stock.warehouse_id_error');
+                }
+
+                if ($error) {
+                    $response_array = [
+                        'status' => 'error',
+                        'errorList' => $errors_list
+                    ];
+                } else {
+                    $stock = [
+                        'quantity' => $quantity, 'warehouse_price' => $warehousePrice,
+                        'warehouse_id' => $warehouseId, 'dish_id' => $dishId
+                    ];
+                    //$lastId = Dish::insertGetId($stock);
+
+                    WarehousStock::where([
+                        ['warehouse_id', $warehouseId],
+                        ['dish_id', $dishId]
+                    ])->insert($stock);
+
+                    $warehouseStock = WarehousStock::where([
+                        ['warehouse_id', $warehouseId],
+                        ['dish_id', $dishId]
+                    ])->with('dish')->first();
+                    if(!empty($warehouseStock)) {
+                        $warehouseStock = $warehouseStock->toArray();
+                        $warehouseStock['dish']['category'] = trans($GLOBALS['DISH_TYPE'][$warehouseStock['dish']['category']]);
+
+                        $response_array = [
+                            'status' => 'success',
+                            'data' => $warehouseStock
+                        ];
+                    } else {
+                        $errors_list[] = trans('warehouse_stock.warehouse_stock_not_find_error');
+
+                        $response_array = [
+                            'status' => 'error',
+                            'errorList' => $errors_list
+                        ];
+                    }
+                }
+            } else {
+                $errors_list[] = trans('warehouse_stock.dish_not_exist_error');
+
+                $response_array = [
+                    'status' => 'error',
+                    'errorList' => $errors_list
+                ];
+            }
+        } else {
+            $errors_list[] = trans('warehouse_stock.empty_fields');
+
+            $response_array = [
+                'status' => 'error',
+                'errorList' => $errors_list
+            ];
+        }
+        echo json_encode($response_array);
+    }
+
+    public function warehouse_stock_update_submit(Request $request)
+    {
+        $parameters = $request->except(['_token']);
+        $error = false;
+        $errors_list = [];
+
+        if (
+            count($parameters) == 4 && !empty($parameters["dishId"]) &&
+            !empty($parameters["quantity"]) && !empty($parameters["warehousePrice"]) &&
+            !empty($parameters['warehouseId'])
+        ) {
+            $dishId = intval($parameters["dishId"]);
+            $quantity = intval($parameters["quantity"]);
+            $warehousePrice = $parameters["warehousePrice"];
+            $warehouseId = intval($parameters["warehouseId"]);
+
+            if (!is_int($quantity)) {
+                $error = true;
+                $errors_list[] = trans('warehouse_stock.quantity_error');
+            }
+
+            if(!is_numeric($warehousePrice)) {
+                $error = true;
+                $errors_list[] = trans('warehouse_stock.warehouse_price_error');
+            }
+
+            if ($error) {
+                $response_array = [
+                    'status' => 'error',
+                    'errorList' => $errors_list
+                ];
+            } else {
+                $stock = [
+                    'quantity' => $quantity, 'warehouse_price' => $warehousePrice
+                ];
+                WarehousStock::where([
+                    ['warehouse_id', $warehouseId],
+                    ['dish_id', $dishId]
+                ])->update($stock);
+
+                $warehouseStock = WarehousStock::where([
+                    ['warehouse_id', $warehouseId],
+                    ['dish_id', $dishId]
+                ])->first();
+                if(!empty($warehouseStock)) {
+                    $warehouseStock = $warehouseStock->toArray();
+                }
+
+                $response_array = [
+                    'status' => 'success',
+                    'data' => $warehouseStock
+                ];
+            }
+        } else {
+            $errors_list[] = trans('warehouse_stock.empty_fields');
+
+            $response_array = [
+                'status' => 'error',
+                'errorList' => $errors_list
+            ];
+        }
+        echo json_encode($response_array);
+    }
+
+    public function warehouse_stock_delete($dishId, $warehouseId)
+    {
+        if (!ctype_digit($dishId) || !ctype_digit($warehouseId)) {
+            $response_array = [
+                'status' => 'error',
+                'error' => 'warehouse_stock.id_not_digit'
+            ];
+        } else {
+            WarehousStock::where([
+                ['warehouse_id', $warehouseId],
+                ['dish_id', $dishId]
+            ])->delete();
+
+            $response_array = [
+                'status' => 'success'
             ];
         }
 

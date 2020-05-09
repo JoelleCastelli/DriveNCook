@@ -31,14 +31,14 @@
                             </thead>
                             <tbody>
                             @foreach($warehouse['stock'] as $dish)
-                                <tr id="rowId{{ $dish['id'] }}">
-                                    <td id="rowName{{ $dish['id'] }}">{{ $dish['name'] }}</td>
-                                    <td id="rowCategory{{ $dish['id'] }}" data-whatever={{ $dish['category'] }}>{{ trans($GLOBALS['DISH_TYPE'][$dish['category']]) }}</td>
-                                    <td id="rowQuantity{{ $dish['id'] }}">{{ $dish['quantity'] }}</td>
-                                    <td id="rowWarehousePrice{{ $dish['id'] }}">{{ $dish['warehouse_price'] }}</td>
+                                <tr id="rowId{{ $dish['dish_id'] }}">
+                                    <td id="rowName{{ $dish['dish_id'] }}">{{ $dish['dish']['name'] }}</td>
+                                    <td id="rowCategory{{ $dish['dish_id'] }}">{{ trans($GLOBALS['DISH_TYPE'][$dish['dish']['category']]) }}</td>
+                                    <td id="rowQuantity{{ $dish['dish_id'] }}">{{ $dish['quantity'] }}</td>
+                                    <td id="rowWarehousePrice{{ $dish['dish_id'] }}">{{ $dish['warehouse_price'] }}</td>
                                     <td>
-                                        <i class="fa fa-edit" onclick="editDish({{ $dish['id'] }})" data-toggle="modal" data-target="#dishModal"></i>
-                                        <i class="fa fa-trash ml-3" onclick="deleteDish({{ $dish['id'] }})"></i>
+                                        <i class="fa fa-edit" onclick="editDish({{ $dish['dish_id'] }})" data-toggle="modal" data-target="#dishModal"></i>
+                                        <i class="fa fa-trash ml-3" onclick="deleteDish({{ $dish['dish_id'] }})"></i>
                                     </td>
                                 </tr>
                             @endforeach
@@ -62,18 +62,12 @@
                     <form>
                         <div class="form-group">
                             <input type="hidden" id="dishId">
-                            <label for="dishName" class="col-form-label">{{ trans('warehouse_dishes.dish_name') }}</label>
-                            <input type="text" class="form-control" id="dishName" maxlength="30">
-                            <label for="dishCategory" class="col-form-label">{{ trans('warehouse_dishes.dish_category') }}</label>
-                            <select class="custom-select" name="dishCategory" id="dishCategory">
-                                <option value="" selected>{{ trans('warehouse_dishes.select_menu_off') }}</option>
-                                @foreach($categories as $category)
-                                    <option value={{ $category }}>{{ trans($GLOBALS['DISH_TYPE'][$category]) }}</option>
-                                @endforeach
-                            </select>
-                            <label for="dishQuantity" class="col-form-label">{{ trans('warehouse_dishes.dish_quantity') }}</label>
+                            <ul class="list-group list-group-flush">
+                                <b>{{ trans('warehouse_dishes.dish_category') }} : </b><li class="list-group-item" id="dishCategory"></li>
+                            </ul>
+                            <label for="dishQuantity" class="col-form-label"><b>{{ trans('warehouse_dishes.dish_quantity') }}</b></label>
                             <input type="number" class="form-control" id="dishQuantity">
-                            <label for="dishWarehousePrice" class="col-form-label">{{ trans('warehouse_dishes.dish_warehouse_price') }}</label>
+                            <label for="dishWarehousePrice" class="col-form-label"><b>{{ trans('warehouse_dishes.dish_warehouse_price') }}</b></label>
                             <input type="number" class="form-control" id="dishWarehousePrice">
                         </div>
                     </form>
@@ -130,13 +124,12 @@
 
             $('#updateDish').click(function () {
                 let formData = new FormData();
-                formData.append('id', $('#dishId').val());
-                formData.append('name', $('#dishName').val());
-                formData.append('category', $('#dishCategory').val());
+                formData.append('warehouseId', $('#warehouseId').val());
+                formData.append('dishId', $('#dishId').val());
                 formData.append('quantity', $('#dishQuantity').val());
                 formData.append('warehousePrice', $('#dishWarehousePrice').val());
                 $.ajax({
-                    url: '{{ route('dish_update_submit') }}',
+                    url: '{{ route('warehouse_stock_update_submit') }}',
                     method: 'post',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -149,10 +142,8 @@
                     success: function (data) {
                         if (data['status'] === 'success') {
                             let table = $('#dishes').DataTable();
-                            let id = data['data']['id'];
+                            let id = data['data']['dish_id'];
 
-                            table.cell('#rowName' + id).data(data['data']['name']).draw();
-                            table.cell('#rowCategory' + id).data(data['data']['category']).draw();
                             table.cell('#rowQuantity' + id).data(data['data']['quantity']).draw();
                             table.cell('#rowWarehousePrice' + id).data(data['data']['warehouse_price']).draw();
 
@@ -162,11 +153,11 @@
                             for(let i = 0; i < data['errorList'].length; i++) {
                                 str += '\n' + data['errorList'][i];
                             }
-                            alert(Lang.get('warehouse_dishes.update_dish_error') + str);
+                            alert(Lang.get('warehouse_stock.update_error') + str);
                         }
                     },
                     error: function () {
-                        alert(Lang.get('warehouse_dishes.update_dish_error'));
+                        alert(Lang.get('warehouse_stock.update_error'));
                     }
                 });
             });
@@ -179,7 +170,7 @@
                 formData.append('warehousePrice', $('#addDishWarehousePrice').val());
                 formData.append('warehouseId', $('#warehouseId').val());
                 $.ajax({
-                    url: '{{ route('dish_creation_submit') }}',
+                    url: '{{ route('warehouse_stock_creation_submit') }}',
                     method: 'post',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -192,10 +183,10 @@
                     success: function (data) {
                         if (data['status'] === 'success') {
                             let table = $('#dishes').DataTable();
-                            let id = data['data']['id'];
+                            let id = data['data']['dish_id'];
                             let row = table.row.add([
-                                data['data']['name'],
-                                Lang.get('warehouse_dishes.' + data['data']['category']),
+                                data['data']['dish']['name'],
+                                data['data']['dish']['category'],
                                 data['data']['quantity'],
                                 data['data']['warehouse_price'],
                                 '<i class="fa fa-edit" onclick="editDish(' + id + ')"' + 'data-toggle="modal" data-target="#dishModal"></i> ' +
@@ -205,7 +196,7 @@
                             $(row).attr('id', 'rowId' + id);
                             $(row).children().eq(0).attr('id', 'rowName' + id);
                             $(row).children().eq(1).attr('id', 'rowCategory' + id);
-                            $(row).children().eq(1).attr('data-whatever', data['data']['category']);
+                            //$(row).children().eq(1).attr('data-whatever', data['data']['category']);
                             $(row).children().eq(2).attr('id', 'rowQuantity' + id);
                             $(row).children().eq(3).attr('id', 'rowWarehousePrice' + id);
 
@@ -215,11 +206,11 @@
                             for(let i = 0; i < data['errorList'].length; i++) {
                                 str += '\n' + data['errorList'][i];
                             }
-                            alert(Lang.get('warehouse_dishes.create_dish_error') + str);
+                            alert(Lang.get('warehouse_stock.create_error') + str);
                         }
                     },
                     error: function () {
-                        alert(Lang.get('warehouse_dishes.create_dish_error'));
+                        alert(Lang.get('warehouse_stock.create_error'));
                     }
                 });
             });
@@ -228,17 +219,18 @@
         function editDish(id) {
             $('#dishModalLabel').text($('#rowName' + id).text());
             $('#dishId').val(id);
-            $('#dishName').val($('#rowName' + id).text());
-            $('#dishCategory').val($('#rowCategory' + id).data('whatever'));
+            $('#dishCategory').text($('#rowCategory' + id).text());
             $('#dishQuantity').val($('#rowQuantity' + id).text());
             $('#dishWarehousePrice').val($('#rowWarehousePrice' + id).text());
         }
 
-        function deleteDish(id) {
-            if (confirm(Lang.get('warehouse_dishes.ask_delete_dish'))) {
-                if (!isNaN(id)) {
-                    let urlB = '{{ route('dish_delete', ['id'=>':id']) }}';
-                    urlB = urlB.replace(':id', id);
+        function deleteDish(dishId) {
+            if (confirm(Lang.get('warehouse_stock.ask_delete'))) {
+                let warehouseId = $('#warehouseId').val();
+                if (!isNaN(dishId) && !isNaN(parseInt(warehouseId))) {
+                    let urlB = '{{ route('warehouse_stock_delete', ['dishId'=>':dishId', 'warehouseId'=>':warehouseId']) }}';
+                    urlB = urlB.replace(':dishId', dishId);
+                    urlB = urlB.replace(':warehouseId', warehouseId);
                     $.ajax({
                         url: urlB,
                         method: "delete",
@@ -248,13 +240,13 @@
                         },
                         success: function (data) {
                             if (data['status'] === 'success') {
-                                $('#dishes').DataTable().row('#rowId' + id).remove().draw();
+                                $('#dishes').DataTable().row('#rowId' + dishId).remove().draw();
                             } else {
-                                alert(Lang.get('warehouse_dishes.delete_dish_error'));
+                                alert(Lang.get('warehouse_stock.delete_error'));
                             }
                         },
                         error: function () {
-                            alert(Lang.get('warehouse_dishes.delete_dish_error'));
+                            alert(Lang.get('warehouse_stock.delete_error'));
                         }
                     });
                 }
