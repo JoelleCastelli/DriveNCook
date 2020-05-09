@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Http\Controllers\Franchisee;
+namespace App\Http\Controllers\Franchise;
 
 use App\Http\Controllers\Controller;
 
