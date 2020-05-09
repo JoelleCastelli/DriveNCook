@@ -18,6 +18,7 @@ use App\Traits\UserTools;
 use Barryvdh\DomPDF\Facade as PDF;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class FranchiseeController extends Controller
@@ -457,5 +458,31 @@ class FranchiseeController extends Controller
         $pseudo = Pseudo::where('id', $invoice['user']['pseudo_id'])->first()->toArray();
         $pdf = PDF::loadView('corporate.franchisee.franchisee_invoice', array('invoice' => $invoice, 'pseudo' => $pseudo));
         return $pdf->stream();
+    }
+
+    public function generate_monthly_invoices(){
+        $franchisees = User::where('role', 'Franchisé')->get()->toArray();
+        $current_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
+        foreach($franchisees as $franchisee) {
+            $data = $this->get_franchise_current_month_sale_revenues($franchisee['id']);
+            if ($data['sales_total'] > 0){
+                $invoice_total = $data['sales_total'] * $current_obligation['revenue_percentage'] / 100;
+                $invoice = ['amount' => $invoice_total,
+                            'date_emitted' => date("Y-m-d"),
+                            'status' => 'A payer',
+                            'monthly_fee' => 1,
+                            'initial_fee' => 0,
+                            'user_id' => $franchisee['id']];
+                $invoice = Invoice::create($invoice)->toArray();
+
+                // Reference creation
+                $reference_start = 'MF-'.$franchisee['id'].'-';
+                $variable_type = DB::select(DB::raw("SHOW COLUMNS FROM invoice WHERE Field = 'reference'"))[0]->Type;
+                $variable_length = substr(ltrim($variable_type, 'varchar('), 0, -1);
+                $pad_length = $variable_length - strlen($reference_start);
+                $reference = $reference_start.str_pad($invoice['id'], $pad_length, "0", STR_PAD_LEFT);
+                Invoice::where('id', $invoice['id'])->update(['reference' => $reference]);
+            }
+        }
     }
 }

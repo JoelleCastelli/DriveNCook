@@ -158,6 +158,7 @@
                                 <tr>
                                     <th>Montant</th>
                                     <th>Statut</th>
+                                    <th>Référence</th>
                                     <th>Type</th>
                                     <th>Date d'émission</th>
                                     <th>Date de paiement</th>
@@ -169,7 +170,14 @@
                                 <tr>
                                     <td>{{$license_fee['amount'].' €'}}</td>
                                     <td>{{$license_fee['status']}}</td>
-                                    <td>{{$license_fee['monthly_licence_fee']==1 ? 'Redevance périodique':'Réassort'}}</td>
+                                    <td>{{$license_fee['reference']}}</td>
+                                    <td>@if ($license_fee['monthly_fee'] == 1)
+                                            Redevance périodique
+                                        @elseif ($license_fee['initial_fee'] == 1)
+                                            Redevance initiale forfaitaire
+                                        @else
+                                            Réassort
+                                    @endif</td>
                                     <td>
                                         {{DateTime::createFromFormat('Y-m-d',$license_fee['date_emitted'])->format('d/m/Y')}}
                                     </td>

@@ -60,7 +60,7 @@ class User extends Model implements Authenticatable
     {
         return $this->hasOne(Invoice::class, 'user_id')
                     ->where('status', 'Payée')
-                    ->where('monthly_licence_fee', 1)
+                    ->where('monthly_fee', 1)
                     ->orderByDesc('id');
     }
 
