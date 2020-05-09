@@ -69,7 +69,7 @@ class ClientController extends Controller
         //TODO la colonne telephone ne se met pas à jour
 
         flash('Utilisateur modifié')->success();
-        return redirect()->route('client_update', ['id'=>request('id')]);
+        return redirect()->route('client_update', ['id' => request('id')]);
     }
 
     public function client_update_password()
@@ -97,28 +97,29 @@ class ClientController extends Controller
 //        var_dump($client_orders);
 //        die;
 
-        return view('corporate . client . client_view')
+        return view('corporate.client.client_view')
             ->with('client', $client)
             ->with('client_orders', $client_orders);
     }
 
     public function process_client_sales($client_id)
     {
-        $sales = Sale::where("user_client", $client_id)
-            ->with('sold_dishes')
-            ->with('user_franchised')
-            ->get()->toArray();
-        for ($i = 0; $i < count($sales); $i++) {
-            $franchisee_id = $sales[$i]['user_franchised']['id'];
-            for ($j = 0; $j < count($sales[$i]['sold_dishes']); $j++) {
-                $price = Stock::where([
-                    ['user_id', $franchisee_id],
-                    ['dish_id', $sales[$i]['sold_dishes'][$j]['dish_id']]
-                ])->get(['unit_price'])->first()->unit_price;
-                $sales[$i]['sold_dishes'][$j]['unit_price'] = $price;
-            }
-        }
-        return $sales;
+//        $sales = Sale::where("user_client", $client_id)
+//            ->with('sold_dishes')
+//            ->with('user_franchised')
+//            ->get()->toArray();
+//        for ($i = 0; $i < count($sales); $i++) {
+//            $franchisee_id = $sales[$i]['user_franchised']['id'];
+//            for ($j = 0; $j < count($sales[$i]['sold_dishes']); $j++) {
+//                $price = Stock::where([
+//                    ['user_id', $franchisee_id],
+//                    ['dish_id', $sales[$i]['sold_dishes'][$j]['dish_id']]
+//                ])->get(['unit_price'])->first()->toArray()['unit_price'];
+//                $sales[$i]['sold_dishes'][$j]['unit_price'] = $price;
+//            }
+//        }
+        //TODO client sales
+        return array();
     }
 
 }

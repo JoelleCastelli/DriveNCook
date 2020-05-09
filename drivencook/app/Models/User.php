@@ -19,7 +19,7 @@ class User extends Model implements Authenticatable
      */
 
     protected $fillable = [
-        'lastname', 'firstname', 'birthdate', 'pseudo_id', 'email', 'role', 'driving_licence', 'social_security', 'password',
+        'lastname', 'firstname', 'birthdate','telephone', 'pseudo_id', 'email', 'role', 'driving_licence', 'social_security', 'password',
     ];
 
     /**
