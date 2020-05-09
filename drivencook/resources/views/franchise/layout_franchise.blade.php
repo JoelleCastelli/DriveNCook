@@ -54,7 +54,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light2" href="#">
+                    <a class="nav-link text-light2" href="{{route('franchise.stock_dashboard')}}">
                         <i class="fa fa-cubes"></i>&nbsp;&nbsp;&nbsp;Stocks & commandes entrepôts
                     </a>
                 </li>
@@ -94,16 +94,23 @@
                     </a>
                 </li>
                 @break
+                @case(route('franchise.stock_dashboard'))
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{route('franchise.dashboard')}}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir au tableau de bord
+                    </a>
+                </li>
+                @break
                 @default
                 @break
             @endswitch
-                @if (strpos(url()->current(), route('franchise.truck_safety_inspection_update', ['id'=>''])) !== false)
-                    <li class="nav-item">
-                        <a class="nav-link text-light2" href="{{route('franchise.truck_view')}}">
-                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la gestion du camion
-                        </a>
-                    </li>
-                @endif
+            @if (strpos(url()->current(), route('franchise.truck_safety_inspection_update', ['id'=>''])) !== false)
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{route('franchise.truck_view')}}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la gestion du camion
+                    </a>
+                </li>
+            @endif
 
         </ul>
     </div>
