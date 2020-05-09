@@ -4,7 +4,7 @@
     <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet">
 @endsection
 @section('title')
-    Gestion des pseudo
+    Gestion des pseudonymes
 @endsection
 
 @section('content')
@@ -35,8 +35,8 @@
                                         <td>{{$pseudo['name']}}</td>
                                         <td>
                                             {{empty($pseudo['users'])?
-                                            'Libre':
-                                            'Utilisé par : '.strtoupper($pseudo['users']['firstname'].' - '.$pseudo['users']['lastname'])}}
+                                            'Disponible':
+                                            'Indisponible : utilisé par '.$pseudo['users']['firstname'].' '.$pseudo['users']['lastname']}}
                                         </td>
                                         <td>
                                             <button onclick="onUpdateModal({{$pseudo['id']}},'{{$pseudo['name']}}')"
