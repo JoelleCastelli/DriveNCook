@@ -28,20 +28,20 @@
 
                         <div class="form-group">
                             <label for="entrance_fee">Redevance initiale forfaitaire (€)</label>
-                            <input type="number" min="0" max="1000000" step="1" name="entrance_fee" id="entrance_fee"
+                            <input type="number" min="0" max="1000000" step="0.01" name="entrance_fee" id="entrance_fee"
                                    value="{{ $last_obligation['entrance_fee'] }}"
                                    class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="revenue_percentage">Redevance périodique (%)</label>
-                            <input type="number" min="0" max="100" step="1" name="revenue_percentage"
+                            <input type="number" min="0" max="100" step="0.01" name="revenue_percentage"
                                    id="revenue_percentage"
                                    value="{{ $last_obligation['revenue_percentage'] }}"
                                    class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="warehouse_percentage">Stock corporate (%)</label>
-                            <input type="number" min="0" max="100" step="1" name="warehouse_percentage"
+                            <input type="number" min="0" max="100" step="0.01" name="warehouse_percentage"
                                    id="warehouse_percentage"
                                    value="{{ $last_obligation['warehouse_percentage'] }}"
                                    class="form-control">

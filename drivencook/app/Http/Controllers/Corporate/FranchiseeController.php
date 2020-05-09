@@ -291,21 +291,21 @@ class FranchiseeController extends Controller
             $warehouse_percentage = trim($parameters['warehouse_percentage']);
             $billing_day = trim($parameters['billing_day']);
 
-            if (!ctype_digit($entrance_fee) || $entrance_fee < 0 || $entrance_fee > 9999999) {
+            if (!is_numeric($entrance_fee) || $entrance_fee < 0 || $entrance_fee > 9999999) {
                 $error = true;
-                $errors_list[] = 'Frais d\'entrées incorrect';
+                $errors_list[] = 'Redevance initiale forfaitaire incorrecte';
             }
-            if (!ctype_digit($revenue_percentage) || $revenue_percentage < 0 || $revenue_percentage > 100) {
+            if (!is_numeric($revenue_percentage) || $revenue_percentage < 0 || $revenue_percentage > 100) {
                 $error = true;
-                $errors_list[] = 'Taxes sur les revenues incorrect';
+                $errors_list[] = 'Redevance périodique incorrecte';
             }
-            if (!ctype_digit($warehouse_percentage) || $warehouse_percentage < 0 || $warehouse_percentage > 100) {
+            if (!is_numeric($warehouse_percentage) || $warehouse_percentage < 0 || $warehouse_percentage > 100) {
                 $error = true;
-                $errors_list[] = 'Taxes sur les entrepôts incorrect';
+                $errors_list[] = 'Stock corporate incorrect';
             }
             if (!ctype_digit($billing_day) || $billing_day < 1 || $billing_day > 28) {
                 $error = true;
-                $errors_list[] = 'Jour de facturation mensuel incorrect';
+                $errors_list[] = 'Jour de facturation mensuelle incorrect';
             }
 
             if ($error) {
