@@ -20,6 +20,9 @@
                     <li class="list-group-item"><b>Modèle :
                         </b>{{empty($truck['model'])?'Non renseigné':$truck['model']}}
                     </li>
+                    <li class="list-group-item"><b>Fonctionnel :
+                        </b>{{$truck['functional']?'Oui':'Non'}}
+                    </li>
                     <li class="list-group-item"><b>Date d'achat :
                         </b>{{empty($truck['purchase_date'])?'Non renseigné':
                                 DateTime::createFromFormat('Y-m-d',$truck['purchase_date'])->format('d/m/Y')}}
@@ -30,24 +33,36 @@
                     <li class="list-group-item"><b>Numéro d'assurance :
                         </b>{{empty($truck['insurance_number'])?'Non renseigné':$truck['insurance_number']}}
                     </li>
+                    <li class="list-group-item"><b>Numéro de carte grise :
+                        </b>{{empty($truck['registration_document'])?'Non renseigné':$truck['registration_document']}}
+                    </li>
                     <li class="list-group-item"><b>Carburant :
                         </b>{{empty($truck['fuel_type'])?'Non renseigné':$truck['fuel_type']}}
                     </li>
                     <li class="list-group-item"><b>Puissance :
                         </b>{{empty($truck['horsepower'])?'Non renseigné':$truck['horsepower'].' CV'}}
                     </li>
+                    <li class="list-group-item"><b>Poids vide :
+                        </b>{{empty($truck['weight_empty'])?'Non renseigné':$truck['weight_empty'].' kg'}}
+                    </li>
                     <li class="list-group-item"><b>Charge utile :
-                        </b>{{empty($truck['payload'])?'Non renseigné':$truck['payload'].' KG'}}
+                        </b>{{empty($truck['payload'])?'Non renseigné':$truck['payload'].' kg'}}
                     </li>
                     <li class="list-group-item"><b>État général :
                         </b>{{empty($truck['general_state'])?'Non renseigné':$truck['general_state']}}
                     </li>
+                    <li class="list-group-item"><b>Numéro de châssis :
+                        </b>{{empty($truck['chassis_number'])?'Non renseigné':$truck['chassis_number']}}
+                    </li>
+                    <li class="list-group-item"><b>Numéro de moteur :
+                        </b>{{empty($truck['engine_number'])?'Non renseigné':$truck['engine_number']}}
+                    </li>
                     <li class="list-group-item"><b>Dernier contrôle technique :
                         </b>{{empty($truck['last_safety_inspection'])?'Non renseigné':
                                 DateTime::createFromFormat('Y-m-d',$truck['last_safety_inspection']['date'])->format('d/m/Y')
-                                .' ('.$truck['last_safety_inspection']['truck_mileage'].' km)'}}
+                                .' ('.$truck['last_safety_inspection']['truck_mileage'].' km - '. $truck['last_safety_inspection']['truck_age'].' ans)'}}
                     </li>
-                    <li class="list-group-item"><b>Position :
+                    <li class="list-group-item"><b>Localisation :
                         </b>{{empty($truck['location'])?'Non renseigné':
                                 $truck['location']['address'].' ('.$truck['location']['city']['postcode'].')'}}
                     </li>
@@ -90,7 +105,7 @@
                             <button type="submit" class="btn btn-light_blue">Assigner</button>
                         </form>
                     @else
-                        Assigné à : {{
+                        Assigné à {{
                                     $truck['user']['firstname'].' '.
                                     $truck['user']['lastname'].' ('.
                                     $truck['user']['pseudo']['name'].')'
@@ -106,7 +121,7 @@
         <div class="col-12 col-lg-6 mb-5">
             <div class="card">
                 <div class="card-header">
-                    <h2>Historique des pannes</h2>
+                    <h2>Pannes</h2>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -130,7 +145,7 @@
                                     </td>
                                     <td>{{$breakdown['type']}}</td>
                                     <td>{{$breakdown['description']}}</td>
-                                    <td>{{$breakdown['cost']}}</td>
+                                    <td>{{$breakdown['cost']}} €</td>
                                     <td>{{$breakdown['status']}}</td>
                                     <td>
                                         <a href="{{route('update_breakdown',["truckId"=>$truck['id'], "breakdownId"=>$breakdown['id']])}}">
@@ -155,7 +170,7 @@
         <div class="col-12 col-lg-6 mb-5">
             <div class="card">
                 <div class="card-header">
-                    <h2>Historique des contrôles techniques</h2>
+                    <h2>Contrôles techniques</h2>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">

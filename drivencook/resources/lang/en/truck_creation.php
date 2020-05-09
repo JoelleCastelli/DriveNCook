@@ -73,4 +73,7 @@ return [
     'fuel_type_lpg' => 'LPG',
     'fuel_type_electric' => 'Electric',
 
+    'yes' => 'Yes',
+    'no' => 'No',
+
 ];
