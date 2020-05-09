@@ -385,17 +385,25 @@ class FranchiseeController extends Controller
     {
         $franchise_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
         $date_max = DateTime::createFromFormat("d/m/Y", $this->getNextPaymentDate($franchise_obligation));
+        $date_max = $date_max->setTime(23, 59, 59);
         $date_min = clone $date_max;
         $date_min->modify('-1 month');
+        $date_max->modify('-1 day');
 
         $date_max = $date_max->format("Y/m/d");
         $date_min = $date_min->format("Y/m/d");
 
         $stocks = Stock::where('user_id', $franchise_id)->get()->toArray();
 
-        $sales = Sale::whereBetween('date', [$date_min, $date_max])->with('sold_dishes')->get()->toArray();
+        $sales = Sale::whereBetween('date', [$date_min, $date_max])
+                        ->where('user_franchised', $franchise_id)
+                        ->with('sold_dishes')
+                        ->get()->toArray();
         $sales_total = 0;
-        $purchase_orders = PurchaseOrder::whereBetween('date', [$date_min, $date_max])->with('purchased_dishes')->get()->toArray();
+        $purchase_orders = PurchaseOrder::whereBetween('date', [$date_min, $date_max])
+                            ->where('user_id', $franchise_id)
+                            ->with('purchased_dishes')
+                            ->get()->toArray();
         $purchase_orders_total = 0;
 
         foreach ($sales as $sale) {
