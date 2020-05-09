@@ -264,10 +264,12 @@ class FranchiseeController extends Controller
             ->first()->toArray();
 
         $revenues = $this->get_franchise_current_month_sale_revenues($id);
-//var_dump($franchisee);die;
+        $history = $this->get_franchisee_history($id);
+
         return view('corporate.franchisee.franchisee_view')
             ->with('franchisee', $franchisee)
-            ->with('revenues', $revenues);
+            ->with('revenues', $revenues)
+            ->with('history', $history);
     }
 
     public function update_franchise_obligation()
@@ -497,4 +499,39 @@ class FranchiseeController extends Controller
             }
         }
     }
+
+    public function get_franchisee_history($franchisee_id) {
+        $first_sale = Sale::all()->where('user_franchised', $franchisee_id)
+                                 ->sortBy('id')->first()->toArray();
+        $first_sale_date = $first_sale['date'];
+        $today = date("Y-m-d");
+
+        // Total of cashed money and number of sales
+        $sales = Sale::whereBetween('date', [$first_sale_date, $today])
+                        ->where('user_franchised', $franchisee_id)
+                        ->with('sold_dishes')
+                        ->get()->toArray();
+        $sales_total = 0;
+        foreach ($sales as $sale) {
+            foreach ($sale['sold_dishes'] as $sold_dish) {
+                $sales_total += $sold_dish['quantity'] * $sold_dish['unit_price'];
+            }
+        }
+        $sales_count = count($sales);
+
+        $invoices = Invoice::whereBetween('date_emitted', [$first_sale_date, $today])
+                            ->where('user_id', $franchisee_id)
+                            ->get()->toArray();
+
+        $total_invoices = 0;
+        foreach ($invoices as $invoice) {
+            $total_invoices += $invoice['amount'];
+        }
+
+        return ["sales_total" => $sales_total,
+            "sales_count" => $sales_count,
+            "total_invoices" => $total_invoices
+        ];
+    }
+
 }
