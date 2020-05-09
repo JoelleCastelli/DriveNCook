@@ -137,8 +137,7 @@
                                 Prochaine facture
                             </div>
                             <div class="row d-flex justify-content-center">
-                                <h1>{{$revenues['revenues'] == 0 ? 'Pas de CA' :
-                                $revenues['sales_total'] * $revenues['obligation']['revenue_percentage'] / 100 . ' €'}}</h1>
+                                <h1>{{$revenues['next_invoice']}} €</h1>
                             </div>
                         </div>
                     </div>

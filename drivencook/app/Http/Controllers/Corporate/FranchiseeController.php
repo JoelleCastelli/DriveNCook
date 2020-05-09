@@ -385,65 +385,35 @@ class FranchiseeController extends Controller
 
     public function get_franchise_current_month_sale_revenues($franchise_id)
     {
-//        $franchise_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
-//        $date_max = DateTime::createFromFormat("d/m/Y", $this->getNextPaymentDate($franchise_obligation));
-//        $date_max = $date_max->setTime(23, 59, 59);
-//        $date_min = clone $date_max;
-//        $date_min->modify('-1 month');
-//        $date_max->modify('-1 day');
-//
-//        $date_max = $date_max->format("Y/m/d");
-//        $date_min = $date_min->format("Y/m/d");
-//
-//        $stocks = FranchiseeStock::where('user_id', $franchise_id)->get()->toArray();
-//
-//        $sales = Sale::whereBetween('date', [$date_min, $date_max])
-//                        ->where('user_franchised', $franchise_id)
-//                        ->with('sold_dishes')
-//                        ->get()->toArray();
-//        $sales_total = 0;
-//        $purchase_orders = PurchaseOrder::whereBetween('date', [$date_min, $date_max])
-//                            ->where('user_id', $franchise_id)
-//                            ->with('purchased_dishes')
-//                            ->get()->toArray();
-//        $purchase_orders_total = 0;
-//
-//        foreach ($sales as $sale) {
-//            foreach ($sale['sold_dishes'] as $sold_dish) {
-//                $unit_price = 0;
-//                foreach ($stocks as $stock) {
-//                    if ($stock['dish_id'] == $sold_dish['dish_id']) {
-//                        $unit_price = $stock['unit_price'];
-//                        break;
-//                    }
-//                }
-//                $sales_total += $sold_dish['quantity'] * $unit_price;
-//            }
-//        }
-//
-//        foreach ($purchase_orders as $purchase_order) {
-//            foreach ($purchase_order['purchased_dishes'] as $purchased_dish) {
-//                $purchase_orders_total += $purchased_dish['dish']['warehouse_price'] * $purchased_dish['quantity'];
-//            }
-//        }
+        $franchise_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
 
-//        return array(
-//            "sales_total" => $sales_total,
-//            "sales_count" => count($sales),
-//            "purchase_orders_total" => $purchase_orders_total,
-//            "purchase_orders_count" => count($purchase_orders),
-//            "revenues" => $sales_total - $purchase_orders_total,
-//            "obligation" => $franchise_obligation
-//        );
-        //TODO franchise month sale revenues
+        $date_max = DateTime::createFromFormat("d/m/Y", $this->getNextPaymentDate($franchise_obligation));
+        $date_max = $date_max->setTime(23, 59, 59);
+        $date_min = clone $date_max;
+        $date_min->modify('-1 month');
+        $date_max->modify('-1 day');
+        $date_max = $date_max->format("Y/m/d");
+        $date_min = $date_min->format("Y/m/d");
+
+        $sales = Sale::whereBetween('date', [$date_min, $date_max])
+                        ->where('user_franchised', $franchise_id)
+                        ->with('sold_dishes')
+                        ->get()->toArray();
+        $sales_total = 0;
+        foreach ($sales as $sale) {
+            foreach ($sale['sold_dishes'] as $sold_dish) {
+                $sales_total += $sold_dish['quantity'] * $sold_dish['unit_price'];
+            }
+        }
+
+        $next_invoice = $sales_total * $franchise_obligation['revenue_percentage'] / 100;
+
         return array(
-            "sales_total" => 0,
-            "sales_count" => 0,
-            "purchase_orders_total" => 0,
-            "purchase_orders_count" => 0,
-            "revenues" => 0,
-            "obligation" => 0
+            "sales_total" => $sales_total,
+            "sales_count" => count($sales),
+            "next_invoice" => $next_invoice
         );
+
     }
 
     public function get_franchisees_current_month_sale_revenues()
@@ -452,10 +422,7 @@ class FranchiseeController extends Controller
         $total = array(
             "sales_total" => 0,
             "sales_count" => 0,
-            "purchase_orders_total" => 0,
-            "purchase_orders_count" => 0,
-            "revenues" => 0,
-            "obligation" => 0
+            "next_invoice" => 0
         );
 
         foreach ($franchisees as $franchisee) {
@@ -463,10 +430,7 @@ class FranchiseeController extends Controller
 
             $total['sales_total'] += $franchisee_revenues['sales_total'];
             $total['sales_count'] += $franchisee_revenues['sales_count'];
-            $total['purchase_orders_total'] += $franchisee_revenues['purchase_orders_total'];
-            $total['purchase_orders_count'] += $franchisee_revenues['purchase_orders_count'];
-            $total['revenues'] += $franchisee_revenues['revenues'];
-            $total['obligation'] = $franchisee_revenues['obligation'];
+            $total['next_invoice'] += $franchisee_revenues['next_invoice'];
         }
         return $total;
     }
@@ -517,19 +481,18 @@ class FranchiseeController extends Controller
                 $sales_total += $sold_dish['quantity'] * $sold_dish['unit_price'];
             }
         }
-        $sales_count = count($sales);
 
+        // Total of invoices
         $invoices = Invoice::whereBetween('date_emitted', [$first_sale_date, $today])
                             ->where('user_id', $franchisee_id)
                             ->get()->toArray();
-
         $total_invoices = 0;
         foreach ($invoices as $invoice) {
             $total_invoices += $invoice['amount'];
         }
 
         return ["sales_total" => $sales_total,
-            "sales_count" => $sales_count,
+            "sales_count" => count($sales),
             "total_invoices" => $total_invoices
         ];
     }
