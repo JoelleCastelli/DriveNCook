@@ -444,26 +444,7 @@ class FranchiseeController extends Controller
         $pdf = PDF::loadView('corporate.franchisee.franchisee_invoice', array('invoice' => $invoice, 'pseudo' => $pseudo));
         return $pdf->stream();
     }
-
-    public function generate_monthly_invoices(){
-        $franchisees = User::where('role', 'Franchisé')->get()->toArray();
-        $current_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
-        foreach($franchisees as $franchisee) {
-            $data = $this->get_franchise_current_month_sale_revenues($franchisee['id']);
-            if ($data['sales_total'] > 0){
-                $invoice_total = $data['sales_total'] * $current_obligation['revenue_percentage'] / 100;
-                $invoice = ['amount' => $invoice_total,
-                            'date_emitted' => date("Y-m-d"),
-                            'status' => 'A payer',
-                            'monthly_fee' => 1,
-                            'initial_fee' => 0,
-                            'user_id' => $franchisee['id']];
-                $invoice = Invoice::create($invoice)->toArray();
-                $this->create_invoice_reference('MF', $franchisee['id'], $invoice['id']);
-            }
-        }
-    }
-
+    
     public function get_franchisee_history($franchisee_id) {
 
         // Total of invoices (first because always at least one invoice: initial fee)
