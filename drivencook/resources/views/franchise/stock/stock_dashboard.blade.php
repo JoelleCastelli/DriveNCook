@@ -41,9 +41,11 @@
                                         ?></td>
                                     <td>{{$order['status']}}</td>
                                     <td>
-                                        <a href="{{route('franchise.stock_order_cancel',["order_id"=>$order['id']])}}">
-                                            <i class="fa fa-ban"></i>
-                                        </a>
+                                        @if ($order['status'] == "created")
+                                            <a href="{{route('franchise.stock_order_cancel',["order_id"=>$order['id']])}}">
+                                                <i class="fa fa-ban"></i>
+                                            </a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
