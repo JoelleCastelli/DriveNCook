@@ -438,8 +438,7 @@ class FranchiseeController extends Controller
         return $total;
     }
 
-    public function franchisee_invoice_pdf($id)
-    {
+    public function franchisee_invoice_pdf($id) {
         $invoice = Invoice::with('user')->where('id', $id)->first()->toArray();
         $pseudo = Pseudo::where('id', $invoice['user']['pseudo_id'])->first();
         if (!empty($pseudo))
@@ -448,6 +447,7 @@ class FranchiseeController extends Controller
         return $pdf->stream();
     }
 
+    //TODO mutualiser les requêtes des deux fonctions d'historique
     public function get_franchisee_history($franchisee_id) {
 
         // Total of invoices (first because always at least one invoice: initial fee)
@@ -492,11 +492,8 @@ class FranchiseeController extends Controller
         ];
     }
 
-
     public function franchisee_sales_history_pdf(Request $request) {
         $parameters = $request->except(['_token']);
-
-        //TODO choisir la date de première vente
 
         if (count($parameters) == 3 && !empty($parameters["id"]) && $parameters["start_date"] != NULL && $parameters["start_date"] != NULL) {
             $franchisee_id = $parameters["id"];
