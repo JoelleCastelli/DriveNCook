@@ -148,7 +148,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h2>Historique</h2>
-                    <button type="button" onclick="onCreateModal()" class="btn btn-light_blue" data-toggle="modal"
+                    <button type="button" class="btn btn-light_blue" data-toggle="modal"
                             data-target="#formModal">Exporter en PDF
                     </button>
                 </div>
@@ -395,11 +395,12 @@
                     <input type="hidden" id="formId" name="id" value="">
 
                     <div class="modal-body">
+                        <button type="button" onclick="setAllTimeDates('{{ $history['first_sale_date'] }}')"
+                                class="btn btn-info">Depuis la première vente</button>
                         <div class="form-group">
                             <input type="hidden" name="id" id="id" value="{{ $franchisee['id'] }}">
                         </div>
                         <div class="form-group">
-                            <label for="start_date">Date de début :</label>
                             <input type="date" name="start_date" id="start_date"
                                    value=""
                                    class="form-control">
@@ -416,6 +417,7 @@
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Générer</button>
                         </div>
+
                     </div>
                 </form>
             </div>
@@ -440,4 +442,22 @@
     </script>
 
     <script type="text/javascript" src="{{asset('js/truckScript.js')}}"></script>
+
+    <script>
+        function setAllTimeDates(first_sale_date) {
+            let start_date = document.getElementById('start_date');
+            let end_date = document.getElementById('end_date');
+            let today = new Date();
+            let dd = today.getDate();
+            let mm = today.getMonth()+1;
+            let yyyy = today.getFullYear();
+            if (dd < 10)
+                dd = '0' + dd;
+            if (mm < 10)
+                mm = '0' + mm;
+            today = yyyy + '-' + mm + '-' + dd;
+            start_date.value = first_sale_date;
+            end_date.value = today;
+        }
+    </script>
 @endsection

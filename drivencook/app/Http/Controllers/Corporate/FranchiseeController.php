@@ -487,6 +487,7 @@ class FranchiseeController extends Controller
 
         return ["sales_total" => $sales_total,
             "sales_count" => count($sales),
+            "first_sale_date" => $first_sale_date,
             "total_invoices" => $total_invoices
         ];
     }
