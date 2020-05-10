@@ -65,7 +65,17 @@ class StockController extends Controller
 
     public function stock_order_view($order_id)
     {
-        return 'order view ' . $order_id;
+        $order = PurchaseOrder::with('purchased_dishes')
+            ->with('warehouse')
+            ->whereKey($order_id)
+            ->first();
+        if ($order == null) {
+            abort(404);
+        }
+        $order = $order->toArray();
+//        var_dump($order);die;
+        return view('franchise.stock.stock_order_view')
+            ->with('order', $order);
     }
 
     public function stock_order_warehouse($warehouse_id)

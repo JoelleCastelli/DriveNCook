@@ -111,6 +111,13 @@
                     </a>
                 </li>
             @endif
+            @if (strpos(url()->current(), route('franchise.stock_order')) !== false)
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('franchise.stock_dashboard')}}">
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la gestion des stock & entrepôts
+                        </a>
+                    </li>
+            @endif
 
         </ul>
     </div>
