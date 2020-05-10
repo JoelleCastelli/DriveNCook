@@ -30,11 +30,6 @@ Route::get('/franchise/stock/order/{warehouse_id}', [
     'uses' => 'Franchise\StockController@stock_order_warehouse'
 ]);
 
-Route::get('/franchise/stock/update/{dish_id}', [
-    'as' => 'franchise.stock_update',
-    'uses' => 'Franchise\StockController@stock_update'
-]);
-
 Route::post('/franchise/stock/update', [
     'as' => 'franchise.stock_update_submit',
     'uses' => 'Franchise\StockController@stock_update_submit'

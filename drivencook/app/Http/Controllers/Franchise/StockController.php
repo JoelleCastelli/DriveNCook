@@ -84,13 +84,17 @@ class StockController extends Controller
         //json
     }
 
-    public function stock_update($dish_id)
-    {
-        return 'stock_update ' . $dish_id;
-    }
-
     public function stock_update_submit()
     {
-        return 'stock_update_submit';
+        request()->validate([
+            'dish_id' => ['required','integer'],
+            'unit_price' => ['required','numeric']
+        ]);
+        FranchiseeStock::where([
+            ['user_id', $this->get_connected_user()['id']],
+            ['dish_id', request('dish_id')]
+        ])->update(['unit_price' => request('unit_price')]);
+
+        return json_encode(array('response' => 'success'));
     }
 }

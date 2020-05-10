@@ -86,9 +86,11 @@
                                     <td>{{$stock_dish['quantity']}}</td>
                                     <td class="d-flex justify-content-between">
                                         {{$stock_dish['unit_price']}} €
-                                        <a href="{{route('franchise.stock_update',["dish_id"=>$stock_dish['dish_id']])}}">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
+                                        <button class="fa fa-edit"
+                                                onclick="onUpdateModal({{$stock_dish['dish_id']}},'{{$stock_dish['dish']['name']}}',{{$stock_dish['unit_price']}})"
+                                                data-toggle="modal"
+                                                data-target="#formModal">
+                                        </button>
 
                                     </td>
                                 </tr>
@@ -100,6 +102,41 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="form">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Modal title</h5>
+                    <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form>
+                    {{csrf_field()}}
+                    <input type="hidden" id="formId" name="id" value="">
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label id="modalDish" for="formPrice">132</label>
+                            <input type="number" name="formPrice" id="formPrice"
+                                   value=""
+                                   min="0"
+                                   step="0.01"
+                                   class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        <button type="button" class="btn btn-primary" id="modalSubmit" onclick="onUpdateSubmit()">Save
+                            changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('script')
@@ -135,6 +172,48 @@
                 }
             }
         }
+
+        function onUpdateModal(id, name, unit_price) {
+            document.getElementById('modalTitle').innerText = 'Modifier le prix de vente';
+            document.getElementById('modalSubmit').innerText = 'Modifier';
+            document.getElementById('modalDish').innerText = name;
+            document.getElementById('formId').value = id;
+            document.getElementById('formPrice').value = unit_price;
+        }
+
+
+        function onUpdateSubmit() {
+            const dish_id = document.getElementById('formId').value;
+            const unit_price = document.getElementById('formPrice').value;
+            if (!isNaN(dish_id)) {
+                $.ajax({
+                    url: '{{route('franchise.stock_update_submit')}}',
+                    method: "post",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {'dish_id': dish_id, 'unit_price': unit_price},
+                    success: function (data) {
+                        const dataJ = JSON.parse(data);
+                        if (dataJ.response === "success") {
+                            document.getElementById('closeModal').click();
+                            alert('Prix modifié');
+                            let row = document.getElementById('row_stock_' + dish_id);
+                            let priceTd = row.getElementsByTagName('td')[2];
+                            priceTd.innerText = unit_price + ' €';
+
+                        } else {
+                            alert("Une erreur est survenue, veuillez raffraichir la page:\n" + dataJ.message);
+                        }
+                    },
+                    error: function (data) {
+                        const dataJ = JSON.parse(data);
+                        alert("Une erreur est survenue, veuillez raffraichir la page:\n" + dataJ.message);
+                    }
+                })
+            }
+        }
+
 
     </script>
 @endsection
