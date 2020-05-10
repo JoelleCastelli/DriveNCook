@@ -379,6 +379,48 @@
 
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="form">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Générer l'historique de ventes du franchisé</h5>
+                    <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" action="{{ route('franchisee_sales_history_pdf') }}">
+                    {{csrf_field()}}
+                    <input type="hidden" id="formId" name="id" value="">
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="hidden" name="id" id="id" value="{{ $franchisee['id'] }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="start_date">Date de début :</label>
+                            <input type="date" name="start_date" id="start_date"
+                                   value=""
+                                   class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="end_date">Date de fin :</label>
+                            <input type="date" name="end_date" id="end_date"
+                                   value="{{ date("Y-m-d") }}"
+                                   class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Générer</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')

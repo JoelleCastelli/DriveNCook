@@ -129,6 +129,9 @@ class FranchiseeController extends Controller
                 $this->generate_first_invoice($data->id);
                 return redirect()->route('franchisee_creation')->with('success', trans('franchisee_creation.new_franchisee_success'));
             }
+        } else {
+            $errors_list[] = trans('franchisee_update.arguments_error');
+            return redirect()->back()->with('error', $errors_list);
         }
     }
 
@@ -444,7 +447,7 @@ class FranchiseeController extends Controller
         $pdf = PDF::loadView('corporate.franchisee.franchisee_invoice', array('invoice' => $invoice, 'pseudo' => $pseudo));
         return $pdf->stream();
     }
-    
+
     public function get_franchisee_history($franchisee_id) {
 
         // Total of invoices (first because always at least one invoice: initial fee)
@@ -482,12 +485,54 @@ class FranchiseeController extends Controller
             }
         }
 
-
-
         return ["sales_total" => $sales_total,
             "sales_count" => count($sales),
             "total_invoices" => $total_invoices
         ];
+    }
+
+
+    public function franchisee_sales_history_pdf(Request $request) {
+        $parameters = $request->except(['_token']);
+
+        //TODO choisir la date de première vente
+
+        if (count($parameters) == 3 && !empty($parameters["id"]) && $parameters["start_date"] != NULL && $parameters["start_date"] != NULL) {
+            $franchisee_id = $parameters["id"];
+            $start_date = $parameters["start_date"];
+            $end_date = $parameters["end_date"];
+
+            if ($start_date >  $end_date) {
+                flash("La date de début ne peut pas être supérieure à la date de fin.")->error();
+                return redirect()->back();
+            }
+
+            $franchisee = User::where('id', $franchisee_id)
+                ->with('pseudo')
+                ->first()->toArray();
+
+            $sales = Sale::whereBetween('date', [$start_date, $end_date])
+                ->where('user_franchised', $franchisee_id)
+                ->with('sold_dishes')
+                ->get()->toArray();
+
+            if(empty($sales)) {
+                flash("Le franchisé n'a pas réalisé de vente sur la période sélectionnée.")->error();
+                return redirect()->back();
+            }
+
+            $pdf = PDF::loadView('corporate.franchisee.franchisee_history',
+                                ["franchisee" => $franchisee,
+                                "sales" => $sales,
+                                "start_date" => $start_date,
+                                "end_date" => $end_date]
+                                );
+            return $pdf->stream();
+        } else {
+            flash("Veuillez sélectionner une date de début et de fin de l'historique")->error();
+            return redirect()->back();
+        }
+
     }
 
 }
