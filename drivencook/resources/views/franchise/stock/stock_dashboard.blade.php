@@ -28,7 +28,7 @@
                             </thead>
                             <tbody>
                             @foreach($purchase_order as $order)
-                                <tr id="row_{{$order['id']}}">
+                                <tr id="row_order_{{$order['id']}}">
                                     <td>{{$order['date']}}</td>
                                     <td>{{$order['warehouse']['name']}}</td>
                                     <td>{{count($order['purchased_dishes'])}}</td>
@@ -41,10 +41,12 @@
                                         ?></td>
                                     <td>{{$order['status']}}</td>
                                     <td>
+                                        <a href="{{route('franchise.stock_order_view',['order_id'=>$order['id']])}}">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
                                         @if ($order['status'] == "created")
-                                            <a href="{{route('franchise.stock_order_cancel',["order_id"=>$order['id']])}}">
-                                                <i class="fa fa-ban"></i>
-                                            </a>
+                                            <button class="fa fa-ban ml-3" onclick="cancelOrder({{$order['id']}})">
+                                            </button>
                                         @endif
                                     </td>
                                 </tr>
@@ -79,7 +81,7 @@
                             </thead>
                             <tbody>
                             @foreach($stock as $stock_dish)
-                                <tr id="row_{{$stock_dish['dish_id']}}">
+                                <tr id="row_stock_{{$stock_dish['dish_id']}}">
                                     <td>{{$stock_dish['dish']['name']}}</td>
                                     <td>{{$stock_dish['quantity']}}</td>
                                     <td class="d-flex justify-content-between">
@@ -106,6 +108,34 @@
             $('#purchase_orders').DataTable();
             $('#stocks').DataTable();
         });
+
+        function cancelOrder(id) {
+            if (confirm("Voulez-vous vraiment cette commande ?")) {
+                if (!isNaN(id)) {
+                    let urlB = '{{route('franchise.stock_order_cancel',['order_id'=>':id'])}}';
+                    urlB = urlB.replace(':id', id);
+                    $.ajax({
+                        url: urlB,
+                        method: "delete",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (data) {
+                            if (data == id) {
+                                alert("Commande annulée");
+                                document.getElementById("row_order_" + id).remove();
+                            } else {
+                                alert("Une erreur est survenue lors de l'annulation, veuillez rafraîchir la page :\n" + data);
+                            }
+                        },
+                        error: function (data) {
+                            alert("Une erreur est survenue lors de l'annulation, veuillez rafraîchir la page :\n" + data);
+                        }
+                    })
+                }
+            }
+        }
+
     </script>
 @endsection
 

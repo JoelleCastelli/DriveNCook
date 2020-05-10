@@ -10,12 +10,17 @@ Route::get('/franchise/stock/order', [
     'uses' => 'Franchise\StockController@stock_order'
 ]);
 
+Route::get('/franchise/stock/order/{order_id}', [
+    'as' => 'franchise.stock_order_view',
+    'uses' => 'Franchise\StockController@stock_order_view'
+]);
+
 Route::post('/franchise/stock/order', [
     'as' => 'franchise.stock_order_submit',
     'uses' => 'Franchise\StockController@stock_order_submit'
 ]);
 
-Route::get('/franchise/stock/order_cancel/{order_id}', [
+Route::delete('/franchise/stock/order_cancel/{order_id}', [
     'as' => 'franchise.stock_order_cancel',
     'uses' => 'Franchise\StockController@stock_order_cancel'
 ]);
