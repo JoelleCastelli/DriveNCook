@@ -85,7 +85,7 @@
                                     <td>{{ empty($order['user']['pseudo'])?trans('corporate.unknown'):$order['user']['pseudo']['name'] }}</td>
                                     <td>{{ trans($GLOBALS['PURCHASE_ORDER_STATUS'][$order['status']]) }}</td>
                                     <td>
-                                        <a href="{{ route('warehouse_order', ['warehouse_id'=>$warehouse['id'], 'id'=>$order['id']]) }}">
+                                        <a style="color: unset" href="{{ route('warehouse_order', ['warehouse_id'=>$warehouse['id'], 'id'=>$order['id']]) }}">
                                             <i class="fa fa-eye"></i>
                                         </a>
                                     </td>

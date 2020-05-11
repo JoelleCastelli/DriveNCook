@@ -26,7 +26,7 @@
                                 <th>{{ trans('warehouse_dishes.category') }}</th>
                                 <th>{{ trans('warehouse_dishes.quantity') }}</th>
                                 <th>{{ trans('warehouse_dishes.warehouse_price') }}</th>
-                                <th>{{ trans('warehouse_dishes.actions') }}</th>
+                                <th>{{ trans('corporate.actions') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -153,11 +153,11 @@
                             for(let i = 0; i < data['errorList'].length; i++) {
                                 str += '\n' + data['errorList'][i];
                             }
-                            alert(Lang.get('warehouse_stock.update_error') + str);
+                            alert(Lang.get('warehouse_dishes.update_dish_stock_error') + str);
                         }
                     },
                     error: function () {
-                        alert(Lang.get('warehouse_stock.update_error'));
+                        alert(Lang.get('warehouse_dishes.update_dish_stock_error'));
                     }
                 });
             });
@@ -206,11 +206,11 @@
                             for(let i = 0; i < data['errorList'].length; i++) {
                                 str += '\n' + data['errorList'][i];
                             }
-                            alert(Lang.get('warehouse_stock.create_error') + str);
+                            alert(Lang.get('warehouse_dishes.create_dish_stock_error') + str);
                         }
                     },
                     error: function () {
-                        alert(Lang.get('warehouse_stock.create_error'));
+                        alert(Lang.get('warehouse_dishes.create_dish_stock_error'));
                     }
                 });
             });
@@ -225,7 +225,7 @@
         }
 
         function deleteDish(dishId) {
-            if (confirm(Lang.get('warehouse_stock.ask_delete'))) {
+            if (confirm(Lang.get('warehouse_dishes.ask_delete'))) {
                 let warehouseId = $('#warehouseId').val();
                 if (!isNaN(dishId) && !isNaN(parseInt(warehouseId))) {
                     let urlB = '{{ route('warehouse_stock_delete', ['dishId'=>':dishId', 'warehouseId'=>':warehouseId']) }}';
@@ -242,11 +242,11 @@
                             if (data['status'] === 'success') {
                                 $('#dishes').DataTable().row('#rowId' + dishId).remove().draw();
                             } else {
-                                alert(Lang.get('warehouse_stock.delete_error'));
+                                alert(Lang.get('warehouse_dishes.delete_dish_stock_error'));
                             }
                         },
                         error: function () {
-                            alert(Lang.get('warehouse_stock.delete_error'));
+                            alert(Lang.get('warehouse_dishes.delete_dish_stock_error'));
                         }
                     });
                 }
