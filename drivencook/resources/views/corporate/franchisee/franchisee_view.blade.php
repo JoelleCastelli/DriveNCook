@@ -289,7 +289,7 @@
                                 <th>Date</th>
                                 <th>Entrepôt</th>
                                 <th>Total</th>
-                                <th>Status</th>
+                                <th>Statut</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>

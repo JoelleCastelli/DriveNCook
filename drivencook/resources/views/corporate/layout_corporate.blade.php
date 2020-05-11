@@ -70,7 +70,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="#">
-                        <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp;&nbsp;Evenements
+                        <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp;&nbsp;Evènements
                     </a>
                 </li>
                 <li class="nav-item">

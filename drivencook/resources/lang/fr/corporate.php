@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'warehouse' => 'Entrepôt',
+    'warehouse' => 'Entrepôts',
 
     'back_dashboard' => 'Tableau de bord',
     'back_warehouse_list' => 'Liste des entrepôts',
