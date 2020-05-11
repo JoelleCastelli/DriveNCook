@@ -14,8 +14,8 @@ return [
     'category' => 'Category',
     'quantity' => 'Quantity',
     'warehouse_price' => 'Warehouse price',
-    'warehouse_dishes_view' => 'Display dishes',
+    'warehouse_dishes_view' => 'Display all dishes',
+    'warehouse_orders_datatable' => 'Orders',
 
     'orders_section' => 'Orders',
-    'warehouse_orders_view' => 'Display orders',
 ];

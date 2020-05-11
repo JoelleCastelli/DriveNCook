@@ -234,6 +234,12 @@
                     <a class="nav-link text-light2" href="{{ route('warehouse_list') }}">
                         <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_warehouse_list') }}
                     </a>
+                    <a class="nav-link text-light2" href="{{ route('warehouse_dishes',['id'=>$warehouse['id']]) }}">
+                        <i class="fa fa-hamburger"></i>&nbsp;&nbsp;&nbsp;{{ trans('warehouse_view.warehouse_dishes_view') }}
+                    </a>
+                    <a class="nav-link text-light2" href="{{ url()->current() . '#orders' }}">
+                        <i class="fa fa-box-open"></i>&nbsp;&nbsp;&nbsp;{{ trans('warehouse_view.warehouse_orders_datatable') }}
+                    </a>
                 </li>
             @endif
             @if (strpos(url()->current(), route('warehouse_dishes',['id'=>''])) !== false)
@@ -250,7 +256,7 @@
             @endif
             @if (strpos(url()->current(), route('warehouse_order',['warehouse_id'=>'', 'id'=>''])) !== false)
                 <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{ route('warehouse_view',['id'=> $warehouseId]) }}">
+                    <a class="nav-link text-light2" href="{{ route('warehouse_view',['id'=> $order['warehouse_id']]) }}">
                         <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_warehouse_view') }}
                     </a>
                 </li>

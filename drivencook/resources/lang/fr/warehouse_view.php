@@ -14,8 +14,8 @@ return [
     'category' => 'Catégorie',
     'quantity' => 'Quantité',
     'warehouse_price' => 'Prix entrepôt',
-    'warehouse_dishes_view' => 'Afficher les plats',
+    'warehouse_dishes_view' => 'Afficher tous les plats',
+    'warehouse_orders_datatable' => 'Commandes',
 
     'orders_section' => 'Commandes',
-    'warehouse_orders_view' => 'Afficher les commandes',
 ];

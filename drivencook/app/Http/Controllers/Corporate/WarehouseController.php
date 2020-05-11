@@ -210,8 +210,7 @@ class WarehouseController extends Controller
         }
 
         return view('corporate.warehouse.warehouse_order')
-            ->with('order', $order)
-            ->with('warehouseId', $warehouseId);
+            ->with('order', $order);
     }
 
     public function warehouse_order_update_product_qty_sent(Request $request)
