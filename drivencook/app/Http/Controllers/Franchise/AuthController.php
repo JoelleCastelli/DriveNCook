@@ -39,7 +39,7 @@ class AuthController extends Controller
             ]);
 
         if ($result) {
-            flash("Connexion réussi")->success();
+            flash("Connexion réussie")->success();
             return redirect(route('franchise.dashboard'));
         }
 
@@ -51,7 +51,7 @@ class AuthController extends Controller
     public function logout()
     {
         auth()->logout();
-        flash("Déconnexion réussi")->success();
+        flash("Déconnexion réussie")->success();
         return redirect(route('franchise.login'));
     }
 }

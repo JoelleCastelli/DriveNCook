@@ -34,7 +34,7 @@ class CorporateAuthController extends Controller
             ]);
 
         if ($result) {
-            flash("Connexion réussi")->success();
+            flash("Connexion réussie")->success();
             return redirect(route('corporate_dashboard'));
         }
 
@@ -46,7 +46,7 @@ class CorporateAuthController extends Controller
     public function logout()
     {
         auth()->logout();
-        flash("Déconnexion réussi")->success();
+        flash("Déconnexion réussie")->success();
         return redirect(route('corporate_login'));
     }
 }
