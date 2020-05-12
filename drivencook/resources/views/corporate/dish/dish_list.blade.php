@@ -25,23 +25,6 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-12 col-md-6 col-lg-3">
-                    <div class="card text-light2">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item bg-indigo">Prochaine redevance périodique : xxxx</li>
-                            <li class="list-group-item bg-indigo align-content-arround">
-                                <a href="#" class="row text-light2">
-                                    <div class="col-10">
-                                        Consulter les détails
-                                    </div>
-                                    <div class="col-2">
-                                        <i class="fa fa-chevron-right"></i>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
