@@ -122,6 +122,17 @@ class StockController extends Controller
                 'quantity' => $order_dish['quantity'],
                 'unit_price' => $order_dish['price']
             ]);
+
+            $previous_warehouse_stock = WarehousStock::where([
+                ['warehouse_id', $order['warehouse_id']],
+                ['dish_id', $order_dish['id']]
+            ])->first('quantity');
+            WarehousStock::where([
+                ['warehouse_id', $order['warehouse_id']],
+                ['dish_id', $order_dish['id']]
+            ])->update([
+                'quantity' => $previous_warehouse_stock - $order_dish['quantity']
+            ]);
         }
         flash('Commande créé !')->success();
         return redirect(route('franchise.stock_dashboard'));
