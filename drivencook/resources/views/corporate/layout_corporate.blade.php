@@ -43,156 +43,171 @@
         <ul class="sidebar-nav">
             @switch(url()->current())
                 @case(route('corporate_dashboard'))
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{ route('warehouse_list') }}">
-                        <i class="fa fa-warehouse"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.warehouse') }}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('franchisee_list')}}">
-                        <i class="fa fa-user-tie"></i>&nbsp;&nbsp;&nbsp;Franchisés
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('client_list')}}">
-                        <i class="fa fa-user"></i>&nbsp;&nbsp;&nbsp;Clients
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('truck_list')}}">
-                        <i class="fa fa-truck"></i>&nbsp;&nbsp;&nbsp;Camions
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="#">
-                        <i class="fa fa-chart-line"></i>&nbsp;&nbsp;&nbsp;Revenus & Statistiques
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="#">
-                        <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp;&nbsp;Evènements
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('country_list')}}">
-                        <i class="fa fa-globe"></i>&nbsp;&nbsp;&nbsp;Pays & Villes
-                    </a>
-                </li>
-                @break
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{ route('warehouse_list') }}">
+                            <i class="fa fa-warehouse"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.warehouse') }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{ route('dish_list') }}">
+                            <i class="fa fa-pizza-slice"></i>&nbsp;&nbsp;&nbsp;Catalogue
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('franchisee_list')}}">
+                            <i class="fa fa-user-tie"></i>&nbsp;&nbsp;&nbsp;Franchisés
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('client_list')}}">
+                            <i class="fa fa-user"></i>&nbsp;&nbsp;&nbsp;Clients
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('truck_list')}}">
+                            <i class="fa fa-truck"></i>&nbsp;&nbsp;&nbsp;Camions
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="#">
+                            <i class="fa fa-chart-line"></i>&nbsp;&nbsp;&nbsp;Revenus & Statistiques
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="#">
+                            <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp;&nbsp;Evènements
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('country_list')}}">
+                            <i class="fa fa-globe"></i>&nbsp;&nbsp;&nbsp;Pays & Villes
+                        </a>
+                    </li>
+                    @break
                 @case(route('franchisee_list'))
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('corporate_dashboard')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Retour au tableau de bord
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('franchisee_creation')}}">
-                        <i class="fa fa-user-plus"></i>&nbsp;&nbsp;&nbsp;Ajouter un franchisé
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="#">
-                        <i class="fa fa-headset"></i>&nbsp;&nbsp;&nbsp;Gestion des tickets
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('franchisee_obligation_update')}}">
-                        <i class="fa fa-cogs"></i>&nbsp;&nbsp;&nbsp;Modifier les obligations des franchisés
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('franchisee_pseudo')}}">
-                        <i class="fa fa-address-card"></i>&nbsp;&nbsp;&nbsp;Gestion des pseudo
-                    </a>
-                </li>
-                @break
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('corporate_dashboard')}}">
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Retour au tableau de bord
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('franchisee_creation')}}">
+                            <i class="fa fa-user-plus"></i>&nbsp;&nbsp;&nbsp;Ajouter un franchisé
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="#">
+                            <i class="fa fa-headset"></i>&nbsp;&nbsp;&nbsp;Gestion des tickets
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('franchisee_obligation_update')}}">
+                            <i class="fa fa-cogs"></i>&nbsp;&nbsp;&nbsp;Modifier les obligations des franchisés
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('franchisee_pseudo')}}">
+                            <i class="fa fa-address-card"></i>&nbsp;&nbsp;&nbsp;Gestion des pseudo
+                        </a>
+                    </li>
+                    @break
                 @case(route('franchisee_creation'))
                 @case(route('franchisee_obligation_update'))
                 @case(route('franchisee_pseudo'))
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('franchisee_list')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des franchisés
-                    </a>
-                </li>
-                @break
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('franchisee_list')}}">
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des franchisés
+                        </a>
+                    </li>
+                    @break
                 @case(route('truck_list'))
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('corporate_dashboard')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir au tableau de bord
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('truck_creation')}}">
-                        <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Ajouter un camion
-                    </a>
-                </li>
-
-                @break
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('corporate_dashboard')}}">
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir au tableau de bord
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('truck_creation')}}">
+                            <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Ajouter un camion
+                        </a>
+                    </li>
+                    @break
                 @case(route('truck_creation'))
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('truck_list')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des camions
-                    </a>
-                </li>
-                @break
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('truck_list')}}">
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des camions
+                        </a>
+                    </li>
+                    @break
                 @case(route('warehouse_list'))
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('corporate_dashboard')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_dashboard') }}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('warehouse_creation')}}">
-                        <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.add_warehouse') }}
-                    </a>
-                </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('corporate_dashboard')}}">
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_dashboard') }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('warehouse_creation')}}">
+                            <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.add_warehouse') }}
+                        </a>
+                    </li>
                 @break
                 @case(route('warehouse_creation'))
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('warehouse_list')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_warehouse_list') }}
-                    </a>
-                </li>
-                @break
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('warehouse_list')}}">
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_warehouse_list') }}
+                        </a>
+                    </li>
+                    @break
                 @case(route('country_list'))
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('corporate_dashboard')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir au tableau de bord
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('location_list')}}">
-                        <i class="fa fa-truck"></i>&nbsp;&nbsp;&nbsp;Consulter les emplacements de camions
-                    </a>
-                </li>
-                @break
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('corporate_dashboard')}}">
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir au tableau de bord
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('location_list')}}">
+                            <i class="fa fa-truck"></i>&nbsp;&nbsp;&nbsp;Consulter les emplacements de camions
+                        </a>
+                    </li>
+                    @break
                 @case(route('location_list'))
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('country_list')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des pays
-                    </a>
-                </li>
-                @break
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('country_list')}}">
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des pays
+                        </a>
+                    </li>
+                    @break
                 @case(route('client_list'))
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('corporate_dashboard')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir au tableau de bord
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('client_create')}}">
-                        <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Ajouter un client
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="#">
-                        <i class="fa fa-credit-card"></i>&nbsp;&nbsp;&nbsp;Gestion de la fidelité
-                    </a>
-                </li>
-                @break
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('corporate_dashboard')}}">
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir au tableau de bord
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('client_create')}}">
+                            <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Ajouter un client
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="#">
+                            <i class="fa fa-credit-card"></i>&nbsp;&nbsp;&nbsp;Gestion de la fidelité
+                        </a>
+                    </li>
+                    @break
+                @case(route('dish_list'))
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{ route('corporate_dashboard') }}">
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Retour au tableau de bord
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="#">
+                            <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Ajouter un produit
+                        </a>
+                    </li>
+                    @break
                 @default
-                @break
+                    @break
             @endswitch
             @if (strpos(url()->current(), route('franchisee_update', ['id'=>''])) !== false)
                 <li class="nav-item">
@@ -212,6 +227,13 @@
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('truck_list')}}">
                         <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des camions
+                    </a>
+                </li>
+            @endif
+            @if (strpos(url()->current(), route('dish_update', ['id'=>''])) !== false)
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{route('dish_list')}}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir au catalogue
                     </a>
                 </li>
             @endif
