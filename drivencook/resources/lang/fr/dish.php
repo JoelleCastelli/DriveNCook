@@ -31,11 +31,16 @@ return [
     'yes' => 'Oui',
     'no' => 'Non',
     'submit' => 'Valider',
+
+    // Messages
+    'creation_success' => 'Le produit a été ajouté au catalogue',
     'update_success' => 'Le produit a été mis à jour',
     'update_error' => 'Erreur dans la mise à jour des informations :',
+    'creation_error' => 'Erreur dans la création du produit :',
     'arguments_error' => 'Le nombre de champs de formulaire est incorrect',
     'name_error' => 'Le nom du produit doit comporter entre 2 et 30 caractères',
     'description_error' => 'La description ne peut pas excéder 255 caractères',
+    'already_exist' => 'Ce produit existe déjà dans le catalogue',
 
     // Tooltips
     'delete_confirm' => 'Voulez-vous vraiment supprimer ce produit du catalogue ? Toutes les données associées seront supprimées.',

@@ -195,13 +195,14 @@
                     </li>
                     @break
                 @case(route('dish_list'))
+                @case(route('dish_creation'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{ route('corporate_dashboard') }}">
                             <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Retour au tableau de bord
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light2" href="#">
+                        <a class="nav-link text-light2" href="{{ route('dish_creation') }}">
                             <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Ajouter un produit
                         </a>
                     </li>

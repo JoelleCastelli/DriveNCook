@@ -47,6 +47,62 @@ class DishController extends Controller
         return $id;
     }
 
+    public function dish_creation() {
+        $categories = $this->get_enum_column_values('dish', 'category');
+        $diets = $this->get_enum_column_values('dish', 'diet');
+        return view('corporate/dish/dish_creation')->with('categories', $categories)
+                                                              ->with('diets', $diets);
+    }
+
+    public function dish_creation_submit(Request $request) {
+        $parameters = $request->except(['_token']);
+        $error = false;
+        $errors_list = [];
+
+        if (count($parameters) == 4 && !empty($parameters["name"]) && !empty($parameters["category"])
+                                    && !empty($parameters["diet"])) {
+
+            $name = trim($parameters["name"]);
+            $category = $parameters["category"];
+            $diet = $parameters["diet"];
+            $description = $parameters["description"];
+
+            // check name
+            if (strlen($name) < 2 || strlen($name) > 30) {
+                $error = true;
+                $errors_list[] = trans('dish.name_error');
+            }
+
+            // check if already in database
+            $existing_dish = Dish::where('name', $name)->first();
+            if($existing_dish) {
+                $error = true;
+                $errors_list[] = trans('dish.already_exist');
+            }
+
+            // check description
+            if (strlen($description) > 255) {
+                $error = true;
+                $errors_list[] = trans('dish.description_error');
+            }
+
+            if ($error) {
+                return redirect()->back()->with('error', $errors_list);
+            } else {
+                $dish = ['name' => $name, 'category' => $category, 'description' => $description, 'diet' => $diet];
+                Dish::create($dish);
+                return redirect()->back()->with('success', trans('dish.creation_success'));
+
+
+                $data = User::create($user);
+            }
+        } else {
+            $errors_list[] = trans('dish.arguments_error');
+            return redirect()->back()->with('error', $errors_list);
+        }
+    }
+
+
     public function dish_update($id) {
         $dish = Dish::where('id', $id)->first()->toArray();
         $categories = $this->get_enum_column_values('dish', 'category');
@@ -65,7 +121,7 @@ class DishController extends Controller
                                     && !empty($parameters["diet"])) {
 
             $id = trim($parameters["id"]);
-            $name = ucwords(strtolower(trim($parameters["name"])));
+            $name = trim($parameters["name"]);
             $category = $parameters["category"];
             $diet = $parameters["diet"];
             $description = $parameters["description"];
@@ -74,6 +130,13 @@ class DishController extends Controller
             if (strlen($name) < 2 || strlen($name) > 30) {
                 $error = true;
                 $errors_list[] = trans('dish.name_error');
+            }
+
+            // check if already in database
+            $existing_dish = Dish::where('name', $name)->first();
+            if($existing_dish) {
+                $error = true;
+                $errors_list[] = trans('dish.already_exist');
             }
 
             // check description
@@ -96,5 +159,4 @@ class DishController extends Controller
             return redirect()->back()->with('error', $errors_list);
         }
     }
-
 }

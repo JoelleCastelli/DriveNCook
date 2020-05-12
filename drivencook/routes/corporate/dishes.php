@@ -20,6 +20,16 @@ Route::post('/corporate/dish_update_submit', [
     'uses' => 'Corporate\DishController@dish_update_submit'
 ]);
 
+Route::get('/corporate/dish_creation', [
+    'as' => 'dish_creation',
+    'uses' => 'Corporate\DishController@dish_creation'
+]);
+
+Route::post('/corporate/dish_creation_submit', [
+    'as' => 'dish_creation_submit',
+    'uses' => 'Corporate\DishController@dish_creation_submit'
+]);
+
 Route::delete('/corporate/dish_delete/{id}', [
     'as' => 'dish_delete',
     'uses' => 'Corporate\DishController@dish_delete'
