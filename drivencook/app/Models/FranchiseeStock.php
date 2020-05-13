@@ -4,9 +4,9 @@
 namespace App\Models;
 
 
-class Stock extends \Illuminate\Database\Eloquent\Model
+class FranchiseeStock extends \Illuminate\Database\Eloquent\Model
 {
-    protected $table = 'stock';
+    protected $table = 'franchisee_stock';
 
     protected $fillable = [
         'user_id', 'dish_id', 'quantity', 'unit_price'

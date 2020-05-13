@@ -30,7 +30,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($warehouse['dishes'] as $dish)
+                            @foreach($warehouse['stock'] as $dish)
                                 <tr id="rowId{{ $dish['id'] }}">
                                     <td id="rowName{{ $dish['id'] }}">{{ $dish['name'] }}</td>
                                     <td id="rowCategory{{ $dish['id'] }}" data-whatever={{ $dish['category'] }}>{{ trans($GLOBALS['DISH_TYPE'][$dish['category']]) }}</td>

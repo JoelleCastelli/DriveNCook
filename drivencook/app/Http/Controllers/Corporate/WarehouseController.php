@@ -21,7 +21,8 @@ class WarehouseController extends Controller
         $this->middleware('App\Http\Middleware\AuthCorporate');
     }
 
-    public function warehouse_creation() {
+    public function warehouse_creation()
+    {
         $cities = City::all();
         if (!empty($cities)) {
             $cities = $cities->toArray();
@@ -29,15 +30,18 @@ class WarehouseController extends Controller
         return view('corporate/warehouse/warehouse_creation')->with('cities', $cities);
     }
 
-    public function get_warehouse($name) {
+    public function get_warehouse($name)
+    {
         return Warehouse::where('name', $name)->get();
     }
 
-    public function get_city($id) {
+    public function get_city($id)
+    {
         return count(City::where('id', $id)->get());
     }
 
-    public function warehouse_creation_submit(Request $request) {
+    public function warehouse_creation_submit(Request $request)
+    {
         $parameters = $request->except(['_token']);
         $error = false;
         $errors_list = [];
@@ -54,7 +58,7 @@ class WarehouseController extends Controller
                 $errors_list[] = trans('warehouse_creation.name_error');
             }
 
-            if($this->get_city($city_id) == 0) {
+            if ($this->get_city($city_id) == 0) {
                 $error = true;
                 $errors_list[] = trans('warehouse_creation.city_error');
             }
@@ -87,7 +91,8 @@ class WarehouseController extends Controller
         }
     }
 
-    public function warehouse_update($id) {
+    public function warehouse_update($id)
+    {
         $warehouse = Warehouse::find($id);
         if (empty($warehouse))
             return view('corporate.warehouse.warehouse_list');
@@ -103,7 +108,8 @@ class WarehouseController extends Controller
             ->with('warehouse', $warehouse);
     }
 
-    public function warehouse_update_submit(Request $request) {
+    public function warehouse_update_submit(Request $request)
+    {
         $parameters = $request->except(['_token']);
         $error = false;
         $errors_list = [];
@@ -123,7 +129,7 @@ class WarehouseController extends Controller
                 $errors_list[] = trans('warehouse_creation.name_error');
             }
 
-            if($this->get_city($city_id) == 0) {
+            if ($this->get_city($city_id) == 0) {
                 $error = true;
                 $errors_list[] = trans('warehouse_creation.city_error');
             }
@@ -165,24 +171,15 @@ class WarehouseController extends Controller
             ->leftJoin('dish', 'purchased_dish.dish_id', '=', 'dish.id')
             ->where('dish.warehouse_id', '=', $id)
             ->get();*/
-        $orders = DB::table('purchase_order')
-            ->select('purchase_order.*', 'purchase_order.id as p_o_id', 'pseudo.*')
-            ->leftJoin('user', 'user_id', '=', 'user.id')
-            ->leftJoin('pseudo', 'user.pseudo_id', '=', 'pseudo.id')
-            ->distinct()
-            ->get();
-        if(!empty($orders)) {
-            $orders->toArray();
-        }
 
-        $warehouse = Warehouse::whereId($id)
+        $warehouse = Warehouse::whereKey($id)
             ->with('city')
-            ->with('dishes')
+            ->with('stock')
+            ->with('purchase_order')
             ->first()->toArray();
 
         return view('corporate.warehouse.warehouse_view')
-            ->with('warehouse', $warehouse)
-            ->with('orders', $orders);
+            ->with('warehouse', $warehouse);
     }
 
     public function warehouse_delete($id)
@@ -196,13 +193,12 @@ class WarehouseController extends Controller
 
     public function warehouse_dishes($id)
     {
-        $warehouse = Warehouse::whereId($id)
-            ->with('dishes')
+        $warehouse = Warehouse::whereKey($id)
+            ->with('stock')
             ->first();
-        if(!empty($warehouse)) {
-            $warehouse->toArray();
+        if (!empty($warehouse)) {
+            $warehouse = $warehouse->toArray();
         }
-
         $categories = $this->get_enum_column_values('dish', 'category');
         return view('corporate.warehouse.warehouse_dishes')
             ->with('warehouse', $warehouse)
@@ -212,14 +208,14 @@ class WarehouseController extends Controller
     public function warehouse_order($warehouseId, $id)
     {
         $order = DB::table('purchase_order')
-        ->select('purchase_order.*', 'purchase_order.id as po_id',
-            'purchased_dish.*', 'purchased_dish.quantity as pd_quantity',
-            'dish.*')
-        ->leftJoin('purchased_dish', 'purchase_order.id', '=', 'purchased_dish.purchase_order_id')
-        ->leftJoin('dish', 'purchased_dish.dish_id', '=', 'dish.id')
-        ->where('purchase_order.id', '=', $id)
-        ->get();
-        if(!empty($order)) {
+            ->select('purchase_order.*', 'purchase_order.id as po_id',
+                'purchased_dish.*', 'purchased_dish.quantity as pd_quantity',
+                'dish.*')
+            ->leftJoin('purchased_dish', 'purchase_order.id', '=', 'purchased_dish.purchase_order_id')
+            ->leftJoin('dish', 'purchased_dish.dish_id', '=', 'dish.id')
+            ->where('purchase_order.id', '=', $id)
+            ->get();
+        if (!empty($order)) {
             $order->toArray();
         }
 
@@ -229,7 +225,7 @@ class WarehouseController extends Controller
             ->leftJoin('pseudo', 'user.pseudo_id', '=', 'pseudo.id')
             ->where('purchase_order.id', '=', $id)
             ->get();
-        if(!empty($franchisee)) {
+        if (!empty($franchisee)) {
             $franchisee->toArray();
         }
 
@@ -257,7 +253,7 @@ class WarehouseController extends Controller
                 ['purchase_order_id', '=', $purchase_order_id],
                 ['dish_id', '=', $dish_id],
             ])->first();
-            if(!empty($purchasedDish)) {
+            if (!empty($purchasedDish)) {
                 if (!is_int($quantity) || $quantity < 1 || $quantity > $purchasedDish->quantity) {
                     $error = true;
                     $errors_list[] = trans('dish_update.quantity_error');
@@ -278,12 +274,12 @@ class WarehouseController extends Controller
                     ])->update($product);
 
                     $dishesArray = PurchasedDish::where('purchase_order_id', '=', $purchase_order_id)->get();
-                    if(!empty($dishesArray)) {
+                    if (!empty($dishesArray)) {
                         $dishesArray->toArray();
                     }
 
                     $sum = 0;
-                    foreach($dishesArray as $dish) {
+                    foreach ($dishesArray as $dish) {
                         $sum += $dish['quantity_sent'] - $dish['quantity'];
                     }
 

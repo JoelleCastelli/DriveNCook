@@ -5,19 +5,20 @@ namespace App\Http\Controllers\Corporate;
 
 use App\Http\Controllers\Controller;
 use App\Models\FranchiseObligation;
-use App\Models\MonthlyLicenseFee;
+use App\Models\Invoice;
 use App\Models\Pseudo;
 use App\Models\PurchasedDish;
 use App\Models\PurchaseOrder;
 use App\Models\Sale;
 use App\Models\SoldDish;
-use App\Models\Stock;
+use App\Models\FranchiseeStock;
 use App\Models\Truck;
 use App\Models\User;
 use App\Traits\UserTools;
 use Barryvdh\DomPDF\Facade as PDF;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class FranchiseeController extends Controller
@@ -32,11 +33,11 @@ class FranchiseeController extends Controller
     public function franchisee_list()
     {
         $franchisees = User::with('pseudo')
-            ->with('last_paid_licence_fee')
+            ->with('last_paid_invoice_fee')
             ->with('truck')
             ->where('role', 'Franchisé')
             ->get()->toArray();
-        $nextPaiement = $this->getNextPaiementDate(
+        $nextPaiement = $this->getNextPaymentDate(
             FranchiseObligation::all()->sortByDesc('id')->first()->toArray());
 
         return view('corporate/franchisee/franchisee_list')
@@ -44,7 +45,7 @@ class FranchiseeController extends Controller
             ->with('nextPaiement', $nextPaiement);
     }
 
-    public function getNextPaiementDate($franchiseObligation)
+    public function getNextPaymentDate($franchiseObligation)
     {
         $currentDay = new DateTime();
         $currentDay->setDate(date('Y'), date('m'), date('d'));
@@ -52,12 +53,12 @@ class FranchiseeController extends Controller
         if ($currentDay->format('d') <= $franchiseObligation['billing_day']) {
             return $currentDay
                 ->setDate(date('Y'), date('m'), $franchiseObligation['billing_day'])
-                ->format('d-m-Y');
+                ->format('d/m/Y');
         }
         return $currentDay
             ->setDate(date('Y'), date('m'), $franchiseObligation['billing_day'])
             ->modify('+1 month')
-            ->format('d-m-Y');
+            ->format('d/m/Y');
     }
 
     public function get_franchisee_by_email($email)
@@ -124,7 +125,8 @@ class FranchiseeController extends Controller
                 return redirect()->back()->with('error', $errors_list);
             } else {
                 $user = ['lastname' => $lastname, 'firstname' => $firstname, 'email' => $email, 'role' => $role];
-                User::create($user);
+                $data = User::create($user);
+                $this->generate_first_invoice($data->id);
                 return redirect()->route('franchisee_creation')->with('success', trans('franchisee_creation.new_franchisee_success'));
             }
         }
@@ -254,7 +256,7 @@ class FranchiseeController extends Controller
     {
         $franchisee = User::whereId($id)
             ->with('pseudo')
-            ->with('monthly_licence_fees')
+            ->with('invoices')
             ->with('truck')
             ->with('stocks')
             ->with('purchase_order')
@@ -262,7 +264,7 @@ class FranchiseeController extends Controller
             ->first()->toArray();
 
         $revenues = $this->get_franchise_current_month_sale_revenues($id);
-
+//var_dump($franchisee);die;
         return view('corporate.franchisee.franchisee_view')
             ->with('franchisee', $franchisee)
             ->with('revenues', $revenues);
@@ -289,21 +291,21 @@ class FranchiseeController extends Controller
             $warehouse_percentage = trim($parameters['warehouse_percentage']);
             $billing_day = trim($parameters['billing_day']);
 
-            if (!ctype_digit($entrance_fee) || $entrance_fee < 0 || $entrance_fee > 9999999) {
+            if (!is_numeric($entrance_fee) || $entrance_fee < 0 || $entrance_fee > 9999999) {
                 $error = true;
-                $errors_list[] = 'Frais d\'entrées incorrect';
+                $errors_list[] = 'Redevance initiale forfaitaire incorrecte';
             }
-            if (!ctype_digit($revenue_percentage) || $revenue_percentage < 0 || $revenue_percentage > 100) {
+            if (!is_numeric($revenue_percentage) || $revenue_percentage < 0 || $revenue_percentage > 100) {
                 $error = true;
-                $errors_list[] = 'Taxes sur les revenues incorrect';
+                $errors_list[] = 'Redevance périodique incorrecte';
             }
-            if (!ctype_digit($warehouse_percentage) || $warehouse_percentage < 0 || $warehouse_percentage > 100) {
+            if (!is_numeric($warehouse_percentage) || $warehouse_percentage < 0 || $warehouse_percentage > 100) {
                 $error = true;
-                $errors_list[] = 'Taxes sur les entrepôts incorrect';
+                $errors_list[] = 'Stock corporate incorrect';
             }
             if (!ctype_digit($billing_day) || $billing_day < 1 || $billing_day > 28) {
                 $error = true;
-                $errors_list[] = 'Jour de facturation mensuel incorrect';
+                $errors_list[] = 'Jour de facturation mensuelle incorrect';
             }
 
             if ($error) {
@@ -330,7 +332,7 @@ class FranchiseeController extends Controller
             return 'error';
         }
         Truck::where('user_id', $id)->update(['user_id' => NULL]);
-        MonthlyLicenseFee::where('user_id', $id)->delete();
+        Invoice::where('user_id', $id)->delete();
 
         $purchaseOrder = PurchaseOrder::where('user_id', $id)->get(['id']);
         if (!empty($purchaseOrder)) {
@@ -343,7 +345,7 @@ class FranchiseeController extends Controller
             SoldDish::whereIn('dish_id', $sale->toArray())->delete();
             Sale::where('user_franchised', $id)->delete();
         }
-        Stock::where('user_id', $id)->delete();
+        FranchiseeStock::where('user_id', $id)->delete();
         $this->delete_user($id);
         return $id;
     }
@@ -381,47 +383,64 @@ class FranchiseeController extends Controller
 
     public function get_franchise_current_month_sale_revenues($franchise_id)
     {
-        $franchise_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
-        $date_max = DateTime::createFromFormat("d-m-Y", $this->getNextPaiementDate($franchise_obligation));
-        $date_min = clone $date_max;
-        $date_min->modify('-1 month');
+//        $franchise_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
+//        $date_max = DateTime::createFromFormat("d/m/Y", $this->getNextPaymentDate($franchise_obligation));
+//        $date_max = $date_max->setTime(23, 59, 59);
+//        $date_min = clone $date_max;
+//        $date_min->modify('-1 month');
+//        $date_max->modify('-1 day');
+//
+//        $date_max = $date_max->format("Y/m/d");
+//        $date_min = $date_min->format("Y/m/d");
+//
+//        $stocks = FranchiseeStock::where('user_id', $franchise_id)->get()->toArray();
+//
+//        $sales = Sale::whereBetween('date', [$date_min, $date_max])
+//                        ->where('user_franchised', $franchise_id)
+//                        ->with('sold_dishes')
+//                        ->get()->toArray();
+//        $sales_total = 0;
+//        $purchase_orders = PurchaseOrder::whereBetween('date', [$date_min, $date_max])
+//                            ->where('user_id', $franchise_id)
+//                            ->with('purchased_dishes')
+//                            ->get()->toArray();
+//        $purchase_orders_total = 0;
+//
+//        foreach ($sales as $sale) {
+//            foreach ($sale['sold_dishes'] as $sold_dish) {
+//                $unit_price = 0;
+//                foreach ($stocks as $stock) {
+//                    if ($stock['dish_id'] == $sold_dish['dish_id']) {
+//                        $unit_price = $stock['unit_price'];
+//                        break;
+//                    }
+//                }
+//                $sales_total += $sold_dish['quantity'] * $unit_price;
+//            }
+//        }
+//
+//        foreach ($purchase_orders as $purchase_order) {
+//            foreach ($purchase_order['purchased_dishes'] as $purchased_dish) {
+//                $purchase_orders_total += $purchased_dish['dish']['warehouse_price'] * $purchased_dish['quantity'];
+//            }
+//        }
 
-        $date_max = $date_max->format("Y-m-d");
-        $date_min = $date_min->format("Y-m-d");
-
-        $stocks = Stock::where('user_id', $franchise_id)->get()->toArray();
-
-        $sales = Sale::whereBetween('date', [$date_min, $date_max])->with('sold_dishes')->get()->toArray();
-        $sales_total = 0;
-        $purchase_orders = PurchaseOrder::whereBetween('date', [$date_min, $date_max])->with('purchased_dishes')->get()->toArray();
-        $purchase_orders_total = 0;
-
-        foreach ($sales as $sale) {
-            foreach ($sale['sold_dishes'] as $sold_dish) {
-                $unit_price = 0;
-                foreach ($stocks as $stock) {
-                    if ($stock['dish_id'] == $sold_dish['dish_id']) {
-                        $unit_price = $stock['unit_price'];
-                        break;
-                    }
-                }
-                $sales_total += $sold_dish['quantity'] * $unit_price;
-            }
-        }
-
-        foreach ($purchase_orders as $purchase_order) {
-            foreach ($purchase_order['purchased_dishes'] as $purchased_dish) {
-                $purchase_orders_total += $purchased_dish['dish']['warehouse_price'] * $purchased_dish['quantity'];
-            }
-        }
-
+//        return array(
+//            "sales_total" => $sales_total,
+//            "sales_count" => count($sales),
+//            "purchase_orders_total" => $purchase_orders_total,
+//            "purchase_orders_count" => count($purchase_orders),
+//            "revenues" => $sales_total - $purchase_orders_total,
+//            "obligation" => $franchise_obligation
+//        );
+        //TODO franchise month sale revenues
         return array(
-            "sales_total" => $sales_total,
-            "sales_count" => count($sales),
-            "purchase_orders_total" => $purchase_orders_total,
-            "purchase_orders_count" => count($purchase_orders),
-            "revenues" => $sales_total - $purchase_orders_total,
-            "obligation" => $franchise_obligation
+            "sales_total" => 0,
+            "sales_count" => 0,
+            "purchase_orders_total" => 0,
+            "purchase_orders_count" => 0,
+            "revenues" => 0,
+            "obligation" => 0
         );
     }
 
@@ -452,9 +471,30 @@ class FranchiseeController extends Controller
 
     public function franchisee_invoice_pdf($id)
     {
-        $invoice = MonthlyLicenseFee::with('user')->where('id', $id)->first()->toArray();
-        $pseudo = Pseudo::where('id', $invoice['user']['pseudo_id'])->first()->toArray();
+        $invoice = Invoice::with('user')->where('id', $id)->first()->toArray();
+        $pseudo = Pseudo::where('id', $invoice['user']['pseudo_id'])->first();
+        if (!empty($pseudo))
+            $pseudo->toArray();
         $pdf = PDF::loadView('corporate.franchisee.franchisee_invoice', array('invoice' => $invoice, 'pseudo' => $pseudo));
         return $pdf->stream();
+    }
+
+    public function generate_monthly_invoices(){
+        $franchisees = User::where('role', 'Franchisé')->get()->toArray();
+        $current_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
+        foreach($franchisees as $franchisee) {
+            $data = $this->get_franchise_current_month_sale_revenues($franchisee['id']);
+            if ($data['sales_total'] > 0){
+                $invoice_total = $data['sales_total'] * $current_obligation['revenue_percentage'] / 100;
+                $invoice = ['amount' => $invoice_total,
+                            'date_emitted' => date("Y-m-d"),
+                            'status' => 'A payer',
+                            'monthly_fee' => 1,
+                            'initial_fee' => 0,
+                            'user_id' => $franchisee['id']];
+                $invoice = Invoice::create($invoice)->toArray();
+                $this->create_invoice_reference('MF', $franchisee['id'], $invoice['id']);
+            }
+        }
     }
 }

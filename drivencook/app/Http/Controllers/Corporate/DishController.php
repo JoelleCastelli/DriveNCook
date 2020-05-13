@@ -24,6 +24,7 @@ class DishController extends Controller
 
     public function dish_creation_submit(Request $request)
     {
+        //TODO dish creation
         $parameters = $request->except(['_token']);
         $error = false;
         $errors_list = [];
@@ -102,6 +103,7 @@ class DishController extends Controller
 
     public function dish_update_submit(Request $request)
     {
+        //TODO dish update
         $parameters = $request->except(['_token']);
         $error = false;
         $errors_list = [];
@@ -169,6 +171,7 @@ class DishController extends Controller
 
     public function dish_delete($id)
     {
+        //TODO dish delete associated tables
         if (!ctype_digit($id)) {
             $response_array = [
                 'status' => 'error',

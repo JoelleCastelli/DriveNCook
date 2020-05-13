@@ -545,7 +545,7 @@ class TruckController extends Controller
         }
 
         return view('corporate.truck.safety_inspection_form')
-            ->with('truckId', $truck_id);
+            ->with('truck_id', $truck_id);
     }
 
     public function update_safety_inspection($truck_id, $safety_inspection_id)
