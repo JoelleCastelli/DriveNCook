@@ -25,6 +25,17 @@ return [
     'category_salty_snack' => 'Snack salé',
     'category_sweet_snack' => 'Snack sucré',
 
+    // Stats
+    'stat_drink' => 'Boissons :',
+    'stat_hot_dish' => 'Plats chauds :',
+    'stat_cold_dish' => 'Plats froids :',
+    'stat_salty_snack' => 'Snacks salés :',
+    'stat_sweet_snack' => 'Snacks sucrés :',
+    'stat_vegetarian' => 'Végétariens :',
+    'stat_vegan' => 'Vegan :',
+    'stat_none' => 'Aucun régime :',
+    'products' => 'produit | produits',
+
     // General
     'actions' => 'Actions',
     'yes' => 'Oui',

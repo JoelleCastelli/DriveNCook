@@ -24,10 +24,25 @@ class DishController extends Controller
     }
 
     public function dish_list() {
+        $stats_categories = [];
+        $stats_diets = [];
+
         $dishes = Dish::get()->toArray();
 
+        $dish_categories = $this->get_enum_column_values('dish', 'category');
+        foreach($dish_categories as $dish_category) {
+            $stats_categories[$dish_category] = count(Dish::where('category', $dish_category)->get()->toArray());
+        }
+
+        $dish_diets = $this->get_enum_column_values('dish', 'diet');
+        foreach($dish_diets as $dish_diet) {
+            $stats_diets[$dish_diet] = count(Dish::where('diet', $dish_diet)->get()->toArray());
+        }
+
         return view('corporate/dish/dish_list')
-            ->with('dishes', $dishes);
+            ->with('dishes', $dishes)
+            ->with('stats_categories', $stats_categories)
+            ->with('stats_diets', $stats_diets);
     }
 
     public function dish_delete($id) {

@@ -19,11 +19,23 @@ return [
 
 
     // Categories
+    'category_total' => 'Total',
     'category_drink' => 'Drink',
     'category_hot_dish' => 'Hot dish',
     'category_cold_dish' => 'Cold dish',
     'category_salty_snack' => 'Salty snack',
     'category_sweet_snack' => 'Sweet snack',
+
+    // Stats
+    'stat_drink' => 'Drinks:',
+    'stat_hot_dish' => 'Hot dishes:',
+    'stat_cold_dish' => 'Cold dishes:',
+    'stat_salty_snack' => 'Salty snacks:',
+    'stat_sweet_snack' => 'Sweet snacks:',
+    'stat_vegetarian' => 'Vegetarian:',
+    'stat_vegan' => 'Vegan:',
+    'stat_none' => 'No diet:',
+    'products' => 'product | products',
 
     // General
     'actions' => 'Actions',

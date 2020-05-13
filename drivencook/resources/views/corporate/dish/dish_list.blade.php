@@ -8,23 +8,26 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <div class="col-12 col-md-6 col-lg-3">
-                    <div class="card text-light2">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item bg-info">Nombre de produits proposés : {{ count($dishes) }}</li>
-                            <li class="list-group-item bg-info align-content-arround">
-                                <a href="#dishes-list" class="row text-light2">
-                                    <div class="col-10">
-                                        Consulter les détails
-                                    </div>
-                                    <div class="col-2">
-                                        <i class="fa fa-chevron-right"></i>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
+                @foreach($stats_categories as $stat_name => $stat_value)
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card text-light2">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item bg-info">{{ trans('dish.stat_'.$stat_name) }} {{ $stat_value }} {{ trans_choice('dish.products', $stat_value) }}</li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
+                @endforeach
+            </div>
+            <div class="row">
+                @foreach($stats_diets as $stat_name => $stat_value)
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card text-light2">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item bg-indigo">{{ trans('dish.stat_'.$stat_name) }} {{ $stat_value }} {{ trans_choice('dish.products', $stat_value) }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>
