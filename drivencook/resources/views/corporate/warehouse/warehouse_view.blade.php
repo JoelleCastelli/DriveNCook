@@ -21,11 +21,6 @@
                     <li class="list-group-item"><b>{{ trans('warehouse_view.warehouse_city') }} : </b>{{ empty($warehouse['city'])?
                                         trans('corporate.unknown'):$warehouse['city']['name'] }}</li>
                 </ul>
-                <div class="card-footer d-flex justify-content-end">
-                    <a href="{{ route('warehouse_update',['id'=>$warehouse['id']]) }}">
-                        <button class="btn btn-light_blue">{{ trans('warehouse_view.warehouse_edit') }}</button>
-                    </a>
-                </div>
             </div>
         </div>
     </div>
@@ -62,11 +57,6 @@
                         </table>
                     </div>
                 </div>
-                <div class="card-footer d-flex justify-content-end">
-                    <a href="{{ route('warehouse_dishes',['id'=>$warehouse['id']]) }}">
-                        <button class="btn btn-light_blue">{{ trans('warehouse_view.warehouse_dishes_view') }}</button>
-                    </a>
-                </div>
             </div>
         </div>
     </div>
@@ -90,27 +80,20 @@
                             </thead>
                             <tbody>
                             @foreach($warehouse['purchase_order'] as $order)
-                                @if($order['status'] != 'received')
-                                    <tr id="order_{{ $order['id'] }}">
-                                        <td>{{ $order['date'] }}</td>
-                                        <td>{{ empty($order['user']['pseudo'])?trans('corporate.unknown'):$order['user']['pseudo']['name'] }}</td>
-                                        <td>{{ trans($GLOBALS['PURCHASE_ORDER_STATUS'][$order['status']]) }}</td>
-                                        <td>
-                                            <a href="{{ route('warehouse_order', ['warehouse_id'=>$warehouse['id'], 'id'=>$order['id']]) }}">
-                                                <i class="fa fa-eye"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @endif
+                                <tr id="order_{{ $order['id'] }}">
+                                    <td>{{ $order['date'] }}</td>
+                                    <td>{{ empty($order['user']['pseudo'])?trans('corporate.unknown'):$order['user']['pseudo']['name'] }}</td>
+                                    <td>{{ trans($GLOBALS['PURCHASE_ORDER_STATUS'][$order['status']]) }}</td>
+                                    <td>
+                                        <a style="color: unset" href="{{ route('warehouse_order', ['warehouse_id'=>$warehouse['id'], 'id'=>$order['id']]) }}">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
                             @endforeach
                             </tbody>
                         </table>
                     </div>
-                </div>
-                <div class="card-footer d-flex justify-content-end">
-                    <a href="{{ route('warehouse_dishes',['id'=>$warehouse['id']]) }}">
-                        <button class="btn btn-light_blue">{{ trans('warehouse_view.warehouse_orders_view') }}</button>
-                    </a>
                 </div>
             </div>
         </div>

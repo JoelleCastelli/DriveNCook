@@ -9,13 +9,13 @@ return [
     'warehouse_city' => 'Ville',
     'warehouse_edit' => 'Modifier',
 
-    'dishes_section' => 'Plats',
+    'dishes_section' => 'Plats (quantité restante inférieure à 6)',
     'product' => 'Produit',
     'category' => 'Catégorie',
     'quantity' => 'Quantité',
     'warehouse_price' => 'Prix entrepôt',
-    'warehouse_dishes_view' => 'Afficher les plats',
+    'warehouse_dishes_view' => 'Afficher tous les plats',
+    'warehouse_orders_datatable' => 'Commandes',
 
     'orders_section' => 'Commandes',
-    'warehouse_orders_view' => 'Afficher les commandes',
 ];

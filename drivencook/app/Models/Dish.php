@@ -9,7 +9,7 @@ class Dish extends \Illuminate\Database\Eloquent\Model
     protected $table = 'dish';
 
     protected $fillable = [
-        'name', 'category'
+        'name', 'category', 'description', 'diet'
     ];
 
     public function warehouse_stock()

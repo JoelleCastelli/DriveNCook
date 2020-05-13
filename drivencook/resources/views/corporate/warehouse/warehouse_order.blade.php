@@ -12,16 +12,15 @@
         <div class="col-12 col-lg-6 mb-5">
             <div class="card">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="id" id="orderId" value="{{ $order[0]->po_id }}">
+                <input type="hidden" name="id" id="orderId" value="{{ $order['id'] }}">
 
                 <div class="card-header d-flex align-items-center">
                     <h2>{{ trans('warehouse_order.order_details_section') }}</h2>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><b>{{ trans('warehouse_order.reference') }} : </b>{{ $order[0]->reference }}</li>
-                    <li class="list-group-item"><b>{{ trans('warehouse_order.date') }} : </b>{{ $order[0]->date }}</li>
+                    <li class="list-group-item"><b>{{ trans('warehouse_order.date') }} : </b>{{ $order['date'] }}</li>
                     <li class="list-group-item"><b>{{ trans('warehouse_order.status') }} : </b>
-                        <p style="display: inline" id="orderStatus">{{ trans($GLOBALS['PURCHASE_ORDER_STATUS'][$order[0]->status]) }}</p>
+                        <p style="display: inline" id="orderStatus">{{ trans($GLOBALS['PURCHASE_ORDER_STATUS'][$order['status']]) }}</p>
                     </li>
                 </ul>
             </div>
@@ -32,11 +31,11 @@
                     <h2>{{ trans('warehouse_order.franchisee_details_section') }}</h2>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><b>{{ trans('warehouse_order.firstname') }} : </b>{{ $franchisee[0]->firstname }}</li>
-                    <li class="list-group-item"><b>{{ trans('warehouse_order.lastname') }} : </b>{{ $franchisee[0]->lastname }}</li>
-                    <li class="list-group-item"><b>{{ trans('warehouse_order.pseudo') }} : </b>{{ empty($franchisee[0]->name)?
-                                        trans('corporate.unknown'):$franchisee[0]->name }}</li>
-                    <li class="list-group-item"><b>{{ trans('warehouse_order.email') }} : </b>{{ $franchisee[0]->email }}</li>
+                    <li class="list-group-item"><b>{{ trans('warehouse_order.firstname') }} : </b>{{ $order['user']['firstname'] }}</li>
+                    <li class="list-group-item"><b>{{ trans('warehouse_order.lastname') }} : </b>{{ $order['user']['lastname'] }}</li>
+                    <li class="list-group-item"><b>{{ trans('warehouse_order.pseudo') }} : </b>{{ empty($order['user']['pseudo']['name'])?
+                                        trans('corporate.unknown'):$order['user']['pseudo']['name'] }}</li>
+                    <li class="list-group-item"><b>{{ trans('warehouse_order.email') }} : </b>{{ $order['user']['email'] }}</li>
                 </ul>
             </div>
         </div>
@@ -61,14 +60,14 @@
                             </tr>
                             </thead>
                             <tbody>
-                                @foreach($order as $item)
+                                @foreach($order['purchased_dishes'] as $item)
                                     <tr>
-                                        <td id="rowName{{ $item->dish_id }}">{{ $item->name }}</td>
-                                        <td id="rowCategory{{ $item->dish_id }}">{{ trans($GLOBALS['DISH_TYPE'][$item->category]) }}</td>
-                                        <td id="rowQty{{ $item->dish_id }}">{{ $item->pd_quantity }}</td>
-                                        <td id="rowQtyToSend{{ $item->dish_id }}">{{ $item->pd_quantity - $item->quantity_sent }}</td>
+                                        <td id="rowName{{ $item['dish_id'] }}">{{ $item['dish']['name'] }}</td>
+                                        <td id="rowCategory{{ $item['dish_id'] }}">{{ trans($GLOBALS['DISH_TYPE'][$item['dish']['category']]) }}</td>
+                                        <td id="rowQty{{ $item['dish_id'] }}">{{ $item['quantity'] }}</td>
+                                        <td id="rowQtyToSend{{ $item['dish_id'] }}">{{ $item['quantity'] - $item['quantity_sent'] }}</td>
                                         <td>
-                                            <i class="fa fa-edit" onclick="editDish({{ $item->dish_id }})" data-toggle="modal" data-target="#dishModal"></i>
+                                            <i class="fa fa-edit" onclick="editDish({{ $item['dish_id'] }})" data-toggle="modal" data-target="#dishModal"></i>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -92,7 +91,7 @@
                 <div class="modal-body">
                     <input type="hidden" id="dishId">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item" id="dishCategory"><b>{{ trans('warehouse_order.category') }} : </b></li>
+                        <b>{{ trans('warehouse_order.category') }} : </b><li class="list-group-item" id="dishCategory"></li>
                     </ul>
                     <label for="dishQtySent" class="col-form-label">{{ trans('warehouse_order.quantity_to_send') }}</label>
                     <input type="number" class="form-control" id="dishQtySent" min="1">
@@ -118,8 +117,6 @@
                    $('#dishQtySent').val(-1);
                 }
             });
-
-            console.log($('#orderStatus').text());
 
             $('#updateDish').click(function () {
                 let formData = new FormData();

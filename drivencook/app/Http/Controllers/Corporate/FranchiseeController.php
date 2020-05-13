@@ -129,6 +129,9 @@ class FranchiseeController extends Controller
                 $this->generate_first_invoice($data->id);
                 return redirect()->route('franchisee_creation')->with('success', trans('franchisee_creation.new_franchisee_success'));
             }
+        } else {
+            $errors_list[] = trans('franchisee_update.arguments_error');
+            return redirect()->back()->with('error', $errors_list);
         }
     }
 
@@ -264,10 +267,12 @@ class FranchiseeController extends Controller
             ->first()->toArray();
 
         $revenues = $this->get_franchise_current_month_sale_revenues($id);
-//var_dump($franchisee);die;
+        $history = $this->get_franchisee_history($id);
+
         return view('corporate.franchisee.franchisee_view')
             ->with('franchisee', $franchisee)
-            ->with('revenues', $revenues);
+            ->with('revenues', $revenues)
+            ->with('history', $history);
     }
 
     public function update_franchise_obligation()
@@ -383,65 +388,35 @@ class FranchiseeController extends Controller
 
     public function get_franchise_current_month_sale_revenues($franchise_id)
     {
-//        $franchise_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
-//        $date_max = DateTime::createFromFormat("d/m/Y", $this->getNextPaymentDate($franchise_obligation));
-//        $date_max = $date_max->setTime(23, 59, 59);
-//        $date_min = clone $date_max;
-//        $date_min->modify('-1 month');
-//        $date_max->modify('-1 day');
-//
-//        $date_max = $date_max->format("Y/m/d");
-//        $date_min = $date_min->format("Y/m/d");
-//
-//        $stocks = FranchiseeStock::where('user_id', $franchise_id)->get()->toArray();
-//
-//        $sales = Sale::whereBetween('date', [$date_min, $date_max])
-//                        ->where('user_franchised', $franchise_id)
-//                        ->with('sold_dishes')
-//                        ->get()->toArray();
-//        $sales_total = 0;
-//        $purchase_orders = PurchaseOrder::whereBetween('date', [$date_min, $date_max])
-//                            ->where('user_id', $franchise_id)
-//                            ->with('purchased_dishes')
-//                            ->get()->toArray();
-//        $purchase_orders_total = 0;
-//
-//        foreach ($sales as $sale) {
-//            foreach ($sale['sold_dishes'] as $sold_dish) {
-//                $unit_price = 0;
-//                foreach ($stocks as $stock) {
-//                    if ($stock['dish_id'] == $sold_dish['dish_id']) {
-//                        $unit_price = $stock['unit_price'];
-//                        break;
-//                    }
-//                }
-//                $sales_total += $sold_dish['quantity'] * $unit_price;
-//            }
-//        }
-//
-//        foreach ($purchase_orders as $purchase_order) {
-//            foreach ($purchase_order['purchased_dishes'] as $purchased_dish) {
-//                $purchase_orders_total += $purchased_dish['dish']['warehouse_price'] * $purchased_dish['quantity'];
-//            }
-//        }
+        $franchise_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
 
-//        return array(
-//            "sales_total" => $sales_total,
-//            "sales_count" => count($sales),
-//            "purchase_orders_total" => $purchase_orders_total,
-//            "purchase_orders_count" => count($purchase_orders),
-//            "revenues" => $sales_total - $purchase_orders_total,
-//            "obligation" => $franchise_obligation
-//        );
-        //TODO franchise month sale revenues
+        $date_max = DateTime::createFromFormat("d/m/Y", $this->getNextPaymentDate($franchise_obligation));
+        $date_max = $date_max->setTime(23, 59, 59);
+        $date_min = clone $date_max;
+        $date_min->modify('-1 month');
+        $date_max->modify('-1 day');
+        $date_max = $date_max->format("Y/m/d");
+        $date_min = $date_min->format("Y/m/d");
+
+        $sales = Sale::whereBetween('date', [$date_min, $date_max])
+                        ->where('user_franchised', $franchise_id)
+                        ->with('sold_dishes')
+                        ->get()->toArray();
+        $sales_total = 0;
+        foreach ($sales as $sale) {
+            foreach ($sale['sold_dishes'] as $sold_dish) {
+                $sales_total += $sold_dish['quantity'] * $sold_dish['unit_price'];
+            }
+        }
+
+        $next_invoice = $sales_total * $franchise_obligation['revenue_percentage'] / 100;
+
         return array(
-            "sales_total" => 0,
-            "sales_count" => 0,
-            "purchase_orders_total" => 0,
-            "purchase_orders_count" => 0,
-            "revenues" => 0,
-            "obligation" => 0
+            "sales_total" => $sales_total,
+            "sales_count" => count($sales),
+            "next_invoice" => $next_invoice
         );
+
     }
 
     public function get_franchisees_current_month_sale_revenues()
@@ -450,10 +425,7 @@ class FranchiseeController extends Controller
         $total = array(
             "sales_total" => 0,
             "sales_count" => 0,
-            "purchase_orders_total" => 0,
-            "purchase_orders_count" => 0,
-            "revenues" => 0,
-            "obligation" => 0
+            "next_invoice" => 0
         );
 
         foreach ($franchisees as $franchisee) {
@@ -461,16 +433,12 @@ class FranchiseeController extends Controller
 
             $total['sales_total'] += $franchisee_revenues['sales_total'];
             $total['sales_count'] += $franchisee_revenues['sales_count'];
-            $total['purchase_orders_total'] += $franchisee_revenues['purchase_orders_total'];
-            $total['purchase_orders_count'] += $franchisee_revenues['purchase_orders_count'];
-            $total['revenues'] += $franchisee_revenues['revenues'];
-            $total['obligation'] = $franchisee_revenues['obligation'];
+            $total['next_invoice'] += $franchisee_revenues['next_invoice'];
         }
         return $total;
     }
 
-    public function franchisee_invoice_pdf($id)
-    {
+    public function franchisee_invoice_pdf($id) {
         $invoice = Invoice::with('user')->where('id', $id)->first()->toArray();
         $pseudo = Pseudo::where('id', $invoice['user']['pseudo_id'])->first();
         if (!empty($pseudo))
@@ -479,22 +447,90 @@ class FranchiseeController extends Controller
         return $pdf->stream();
     }
 
-    public function generate_monthly_invoices(){
-        $franchisees = User::where('role', 'Franchisé')->get()->toArray();
-        $current_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
-        foreach($franchisees as $franchisee) {
-            $data = $this->get_franchise_current_month_sale_revenues($franchisee['id']);
-            if ($data['sales_total'] > 0){
-                $invoice_total = $data['sales_total'] * $current_obligation['revenue_percentage'] / 100;
-                $invoice = ['amount' => $invoice_total,
-                            'date_emitted' => date("Y-m-d"),
-                            'status' => 'A payer',
-                            'monthly_fee' => 1,
-                            'initial_fee' => 0,
-                            'user_id' => $franchisee['id']];
-                $invoice = Invoice::create($invoice)->toArray();
-                $this->create_invoice_reference('MF', $franchisee['id'], $invoice['id']);
+    //TODO mutualiser les requêtes des deux fonctions d'historique
+    public function get_franchisee_history($franchisee_id) {
+
+        // Total of invoices (first because always at least one invoice: initial fee)
+        $invoices = Invoice::where('user_id', $franchisee_id)
+                            ->get()->toArray();
+        $total_invoices = 0;
+        foreach ($invoices as $invoice) {
+            $total_invoices += $invoice['amount'];
+        }
+
+        // First sale date = start date
+        // If no sale, return invoices but 0 sales & total
+        $first_sale = Sale::all()->where('user_franchised', $franchisee_id)
+                                 ->sortBy('id')->first();
+        if($first_sale) {
+            $first_sale->toArray();
+        } else {
+            return ["sales_total" => 0,
+                    "sales_count" => 0,
+                    "total_invoices" => $total_invoices
+            ];
+        }
+        $first_sale_date = $first_sale['date'];
+        $today = date("Y-m-d");
+
+        // Total of cashed money and number of sales
+        $sales = Sale::whereBetween('date', [$first_sale_date, $today])
+                        ->where('user_franchised', $franchisee_id)
+                        ->with('sold_dishes')
+                        ->get()->toArray();
+        $sales_total = 0;
+        foreach ($sales as $sale) {
+            foreach ($sale['sold_dishes'] as $sold_dish) {
+                $sales_total += $sold_dish['quantity'] * $sold_dish['unit_price'];
             }
         }
+
+        return ["sales_total" => $sales_total,
+            "sales_count" => count($sales),
+            "first_sale_date" => $first_sale_date,
+            "total_invoices" => $total_invoices
+        ];
     }
+
+    public function franchisee_sales_history_pdf(Request $request) {
+        $parameters = $request->except(['_token']);
+
+        if (count($parameters) == 3 && !empty($parameters["id"]) && $parameters["start_date"] != NULL && $parameters["start_date"] != NULL) {
+            $franchisee_id = $parameters["id"];
+            $start_date = $parameters["start_date"];
+            $end_date = $parameters["end_date"];
+
+            if ($start_date >  $end_date) {
+                flash("La date de début ne peut pas être supérieure à la date de fin.")->error();
+                return redirect()->back();
+            }
+
+            $franchisee = User::where('id', $franchisee_id)
+                ->with('pseudo')
+                ->first()->toArray();
+
+            $sales = Sale::whereBetween('date', [$start_date, $end_date])
+                ->where('user_franchised', $franchisee_id)
+                ->with('sold_dishes')
+                ->get()->toArray();
+
+            if(empty($sales)) {
+                flash("Le franchisé n'a pas réalisé de vente sur la période sélectionnée.")->error();
+                return redirect()->back();
+            }
+
+            $pdf = PDF::loadView('corporate.franchisee.franchisee_history',
+                                ["franchisee" => $franchisee,
+                                "sales" => $sales,
+                                "start_date" => $start_date,
+                                "end_date" => $end_date]
+                                );
+            return $pdf->stream();
+        } else {
+            flash("Veuillez sélectionner une date de début et de fin de l'historique")->error();
+            return redirect()->back();
+        }
+
+    }
+
 }

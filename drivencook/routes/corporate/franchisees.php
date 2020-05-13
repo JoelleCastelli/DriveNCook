@@ -74,3 +74,8 @@ Route::get('/corporate/franchisee_invoice_pdf/{id}', [
     'as' => 'franchisee_invoice_pdf',
     'uses' => 'Corporate\FranchiseeController@franchisee_invoice_pdf'
 ]);
+
+Route::post('/corporate/franchisee_sales_history_pdf', [
+    'as' => 'franchisee_sales_history_pdf',
+    'uses' => 'Corporate\FranchiseeController@franchisee_sales_history_pdf'
+]);

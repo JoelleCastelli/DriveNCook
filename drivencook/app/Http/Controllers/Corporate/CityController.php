@@ -168,7 +168,7 @@ class CityController extends Controller
     {
         $response = [];
         $response['isNew'] = true;
-        $response['name'] = strtoupper(trim($parameters['name']));
+        $response['name'] = ucfirst(trim($parameters['name']));
         $response['address'] = trim($parameters['address']);
         $response['city_id'] = trim($parameters['city_id']);
 

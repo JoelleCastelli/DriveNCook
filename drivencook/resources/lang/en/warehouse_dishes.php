@@ -1,6 +1,20 @@
 <?php
 
 return [
+    'title' => 'Warehouse',
+    'dishes_section' => 'Dishes',
+
+    'add_dish' => 'New dish stock',
+    'dish_name' => 'Dish name',
+    'dish_category' => 'Dish category',
+    'dish_quantity' => 'Dish quantity',
+    'dish_warehouse_price' => 'Dish warehouse price',
+
+    'product' => 'Product',
+    'category' => 'Category',
+    'quantity' => 'Quantity',
+    'warehouse_price' => 'Warehouse price',
+
     'create_dish_error' => 'Error occurred while creation, refresh the page',
     'update_dish_error' => 'Error occurred while update, refresh the page',
     'delete_dish_error' => 'Error occurred while deletion, refresh the page',
@@ -10,4 +24,8 @@ return [
     'salty_snack' => 'Salty snack',
     'sweet_snack' => 'Sweet snack',
     'drink' => 'Drink',
+
+    'select_menu_off' => 'Choose...',
+    'dish_create' => 'Add',
+    'dish_close' => 'Close',
 ];

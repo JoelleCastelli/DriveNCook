@@ -26,10 +26,8 @@
                                         <th>Date d'achat</th>
                                         <th>Immatriculation</th>
                                         <th>Puissance</th>
-                                        <th>Poids (vide)</th>
                                         <th>Capacité</th>
-                                        <th>Etat général</th>
-                                        <th>Kilometrage</th>
+                                        <th>Kilométrage</th>
                                         <th>Localisation actuelle</th>
                                         <th>Disponibilité</th>
                                         <th>Actions</th>
@@ -41,19 +39,17 @@
                                             <td>{{$truck['brand']}}</td>
                                             <td>{{$truck['model']}}</td>
                                             <td>{{$truck['functional']?'Oui':'Non'}}</td>
-                                            <td>{{$truck['purchase_date']}}</td>
+                                            <td>{{DateTime::createFromFormat('Y-m-d',$truck['purchase_date'])->format('d/m/Y')}}</td>
                                             <td>{{$truck['license_plate']}}</td>
-                                            <td>{{$truck['horsepower'].' chevaux'}}</td>
-                                            <td>{{$truck['weight_empty'].' kg'}}</td>
+                                            <td>{{$truck['horsepower'].' CV'}}</td>
                                             <td>{{$truck['payload'].' kg'}}</td>
-                                            <td>{{$truck['general_state'].' %'}}</td>
                                             <td>{{empty($truck['last_safety_inspection'])?
                                         'Inconnu':$truck['last_safety_inspection']['truck_mileage'].' km'}}</td>
                                             <td>{{empty($truck['location'])?
                                         'Inconnu':$truck['location']['name']}}</td>
                                             <td>{{empty($truck['user'])?
                                         'Disponible':
-                                        'Utilisé par '.strtoupper($truck['user']['firstname'].' - '.$truck['user']['lastname'])}}</td>
+                                        'Indisponible : utilisé par '.$truck['user']['firstname'].'  '.$truck['user']['lastname']}}</td>
                                             <td>
                                                 <a href="{{route('truck_view',['id'=>$truck['id']])}}">
                                                     <i class="fa fa-eye"></i>

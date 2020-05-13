@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Corporate;
 
 use App\Http\Controllers\Controller;
 use App\Models\City;
+use App\Models\Dish;
 use App\Models\PurchasedDish;
 use App\Models\PurchaseOrder;
 use App\Models\Warehouse;
+use App\Models\WarehousStock;
 use App\Traits\EnumValue;
+use App\Traits\UserTools;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class WarehouseController extends Controller
 {
@@ -163,15 +165,6 @@ class WarehouseController extends Controller
 
     public function warehouse_view($id)
     {
-        //select * from purchase_order PO left join purchased_dish PD on PO.id = PD.purchase_order_id
-        // left join dish d on PD.dish_id = d.id where d.warehouse_id = 1;
-        /*$orders = DB::table('purchase_order')
-            ->select('purchase_order.*', 'purchased_dish.quantity as pd_quantity', 'purchased_dish.*', 'dish.*')
-            ->leftJoin('purchased_dish', 'purchase_order.id', '=', 'purchased_dish.purchase_order_id')
-            ->leftJoin('dish', 'purchased_dish.dish_id', '=', 'dish.id')
-            ->where('dish.warehouse_id', '=', $id)
-            ->get();*/
-
         $warehouse = Warehouse::whereKey($id)
             ->with('city')
             ->with('stock')
@@ -200,6 +193,7 @@ class WarehouseController extends Controller
             $warehouse = $warehouse->toArray();
         }
         $categories = $this->get_enum_column_values('dish', 'category');
+
         return view('corporate.warehouse.warehouse_dishes')
             ->with('warehouse', $warehouse)
             ->with('categories', $categories);
@@ -207,32 +201,16 @@ class WarehouseController extends Controller
 
     public function warehouse_order($warehouseId, $id)
     {
-        $order = DB::table('purchase_order')
-            ->select('purchase_order.*', 'purchase_order.id as po_id',
-                'purchased_dish.*', 'purchased_dish.quantity as pd_quantity',
-                'dish.*')
-            ->leftJoin('purchased_dish', 'purchase_order.id', '=', 'purchased_dish.purchase_order_id')
-            ->leftJoin('dish', 'purchased_dish.dish_id', '=', 'dish.id')
-            ->where('purchase_order.id', '=', $id)
-            ->get();
+        $order = PurchaseOrder::whereKey($id)
+            ->with('purchased_dishes')
+            ->with('user')
+            ->first();
         if (!empty($order)) {
-            $order->toArray();
-        }
-
-        $franchisee = DB::table('user')
-            ->select('pseudo.name', 'user.firstname', 'user.lastname', 'user.email')
-            ->leftJoin('purchase_order', 'user_id', '=', 'user.id')
-            ->leftJoin('pseudo', 'user.pseudo_id', '=', 'pseudo.id')
-            ->where('purchase_order.id', '=', $id)
-            ->get();
-        if (!empty($franchisee)) {
-            $franchisee->toArray();
+            $order = $order->toArray();
         }
 
         return view('corporate.warehouse.warehouse_order')
-            ->with('order', $order)
-            ->with('franchisee', $franchisee)
-            ->with('warehouseId', $warehouseId);
+            ->with('order', $order);
     }
 
     public function warehouse_order_update_product_qty_sent(Request $request)
@@ -309,6 +287,193 @@ class WarehouseController extends Controller
             $response_array = [
                 'status' => 'error',
                 'errorList' => $errors_list
+            ];
+        }
+
+        echo json_encode($response_array);
+    }
+
+    public function warehouse_stock_creation_submit(Request $request)
+    {
+        $parameters = $request->except(['_token']);
+        $error = false;
+        $errors_list = [];
+
+        if (
+            count($parameters) == 5 && !empty($parameters["warehouseId"]) &&
+            !empty($parameters["name"]) && !empty($parameters["category"]) &&
+            !empty($parameters["quantity"]) && !empty($parameters["warehousePrice"])
+        ) {
+            $name = $parameters["name"];
+            $category = $parameters["category"];
+            $quantity = intval($parameters["quantity"]);
+            $warehousePrice = $parameters["warehousePrice"];
+            $warehouseId = intval($parameters["warehouseId"]);
+
+            $dish = Dish::where([
+                ['name', $name],
+                ['category', $category]
+            ])->first();
+            if(!empty($dish)) {
+                $dish = $dish->toArray();
+                $dishId = $dish['id'];
+
+                if (count($dish) < 1) {
+                    $error = true;
+                    $errors_list[] = trans('warehouse_stock.dish_not_exist_error');
+                }
+
+                if (!is_int($quantity)) {
+                    $error = true;
+                    $errors_list[] = trans('warehouse_stock.quantity_error');
+                }
+
+                if(!is_numeric($warehousePrice)) {
+                    $error = true;
+                    $errors_list[] = trans('warehouse_stock.warehouse_price_error');
+                }
+
+                if (!is_int($warehouseId) && $warehouseId > 0) {
+                    $error = true;
+                    $errors_list[] = trans('warehouse_stock.warehouse_id_error');
+                }
+
+                if ($error) {
+                    $response_array = [
+                        'status' => 'error',
+                        'errorList' => $errors_list
+                    ];
+                } else {
+                    $stock = [
+                        'quantity' => $quantity, 'warehouse_price' => $warehousePrice,
+                        'warehouse_id' => $warehouseId, 'dish_id' => $dishId
+                    ];
+                    //$lastId = Dish::insertGetId($stock);
+
+                    WarehousStock::where([
+                        ['warehouse_id', $warehouseId],
+                        ['dish_id', $dishId]
+                    ])->insert($stock);
+
+                    $warehouseStock = WarehousStock::where([
+                        ['warehouse_id', $warehouseId],
+                        ['dish_id', $dishId]
+                    ])->with('dish')->first();
+                    if(!empty($warehouseStock)) {
+                        $warehouseStock = $warehouseStock->toArray();
+                        $warehouseStock['dish']['category'] = trans($GLOBALS['DISH_TYPE'][$warehouseStock['dish']['category']]);
+
+                        $response_array = [
+                            'status' => 'success',
+                            'data' => $warehouseStock
+                        ];
+                    } else {
+                        $errors_list[] = trans('warehouse_stock.warehouse_stock_not_find_error');
+
+                        $response_array = [
+                            'status' => 'error',
+                            'errorList' => $errors_list
+                        ];
+                    }
+                }
+            } else {
+                $errors_list[] = trans('warehouse_stock.dish_not_exist_error');
+
+                $response_array = [
+                    'status' => 'error',
+                    'errorList' => $errors_list
+                ];
+            }
+        } else {
+            $errors_list[] = trans('warehouse_stock.empty_fields');
+
+            $response_array = [
+                'status' => 'error',
+                'errorList' => $errors_list
+            ];
+        }
+        echo json_encode($response_array);
+    }
+
+    public function warehouse_stock_update_submit(Request $request)
+    {
+        $parameters = $request->except(['_token']);
+        $error = false;
+        $errors_list = [];
+
+        if (
+            count($parameters) == 4 && !empty($parameters["dishId"]) &&
+            !empty($parameters["quantity"]) && !empty($parameters["warehousePrice"]) &&
+            !empty($parameters['warehouseId'])
+        ) {
+            $dishId = intval($parameters["dishId"]);
+            $quantity = intval($parameters["quantity"]);
+            $warehousePrice = $parameters["warehousePrice"];
+            $warehouseId = intval($parameters["warehouseId"]);
+
+            if (!is_int($quantity)) {
+                $error = true;
+                $errors_list[] = trans('warehouse_stock.quantity_error');
+            }
+
+            if(!is_numeric($warehousePrice)) {
+                $error = true;
+                $errors_list[] = trans('warehouse_stock.warehouse_price_error');
+            }
+
+            if ($error) {
+                $response_array = [
+                    'status' => 'error',
+                    'errorList' => $errors_list
+                ];
+            } else {
+                $stock = [
+                    'quantity' => $quantity, 'warehouse_price' => $warehousePrice
+                ];
+                WarehousStock::where([
+                    ['warehouse_id', $warehouseId],
+                    ['dish_id', $dishId]
+                ])->update($stock);
+
+                $warehouseStock = WarehousStock::where([
+                    ['warehouse_id', $warehouseId],
+                    ['dish_id', $dishId]
+                ])->first();
+                if(!empty($warehouseStock)) {
+                    $warehouseStock = $warehouseStock->toArray();
+                }
+
+                $response_array = [
+                    'status' => 'success',
+                    'data' => $warehouseStock
+                ];
+            }
+        } else {
+            $errors_list[] = trans('warehouse_stock.empty_fields');
+
+            $response_array = [
+                'status' => 'error',
+                'errorList' => $errors_list
+            ];
+        }
+        echo json_encode($response_array);
+    }
+
+    public function warehouse_stock_delete($dishId, $warehouseId)
+    {
+        if (!ctype_digit($dishId) || !ctype_digit($warehouseId)) {
+            $response_array = [
+                'status' => 'error',
+                'error' => 'warehouse_stock.id_not_digit'
+            ];
+        } else {
+            WarehousStock::where([
+                ['warehouse_id', $warehouseId],
+                ['dish_id', $dishId]
+            ])->delete();
+
+            $response_array = [
+                'status' => 'success'
             ];
         }
 

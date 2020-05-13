@@ -115,7 +115,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-12 col-sm-6 col-md-4">
+                        <div class="col-12 col-sm-6 col-md-3">
                             <div class="row d-flex justify-content-center">
                                 Ventes
                             </div>
@@ -128,23 +128,61 @@
                                 Chiffre d'affaires
                             </div>
                             <div class="row d-flex justify-content-center">
-                                <h1>{{$revenues['sales_total']}} €</h1>
+                                <h1>{{ number_format($revenues['sales_total'], 2, ',', ' ')}} €</h1>
                             </div>
                         </div>
-
-                        <div class="col-12 col-sm-6 col-md-4">
+                        <div class="col-12 col-sm-6 col-md-5">
                             <div class="row d-flex justify-content-center">
                                 Prochaine facture
                             </div>
                             <div class="row d-flex justify-content-center">
-                                <h1>{{$revenues['revenues'] == 0 ? 'Pas de CA' :
-                                $revenues['sales_total'] * $revenues['obligation']['revenue_percentage'] / 100 . ' €'}}</h1>
+                                <h1>{{ number_format($revenues['next_invoice'], 2, ',', ' ')}} €</h1>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="col-12 col-lg-6 mb-5">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <h2>Historique</h2>
+                    <button type="button" class="btn btn-light_blue" data-toggle="modal"
+                            data-target="#formModal">Exporter en PDF
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <div class="row d-flex justify-content-center">
+                                Ventes
+                            </div>
+                            <div class="row d-flex justify-content-center">
+                                <h1>{{ $history['sales_count'] }}</h1>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4">
+                            <div class="row d-flex justify-content-center">
+                                Chiffre d'affaires
+                            </div>
+                            <div class="row d-flex justify-content-center">
+                                <h1>{{ number_format($history['sales_total'], 2, ',', ' ') }} €</h1>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-5">
+                            <div class="row d-flex justify-content-center">
+                                Total facturé
+                            </div>
+                            <div class="row d-flex justify-content-center">
+                                <h1>{{ number_format($history['total_invoices'], 2, ',', ' ') }} €</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="col-12 col-lg-6 mb-5">
             <div class="card">
                 <div class="card-header">
@@ -251,7 +289,7 @@
                                 <th>Date</th>
                                 <th>Entrepôt</th>
                                 <th>Total</th>
-                                <th>Status</th>
+                                <th>Statut</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -341,6 +379,50 @@
 
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="form">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Générer l'historique de ventes du franchisé</h5>
+                    <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" action="{{ route('franchisee_sales_history_pdf') }}">
+                    {{csrf_field()}}
+                    <input type="hidden" id="formId" name="id" value="">
+
+                    <div class="modal-body">
+                        <button type="button" onclick="setAllTimeDates('{{ $history['first_sale_date'] }}')"
+                                class="btn btn-info">Depuis la première vente</button>
+                        <div class="form-group">
+                            <input type="hidden" name="id" id="id" value="{{ $franchisee['id'] }}">
+                        </div>
+                        <div class="form-group">
+                            <input type="date" name="start_date" id="start_date"
+                                   value=""
+                                   class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="end_date">Date de fin :</label>
+                            <input type="date" name="end_date" id="end_date"
+                                   value="{{ date("Y-m-d") }}"
+                                   class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Générer</button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -360,4 +442,22 @@
     </script>
 
     <script type="text/javascript" src="{{asset('js/truckScript.js')}}"></script>
+
+    <script>
+        function setAllTimeDates(first_sale_date) {
+            let start_date = document.getElementById('start_date');
+            let end_date = document.getElementById('end_date');
+            let today = new Date();
+            let dd = today.getDate();
+            let mm = today.getMonth()+1;
+            let yyyy = today.getFullYear();
+            if (dd < 10)
+                dd = '0' + dd;
+            if (mm < 10)
+                mm = '0' + mm;
+            today = yyyy + '-' + mm + '-' + dd;
+            start_date.value = first_sale_date;
+            end_date.value = today;
+        }
+    </script>
 @endsection
