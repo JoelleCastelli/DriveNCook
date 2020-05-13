@@ -5,6 +5,12 @@ namespace App\Http\Controllers\Corporate;
 
 use App\Http\Controllers\Controller;
 use App\Models\Dish;
+use App\Models\FranchiseeStock;
+use App\Models\PurchasedDish;
+use App\Models\PurchaseOrder;
+use App\Models\Sale;
+use App\Models\SoldDish;
+use App\Models\WarehousStock;
 use App\Traits\EnumValue;
 use Illuminate\Http\Request;
 
@@ -24,26 +30,32 @@ class DishController extends Controller
             ->with('dishes', $dishes);
     }
 
-    public function delete_dish($id) {
-        /*if (!ctype_digit($id)) {
+    public function dish_delete($id) {
+
+        if (!ctype_digit($id)) {
             return 'error';
         }
 
-        $purchaseOrder = PurchaseOrder::where('user_id', $id)->get(['id']);
-        if (!empty($purchaseOrder)) {
-            PurchasedDish::whereIn('dish_id', $purchaseOrder->toArray())->delete();
-            PurchaseOrder::where('user_id', $id)->delete();
+        $purchased_dishes = PurchasedDish::where('dish_id', $id);
+        if (!empty($purchased_dishes)) {
+            PurchasedDish::whereIn('dish_id', $purchased_dishes->get()->toArray())
+                ->delete();
+            PurchaseOrder::whereIn('id', $purchased_dishes->get(['purchase_order_id'])->toArray())
+                           ->delete();
         }
 
-        $sale = Sale::where('user_franchised', $id)->get(['id']);
-        if (!empty($sale)) {
-            SoldDish::whereIn('dish_id', $sale->toArray())->delete();
-            Sale::where('user_franchised', $id)->delete();
+        $sold_dishes = SoldDish::where('dish_id', $id);
+        if (!empty($sold_dishes)) {
+            SoldDish::whereIn('dish_id', $sold_dishes->get()->toArray())
+                ->delete();
+            Sale::whereIn('id', $sold_dishes->get(['sale_id'])->toArray())
+                        ->delete();
         }
-        FranchiseeStock::where('user_id', $id)->delete();
-        $this->delete_user($id);
 
-        Dish::where('id', $id)->delete();*/
+        WarehousStock::where('dish_id', $id)->delete();
+        FranchiseeStock::where('dish_id', $id)->delete();
+        Dish::where('id', $id)->delete();
+
         return $id;
     }
 
