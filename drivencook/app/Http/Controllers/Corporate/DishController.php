@@ -102,7 +102,6 @@ class DishController extends Controller
         }
     }
 
-
     public function dish_update($id) {
         $dish = Dish::where('id', $id)->first()->toArray();
         $categories = $this->get_enum_column_values('dish', 'category');
@@ -132,12 +131,16 @@ class DishController extends Controller
                 $errors_list[] = trans('dish.name_error');
             }
 
-            // check if already in database
-            $existing_dish = Dish::where('name', $name)->first();
-            if($existing_dish) {
-                $error = true;
-                $errors_list[] = trans('dish.already_exist');
+            // if new name, check if already in database
+            $current_dish = Dish::where('id', $id)->first()->toArray();
+            if($current_dish['name'] != $name) {
+                $existing_dish = Dish::where('name', $name)->first();
+                if($existing_dish) {
+                    $error = true;
+                    $errors_list[] = trans('dish.already_exist');
+                }
             }
+            
 
             // check description
             if (strlen($description) > 255) {
