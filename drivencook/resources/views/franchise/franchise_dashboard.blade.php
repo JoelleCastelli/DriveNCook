@@ -1,7 +1,7 @@
 @extends('franchise.layout_franchise')
 
 @section('title')
-    Tableau de bord de {{$franchise['firstname'].' '.$franchise['lastname']}}
+    Tableau de bord de {{$franchise['firstname'].' '.$franchise['lastname']. ' ('.$franchise['pseudo']['name'].')'}}
 @endsection
 
 

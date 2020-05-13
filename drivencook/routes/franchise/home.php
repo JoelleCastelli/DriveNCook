@@ -19,3 +19,18 @@ Route::get('/franchise', [
     'as' => 'franchise.dashboard',
     'uses' => 'Franchise\AccountController@dashboard'
 ]);
+
+Route::get('/franchise/account', [
+    'as' => 'franchise.update_account',
+    'uses' => 'Franchise\AccountController@update_account'
+]);
+
+Route::post('/franchise/account', [
+    'as' => 'franchise.update_account_submit',
+    'uses' => 'Franchise\AccountController@update_account_submit'
+]);
+
+Route::post('/franchise/account/password', [
+    'as' => 'franchise.update_password',
+    'uses' => 'Franchise\AccountController@update_password'
+]);

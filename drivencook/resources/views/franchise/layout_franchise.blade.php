@@ -29,8 +29,7 @@
                 <i class="fa fa-user"></i>
             </button>
             <div class="dropdown-menu bg-dark" aria-labelledby="userDropdownMenuButton">
-                <a class="dropdown-item text-light" href="#">Mon compte</a>
-                <a class="dropdown-item text-light" href="#">Paramètres</a>
+                <a class="dropdown-item text-light" href="{{route('franchise.update_account')}}">Mon compte</a>
                 <a class="dropdown-item text-light" href="{{route('franchise.logout')}}">Se déconnecter</a>
             </div>
         </div>
@@ -95,6 +94,7 @@
                 </li>
                 @break
                 @case(route('franchise.stock_dashboard'))
+                @case(route('franchise.update_account'))
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('franchise.dashboard')}}">
                         <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir au tableau de bord
@@ -112,11 +112,11 @@
                 </li>
             @endif
             @if (strpos(url()->current(), route('franchise.stock_order')) !== false)
-                    <li class="nav-item">
-                        <a class="nav-link text-light2" href="{{route('franchise.stock_dashboard')}}">
-                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la gestion des stock & entrepôts
-                        </a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{route('franchise.stock_dashboard')}}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la gestion des stock & entrepôts
+                    </a>
+                </li>
             @endif
 
         </ul>
