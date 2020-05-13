@@ -9,8 +9,7 @@ return [
     'category' => 'Catégorie',
     'description' => 'Description',
     'diet' => 'Régime',
-    'see_dish' => 'Voir le produit',
-    'edit_dish' => 'Modifier le produit',
+    'update_dish' => 'Modifier le produit',
     'delete_dish' => 'Supprimer le produit',
 
     // Diets
@@ -41,9 +40,11 @@ return [
     'name_error' => 'Le nom du produit doit comporter entre 2 et 30 caractères',
     'description_error' => 'La description ne peut pas excéder 255 caractères',
     'already_exist' => 'Ce produit existe déjà dans le catalogue',
+    'delete_confirm' => 'Voulez-vous vraiment supprimer ce produit du catalogue ? Toutes les données associées seront supprimées.',
+    'delete_error' => 'Une erreur est survenue lors de la suppression, veuillez rafraîchir la page.',
+    'delete_success' => 'Produit supprimé du catalogue',
 
     // Tooltips
-    'delete_confirm' => 'Voulez-vous vraiment supprimer ce produit du catalogue ? Toutes les données associées seront supprimées.',
     'set_description' => 'Description du produit',
     'set_name' => 'Nom du produit',
 ];

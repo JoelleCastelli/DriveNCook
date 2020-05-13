@@ -53,10 +53,10 @@
                                 <td>{{ trans('dish.diet_'.strtolower($dish['diet'])) }}</td>
                                 <td>
                                     <a class="ml-2" href="{{route('dish_update', ['id' => $dish['id']]) }}">
-                                        <button class="text-light fa fa-edit"></button>
+                                        <button class="text-light fa fa-edit" title="{{ trans('dish.update_dish') }}"></button>
                                     </a>
                                     <button onclick="deleteDish({{ $dish['id'] }})"
-                                            class="text-light fa fa-trash ml-2"></button>
+                                            class="text-light fa fa-trash ml-2" title="{{ trans('dish.delete_dish') }}"></button>
                                 </td>
                             </tr>
                         @endforeach
@@ -76,7 +76,7 @@
         });
 
         function deleteDish(id) {
-            if (confirm("Voulez-vous vraiment supprimer ce produit du catalogue ? Toutes les données associées seront supprimées.")) {
+            if (confirm(Lang.get('dish.delete_confirm'))) {
                 if (!isNaN(id)) {
                     let url_delete = '{{ route('dish_delete',['id'=>':id']) }}';
                     url_delete = url_delete.replace(':id', id);
@@ -88,14 +88,14 @@
                         },
                         success: function (data) {
                             if (data == id) {
-                                alert("Produit supprimé");
+                                alert(Lang.get('dish.delete_success'));
                                 $('#all_dishes').DataTable().row('#row_' + id).remove().draw();
                             } else {
-                                alert("Une erreur est survenue lors de la suppression, veuillez rafraîchir la page");
+                                alert(Lang.get('dish.delete_error'));
                             }
                         },
                         error: function () {
-                            alert("Une erreur est survenue lors de la suppression, veuillez rafraîchir la page");
+                            alert(Lang.get('dish.delete_error'));
                         }
                     })
                 }
