@@ -53,7 +53,7 @@ class AccountController extends Controller
             'driving_licence' => ['required', 'string', 'max:15'],
             'social_security' => ['required', 'string', 'max:15']
         ]);
-        var_dump(request()->except('_token'));
+
         User::whereKey($this->get_connected_user()['id'])
             ->update(request()->except('_token'));
         flash('Compte modifié')->success();
