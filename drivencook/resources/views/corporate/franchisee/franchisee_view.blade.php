@@ -2,11 +2,6 @@
 @section('title')
     Franchisé : {{strtoupper($franchisee['firstname'].' '.$franchisee['lastname'])}}
 @endsection
-@section('style')
-    {{--    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet">--}}
-    {{--    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet">--}}
-@endsection
-
 
 @section('content')
     <div class="row">
@@ -395,8 +390,8 @@
                     <input type="hidden" id="formId" name="id" value="">
 
                     <div class="modal-body">
-                        <button type="button" onclick="setAllTimeDates('{{ $history['first_sale_date'] }}')"
-                                class="btn btn-info">Depuis la première vente</button>
+                        <button type="button" onclick="setAllTimeDates('{{ $history['creation_date'] }}')"
+                                class="btn btn-info">Depuis la date de création</button>
                         <div class="form-group">
                             <input type="hidden" name="id" id="id" value="{{ $franchisee['id'] }}">
                         </div>
@@ -426,10 +421,6 @@
 @endsection
 
 @section('script')
-    {{--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>--}}
-    {{--    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>--}}
-    {{--    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>--}}
-    {{--    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>--}}
     <script type="text/javascript">
         $(document).ready(function () {
             $('#licencefees').DataTable();
@@ -444,7 +435,7 @@
     <script type="text/javascript" src="{{asset('js/truckScript.js')}}"></script>
 
     <script>
-        function setAllTimeDates(first_sale_date) {
+        function setAllTimeDates(creation_date) {
             let start_date = document.getElementById('start_date');
             let end_date = document.getElementById('end_date');
             let today = new Date();
@@ -456,7 +447,7 @@
             if (mm < 10)
                 mm = '0' + mm;
             today = yyyy + '-' + mm + '-' + dd;
-            start_date.value = first_sale_date;
+            start_date.value = creation_date;
             end_date.value = today;
         }
     </script>

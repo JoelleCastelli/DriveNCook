@@ -450,34 +450,35 @@ class FranchiseeController extends Controller
     //TODO mutualiser les requêtes des deux fonctions d'historique
     public function get_franchisee_history($franchisee_id) {
 
-        // Total of invoices (first because always at least one invoice: initial fee)
-        $invoices = Invoice::where('user_id', $franchisee_id)
-                            ->get()->toArray();
+        // Definition of min and max dates
+        $user = $this->get_franchisee_by_id($franchisee_id);
+        $creation_date = DateTime::createFromFormat("Y-m-d H:i:s", $user['created_at'])->format('Y-m-d');
+        $today = date("Y-m-d");
+
+        // Total of invoices (always at least one invoice: initial fee)
+        $invoices = Invoice::where('user_id', $franchisee_id)->get()->toArray();
         $total_invoices = 0;
         foreach ($invoices as $invoice) {
             $total_invoices += $invoice['amount'];
         }
 
-        // First sale date = start date
+        // Total of cashed money and number of sales
+        $sales = Sale::whereBetween('date', [$creation_date, $today])
+                        ->where('user_franchised', $franchisee_id)
+                        ->with('sold_dishes')
+                        ->get();
+
         // If no sale, return invoices but 0 sales & total
-        $first_sale = Sale::all()->where('user_franchised', $franchisee_id)
-                                 ->sortBy('id')->first();
-        if($first_sale) {
-            $first_sale->toArray();
+        if($sales) {
+            $sales->toArray();
         } else {
             return ["sales_total" => 0,
                     "sales_count" => 0,
+                    "creation_date" => $creation_date,
                     "total_invoices" => $total_invoices
             ];
         }
-        $first_sale_date = $first_sale['date'];
-        $today = date("Y-m-d");
 
-        // Total of cashed money and number of sales
-        $sales = Sale::whereBetween('date', [$first_sale_date, $today])
-                        ->where('user_franchised', $franchisee_id)
-                        ->with('sold_dishes')
-                        ->get()->toArray();
         $sales_total = 0;
         foreach ($sales as $sale) {
             foreach ($sale['sold_dishes'] as $sold_dish) {
@@ -487,7 +488,7 @@ class FranchiseeController extends Controller
 
         return ["sales_total" => $sales_total,
             "sales_count" => count($sales),
-            "first_sale_date" => $first_sale_date,
+            "creation_date" => $creation_date,
             "total_invoices" => $total_invoices
         ];
     }
@@ -512,11 +513,13 @@ class FranchiseeController extends Controller
             $sales = Sale::whereBetween('date', [$start_date, $end_date])
                 ->where('user_franchised', $franchisee_id)
                 ->with('sold_dishes')
-                ->get()->toArray();
+                ->get();
 
             if(empty($sales)) {
                 flash("Le franchisé n'a pas réalisé de vente sur la période sélectionnée.")->error();
                 return redirect()->back();
+            } else {
+                $sales = $sales->toArray();
             }
 
             $pdf = PDF::loadView('corporate.franchisee.franchisee_history',
