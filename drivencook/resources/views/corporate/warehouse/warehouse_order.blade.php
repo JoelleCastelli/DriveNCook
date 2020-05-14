@@ -22,6 +22,7 @@
                     <li class="list-group-item"><b>{{ trans('warehouse_order.status') }} : </b>
                         <p style="display: inline" id="orderStatus">{{ trans($GLOBALS['PURCHASE_ORDER_STATUS'][$order['status']]) }}</p>
                     </li>
+                    <li class="list-group-item"><b>{{ trans('warehouse_order.global_price') }} : </b>{{ $orderPrice }}</li>
                 </ul>
             </div>
         </div>
@@ -56,6 +57,8 @@
                                 <th>{{ trans('warehouse_order.category') }}</th>
                                 <th>{{ trans('warehouse_order.quantity_ordered') }}</th>
                                 <th>{{ trans('warehouse_order.quantity_to_send') }}</th>
+                                <th>{{ trans('warehouse_order.unit_price') }}</th>
+                                <th>{{ trans('warehouse_order.total_dish_price') }}</th>
                                 <th>{{ trans('corporate.actions') }}</th>
                             </tr>
                             </thead>
@@ -66,6 +69,8 @@
                                         <td id="rowCategory{{ $item['dish_id'] }}">{{ trans($GLOBALS['DISH_TYPE'][$item['dish']['category']]) }}</td>
                                         <td id="rowQty{{ $item['dish_id'] }}">{{ $item['quantity'] }}</td>
                                         <td id="rowQtyToSend{{ $item['dish_id'] }}">{{ $item['quantity'] - $item['quantity_sent'] }}</td>
+                                        <td id="rowUPrice{{ $item['dish_id'] }}">{{ $item['unit_price'] }} €</td>
+                                        <td id="rowTotalPrice{{ $item['dish_id'] }}">{{ $item['unit_price'] * $item['quantity'] }} €</td>
                                         <td>
                                             <i class="fa fa-edit" onclick="editDish({{ $item['dish_id'] }})" data-toggle="modal" data-target="#dishModal"></i>
                                         </td>
@@ -93,7 +98,7 @@
                     <ul class="list-group list-group-flush">
                         <b>{{ trans('warehouse_order.category') }} : </b><li class="list-group-item" id="dishCategory"></li>
                     </ul>
-                    <label for="dishQtySent" class="col-form-label">{{ trans('warehouse_order.quantity_to_send') }}</label>
+                    <label for="dishQtySent" class="col-form-label"><b>{{ trans('warehouse_order.quantity_to_send') }}</b></label>
                     <input type="number" class="form-control" id="dishQtySent" min="1">
                 </div>
                 <div class="modal-footer">

@@ -169,7 +169,20 @@ class WarehouseController extends Controller
             ->with('city')
             ->with('stock')
             ->with('purchase_order')
-            ->first()->toArray();
+            ->first();
+
+        if (!empty($warehouse)) {
+            $warehouse = $warehouse->toArray();
+
+            $i = 0;
+            foreach ($warehouse['purchase_order'] as $purchaseOrder) {
+                $orderPrice = 0;
+                foreach ($purchaseOrder['purchased_dishes'] as $item) {
+                    $orderPrice += $item['unit_price'] * $item['quantity'];
+                }
+                $warehouse['purchase_order'][$i++] += ['order_price' => $orderPrice];
+            }
+        }
 
         return view('corporate.warehouse.warehouse_view')
             ->with('warehouse', $warehouse);
@@ -209,8 +222,14 @@ class WarehouseController extends Controller
             $order = $order->toArray();
         }
 
+        $orderPrice = 0;
+        foreach ($order['purchased_dishes'] as $item) {
+            $orderPrice += $item['unit_price'] * $item['quantity'];
+        }
+
         return view('corporate.warehouse.warehouse_order')
-            ->with('order', $order);
+            ->with('order', $order)
+            ->with('orderPrice', $orderPrice);
     }
 
     public function warehouse_order_update_product_qty_sent(Request $request)
@@ -397,6 +416,7 @@ class WarehouseController extends Controller
 
     public function warehouse_stock_update_submit(Request $request)
     {
+        //TODO when all send update franchisee stock && when send update WH stock
         $parameters = $request->except(['_token']);
         $error = false;
         $errors_list = [];

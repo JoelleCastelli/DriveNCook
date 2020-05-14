@@ -49,7 +49,7 @@
                                     <td>{{ $dish['dish']['name'] }}</td>
                                     <td>{{ trans($GLOBALS['DISH_TYPE'][$dish['dish']['category']]) }}</td>
                                     <td>{{ $dish['quantity'] }}</td>
-                                    <td>{{ $dish['warehouse_price'] }}</td>
+                                    <td>{{ $dish['warehouse_price'] }} €</td>
                                 </tr>
                                 @endif
                             @endforeach
@@ -75,6 +75,7 @@
                                 <th>{{ trans('warehouse_order.date') }}</th>
                                 <th>{{ trans('warehouse_order.pseudo') }}</th>
                                 <th>{{ trans('warehouse_order.status') }}</th>
+                                <th>{{ trans('warehouse_order.global_price') }}</th>
                                 <th>{{ trans('corporate.actions') }}</th>
                             </tr>
                             </thead>
@@ -84,6 +85,7 @@
                                     <td>{{ $order['date'] }}</td>
                                     <td>{{ empty($order['user']['pseudo'])?trans('corporate.unknown'):$order['user']['pseudo']['name'] }}</td>
                                     <td>{{ trans($GLOBALS['PURCHASE_ORDER_STATUS'][$order['status']]) }}</td>
+                                    <td>{{ $order['order_price'] }} €</td>
                                     <td>
                                         <a style="color: unset" href="{{ route('warehouse_order', ['warehouse_id'=>$warehouse['id'], 'id'=>$order['id']]) }}">
                                             <i class="fa fa-eye"></i>
