@@ -38,7 +38,7 @@
                                                     <button class="text-light fa fa-eye"></button>
                                                 </a>
                                                 <a href="{{route('warehouse_update',['id'=>$warehouse['id']])}}">
-                                                    <button class="fa fa-edit ml-2"></button>
+                                                    <button class="fa fa-edit ml-2 text-light"></button>
                                                 </a>
 
                                                 <button onclick="deleteWarehouse({{$warehouse['id']}})"
