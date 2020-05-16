@@ -23,8 +23,6 @@ require_once('franchise/truck.php');
 require_once('franchise/stock.php');
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('home');
+})->name('homepage');
 
-
-//
