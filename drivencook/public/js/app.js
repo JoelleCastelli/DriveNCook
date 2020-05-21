@@ -49028,7 +49028,7 @@ module.exports = function(module) {
 
         var _config = _objectSpread2({}, Default$1, {}, $this.data(), {}, typeof config === 'object' && config ? config : {});
 
-        if (!data && _config.toggle && /show|hide/.test(config)) {
+        if (!data && _config.toggle && /show|hide/.test(_config)) {
           _config.toggle = false;
         }
 

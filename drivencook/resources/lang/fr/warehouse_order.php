@@ -11,9 +11,9 @@ return [
     'franchisee_details_section' => 'Informations sur le franchisé',
     'products_section' => 'Produits commandés',
 
-    'reference' => 'Référence',
     'date' => 'Date de création',
     'status' => 'Statut',
+    'global_price' => 'Montant de la commande',
 
     'firstname' => 'Prénom',
     'lastname' => 'Nom',
@@ -24,6 +24,8 @@ return [
     'category' => 'Catégorie',
     'quantity_to_send' => 'Quantité à envoyer',
     'quantity_ordered' => 'Quantité commandée',
+    'unit_price' => 'Prix de vente unitaire',
+    'total_dish_price' => 'Montant total',
 
     'dish_update' => 'Sauvegarder',
     'dish_close' => 'Fermer',
