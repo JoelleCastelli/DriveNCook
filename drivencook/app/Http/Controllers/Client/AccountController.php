@@ -4,12 +4,22 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\AuthClient;
 use App\Models\User;
 use DateTime;
 use Illuminate\Http\Request;
 
 class AccountController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(AuthClient::class);
+    }
+
+    public function dashboard() {
+        return view('client.client_dashboard');
+    }
+
     public function registration()
     {
         return view('client.account.registration');

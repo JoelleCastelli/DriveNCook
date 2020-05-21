@@ -30,7 +30,7 @@
             </button>
             <div class="dropdown-menu bg-dark" aria-labelledby="userDropdownMenuButton">
                 <a class="dropdown-item text-light" href="{{route('corporate.update_account')}}">{{ trans('auth.my_account') }}</a>
-                <a class="dropdown-item text-light" href="{{route('client_logout')}}">{{ trans('auth.to_disconnect') }}</a>
+                <a class="dropdown-item text-light" href="{{route('client_logout')}}">{{ trans('auth.logout') }}</a>
             </div>
         </div>
     @endif
