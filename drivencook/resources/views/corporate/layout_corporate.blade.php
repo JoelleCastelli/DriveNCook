@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="fr">
 <head>
-    <title>Drive 'N' Cook Corporate</title>
+    <title>Drive'N'Cook Corporate</title>
     <script src="{{asset('js/trad.js')}}"></script>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -18,19 +18,36 @@
     <span class="d-flex align-items-center">
         <button href="#menu-toggle" class="btn text-light" id="menu-toggle"><i class="fa fa-bars"></i></button>
         <a class="navbar-brand"
-           href="{{route('corporate_dashboard')}}">&nbsp;&nbsp;&nbsp;Administration Drive 'N' Cook</a>
+           href="{{route('corporate_dashboard')}}">&nbsp;&nbsp;&nbsp;Administration Drive'N'Cook</a>
     </span>
 
     @if (!auth()->guest())
-        <div class="nav-item dropdown" style="margin-right: 10em;">
-            <button class="btn btn-dark dropdown-toggle" type="button" id="userDropdownMenuButton"
-                    data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-user"></i>
-            </button>
-            <div class="dropdown-menu bg-dark" aria-labelledby="userDropdownMenuButton">
-                <a class="dropdown-item text-light" href="{{route('corporate.update_account')}}">Mon compte</a>
-                <a class="dropdown-item text-light" href="{{route('corporate_logout')}}">Se déconnecter</a>
+        <div class="row">
+            <div class="nav-item dropdown">
+                <button class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown">
+                    <img src="{{ asset('img/'.App::getLocale().'_icon.png') }}" height="20">&nbsp;&nbsp;{{ trans('homepage.'. App::getLocale()) }}
+                </button>
+                <div class="dropdown-menu bg-dark" aria-labelledby="userDropdownMenuButton">
+                    @foreach (Config::get('app.languages') as $language)
+                        @if ($language != App::getLocale())
+                            <a class="dropdown-item text-light" href="{{ route('set_locale', $language) }}">
+                                <img src="{{ asset('img/'.$language.'_icon.png') }}" height="20">&nbsp;&nbsp;{{ trans('homepage.'.$language) }}
+                            </a>
+                        @endif
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="nav-item dropdown ml-4" style="margin-right: 10em;">
+                <button class="btn btn-dark dropdown-toggle" type="button" id="userDropdownMenuButton"
+                        data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-user"></i>
+                </button>
+                <div class="dropdown-menu bg-dark" aria-labelledby="userDropdownMenuButton">
+                    <a class="dropdown-item text-light" href="{{route('corporate.update_account')}}">Mon compte</a>
+                    <a class="dropdown-item text-light" href="{{route('corporate_logout')}}">Se déconnecter</a>
+                </div>
             </div>
         </div>
     @endif
