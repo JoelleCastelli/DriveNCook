@@ -41,19 +41,29 @@
     <div class="navbar-collapse collapse w-100 order-1 order-md-1 dual-collapse2">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item {{url()->current() == route('homepage')?"active":""}}">
-                <a class="nav-link" href="{{route('homepage')}}"><i class="fa fa-home"></i> Accueil</a>
+                <a class="nav-link" href="{{route('homepage')}}">
+                    <i class="fa fa-home"></i> {{ trans('homepage.home') }}
+                </a>
             </li>
             <li class="nav-item {{url()->current() == route('homepage')?"":""}}">
-                <a class="nav-link" href="{{route('homepage')}}"><i class="fa fa-map-marker-alt"></i> Trouver un camion</a>
+                <a class="nav-link" href="{{route('homepage')}}">
+                    <i class="fa fa-map-marker-alt"></i> {{ trans('homepage.find_truck') }}
+                </a>
             </li>
             <li class="nav-item {{url()->current() == route('homepage')?"":""}}">
-                <a class="nav-link" href="{{route('homepage')}}"><i class="fa fa-newspaper"></i> Actualités</a>
+                <a class="nav-link" href="{{route('homepage')}}">
+                    <i class="fa fa-newspaper"></i> {{ trans('homepage.news') }}
+                </a>
             </li>
             <li class="nav-item {{url()->current() == route('homepage')?"":""}}">
-                <a class="nav-link" href="{{route('homepage')}}"><i class="fa fa-info-circle"></i> A propos</a>
+                <a class="nav-link" href="{{route('homepage')}}">
+                    <i class="fa fa-info-circle"></i> {{ trans('homepage.about') }}
+                </a>
             </li>
             <li class="nav-item {{url()->current() == route('homepage')?"":""}}">
-                <a class="nav-link" href="{{route('homepage')}}"><i class="fa fa-address-book"></i> Nous contacter</a>
+                <a class="nav-link" href="{{route('homepage')}}">
+                    <i class="fa fa-address-book"></i> {{ trans('homepage.contact') }}
+                </a>
             </li>
         </ul>
     </div>
@@ -63,24 +73,24 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-user"></i>
+                    <i class="fa fa-user"></i>&nbsp;&nbsp;{{ trans('homepage.login') }}
                 </a>
                 <div class="dropdown-menu dropdown-menu-right bg-dark" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item text-light d-flex align-items-baseline" href="#">
-                        <i class="fa fa-user"></i>&nbsp;&nbsp;Accès client
+                        <i class="fa fa-user"></i>&nbsp;&nbsp;{{ trans('homepage.login_client') }}
                     </a>
                     <a class="dropdown-item text-light d-flex align-items-baseline" href="{{route('franchise.login')}}">
-                        <i class="fa fa-truck"></i>&nbsp;&nbsp;Accès franchisé
+                        <i class="fa fa-truck"></i>&nbsp;&nbsp;{{ trans('homepage.login_franchisee') }}
                     </a>
                 </div>
             </li>
         </ul>
     </div>
+
 </nav>
 
 <div class="container-fluid parallax">
     @yield('content')
-
 </div>
 
 <footer class="page-footer font-small bg-dark text-light">
@@ -103,7 +113,7 @@
 
             <div class="col-lg-3 mx-auto">
 
-                <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Nous trouver</h5>
+                <h5 class="font-weight-bold text-uppercase mt-3 mb-4">{{ trans('homepage.find_us') }}</h5>
 
                 <ul class="list-unstyled">
                     <li>
@@ -125,28 +135,31 @@
 
             <div class="col-lg-3 mx-auto">
 
-                <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Menu</h5>
+                <h5 class="font-weight-bold text-uppercase mt-3 mb-4">{{ trans('homepage.menu') }}</h5>
 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="{{route('homepage')}}"><i class="fa fa-home"></i>
-                            Accueil</a>
+                        <a class="nav-link text-light" href="{{route('homepage')}}">
+                            <i class="fa fa-home"></i> {{ trans('homepage.home') }}
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  text-light" href="{{route('homepage')}}"><i
-                                    class="fa fa-map-marker-alt"></i> Trouver un camion</a>
+                        <a class="nav-link  text-light" href="{{route('homepage')}}">
+                            <i class="fa fa-map-marker-alt"></i> {{ trans('homepage.find_truck') }}
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="{{route('homepage')}}"><i class="fa fa-newspaper"></i>
-                            Actualités</a>
+                        <a class="nav-link text-light" href="{{route('homepage')}}">
+                            <i class="fa fa-newspaper"></i> {{ trans('homepage.news') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="{{route('homepage')}}"><i class="fa fa-info-circle"></i> A
-                            propos</a>
+                        <a class="nav-link text-light" href="{{route('homepage')}}">
+                            <i class="fa fa-info-circle"></i> {{ trans('homepage.about') }}
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="{{route('homepage')}}"><i class="fa fa-address-book"></i>
-                            Nous contacter</a>
+                        <a class="nav-link text-light" href="{{route('homepage')}}">
+                            <i class="fa fa-address-book"></i> {{ trans('homepage.contact') }}</a>
                     </li>
                 </ul>
 
@@ -156,21 +169,21 @@
 
             <div class="col-lg-3 mx-auto">
 
-                <h5 class="font-weight-bold text-uppercase mt-3 mb-3">Devenez franchisé</h5>
+                <h5 class="font-weight-bold text-uppercase mt-3 mb-3">{{ trans('homepage.become_franchisee') }}</h5>
 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="#">Site de présentation</a>
+                        <a class="nav-link text-light" href="#">{{ trans('homepage.concept') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="#">Remplir le formulaire</a>
+                        <a class="nav-link text-light" href="#">{{ trans('homepage.form') }}</a>
                     </li>
                 </ul>
-                <h5 class="font-weight-bold text-uppercase mt-3 mb-3">Contact</h5>
+                <h5 class="font-weight-bold text-uppercase mt-3 mb-3">{{ trans('homepage.contact_info') }}</h5>
 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="tel:0606060606"><i class="fa fa-phone"></i> 0606060606</a>
+                        <a class="nav-link text-light" href="tel:0606060606"><i class="fa fa-phone"></i> 01 56 06 90 41</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-light" href="mailto:contact@drivencook.fr"><i class="fa fa-envelope"></i> contact@drivencook.fr</a>

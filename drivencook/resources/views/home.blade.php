@@ -5,10 +5,10 @@
         <div class="row align-items-center h-100">
             <div class="col-12 mx-auto text-light">
                 <div class="d-flex justify-content-center">
-                    <h1 class="display-3 font-weight-bold"> FRAIS, RAPIDE & DÉLICIEUX !</h1>
+                    <h1 class="display-3 font-weight-bold"> {{ trans('homepage.slogan') }}</h1>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <h2>Rejoignez le mouvement ! Des camions dans toute l'île de france !</h2>
+                    <h2>{{ trans('homepage.tagline') }}</h2>
                 </div>
                 <div class="d-flex justify-content-center">
                     <i class="fab fa-facebook-square fa-3x"></i>
