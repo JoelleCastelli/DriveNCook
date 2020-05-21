@@ -12,6 +12,20 @@
     <link href="/css/app.css" rel="stylesheet">
     <link href="/css/sidebar.css" rel="stylesheet">
     @yield('style')
+    <style>
+        .parallax {
+            /* The image used */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url({{ asset('img/client_homepage.jpg') }});
+            /* Set a specific height */
+            height: 100%;
+
+            /* Create the parallax scrolling effect */
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
 </head>
 <body class="parallax">
 <nav class="navbar navbar-dark sticky-top bg-dark2 text-light justify-content-between">

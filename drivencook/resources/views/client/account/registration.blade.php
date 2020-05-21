@@ -4,18 +4,6 @@
 @endsection
 @section('style')
     <style>
-        .parallax {
-            /* The image used */
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url({{asset('img/client_homepage.jpg')}});
-            /* Set a specific height */
-            height: 860px;
-
-            /* Create the parallax scrolling effect */
-            background-attachment: fixed;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
         .clientTitle {
             color: #FFFFFF;
         }
