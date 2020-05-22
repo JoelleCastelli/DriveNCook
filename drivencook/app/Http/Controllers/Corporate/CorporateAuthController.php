@@ -34,19 +34,19 @@ class CorporateAuthController extends Controller
             ]);
 
         if ($result) {
-            flash("Connexion réussie")->success();
+            flash(trans('corporate.login_ok'))->success();
             return redirect(route('corporate_dashboard'));
         }
 
         return back()->withInput()->withErrors([
-            'email' => 'Vos identifiants sont incorrects.'
+            'email' => trans('corporate.login_incorrect')
         ]);
     }
 
     public function logout()
     {
         auth()->logout();
-        flash("Déconnexion réussie")->success();
+        flash(trans('corporate.logout_ok'))->success();
         return redirect(route('corporate_login'));
     }
 }
