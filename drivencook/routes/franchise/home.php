@@ -10,6 +10,19 @@ Route::post('/franchise/login', [
     'uses' => 'Franchise\AuthController@processLoginForm'
 ]);
 
+Route::get('/franchise/registration/', [
+    'as' => 'franchise.complete_registration',
+    'uses' => 'Franchise\AuthController@complete_registration'
+]);
+Route::post('/franchise/registration/', [
+    'as' => 'franchise.complete_registration_submit',
+    'uses' => 'Franchise\AuthController@complete_registration_submit'
+]);
+Route::post('/franchise/registration/email', [
+    'as' => 'franchise.complete_registration_email',
+    'uses' => 'Franchise\AuthController@complete_registration_email'
+]);
+
 Route::get('/franchise/logout', [
     'as' => 'franchise.logout',
     'uses' => 'Franchise\AuthController@logout'
