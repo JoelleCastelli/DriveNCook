@@ -11,9 +11,10 @@ return [
     'franchisee_details_section' => 'Franchisee data',
     'products_section' => 'Products ordered',
 
-    'reference' => 'Reference',
     'date' => 'Creation date',
     'status' => 'Status',
+    'global_price' => 'Order price',
+
 
     'firstname' => 'Firstname',
     'lastname' => 'Lastname',
@@ -24,6 +25,8 @@ return [
     'category' => 'Category',
     'quantity_to_send' => 'Quantity to send',
     'quantity_ordered' => 'Quantity ordered',
+    'unit_price' => 'Unit sell price',
+    'total_dish_price' => 'Total price',
 
     'dish_update' => 'Save',
     'dish_close' => 'Close',

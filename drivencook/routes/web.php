@@ -23,8 +23,11 @@ require_once('franchise/truck.php');
 require_once('franchise/stock.php');
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('home');
+})->name('homepage');
 
+Route::get('/{language}', function ($language) {
+    Session::put('locale', $language);
+    return back();
+})->name('set_locale');
 
-//
