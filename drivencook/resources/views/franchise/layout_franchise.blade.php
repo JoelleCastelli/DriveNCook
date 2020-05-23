@@ -120,6 +120,7 @@
                 </li>
                 @break
                 @case(route('franchise.truck_location_update'))
+                @case(route('franchise.truck_breakdown_add'))
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('franchise.truck_view')}}">
                         <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_truck_management')}}
