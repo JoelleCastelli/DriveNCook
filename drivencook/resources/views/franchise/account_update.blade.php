@@ -111,16 +111,16 @@
         <div class="col-12 col-sm-10 col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h3>Mise à jour du mot de passe</h3>
+                    <h3>{{trans('franchisee.password_update')}}</h3>
                 </div>
                 <div class="card-body">
                     <form action="{{route('franchise.update_password')}}" method="post">
                         {{csrf_field()}}
 
                         <div class="form-group">
-                            <label for="password">Nouveau mot de passe</label>
+                            <label for="password">{{trans('franchisee.new_password')}}</label>
                             <input class="form-control" type="password" name="password" id="password"
-                                   placeholder="nouveau mot de passe" minlength="6">
+                                   placeholder="{{trans('franchisee.enter_password')}}" minlength="6">
                             @if ($errors->has('password'))
                                 <span class="badge-danger">
                                         {{$errors->first('password')}}
@@ -129,9 +129,10 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="password_confirmation">Confirmation mot de passe</label>
+                            <label for="password_confirmation">{{trans('franchisee.password_confirmation')}}</label>
                             <input class="form-control" type="password" name="password_confirmation"
-                                   id="password_confirmation" placeholder="confirmation mot de passe" minlength="6">
+                                   id="password_confirmation"
+                                   placeholder="{{trans('franchisee.password_confirmation')}}" minlength="6">
                             @if ($errors->has('password_confirmation'))
                                 <span class="badge-danger">
                                         {{$errors->first('password_confirmation')}}
@@ -139,7 +140,7 @@
                             @endif
                         </div>
 
-                        <button type="submit" class="btn btn-light_blue">Modifier</button>
+                        <button type="submit" class="btn btn-light_blue">{{trans('franchisee.update')}}</button>
                     </form>
                 </div>
             </div>

@@ -27,7 +27,7 @@
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+<nav class="navbar navbar-expand-md navbar-dark sticky-top bg-dark">
     <a class="navbar-brand" href="/">
         <img src="{{asset('img/logo_transparent_3.png')}}" height="60" class="d-inline-block align-top" alt="">
     </a>
