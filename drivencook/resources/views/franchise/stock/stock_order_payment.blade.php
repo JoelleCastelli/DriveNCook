@@ -26,9 +26,25 @@
                     </ul>
                 </div>
                 <div class="card-footer">
-                    <a href="{{route('franchise.stock_order_validate')}}" class="btn btn-light_blue">
-                        Commander (modal paiement ici)
-                    </a>
+                    <form action="{{ route('franchise.stock_order_charge', ['total' => $order['total'] * 100])}}" method="POST">
+                        {{ csrf_field() }}
+                        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                data-key="{{ env('STRIPE_PUB_KEY') }}"
+                                data-amount="{{ $order['total'] * 100 }}"
+                                data-name="DriveNCook.fr"
+                                data-description="Paiement de votre commande"
+                                data-image="{{ asset('img/logo_transparent.png') }}"
+                                data-locale="auto"
+                                data-currency="eur"
+                                data-zip-code="false"
+                                data-email="{{ app('App\Http\Controllers\Franchise\StockController')->get_connected_user()['email'] }}">
+                        </script>
+                        <script>
+                            // Hide default stripe payment button
+                            document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
+                        </script>
+                        <button type="submit" class="btn btn-light_blue">Paiement de la commande</button>
+                    </form>
                 </div>
             </div>
         </div>

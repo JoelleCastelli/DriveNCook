@@ -14,6 +14,10 @@ use App\Models\WarehousStock;
 use App\Traits\EnumValue;
 use App\Traits\UserTools;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Stripe\Charge;
+use Stripe\Customer;
+use Stripe\Stripe;
 
 class StockController extends Controller
 {
@@ -102,6 +106,28 @@ class StockController extends Controller
             ->with('order', $order);
     }
 
+    public function charge(Request $request, $order_total_cents)
+    {
+        try {
+            Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+
+            $customer = Customer::create(array(
+                'email' => $request->stripeEmail,
+                'source' => $request->stripeToken
+            ));
+
+            $charge = Charge::create(array(
+                'customer' => $customer->id,
+                'amount' => $order_total_cents,
+                'currency' => 'eur'
+            ));
+
+            return $this->stock_order_validate();
+        } catch (\Exception $ex) {
+            return $ex->getMessage();
+        }
+    }
+
     public function stock_order_validate()
     {
         $order = request()->session()->pull('order', null);
@@ -126,7 +152,7 @@ class StockController extends Controller
             $previous_warehouse_stock = WarehousStock::where([
                 ['warehouse_id', $order['warehouse_id']],
                 ['dish_id', $order_dish['id']]
-            ])->first('quantity');
+            ])->first()->quantity;
             WarehousStock::where([
                 ['warehouse_id', $order['warehouse_id']],
                 ['dish_id', $order_dish['id']]
