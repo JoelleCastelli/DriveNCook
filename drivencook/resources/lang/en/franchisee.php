@@ -34,6 +34,14 @@ return [
     'view_details' => 'View details',
     'sell_count_30_days' => 'Sells count (30 days)',
     'real_time_revenues_monthly' => 'Real time revenues (monthly)',
+    'complete_registration' => 'Complete registration',
+    'driving_licence' => 'Driving licence',
+    'enter_driving_licence' => 'Enter driving licence number',
+    'social_security' => 'Social security',
+    'enter_social_security' => 'Enter social security number',
+    'phone' => 'Phone',
+    'enter_phone' => 'Enter phone number',
+    'submit' => 'Submit',
 
 
 ];

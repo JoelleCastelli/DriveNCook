@@ -34,7 +34,14 @@ return [
     'view_details' => 'Consulter les details',
     'sell_count_30_days' => 'Nombre de ventes (30 jours)',
     'real_time_revenues_monthly' => 'Chiffre d\'affaire temps réel (mensuel)',
-
+    'complete_registration' => 'Finaliser l\'enregistrement',
+    'driving_licence' => 'Permis de conduire',
+    'enter_driving_licence' => 'Entrez le numéro de permis de conduire',
+    'social_security' => 'Sécurité social',
+    'enter_social_security' => 'Entrez le numéro de sécurité social',
+    'phone' => 'Téléphone',
+    'enter_phone' => 'Entrez le numéro de téléphone',
+    'submit' => 'Valider',
 
 
 ];
