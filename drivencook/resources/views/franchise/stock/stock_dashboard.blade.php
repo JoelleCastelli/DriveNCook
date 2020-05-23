@@ -1,7 +1,7 @@
 @extends('franchise.layout_franchise')
 
 @section('title')
-    Gestion des stocks & commandes entrepôts
+    {{trans('franchisee.stock_warehouses_orders')}}
 @endsection
 
 @section('content')
@@ -10,7 +10,7 @@
         <div class="col-12 col-lg-6 mb-5">
             <div class="card">
                 <div class="card-header">
-                    <h2>Historique des commandes</h2>
+                    <h2>{{trans('franchisee.order_history')}}</h2>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -18,12 +18,12 @@
                                style="width: 100%">
                             <thead>
                             <tr>
-                                <th>Date</th>
-                                <th>Entrepôt</th>
-                                <th>Plats différents</th>
-                                <th>Coût</th>
-                                <th>Statut</th>
-                                <th>Action</th>
+                                <th>{{trans('franchisee.date')}}</th>
+                                <th>{{trans('franchisee.warehouse')}}</th>
+                                <th>{{trans('franchisee.different_plate_count')}}</th>
+                                <th>{{trans('franchisee.cost')}}</th>
+                                <th>{{trans('franchisee.status')}}</th>
+                                <th>{{trans('franchisee.action')}}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -56,8 +56,8 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <a href="{{route('franchise.stock_order')}}">
-                        <button class="btn btn-light_blue"> Nouvelle commande</button>
+                    <a href="{{route('franchise.stock_new_order')}}">
+                        <button class="btn btn-light_blue">{{trans('franchisee.new_order')}}</button>
                     </a>
                 </div>
             </div>
@@ -66,7 +66,7 @@
         <div class="col-12 col-lg-6 mb-5">
             <div class="card">
                 <div class="card-header">
-                    <h2>Stocks</h2>
+                    <h2>{{trans('franchisee.stocks')}}</h2>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -74,9 +74,9 @@
                                style="width: 100%">
                             <thead>
                             <tr>
-                                <th>Plat</th>
-                                <th>Quantité</th>
-                                <th>Prix de vente</th>
+                                <th>{{trans('franchisee.plate')}}</th>
+                                <th>{{trans('franchisee.quantity')}}</th>
+                                <th>{{trans('franchisee.sell_price')}}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -128,8 +128,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                        <button type="button" class="btn btn-primary" id="modalSubmit" onclick="onUpdateSubmit()">Save
-                            changes
+                        <button type="button" class="btn btn-primary" id="modalSubmit"
+                                onclick="onUpdateSubmit()">{{trans('franchisee.update')}}
                         </button>
                     </div>
                 </form>
@@ -147,7 +147,7 @@
         });
 
         function cancelOrder(id) {
-            if (confirm("Voulez-vous vraiment cette commande ?")) {
+            if (confirm('{{trans('franchisee.cancel_order_prompt')}}')) {
                 if (!isNaN(id)) {
                     let urlB = '{{route('franchise.stock_order_cancel',['order_id'=>':id'])}}';
                     urlB = urlB.replace(':id', id);
@@ -159,14 +159,14 @@
                         },
                         success: function (data) {
                             if (data == id) {
-                                alert("Commande annulée");
+                                alert("{{trans('franchisee.order_cancelled')}}");
                                 document.getElementById("row_order_" + id).remove();
                             } else {
-                                alert("Une erreur est survenue lors de l'annulation, veuillez rafraîchir la page :\n" + data);
+                                alert("{{trans('franchisee.ajax_error')}}\n" + data);
                             }
                         },
                         error: function (data) {
-                            alert("Une erreur est survenue lors de l'annulation, veuillez rafraîchir la page :\n" + data);
+                            alert("{{trans('franchisee.ajax_error')}}\n" + data);
                         }
                     })
                 }
@@ -174,8 +174,8 @@
         }
 
         function onUpdateModal(id, name, unit_price) {
-            document.getElementById('modalTitle').innerText = 'Modifier le prix de vente';
-            document.getElementById('modalSubmit').innerText = 'Modifier';
+            document.getElementById('modalTitle').innerText = '{{trans('franchisee.update_sell_price')}}';
+            document.getElementById('modalSubmit').innerText = '{{trans('franchisee.update')}}';
             document.getElementById('modalDish').innerText = name;
             document.getElementById('formId').value = id;
             document.getElementById('formPrice').value = unit_price;
@@ -197,18 +197,18 @@
                         const dataJ = JSON.parse(data);
                         if (dataJ.response === "success") {
                             document.getElementById('closeModal').click();
-                            alert('Prix modifié');
+                            alert('{{trans('franchisee.sell_price_updated')}}');
                             let row = document.getElementById('row_stock_' + dish_id);
                             let priceTd = row.getElementsByTagName('td')[2];
                             priceTd.innerText = unit_price + ' €';
 
                         } else {
-                            alert("Une erreur est survenue, veuillez raffraichir la page:\n" + dataJ.message);
+                            alert("{{trans('franchisee.ajax_error')}}\n" + dataJ.message);
                         }
                     },
                     error: function (data) {
                         const dataJ = JSON.parse(data);
-                        alert("Une erreur est survenue, veuillez raffraichir la page:\n" + dataJ.message);
+                        alert("{{trans('franchisee.ajax_error')}}\n" + dataJ.message);
                     }
                 })
             }

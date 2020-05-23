@@ -1,6 +1,6 @@
 @extends('franchise.layout_franchise')
 @section('title')
-    Finaliser l'enregistrement : {{$email}}
+    {{trans('franchisee.complete_registration')}} : {{$email}}
 @endsection
 @section('content')
     <div class="row">
@@ -10,7 +10,7 @@
                 {{csrf_field()}}
 
                 <div class="form-group">
-                    <label for="driving_licence">Permis de conduire</label>
+                    <label for="driving_licence">{{trans('franchisee.driving_licence')}}</label>
                     <input type="text" class="form-control" id="driving_licence" name="driving_licence"
                            placeholder="Entrez votre numéro de permis de conduire" required>
                     @if ($errors->has('driving_licence'))
@@ -21,9 +21,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="social_security">Sécurité social</label>
+                    <label for="social_security">{{trans('franchisee.social_security')}}</label>
                     <input type="text" class="form-control" id="social_security" name="social_security"
-                           placeholder="Entrez votre numéro de sécurité social" required>
+                           placeholder="{{trans('franchisee.enter_social_security')}}" required>
                     @if ($errors->has('social_security'))
                         <span class="badge-danger">
                             {{$errors->first('social_security')}}
@@ -32,9 +32,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="telephone">Téléphone</label>
+                    <label for="telephone">{{trans('franchisee.phone')}}</label>
                     <input type="text" class="form-control" id="telephone" name="telephone"
-                           placeholder="Entre votre numéro de téléphone" required>
+                           placeholder="{{trans('franchisee.enter_phone')}}" required>
                     @if ($errors->has('telephone'))
                         <span class="badge-danger">
                             {{$errors->first('telephone')}}
@@ -43,9 +43,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Mot de passe</label>
+                    <label for="password">{{trans('franchisee.password')}}</label>
                     <input type="password" class="form-control" id="password" name="password"
-                           placeholder="Mot de passe" minlength="6" required>
+                           placeholder="{{trans('franchisee.enter_password')}}" minlength="6" required>
                     @if ($errors->has('password'))
                         <span class="badge-danger">
                             {{$errors->first('password')}}
@@ -54,9 +54,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="password_confirmation">Mot de passe confirmation</label>
+                    <label for="password_confirmation">{{trans('franchisee.password_confirmation')}}</label>
                     <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
-                           placeholder="Mot de passe confirmation" minlength="6" required>
+                           placeholder="{{trans('franchisee.enter_password')}}" minlength="6" required>
                     @if ($errors->has('password_confirmation'))
                         <span class="badge-danger">
                             {{$errors->first('password_confirmation')}}
@@ -64,7 +64,7 @@
                     @endif
                 </div>
 
-                <button type="submit" class="btn btn-primary">Valider</button>
+                <button type="submit" class="btn btn-primary">{{trans('franchisee.submit')}}</button>
             </form>
         </div>
     </div>

@@ -1,7 +1,7 @@
 @extends('franchise.layout_franchise')
 
 @section('title')
-    {{trans('franchisee.dashboard')}} {{$franchise['firstname'].' '.$franchise['lastname']. ' ('.empty($franchise['pseudo'])?$franchise['pseudo']['name']:trans('franchisee.unknown_pseudo').')'}}
+    {{trans('franchisee.dashboard')}} {{$franchise['firstname'].' '.$franchise['lastname']. ' ('.empty($franchise['pseudo'])?trans('franchisee.unknown_pseudo'):$franchise['pseudo']['name'].')'}}
 @endsection
 
 

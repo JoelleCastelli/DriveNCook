@@ -1,7 +1,7 @@
 @extends('franchise.layout_franchise')
 
 @section('title')
-    Nouvelle commande
+    {{trans('franchisee.new_order')}}
 @endsection
 
 @section('content')
@@ -11,11 +11,12 @@
             <div class="col-12 col-lg-6 mb-5">
                 <div class="card">
                     <div class="card-header">
-                        <h2>Étape 1: Choisissez un entrepôt :</h2>
+                        <h2>{{Lang::get('franchisee.step',['step_number'=>'1'])}}
+                            : {{trans('franchisee.choose_warehouse')}} :</h2>
                     </div>
                     <div class="card-body">
                         <select id="warehouse_select" class="form-control">
-                            <option value="choisir" selected disabled>Choisir</option>
+                            <option value="choisir" selected disabled>{{trans('franchisee.choose')}}</option>
                             @foreach($warehouse_list as $warehouse)
                                 <option value="{{$warehouse['id']}}">
                                     {{$warehouse['name'].' - '.$warehouse['city']['name'].' ('.$warehouse['city']['postcode'].')'}}
@@ -32,8 +33,10 @@
             <div class="col-12 col-lg-6 mb-5">
                 <div class="card">
                     <div class="card-header">
-                        <h2>Étape 2: Choisissez les plats :</h2>
-                        <h3>Entrepôt {{$warehouse['name'].' - '.$warehouse['city']['name'].' ('.$warehouse['city']['postcode'].')'}}</h3>
+                        <h2>{{Lang::get('franchisee.step',['step_number'=>'2'])}}
+                            : {{trans('franchisee.choose_plates')}} :</h2>
+                        <h3>
+                            {{trans('franchisee.warehouse')}} {{$warehouse['name'].' - '.$warehouse['city']['name'].' ('.$warehouse['city']['postcode'].')'}}</h3>
                     </div>
                     <div class="card-body">
                         <form method="post" action="{{route('franchise.stock_order_submit')}}">
@@ -42,7 +45,7 @@
 
                             @foreach($warehouse['stock'] as $product)
                                 <div class="form-group">
-                                    <label for="{{'product_'.$product['dish_id']}}">{{$product['dish']['name'].' '.$product['warehouse_price'].'€/unité'}}</label>
+                                    <label for="{{'product_'.$product['dish_id']}}">{{$product['dish']['name'].' '.$product['warehouse_price'].'€/u'}}</label>
                                     <input class="form-control" type="number" id="{{'product_'.$product['dish_id']}}"
                                            name="{{'product_'.$product['dish_id']}}"
                                            min="0" step="1" max="{{$product['quantity']}}"
@@ -56,7 +59,7 @@
                             @endforeach
                             <div class="form-group">
                                 <button type="submit"
-                                        class="btn btn-info">Valider la commande
+                                        class="btn btn-info">{{trans('franchisee.submit_order')}}
                                 </button>
                             </div>
                         </form>
