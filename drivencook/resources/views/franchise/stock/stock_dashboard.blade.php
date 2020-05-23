@@ -56,7 +56,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <a href="{{route('franchise.stock_order')}}">
+                    <a href="{{route('franchise.stock_new_order')}}">
                         <button class="btn btn-light_blue">{{trans('franchisee.new_order')}}</button>
                     </a>
                 </div>

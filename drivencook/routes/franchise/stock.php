@@ -11,7 +11,7 @@ Route::get('/franchise/stock/order/{order_id}', [
     'uses' => 'Franchise\StockController@stock_order_view'
 ]);
 Route::get('/franchise/stock/new_order', [
-    'as' => 'franchise.stock_order',
+    'as' => 'franchise.stock_new_order',
     'uses' => 'Franchise\StockController@stock_order'
 ]);
 
