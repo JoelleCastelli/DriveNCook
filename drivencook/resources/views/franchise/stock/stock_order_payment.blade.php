@@ -1,7 +1,7 @@
 @extends('franchise.layout_franchise')
 
 @section('title')
-    Récapitulatif et paiement
+    {{trans('franchisee.summary_and_paiement')}}
 @endsection
 
 @section('content')
@@ -9,7 +9,7 @@
         <div class="col-12 col-lg-6 mb-5">
             <div class="card">
                 <div class="card-header">
-                    <h2>Récapitulatif de votre commande :</h2>
+                    <h2>{{trans('franchisee.order_summary')}} :</h2>
                 </div>
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
@@ -27,7 +27,7 @@
                 </div>
                 <div class="card-footer">
                     <a href="{{route('franchise.stock_order_validate')}}" class="btn btn-light_blue">
-                        Commander (modal paiement ici)
+                        {{trans('franchisee.submit_order')}} (modal paiement ici)
                     </a>
                 </div>
             </div>

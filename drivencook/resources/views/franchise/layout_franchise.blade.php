@@ -169,7 +169,8 @@
     </div>
 </div>
 
-<script type="text/javascript" src="/js/app.js"></script>
+<script type="text/javascript" src="{{asset('js/app.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/trad.js')}}"></script>
 <script>
     $("#menu-toggle").click(function (e) {
         e.preventDefault();
