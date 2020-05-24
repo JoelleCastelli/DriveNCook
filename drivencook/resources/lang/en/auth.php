@@ -13,7 +13,23 @@ return [
     |
     */
 
+    'connection_title' => 'Connection',
+
+    'email' => 'Email',
+    'password' => 'Password',
+
+    'set_email' => 'Enter your email',
+    'set_password' => 'Enter your password',
+
+    'connection_btn' => 'Log in',
+
+    'my_account' => 'My account',
+    'logout' => 'Log out',
+
     'failed' => 'These credentials do not match our records.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'connected' => 'Successful connection.',
+    'disconnected' => 'Disconnected with success.',
 
+    'try_client_with_client_not_connected' => 'You need to be connected as Client to show this page',
 ];
