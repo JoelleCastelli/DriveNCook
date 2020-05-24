@@ -438,16 +438,10 @@ class FranchiseeController extends Controller
         return $total;
     }
 
-    public function franchisee_invoice_pdf($id) {
-        $invoice = Invoice::with('user')->where('id', $id)->first()->toArray();
-        $pseudo = Pseudo::where('id', $invoice['user']['pseudo_id'])->first();
-        if (!empty($pseudo))
-            $pseudo->toArray();
-        $pdf = PDF::loadView('corporate.franchisee.franchisee_invoice', array('invoice' => $invoice, 'pseudo' => $pseudo));
-        return $pdf->stream();
+    public function view_franchisee_pdf_invoice($id) {
+        return $this->franchisee_invoice_pdf($id);
     }
 
-    //TODO mutualiser les requêtes des deux fonctions d'historique
     public function get_franchisee_history($franchisee_id) {
 
         // Definition of min and max dates

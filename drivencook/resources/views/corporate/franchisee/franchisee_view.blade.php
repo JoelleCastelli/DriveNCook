@@ -201,7 +201,7 @@
                             <tbody>
                             @foreach($franchisee['invoices'] as $license_fee)
                                 <tr>
-                                    <td>{{$license_fee['amount'].' €'}}</td>
+                                    <td>{{ number_format($license_fee['amount'], 2, ',', ' ').' €'}}</td>
                                     <td>{{$license_fee['status']}}</td>
                                     <td>{{$license_fee['reference']}}</td>
                                     <td>@if ($license_fee['monthly_fee'] == 1)
@@ -219,7 +219,7 @@
                                         DateTime::createFromFormat('Y-m-d',$license_fee['date_paid'])->format('d/m/Y'):'En attente'}}
                                     </td>
                                     <td>
-                                        <a class="ml-2" href="{{route('franchisee_invoice_pdf',['id'=>$license_fee['id']])}}">
+                                        <a class="ml-2" href="{{ route('view_franchisee_pdf_invoice',['id'=>$license_fee['id']]) }}">
                                             <button class="text-light fa fa-file-pdf ml-3"></button>
                                         </a>
                                     </td>
