@@ -14,27 +14,60 @@
     @yield('style')
 </head>
 <body>
-<nav class="navbar navbar-dark sticky-top bg-dark2 text-light justify-content-between">
-    <span class="d-flex align-items-center">
-        <button href="#menu-toggle" class="btn text-light" id="menu-toggle"><i class="fa fa-bars"></i></button>
-        <a class="navbar-brand"
-           href="{{route('franchise.dashboard')}}">&nbsp;&nbsp;&nbsp;Franchisé Drive 'N' Cook</a>
-    </span>
+<nav class="navbar navbar-expand-md navbar-dark sticky-top bg-dark2">
+    <button href="#menu-toggle" class="btn text-light" id="menu-toggle"><i class="fa fa-bars"></i></button>
+    <a class="navbar-brand"
+       href="{{route('franchise.dashboard')}}">&nbsp;&nbsp;&nbsp;{{trans('franchisee.franchise')}} Drive 'N' Cook</a>
 
-    @if (!auth()->guest())
-        <div class="nav-item dropdown" style="margin-right: 10em;">
-            <button class="btn btn-dark dropdown-toggle" type="button" id="userDropdownMenuButton"
-                    data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-user"></i>
-            </button>
-            <div class="dropdown-menu bg-dark" aria-labelledby="userDropdownMenuButton">
-                <a class="dropdown-item text-light" href="{{route('franchise.update_account')}}">Mon compte</a>
-                <a class="dropdown-item text-light" href="{{route('franchise.logout')}}">Se déconnecter</a>
-            </div>
+
+    <div class="mx-auto order-0">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <div class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button">
+                    <img src="{{ asset('img/'.App::getLocale().'_icon.png') }}"
+                         height="20">&nbsp;&nbsp;{{ trans('homepage.'. App::getLocale()) }}
+                </a>
+                <div class="dropdown-menu dropdown-menu-right bg-dark">
+                    @foreach (Config::get('app.languages') as $language)
+                        @if ($language != App::getLocale())
+                            <a class="dropdown-item text-light" href="{{ route('set_locale', $language) }}">
+                                <img src="{{ asset('img/'.$language.'_icon.png') }}"
+                                     height="20">&nbsp;&nbsp;{{ trans('homepage.'.$language) }}
+                            </a>
+                        @endif
+                    @endforeach
+                </div>
+            </li>
+            @if (!auth()->guest())
+                <li class="nav-item dropdown ml-4">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-user"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right bg-dark" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item text-light d-flex align-items-baseline"
+                           href="{{route('franchise.update_account')}}">
+                            <i class="fa fa-user"></i>&nbsp;&nbsp;{{ trans('franchisee.update_account') }}
+                        </a>
+                        <a class="dropdown-item text-light d-flex align-items-baseline"
+                           href="{{route('franchise.logout')}}">
+                            <i class="fa fa-sign-out-alt"></i>&nbsp;&nbsp;{{ trans('franchisee.logout') }}
+                        </a>
+                    </div>
+                </li>
+            @endif
         </div>
-    @endif
+    </div>
+
 </nav>
+
 
 <div id="wrapper">
 
@@ -44,32 +77,32 @@
                 @case(route('franchise.dashboard'))
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('franchise.truck_view')}}">
-                        <i class="fa fa-truck"></i>&nbsp;&nbsp;&nbsp;Camion
+                        <i class="fa fa-truck"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.truck')}}
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="#">
-                        <i class="fa fa-shopping-basket"></i>&nbsp;&nbsp;&nbsp;Commandes (client)
+                        <i class="fa fa-shopping-basket"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.client_orders')}}
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('franchise.stock_dashboard')}}">
-                        <i class="fa fa-cubes"></i>&nbsp;&nbsp;&nbsp;Stocks & commandes entrepôts
+                        <i class="fa fa-cubes"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.stock_warehouses_orders')}}
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="#">
-                        <i class="fa fa-file-invoice"></i>&nbsp;&nbsp;&nbsp;Factures
+                        <i class="fa fa-file-invoice"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.invoices')}}
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="#">
-                        <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp;&nbsp;Évènements
+                        <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.events')}}
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="#">
-                        <i class="fa fa-chart-line"></i>&nbsp;&nbsp;&nbsp;Revenus & Statistiques
+                        <i class="fa fa-chart-line"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.revenues_and_statistics')}}
                     </a>
                 </li>
 
@@ -77,19 +110,20 @@
                 @case(route('franchise.truck_view'))
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('franchise.dashboard')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir au tableau de bord
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_dashboard')}}
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('franchise.truck_location_update')}}">
-                        <i class="fa fa-map-pin"></i>&nbsp;&nbsp;&nbsp;Mettre à jour la position du camion
+                        <i class="fa fa-map-pin"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.update_truck_position')}}
                     </a>
                 </li>
                 @break
                 @case(route('franchise.truck_location_update'))
+                @case(route('franchise.truck_breakdown_add'))
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('franchise.truck_view')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la gestion du camion
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_truck_management')}}
                     </a>
                 </li>
                 @break
@@ -97,7 +131,7 @@
                 @case(route('franchise.update_account'))
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('franchise.dashboard')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir au tableau de bord
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_dashboard')}}
                     </a>
                 </li>
                 @break
@@ -107,14 +141,21 @@
             @if (strpos(url()->current(), route('franchise.truck_safety_inspection_update', ['id'=>''])) !== false)
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('franchise.truck_view')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la gestion du camion
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_truck_management')}}
                     </a>
                 </li>
             @endif
-            @if (strpos(url()->current(), route('franchise.stock_order')) !== false)
+            @if (strpos(url()->current(), route('franchise.stock_new_order')) !== false)
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('franchise.stock_dashboard')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la gestion des stock & entrepôts
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_stock_warehouse_management')}}
+                    </a>
+                </li>
+            @endif
+            @if (strpos(url()->current(), route('franchise.stock_order_view',['order_id'=>''])) !== false)
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{route('franchise.stock_dashboard')}}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_stock_warehouse_management')}}
                     </a>
                 </li>
             @endif
@@ -136,7 +177,8 @@
     </div>
 </div>
 
-<script type="text/javascript" src="/js/app.js"></script>
+<script type="text/javascript" src="{{asset('js/app.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/trad.js')}}"></script>
 <script>
     $("#menu-toggle").click(function (e) {
         e.preventDefault();

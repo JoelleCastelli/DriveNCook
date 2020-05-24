@@ -28,3 +28,8 @@ Route::get('/', function () {
     return view('home');
 })->name('homepage');
 
+Route::get('/{language}', function ($language) {
+    Session::put('locale', $language);
+    return back();
+})->name('set_locale');
+

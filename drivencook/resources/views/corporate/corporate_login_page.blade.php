@@ -11,8 +11,8 @@
                 {{csrf_field()}}
 
                 <div class="form-group">
-                    <label for="email">Email address</label>
-                    <input type="email" name="email" class="form-control" id="email" placeholder="Enter email" value="{{old('email')}}">
+                    <label for="email">{{ trans('corporate.email_address') }}</label>
+                    <input type="email" name="email" class="form-control" id="email" placeholder="{{ trans('corporate.email_placeholder') }}" value="{{old('email')}}">
                     @if ($errors->has('email'))
                         <span class="badge-danger">
                             {{$errors->first('email')}}
@@ -21,8 +21,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+                    <label for="password">{{ trans('corporate.password') }}</label>
+                    <input type="password" name="password" class="form-control" id="password" placeholder="{{ trans('corporate.password_placeholder') }}">
                     @if ($errors->has('password'))
                         <span class="badge-danger">
                             {{$errors->first('password')}}
@@ -31,7 +31,7 @@
 
                 </div>
 
-                <button type="submit" class="btn btn-primary">Se connecter</button>
+                <button type="submit" class="btn btn-primary">{{ trans('corporate.login') }}</button>
             </form>
         </div>
     </div>
