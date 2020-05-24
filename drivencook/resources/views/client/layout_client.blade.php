@@ -43,7 +43,7 @@
                 <i class="fa fa-user"></i>
             </button>
             <div class="dropdown-menu bg-dark" aria-labelledby="userDropdownMenuButton">
-                <a class="dropdown-item text-light" href="{{route('corporate.update_account')}}">{{ trans('auth.my_account') }}</a>
+                <a class="dropdown-item text-light" href="{{route('client_account')}}">{{ trans('auth.my_account') }}</a>
                 <a class="dropdown-item text-light" href="{{route('client_logout')}}">{{ trans('auth.logout') }}</a>
             </div>
         </div>
@@ -55,12 +55,13 @@
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
             @switch(url()->current())
-                @case(route('client_dashboard'))
-                <!--<li class="nav-item">
-                    <a class="nav-link text-light2" href="{/{ route('warehouse_list') }}">
-                        <i class="fa fa-warehouse"></i>&nbsp;&nbsp;&nbsp;{/{ trans('corporate.warehouse') }}
+                @case(route('client_account'))
+                <li class="nav-item">
+                    <!--<a class="nav-link text-light2" href="{/{ route('client_delete_account') }}">-->
+                    <a class="nav-link text-light2" id="deleteAccount">
+                        <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.delete_account') }}
                     </a>
-                </li>-->
+                </li>
                 @break
                 @default
                 @break

@@ -5,12 +5,16 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\AuthClient;
+use App\Models\Sale;
 use App\Models\User;
 use DateTime;
 use Illuminate\Http\Request;
+use App\Traits\UserTools;
 
 class AccountController extends Controller
 {
+    use UserTools;
+
     public function __construct()
     {
         $this->middleware(AuthClient::class);
@@ -128,5 +132,50 @@ class AccountController extends Controller
             flash($str)->error();
             return redirect()->back();
         }
+    }
+
+    public function account() {
+        $client = User::whereKey($this->get_connected_user()['id'])
+            ->first();
+
+        if(!empty($client)) {
+            $client->toArray();
+        }
+
+        return view('client.account.update')
+            ->with('client', $client);
+    }
+
+    public function update_account_submit() {
+        request()->validate([
+            'lastname' => ['required', 'string', 'min:2', 'max:30'],
+            'firstname' => ['required', 'string', 'min:2', 'max:30'],
+            'birthdate' => ['required', 'date'],
+            'email' => ['required', 'string', 'email:rfc', 'max:100'],
+            'telephone' => ['nullable', 'regex:/^(0|\+[1-9]{2}\s?)[1-9]([-. ]?\d{2}){4}$/u'],
+        ]);
+
+        User::whereKey($this->get_connected_user()['id'])
+            ->update(request()->except('_token'));
+        flash(trans('client/account.update_successful'))->success();
+        return back();
+    }
+
+    public function update_account_password()
+    {
+        request()->validate([
+            'password' => ['required', 'confirmed', 'min:6']
+        ]);
+
+        $this->update_user_password($this->get_connected_user()['id'], request('password'));
+
+        flash(trans('client/account.update_password_successful'))->success();
+        return back();
+    }
+
+    public function delete_account()
+    {
+        Sale::where("user_client", $this->get_connected_user()['id'])->delete();
+        $this->delete_user($this->get_connected_user()['id']);
     }
 }
