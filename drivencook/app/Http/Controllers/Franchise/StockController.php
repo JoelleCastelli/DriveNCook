@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Middleware\AuthFranchise;
 use App\Models\Dish;
 use App\Models\FranchiseeStock;
+use App\Models\Invoice;
 use App\Models\PurchasedDish;
 use App\Models\PurchaseOrder;
 use App\Models\Warehouse;
@@ -122,13 +123,13 @@ class StockController extends Controller
                 'currency' => 'eur'
             ));
 
-            return $this->stock_order_validate();
+            return $this->stock_order_validate($order_total_cents / 100);
         } catch (\Exception $ex) {
             return $ex->getMessage();
         }
     }
 
-    public function stock_order_validate()
+    public function stock_order_validate($order_total)
     {
         $order = request()->session()->pull('order', null);
         if ($order == null) {
@@ -160,7 +161,22 @@ class StockController extends Controller
                 'quantity' => $previous_warehouse_stock - $order_dish['quantity']
             ]);
         }
-        flash('Commande créé !')->success();
+
+        // invoice creation
+        $invoice = ['amount' => $order_total,
+            'date_emitted' => date("Y-m-d"),
+            'status' => 'A payer',
+            'monthly_fee' => 0,
+            'initial_fee' => 0,
+            'user_id' => $this->get_connected_user()['id']];
+        $invoice = Invoice::create($invoice)->toArray();
+        $this->create_invoice_reference('RS', $this->get_connected_user()['id'], $invoice['id']);
+
+        flash('Commande créée !
+                <a href="'.route('franchise.invoice_pdf', ['id'=>$invoice['id']]).'">Consultez la facture au format PDF</a>
+                ou retrouvez-la dans la rubrique <a href="'.route('franchise.invoices_list').'">Factures</a>.')
+            ->success();
+
         return redirect(route('franchise.stock_dashboard'));
     }
 
