@@ -75,69 +75,71 @@
         <ul class="sidebar-nav">
             @switch(url()->current())
                 @case(route('franchise.dashboard'))
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('franchise.truck_view')}}">
-                        <i class="fa fa-truck"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.truck')}}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="#">
-                        <i class="fa fa-shopping-basket"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.client_orders')}}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('franchise.stock_dashboard')}}">
-                        <i class="fa fa-cubes"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.stock_warehouses_orders')}}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="#">
-                        <i class="fa fa-file-invoice"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.invoices')}}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="#">
-                        <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.events')}}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="#">
-                        <i class="fa fa-chart-line"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.revenues_and_statistics')}}
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('franchise.truck_view')}}">
+                            <i class="fa fa-truck"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.truck')}}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="#">
+                            <i class="fa fa-shopping-basket"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.client_orders')}}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('franchise.stock_dashboard')}}">
+                            <i class="fa fa-cubes"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.stock_warehouses_orders')}}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{ route('franchise.invoices_list') }}">
+                            <i class="fa fa-file-invoice"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.invoices')}}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="#">
+                            <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.events')}}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="#">
+                            <i class="fa fa-chart-line"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.revenues_and_statistics')}}
+                        </a>
+                    </li>
+                    @break
 
-                @break
                 @case(route('franchise.truck_view'))
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('franchise.dashboard')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_dashboard')}}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('franchise.truck_location_update')}}">
-                        <i class="fa fa-map-pin"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.update_truck_position')}}
-                    </a>
-                </li>
-                @break
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('franchise.dashboard')}}">
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_dashboard')}}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('franchise.truck_location_update')}}">
+                            <i class="fa fa-map-pin"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.update_truck_position')}}
+                        </a>
+                    </li>
+                    @break
                 @case(route('franchise.truck_location_update'))
                 @case(route('franchise.truck_breakdown_add'))
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('franchise.truck_view')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_truck_management')}}
-                    </a>
-                </li>
-                @break
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('franchise.truck_view')}}">
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_truck_management')}}
+                        </a>
+                    </li>
+                    @break
                 @case(route('franchise.stock_dashboard'))
                 @case(route('franchise.update_account'))
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('franchise.dashboard')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_dashboard')}}
-                    </a>
-                </li>
-                @break
+                @case(route('franchise.invoices_list'))
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('franchise.dashboard')}}">
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_dashboard')}}
+                        </a>
+                    </li>
+                    @break
                 @default
-                @break
+                    @break
             @endswitch
+
             @if (strpos(url()->current(), route('franchise.truck_safety_inspection_update', ['id'=>''])) !== false)
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('franchise.truck_view')}}">
