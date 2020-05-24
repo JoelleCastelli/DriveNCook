@@ -6,8 +6,10 @@ namespace App\Traits;
 
 use App\Models\FranchiseObligation;
 use App\Models\Invoice;
+use App\Models\Pseudo;
 use App\Models\Truck;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\DB;
 
 trait UserTools
@@ -59,5 +61,14 @@ trait UserTools
                     'user_id' => $franchisee_id];
         $invoice = Invoice::create($invoice);
         $this->create_invoice_reference('IF', $franchisee_id, $invoice['id']);
+    }
+
+    public function franchisee_invoice_pdf($id) {
+        $invoice = Invoice::with('user')->where('id', $id)->first()->toArray();
+        $pseudo = Pseudo::where('id', $invoice['user']['pseudo_id'])->first();
+        if (!empty($pseudo))
+            $pseudo->toArray();
+        $pdf = PDF::loadView('franchisee_invoice', array('invoice' => $invoice, 'pseudo' => $pseudo));
+        return $pdf->stream();
     }
 }
