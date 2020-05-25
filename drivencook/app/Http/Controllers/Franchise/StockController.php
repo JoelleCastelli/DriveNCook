@@ -164,11 +164,11 @@ class StockController extends Controller
 
         // invoice creation
         $invoice = ['amount' => $order_total,
-            'date_emitted' => date("Y-m-d"),
-            'status' => 'A payer',
-            'monthly_fee' => 0,
-            'initial_fee' => 0,
-            'user_id' => $this->get_connected_user()['id']];
+                    'date_emitted' => date("Y-m-d"),
+                    'monthly_fee' => 0,
+                    'initial_fee' => 0,
+                    'user_id' => $this->get_connected_user()['id'],
+                    'purchase_order_id' => $order_id];
         $invoice = Invoice::create($invoice)->toArray();
         $this->create_invoice_reference('RS', $this->get_connected_user()['id'], $invoice['id']);
 

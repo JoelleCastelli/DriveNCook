@@ -7,6 +7,7 @@ namespace App\Traits;
 use App\Models\FranchiseObligation;
 use App\Models\Invoice;
 use App\Models\Pseudo;
+use App\Models\PurchaseOrder;
 use App\Models\Truck;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade as PDF;
@@ -64,11 +65,20 @@ trait UserTools
     }
 
     public function franchisee_invoice_pdf($id) {
+        $purchase_order = [];
         $invoice = Invoice::with('user')->where('id', $id)->first()->toArray();
         $pseudo = Pseudo::where('id', $invoice['user']['pseudo_id'])->first();
         if (!empty($pseudo))
             $pseudo->toArray();
-        $pdf = PDF::loadView('franchisee_invoice', array('invoice' => $invoice, 'pseudo' => $pseudo));
+        if ($invoice['purchase_order_id']) {
+            $purchase_order = PurchaseOrder::with('purchased_dishes')
+                                ->where('id', $invoice['purchase_order_id'])
+                                ->first()->toArray();
+        }
+
+        $pdf = PDF::loadView('franchisee_invoice', ['invoice' => $invoice,
+                                                    'pseudo' => $pseudo,
+                                                    'purchase_order' => $purchase_order]);
         return $pdf->stream();
     }
 }
