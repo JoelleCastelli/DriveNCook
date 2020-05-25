@@ -8,10 +8,16 @@
         .clientTitle {
             color: #FFFFFF;
         }
-        #submitBtn {
+        #submitBtn, #join_btn {
             width: 100%;
-            height: 60px;
+            min-height: 60px;
             font-size: 25px;
+        }
+        #join_message {
+            color: #FFFFFF;
+            font-size: 25px;
+            font-weight: bold;
+            text-align: justify;
         }
     </style>
 @stop
@@ -53,6 +59,12 @@
                     </form>
                 </div>
             </div>
+        </div>
+        <div class="col-12 col-md-6">
+                    <p id="join_message">{{ trans('client/global.join_message') }}</p>
+                    <a class="btn btn-primary"
+                            id="join_btn"
+                            href="{{ route('registration') }}">{{ trans('auth.to_register_btn') }}</a>
         </div>
     </div>
 @endsection

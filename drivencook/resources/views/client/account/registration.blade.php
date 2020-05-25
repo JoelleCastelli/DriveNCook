@@ -9,7 +9,7 @@
         }
         #submitBtn {
             width: 100%;
-            height: 60px;
+            min-height: 60px;
             font-size: 25px;
         }
     </style>

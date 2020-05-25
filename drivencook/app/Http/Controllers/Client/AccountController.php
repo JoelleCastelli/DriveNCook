@@ -4,7 +4,6 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Http\Middleware\AuthClient;
 use App\Models\Sale;
 use App\Models\User;
 use DateTime;
@@ -14,11 +13,6 @@ use App\Traits\UserTools;
 class AccountController extends Controller
 {
     use UserTools;
-
-    public function __construct()
-    {
-        $this->middleware(AuthClient::class);
-    }
 
     public function dashboard() {
         return view('client.client_dashboard');

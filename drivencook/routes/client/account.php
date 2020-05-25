@@ -1,9 +1,6 @@
 <?php
 
-Route::get('/client', [
-    'as' => 'client_dashboard',
-    'uses' => 'Client\AccountController@dashboard'
-]);
+use App\Http\Middleware\AuthClient;
 
 Route::get('/client/registration', [
     'as' => 'registration',
@@ -15,22 +12,29 @@ Route::post('/client/registration_submit', [
     'uses' => 'Client\AccountController@registration_submit'
 ]);
 
-Route::get('/client/account', [
-    'as' => 'client_account',
-    'uses' => 'Client\AccountController@account'
-]);
+Route::group(['middleware' => AuthClient::class], function() {
+    Route::get('/client', [
+        'as' => 'client_dashboard',
+        'uses' => 'Client\AccountController@dashboard'
+    ]);
 
-Route::post('/client/update_account_submit', [
-    'as' => 'client_update_account_submit',
-    'uses' => 'Client\AccountController@update_account_submit'
-]);
+    Route::get('/client/account', [
+        'as' => 'client_account',
+        'uses' => 'Client\AccountController@account'
+    ]);
 
-Route::post('/client/update_account_password', [
-    'as' => 'client_update_account_password',
-    'uses' => 'Client\AccountController@update_account_password'
-]);
+    Route::post('/client/update_account_submit', [
+        'as' => 'client_update_account_submit',
+        'uses' => 'Client\AccountController@update_account_submit'
+    ]);
 
-Route::get('/client/delete_account', [
-    'as' => 'client_delete_account',
-    'uses' => 'Client\AccountController@delete_account'
-]);
+    Route::post('/client/update_account_password', [
+        'as' => 'client_update_account_password',
+        'uses' => 'Client\AccountController@update_account_password'
+    ]);
+
+    Route::get('/client/delete_account', [
+        'as' => 'client_delete_account',
+        'uses' => 'Client\AccountController@delete_account'
+    ]);
+});

@@ -22,6 +22,7 @@ return [
     'set_password' => 'Entrez votre mot de passe',
 
     'connection_btn' => 'Se connecter',
+    'to_register_btn' => 'Rejoignez-nous !',
 
     'my_account' => 'Mon compte',
     'logout' => 'Se déconnecter',

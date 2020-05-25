@@ -22,6 +22,7 @@ return [
     'set_password' => 'Enter your password',
 
     'connection_btn' => 'Log in',
+    'to_register_btn' => 'Join us!',
 
     'my_account' => 'My account',
     'logout' => 'Log out',
