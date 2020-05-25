@@ -91,11 +91,11 @@ trait UserTools
     public function save_franchisee_invoice_pdf($id, $reference) {
         $pdf = $this->franchisee_invoice_pdf($id);
         if (strpos($reference, 'IF') !== FALSE) {
-            $path = public_path('invoices/franchisee_initial_fee/');
+            $path = resource_path('invoices/franchisee_initial_fee/');
         } elseif (strpos($reference, 'MF') !== FALSE) {
-            $path = public_path('invoices/franchisee_monthly_fee/');
+            $path = resource_path('invoices/franchisee_monthly_fee/');
         } else if (strpos($reference, 'RS') !== FALSE) {
-            $path = public_path('invoices/franchisee_restock/');
+            $path = resource_path('invoices/franchisee_restock/');
         }
 
         return $pdf->save($path . '/' . $reference.'.pdf');
