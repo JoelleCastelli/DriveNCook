@@ -17,7 +17,7 @@ class InvoiceController extends Controller
         return view('franchise.invoices_list')->with('invoices', $invoices);
     }
 
-    public function invoice_pdf($id) {
-        return $this->franchisee_invoice_pdf($id);
+    public function stream_invoice_pdf($id) {
+        return $this->stream_franchisee_invoice_pdf($id);
     }
 }

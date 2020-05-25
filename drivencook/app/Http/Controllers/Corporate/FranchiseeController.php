@@ -438,8 +438,8 @@ class FranchiseeController extends Controller
         return $total;
     }
 
-    public function view_franchisee_pdf_invoice($id) {
-        return $this->franchisee_invoice_pdf($id);
+    public function stream_franchisee_invoice($id) {
+        return $this->stream_franchisee_invoice_pdf($id);
     }
 
     public function get_franchisee_history($franchisee_id) {

@@ -76,9 +76,13 @@ trait UserTools
                                 ->first()->toArray();
         }
 
-        $pdf = PDF::loadView('franchisee_invoice', ['invoice' => $invoice,
-                                                    'pseudo' => $pseudo,
-                                                    'purchase_order' => $purchase_order]);
+        return $pdf = PDF::loadView('franchisee_invoice', ['invoice' => $invoice,
+                                                           'pseudo' => $pseudo,
+                                                           'purchase_order' => $purchase_order]);
+    }
+
+    public function stream_franchisee_invoice_pdf($id) {
+        $pdf = $this->franchisee_invoice_pdf($id);
         return $pdf->stream();
     }
 }
