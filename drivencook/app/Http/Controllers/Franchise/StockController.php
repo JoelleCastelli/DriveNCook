@@ -170,10 +170,11 @@ class StockController extends Controller
                     'user_id' => $this->get_connected_user()['id'],
                     'purchase_order_id' => $order_id];
         $invoice = Invoice::create($invoice)->toArray();
-        $this->create_invoice_reference('RS', $this->get_connected_user()['id'], $invoice['id']);
+        $reference = $this->create_invoice_reference('RS', $this->get_connected_user()['id'], $invoice['id']);
+        $this->save_franchisee_invoice_pdf($invoice['id'], $reference);
 
         flash('Commande créée !
-                <a href="'.route('franchise.invoice_pdf', ['id'=>$invoice['id']]).'">Consultez la facture au format PDF</a>
+                <a href="'.route('franchise.stream_invoice_pdf', ['id'=>$invoice['id']]).'">Consultez la facture au format PDF</a>
                 ou retrouvez-la dans la rubrique <a href="'.route('franchise.invoices_list').'">Factures</a>.')
             ->success();
 

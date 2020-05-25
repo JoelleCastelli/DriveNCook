@@ -50,6 +50,7 @@ trait UserTools
         $pad_length = $column_length - strlen($reference_start);
         $reference = $reference_start.str_pad($invoice_id, $pad_length, "0", STR_PAD_LEFT);
         Invoice::where('id', $invoice_id)->update(['reference' => $reference]);
+        return $reference;
     }
 
     public function generate_first_invoice($franchisee_id){
@@ -61,7 +62,8 @@ trait UserTools
                     'initial_fee' => 1,
                     'user_id' => $franchisee_id];
         $invoice = Invoice::create($invoice);
-        $this->create_invoice_reference('IF', $franchisee_id, $invoice['id']);
+        $reference = $this->create_invoice_reference('IF', $franchisee_id, $invoice['id']);
+        $this->save_franchisee_invoice_pdf($invoice['id'], $reference);
     }
 
     public function franchisee_invoice_pdf($id) {
@@ -85,4 +87,18 @@ trait UserTools
         $pdf = $this->franchisee_invoice_pdf($id);
         return $pdf->stream();
     }
+
+    public function save_franchisee_invoice_pdf($id, $reference) {
+        $pdf = $this->franchisee_invoice_pdf($id);
+        if (strpos($reference, 'IF') !== FALSE) {
+            $path = public_path('invoices/franchisee_initial_fee/');
+        } elseif (strpos($reference, 'MF') !== FALSE) {
+            $path = public_path('invoices/franchisee_monthly_fee/');
+        } else if (strpos($reference, 'RS') !== FALSE) {
+            $path = public_path('invoices/franchisee_restock/');
+        }
+
+        return $pdf->save($path . '/' . $reference.'.pdf');
+    }
+
 }

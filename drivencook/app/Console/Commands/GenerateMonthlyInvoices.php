@@ -56,7 +56,8 @@ class GenerateMonthlyInvoices extends Command
                     'initial_fee' => 0,
                     'user_id' => $franchisee['id']];
                 $invoice = Invoice::create($invoice)->toArray();
-                $this->create_invoice_reference('MF', $franchisee['id'], $invoice['id']);
+                $reference = $this->create_invoice_reference('MF', $franchisee['id'], $invoice['id']);
+                $this->save_franchisee_invoice_pdf($invoice['id'], $reference);
             }
         }
     }
