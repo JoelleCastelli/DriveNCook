@@ -7,6 +7,32 @@
 @section('content')
     <div class="row">
 
+        <div class="col-12 col-lg-12 mb-5">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Obligations de stock</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <div class="card text-light2">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item bg-indigo">{{ trans('franchisee.obligations_warehouse_percentage') }} <b>{{ $current_obligation['warehouse_percentage'] }} %</b></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-3">
+                            <div class="card text-light2">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item bg-info">{{ trans('franchisee.obligations_last_updated') }} <b>{{ $current_obligation['date_updated'] }}</b></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="col-12 col-lg-6 mb-5">
             <div class="card">
                 <div class="card-header">

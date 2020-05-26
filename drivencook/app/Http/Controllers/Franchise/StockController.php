@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Middleware\AuthFranchise;
 use App\Models\Dish;
 use App\Models\FranchiseeStock;
+use App\Models\FranchiseObligation;
 use App\Models\Invoice;
 use App\Models\PurchasedDish;
 use App\Models\PurchaseOrder;
@@ -15,6 +16,7 @@ use App\Models\WarehousStock;
 use App\Traits\EnumValue;
 use App\Traits\UserTools;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Stripe\Charge;
 use Stripe\Customer;
@@ -40,11 +42,12 @@ class StockController extends Controller
         $stock = FranchiseeStock::with('dish')
             ->where('user_id', $user_id)
             ->get()->toArray();
-//        var_dump($purchase_order);
-//        var_dump($stock);
+        $current_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
+        $current_obligation['date_updated'] = DateTime::createFromFormat("Y-m-d", $current_obligation['date_updated'])->format('d/m/Y');
         return view('franchise.stock.stock_dashboard')
             ->with('stock', $stock)
-            ->with('purchase_order', $purchase_order);
+            ->with('purchase_order', $purchase_order)
+            ->with('current_obligation', $current_obligation);
     }
 
     public function stock_order()
