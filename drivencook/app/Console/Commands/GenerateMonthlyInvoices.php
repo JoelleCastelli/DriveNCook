@@ -51,7 +51,6 @@ class GenerateMonthlyInvoices extends Command
                 $invoice_total = $data['sales_total'] * $current_obligation['revenue_percentage'] / 100;
                 $invoice = ['amount' => $invoice_total,
                     'date_emitted' => date("Y-m-d"),
-                    'status' => 'A payer',
                     'monthly_fee' => 1,
                     'initial_fee' => 0,
                     'user_id' => $franchisee['id']];

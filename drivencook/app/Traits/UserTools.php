@@ -57,7 +57,6 @@ trait UserTools
         $current_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
         $invoice = ['amount' => $current_obligation['entrance_fee'],
                     'date_emitted' => date("Y-m-d"),
-                    'status' => 'A payer',
                     'monthly_fee' => 0,
                     'initial_fee' => 1,
                     'user_id' => $franchisee_id];
