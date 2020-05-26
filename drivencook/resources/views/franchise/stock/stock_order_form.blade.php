@@ -48,18 +48,25 @@
                             <input type="hidden" name="warehouse_id" value="{{$warehouse['id']}}">
 
                             @foreach($warehouse['stock'] as $product)
-                                <div class="form-group">
-                                    <label for="{{'product_'.$product['dish_id']}}">{{$product['dish']['name'].' '.$product['warehouse_price'].'€/u'}}</label>
-                                    <input class="form-control" type="number" id="{{'product_'.$product['dish_id']}}"
-                                           name="{{'product_'.$product['dish_id']}}"
-                                           min="0" step="1" max="{{$product['quantity']}}"
-                                           value="0">
-                                    @if ($errors->has('product_'.$product['dish_id']))
-                                        <span class="badge-danger">
-                                    {{$errors->first('product_'.$product['dish_id'])}}
-                                </span>
-                                    @endif
-                                </div>
+                                @if($product['quantity'] > 0)
+                                    <div class="form-group">
+                                        <label for="{{'product_'.$product['dish_id']}}">{{$product['dish']['name'].' '.$product['warehouse_price'].'€/u'}}</label>
+                                        <input class="form-control" type="number" id="{{'product_'.$product['dish_id']}}"
+                                               name="{{'product_'.$product['dish_id']}}"
+                                               min="0" step="1" max="{{$product['quantity']}}"
+                                               value="0">
+                                        @if ($errors->has('product_'.$product['dish_id']))
+                                            <span class="badge-danger">
+                                                {{$errors->first('product_'.$product['dish_id'])}}
+                                            </span>
+                                        @endif
+                                    </div>
+                                @else
+                                    <div class="form-group">
+                                        <label for="{{'product_'.$product['dish_id']}}">{{$product['dish']['name'].' '.$product['warehouse_price'].'€/u'}}</label>
+                                        <div class="form-control" type="text">Stock indisponible</div>
+                                    </div>
+                                @endif
                             @endforeach
                             <div class="form-group">
                                 <button type="submit"
