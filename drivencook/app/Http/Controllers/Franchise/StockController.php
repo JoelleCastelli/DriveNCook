@@ -49,10 +49,19 @@ class StockController extends Controller
 
     public function stock_order()
     {
-        $warehouse_list = Warehouse::with('city')->get()->toArray();
-//        var_dump($warehouse_list);die;
+        $warehouses_list = [];
+        $warehouses = Warehouse::with('city')
+                                 ->with('available_dishes')
+                                 ->get()->toArray();
+
+        foreach ($warehouses as $warehouse) {
+            if(!empty($warehouse['available_dishes'])) {
+                $warehouses_list[] = $warehouse;
+            }
+        }
+
         return view('franchise.stock.stock_order_form')
-            ->with("warehouse_list", $warehouse_list);
+            ->with("warehouse_list", $warehouses_list);
     }
 
     public function stock_order_warehouse($warehouse_id)

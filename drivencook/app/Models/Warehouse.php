@@ -28,4 +28,11 @@ class Warehouse extends Model
             ->with('purchased_dishes')
             ->with('user');
     }
+
+    public function available_dishes()
+    {
+        return $this->hasMany(WarehousStock::class, 'warehouse_id')
+                    ->where('quantity', '>', 0)
+                    ->with('dish');
+    }
 }

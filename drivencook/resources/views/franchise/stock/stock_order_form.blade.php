@@ -15,14 +15,18 @@
                             : {{trans('franchisee.choose_warehouse')}} :</h2>
                     </div>
                     <div class="card-body">
-                        <select id="warehouse_select" class="form-control">
-                            <option value="choisir" selected disabled>{{trans('franchisee.choose')}}</option>
-                            @foreach($warehouse_list as $warehouse)
-                                <option value="{{$warehouse['id']}}">
-                                    {{$warehouse['name'].' - '.$warehouse['city']['name'].' ('.$warehouse['city']['postcode'].')'}}
-                                </option>
-                            @endforeach
-                        </select>
+                        @if(!empty($warehouse_list))
+                            <select id="warehouse_select" class="form-control">
+                                <option value="choisir" selected disabled>{{trans('franchisee.choose')}}</option>
+                                @foreach($warehouse_list as $warehouse) {{--//prévoir si nul--}}
+                                    <option value="{{$warehouse['id']}}">
+                                        {{$warehouse['name'].' - '.$warehouse['city']['name'].' ('.$warehouse['city']['postcode'].')'}}
+                                    </option>
+                                @endforeach
+                            </select>
+                        @else
+                            {{ trans('franchisee.warehouse_no_stock') }}
+                        @endif
                     </div>
                 </div>
             </div>
