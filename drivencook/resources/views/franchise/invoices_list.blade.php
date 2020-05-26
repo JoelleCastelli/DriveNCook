@@ -13,21 +13,21 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-12 col-md-6 col-lg-3">
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
                         <div class="card text-light2">
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item bg-indigo">{{ trans('franchisee.obligations_revenue_percentage') }} <b>{{ $current_obligation['revenue_percentage'] }} %</b></li>
                             </ul>
                         </div>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-3">
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
                         <div class="card text-light2">
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item bg-success">{!! trans('franchisee.obligations_billing_day',['day'=>$current_obligation['billing_day']]) !!}</li>
                             </ul>
                         </div>
                     </div>
-                    <div class="col-12 col-md-6 col-lg-3">
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
                         <div class="card text-light2">
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item bg-info">{{ trans('franchisee.obligations_last_updated') }} <b>{{ $current_obligation['date_updated'] }}</b></li>
