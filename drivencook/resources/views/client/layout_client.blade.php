@@ -11,6 +11,7 @@
 
     <link href="/css/app.css" rel="stylesheet">
     <link href="/css/sidebar.css" rel="stylesheet">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     @yield('style')
     <style>
         .parallax {
@@ -28,27 +29,6 @@
     </style>
 </head>
 <body class="parallax">
-<!--<nav class="navbar navbar-dark sticky-top bg-dark2 text-light justify-content-between">
-    <span class="d-flex align-items-center">
-        <button href="#menu-toggle" class="btn text-light" id="menu-toggle"><i class="fa fa-bars"></i></button>
-        <a class="navbar-brand"
-           href="{{ route('client_dashboard') }}">&nbsp;&nbsp;&nbsp;Drive 'N' Cook</a>
-    </span>
-
-    @/if (!auth()->guest())
-        <div class="nav-item dropdown" style="margin-right: 10em;">
-            <button class="btn btn-dark dropdown-toggle" type="button" id="userDropdownMenuButton"
-                    data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-user"></i>
-            </button>
-            <div class="dropdown-menu bg-dark" aria-labelledby="userDropdownMenuButton">
-                <a class="dropdown-item text-light" href="{{route('client_account')}}">{{ trans('auth.my_account') }}</a>
-                <a class="dropdown-item text-light" href="{{route('client_logout')}}">{{ trans('auth.logout') }}</a>
-            </div>
-        </div>
-    @/endif
-</nav>-->
 <nav class="navbar navbar-expand-md navbar-dark sticky-top bg-dark">
     <span class="d-flex align-items-center">
         <button href="#menu-toggle" class="btn text-light" id="menu-toggle"><i class="fa fa-bars"></i></button>
@@ -101,30 +81,44 @@
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
             @switch(url()->current())
-                @case(route('client_account'))
-                <li class="nav-item">
-                    <a class="nav-link text-light2" id="deleteAccount">
-                        <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.delete_account') }}
-                    </a>
-                </li>
-                @break
                 @case(route('registration'))
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{ route('client_login') }}">
-                        <i class="fa fa-lock"></i>&nbsp;&nbsp;&nbsp;{{ trans('auth.connection_btn') }}
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{ route('client_login') }}">
+                            <i class="fa fa-lock"></i>&nbsp;&nbsp;&nbsp;{{ trans('auth.connection_btn') }}
+                        </a>
+                    </li>
+                @break
+                @case(route('client_dashboard'))
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{ route('truck_location_list') }}">
+                            <i class="fa fa-hamburger"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.orders') }}
+                        </a>
+                    </li>
+                @break
+                @case(route('client_account'))
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" id="deleteAccount">
+                            <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.delete_account') }}
+                        </a>
+                    </li>
+                @break
+                @case(route('truck_location_list'))
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('client_dashboard')}}">
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.back_dashboard') }}
+                        </a>
+                    </li>
                 @break
                 @default
                 @break
             @endswitch
-            <!--@/if (strpos(url()->current(), route('franchisee_update', ['id'=>''])) !== false)
+            @if (strpos(url()->current(), route('client_order', ['id'=>''])) !== false)
                 <li class="nav-item">
-                    <a class="nav-link text-light2" href="{/{route('franchisee_list')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;Revenir à la liste des franchisés
+                    <a class="nav-link text-light2" href="{{route('truck_location_list')}}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/order.back_trucks') }}
                     </a>
                 </li>
-            @/endif-->
+            @endif
         </ul>
     </div>
     <div id="page-content-wrapper">
@@ -150,5 +144,6 @@
     })
 </script>
 @yield('script')
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 </body>
 </html>
