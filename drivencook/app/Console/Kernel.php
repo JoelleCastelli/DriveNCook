@@ -5,9 +5,11 @@ namespace App\Console;
 use App\Models\FranchiseObligation;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Traits\UserTools;
 
 class Kernel extends ConsoleKernel
 {
+    use UserTools;
     /**
      * The Artisan commands provided by your application.
      *
