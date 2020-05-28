@@ -16,7 +16,7 @@ class InvoiceController extends Controller
     public function invoices_list() {
         $franchisee_id = $this->get_connected_user()['id'];
         $invoices = Invoice::with('user')->where('user_id', $franchisee_id)->get()->toArray();
-        $current_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
+        $current_obligation = $this->get_current_obligation();
         $current_obligation['date_updated'] = DateTime::createFromFormat("Y-m-d", $current_obligation['date_updated'])->format('d/m/Y');
         return view('franchise.invoices_list')->with('invoices', $invoices)->with('current_obligation', $current_obligation);
     }

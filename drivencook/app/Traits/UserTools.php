@@ -43,6 +43,10 @@ trait UserTools
         return $truck == 1;
     }
 
+    public function get_current_obligation(){
+        return FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
+    }
+
     public function create_invoice_reference($prefix, $franchisee_id, $invoice_id){
         $reference_start = $prefix.'-'.$franchisee_id.'-';
         $column_type = DB::select(DB::raw("SHOW COLUMNS FROM invoice WHERE Field = 'reference'"))[0]->Type;
@@ -54,7 +58,7 @@ trait UserTools
     }
 
     public function generate_first_invoice($franchisee_id){
-        $current_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
+        $current_obligation = $this->get_current_obligation();
         $invoice = ['amount' => $current_obligation['entrance_fee'],
                     'date_emitted' => date("Y-m-d"),
                     'monthly_fee' => 0,

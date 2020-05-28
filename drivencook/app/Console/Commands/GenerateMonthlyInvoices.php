@@ -44,7 +44,7 @@ class GenerateMonthlyInvoices extends Command
     public function handle()
     {
         $franchisees = User::where('role', 'Franchisé')->get()->toArray();
-        $current_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
+        $current_obligation = $this->get_current_obligation();
         foreach($franchisees as $franchisee) {
             $data = app('App\Http\Controllers\Corporate\FranchiseeController')->get_franchise_current_month_sale_revenues($franchisee['id']);
             if ($data['sales_total'] > 0){

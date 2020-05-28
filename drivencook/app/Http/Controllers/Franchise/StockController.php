@@ -42,7 +42,7 @@ class StockController extends Controller
         $stock = FranchiseeStock::with('dish')
             ->where('user_id', $user_id)
             ->get()->toArray();
-        $current_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
+        $current_obligation = $this->get_current_obligation();
         $current_obligation['date_updated'] = DateTime::createFromFormat("Y-m-d", $current_obligation['date_updated'])->format('d/m/Y');
         return view('franchise.stock.stock_dashboard')
             ->with('stock', $stock)
