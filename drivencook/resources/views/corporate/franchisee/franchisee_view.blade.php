@@ -219,7 +219,7 @@
                                         DateTime::createFromFormat('Y-m-d',$license_fee['date_paid'])->format('d/m/Y'):'En attente'}}
                                     </td>
                                     <td>
-                                        <a class="ml-2" href="{{ route('stream_franchisee_invoice',['id'=>$license_fee['id']]) }}">
+                                        <a class="ml-2" href="{{ route('stream_franchisee_invoice',['id'=>$license_fee['id']]) }}" target="_blank">
                                             <button class="text-light fa fa-file-pdf ml-3"></button>
                                         </a>
                                     </td>
