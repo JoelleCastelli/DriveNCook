@@ -37,7 +37,7 @@ class FranchiseeController extends Controller
             ->with('truck')
             ->where('role', 'Franchisé')
             ->get()->toArray();
-        $nextPaiement = $this->getNextPaymentDate(
+        $nextPaiement = $this->get_next_payment_date(
             FranchiseObligation::all()->sortByDesc('id')->first()->toArray());
 
         return view('corporate/franchisee/franchisee_list')

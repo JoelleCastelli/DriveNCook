@@ -117,7 +117,7 @@ trait UserTools
     }
 
     // STATS AND REVENUES
-    public function getNextPaymentDate($franchiseObligation)
+    public function get_next_payment_date($franchiseObligation)
     {
         $currentDay = new DateTime();
         $currentDay->setDate(date('Y'), date('m'), date('d'));
@@ -135,17 +135,9 @@ trait UserTools
 
     public function get_franchise_current_month_sale_revenues($franchise_id)
     {
-        $franchise_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
-
-        $date_max = DateTime::createFromFormat("d/m/Y", $this->getNextPaymentDate($franchise_obligation));
-        $date_max = $date_max->setTime(23, 59, 59);
-        $date_min = clone $date_max;
-        $date_min->modify('-1 month');
-        $date_max->modify('-1 day');
-        $date_max = $date_max->format("Y/m/d");
-        $date_min = $date_min->format("Y/m/d");
-
-        $sales = $this->get_franchisee_sales($franchise_id, $date_min, $date_max);
+        $franchise_obligation = $this->get_current_obligation();
+        $invoicing_period = $this->get_invoicing_period($franchise_obligation, "Y/m/d");
+        $sales = $this->get_franchisee_sales($franchise_id, $invoicing_period['period_start_date'], $invoicing_period['period_end_date']);
         $sales_total = 0;
         if ($sales) {
             foreach ($sales as $sale) {
@@ -245,6 +237,25 @@ trait UserTools
                     ->where('user_franchised', $franchisee_id)
                     ->with('sold_dishes')
                     ->get()->toArray();
+    }
+
+    public function get_invoicing_period($current_obligation, $date_format) {
+
+        // First day of billing period : next payment date - 1 month
+        // Last day of billing period : next payment date - 1 day
+        $next_payment_date = DateTime::createFromFormat("d/m/Y", $this->get_next_payment_date($this->get_current_obligation()));
+        $period_end_date = $next_payment_date->setTime(23, 59, 59);
+        $period_start_date = clone $period_end_date;
+        $period_start_date->modify('-1 month');
+        $period_end_date->modify('-1 day');
+        $period_end_date = $period_end_date->format($date_format);
+        $period_start_date = $period_start_date->format($date_format);
+
+        return [
+            'period_start_date' => $period_start_date,
+            'period_end_date' => $period_end_date
+        ];
+
     }
 
 }
