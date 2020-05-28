@@ -45,22 +45,6 @@ class FranchiseeController extends Controller
             ->with('nextPaiement', $nextPaiement);
     }
 
-    public function getNextPaymentDate($franchiseObligation)
-    {
-        $currentDay = new DateTime();
-        $currentDay->setDate(date('Y'), date('m'), date('d'));
-
-        if ($currentDay->format('d') <= $franchiseObligation['billing_day']) {
-            return $currentDay
-                ->setDate(date('Y'), date('m'), $franchiseObligation['billing_day'])
-                ->format('d/m/Y');
-        }
-        return $currentDay
-            ->setDate(date('Y'), date('m'), $franchiseObligation['billing_day'])
-            ->modify('+1 month')
-            ->format('d/m/Y');
-    }
-
     public function get_franchisee_by_email($email)
     {
         $user = User::where([
@@ -384,39 +368,6 @@ class FranchiseeController extends Controller
         User::where('pseudo_id', $id)->update(['pseudo_id' => NULL]);
         Pseudo::find($id)->delete();
         return $id;
-    }
-
-    public function get_franchise_current_month_sale_revenues($franchise_id)
-    {
-        $franchise_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
-
-        $date_max = DateTime::createFromFormat("d/m/Y", $this->getNextPaymentDate($franchise_obligation));
-        $date_max = $date_max->setTime(23, 59, 59);
-        $date_min = clone $date_max;
-        $date_min->modify('-1 month');
-        $date_max->modify('-1 day');
-        $date_max = $date_max->format("Y/m/d");
-        $date_min = $date_min->format("Y/m/d");
-
-        $sales = Sale::whereBetween('date', [$date_min, $date_max])
-                        ->where('user_franchised', $franchise_id)
-                        ->with('sold_dishes')
-                        ->get()->toArray();
-        $sales_total = 0;
-        foreach ($sales as $sale) {
-            foreach ($sale['sold_dishes'] as $sold_dish) {
-                $sales_total += $sold_dish['quantity'] * $sold_dish['unit_price'];
-            }
-        }
-
-        $next_invoice = $sales_total * $franchise_obligation['revenue_percentage'] / 100;
-
-        return array(
-            "sales_total" => $sales_total,
-            "sales_count" => count($sales),
-            "next_invoice" => $next_invoice
-        );
-
     }
 
     public function get_franchisees_current_month_sale_revenues()

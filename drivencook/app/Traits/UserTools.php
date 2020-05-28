@@ -8,9 +8,11 @@ use App\Models\FranchiseObligation;
 use App\Models\Invoice;
 use App\Models\Pseudo;
 use App\Models\PurchaseOrder;
+use App\Models\Sale;
 use App\Models\Truck;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade as PDF;
+use DateTime;
 use Illuminate\Support\Facades\DB;
 
 trait UserTools
@@ -47,6 +49,7 @@ trait UserTools
         return FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
     }
 
+    // INVOICES
     public function create_invoice_reference($prefix, $franchisee_id, $invoice_id){
         $reference_start = $prefix.'-'.$franchisee_id.'-';
         $column_type = DB::select(DB::raw("SHOW COLUMNS FROM invoice WHERE Field = 'reference'"))[0]->Type;
@@ -102,6 +105,55 @@ trait UserTools
         }
 
         return $pdf->save($path . '/' . $reference.'.pdf');
+    }
+
+    // STATS AND REVENUES
+    public function getNextPaymentDate($franchiseObligation)
+    {
+        $currentDay = new DateTime();
+        $currentDay->setDate(date('Y'), date('m'), date('d'));
+
+        if ($currentDay->format('d') <= $franchiseObligation['billing_day']) {
+            return $currentDay
+                ->setDate(date('Y'), date('m'), $franchiseObligation['billing_day'])
+                ->format('d/m/Y');
+        }
+        return $currentDay
+            ->setDate(date('Y'), date('m'), $franchiseObligation['billing_day'])
+            ->modify('+1 month')
+            ->format('d/m/Y');
+    }
+
+    public function get_franchise_current_month_sale_revenues($franchise_id)
+    {
+        $franchise_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
+
+        $date_max = DateTime::createFromFormat("d/m/Y", $this->getNextPaymentDate($franchise_obligation));
+        $date_max = $date_max->setTime(23, 59, 59);
+        $date_min = clone $date_max;
+        $date_min->modify('-1 month');
+        $date_max->modify('-1 day');
+        $date_max = $date_max->format("Y/m/d");
+        $date_min = $date_min->format("Y/m/d");
+
+        $sales = Sale::whereBetween('date', [$date_min, $date_max])
+            ->where('user_franchised', $franchise_id)
+            ->with('sold_dishes')
+            ->get()->toArray();
+        $sales_total = 0;
+        foreach ($sales as $sale) {
+            foreach ($sale['sold_dishes'] as $sold_dish) {
+                $sales_total += $sold_dish['quantity'] * $sold_dish['unit_price'];
+            }
+        }
+
+        $next_invoice = $sales_total * $franchise_obligation['revenue_percentage'] / 100;
+
+        return array(
+            "sales_total" => $sales_total,
+            "sales_count" => count($sales),
+            "next_invoice" => $next_invoice
+        );
     }
 
 }
