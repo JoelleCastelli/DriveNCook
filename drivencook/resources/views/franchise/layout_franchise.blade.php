@@ -101,7 +101,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light2" href="#">
+                        <a class="nav-link text-light2" href="{{ route('franchise.revenues_stats') }}">
                             <i class="fa fa-chart-line"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.revenues_and_statistics')}}
                         </a>
                     </li>
@@ -130,6 +130,7 @@
                 @case(route('franchise.stock_dashboard'))
                 @case(route('franchise.update_account'))
                 @case(route('franchise.invoices_list'))
+                @case(route('franchise.revenues_stats'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{route('franchise.dashboard')}}">
                             <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_dashboard')}}

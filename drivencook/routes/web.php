@@ -24,6 +24,7 @@ require_once('franchise/home.php');
 require_once('franchise/truck.php');
 require_once('franchise/stock.php');
 require_once('franchise/invoice.php');
+require_once('franchise/revenues_stats.php');
 
 Route::get('/', function () {
     return view('home');

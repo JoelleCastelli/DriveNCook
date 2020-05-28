@@ -206,7 +206,7 @@ trait UserTools
             $end_date = $parameters["end_date"];
 
             if ($start_date >  $end_date) {
-                flash("La date de début ne peut pas être supérieure à la date de fin.")->error();
+                flash(trans('franchisee.history_start_date_cannot_be_higher_than_end'))->error();
                 return redirect()->back();
             }
 
@@ -214,7 +214,7 @@ trait UserTools
             $sales = $this->get_franchisee_sales($franchisee_id, $start_date, $end_date);
 
             if(empty($sales)) {
-                flash("Le franchisé n'a pas réalisé de vente sur la période sélectionnée.")->error();
+                flash(trans('franchisee.no_sales'))->error();
                 return redirect()->back();
             }
 
@@ -226,7 +226,7 @@ trait UserTools
             );
             return $pdf->stream();
         } else {
-            flash("Veuillez sélectionner une date de début et de fin de l'historique")->error();
+            flash(trans('franchisee.select_history_dates'))->error();
             return redirect()->back();
         }
 
