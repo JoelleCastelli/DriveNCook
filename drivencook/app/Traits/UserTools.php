@@ -17,6 +17,14 @@ use Illuminate\Support\Facades\DB;
 
 trait UserTools
 {
+    public function get_franchisee_by_id($id)
+    {
+        $user = User::with('pseudo')->where('id', $id)->first();
+        if (!empty($user))
+            return $user->toArray();
+        return null;
+    }
+
     public function update_user_password($id, $new_password)
     {
         User::find($id)->update([
