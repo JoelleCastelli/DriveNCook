@@ -156,4 +156,50 @@ trait UserTools
         );
     }
 
+    public function get_franchisee_history($franchisee_id) {
+
+        // Definition of min and max dates
+        $user = $this->get_franchisee_by_id($franchisee_id);
+        $creation_date = DateTime::createFromFormat("Y-m-d H:i:s", $user['created_at'])->format('Y-m-d');
+        $today = date("Y-m-d");
+
+        // Total of invoices
+        $invoices = Invoice::where('user_id', $franchisee_id)->get()->toArray();
+        $total_invoices = 0;
+        foreach ($invoices as $invoice) {
+            if(substr($invoice['reference'], 0, 3) != "IF-") // removing initial fee from total
+                $total_invoices += $invoice['amount'];
+        }
+
+        // Total of cashed money and number of sales
+        $sales = Sale::whereBetween('date', [$creation_date, $today])
+            ->where('user_franchised', $franchisee_id)
+            ->with('sold_dishes')
+            ->get();
+
+        // If no sale, return invoices but 0 sales & total
+        if($sales) {
+            $sales->toArray();
+        } else {
+            return ["sales_total" => 0,
+                "sales_count" => 0,
+                "creation_date" => $creation_date,
+                "total_invoices" => $total_invoices
+            ];
+        }
+
+        $sales_total = 0;
+        foreach ($sales as $sale) {
+            foreach ($sale['sold_dishes'] as $sold_dish) {
+                $sales_total += $sold_dish['quantity'] * $sold_dish['unit_price'];
+            }
+        }
+
+        return ["sales_total" => $sales_total,
+            "sales_count" => count($sales),
+            "creation_date" => $creation_date,
+            "total_invoices" => $total_invoices
+        ];
+    }
+
 }
