@@ -145,14 +145,13 @@ trait UserTools
         $date_max = $date_max->format("Y/m/d");
         $date_min = $date_min->format("Y/m/d");
 
-        $sales = Sale::whereBetween('date', [$date_min, $date_max])
-            ->where('user_franchised', $franchise_id)
-            ->with('sold_dishes')
-            ->get()->toArray();
+        $sales = $this->get_franchisee_sales($franchise_id, $date_min, $date_max);
         $sales_total = 0;
-        foreach ($sales as $sale) {
-            foreach ($sale['sold_dishes'] as $sold_dish) {
-                $sales_total += $sold_dish['quantity'] * $sold_dish['unit_price'];
+        if ($sales) {
+            foreach ($sales as $sale) {
+                foreach ($sale['sold_dishes'] as $sold_dish) {
+                    $sales_total += $sold_dish['quantity'] * $sold_dish['unit_price'];
+                }
             }
         }
 
@@ -181,20 +180,15 @@ trait UserTools
         }
 
         // Total of cashed money and number of sales
-        $sales = Sale::whereBetween('date', [$creation_date, $today])
-            ->where('user_franchised', $franchisee_id)
-            ->with('sold_dishes')
-            ->get();
+        $sales = $this->get_franchisee_sales($franchisee_id, $creation_date, $today);
 
         // If no sale, return invoices but 0 sales & total
-        if($sales) {
-            $sales->toArray();
-        } else {
+        if(empty($sales)) {
             return ["sales_total" => 0,
-                "sales_count" => 0,
-                "creation_date" => $creation_date,
-                "total_invoices" => $total_invoices
-            ];
+                    "sales_count" => 0,
+                    "creation_date" => $creation_date,
+                    "total_invoices" => $total_invoices
+                    ];
         }
 
         $sales_total = 0;
@@ -205,10 +199,10 @@ trait UserTools
         }
 
         return ["sales_total" => $sales_total,
-            "sales_count" => count($sales),
-            "creation_date" => $creation_date,
-            "total_invoices" => $total_invoices
-        ];
+                "sales_count" => count($sales),
+                "creation_date" => $creation_date,
+                "total_invoices" => $total_invoices
+                ];
     }
 
     public function franchisee_sales_history_pdf(Request $request) {
@@ -224,14 +218,8 @@ trait UserTools
                 return redirect()->back();
             }
 
-            $franchisee = User::where('id', $franchisee_id)
-                ->with('pseudo')
-                ->first()->toArray();
-
-            $sales = Sale::whereBetween('date', [$start_date, $end_date])
-                ->where('user_franchised', $franchisee_id)
-                ->with('sold_dishes')
-                ->get()->toArray();
+            $franchisee = $this->get_franchisee_by_id($franchisee_id);
+            $sales = $this->get_franchisee_sales($franchisee_id, $start_date, $end_date);
 
             if(empty($sales)) {
                 flash("Le franchisé n'a pas réalisé de vente sur la période sélectionnée.")->error();
@@ -250,6 +238,13 @@ trait UserTools
             return redirect()->back();
         }
 
+    }
+
+    public function get_franchisee_sales($franchisee_id, $start_date, $end_date) {
+        return Sale::whereBetween('date', [$start_date, $end_date])
+                    ->where('user_franchised', $franchisee_id)
+                    ->with('sold_dishes')
+                    ->get()->toArray();
     }
 
 }
