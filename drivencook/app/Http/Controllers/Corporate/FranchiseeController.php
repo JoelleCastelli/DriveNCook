@@ -400,11 +400,13 @@ class FranchiseeController extends Controller
         $creation_date = DateTime::createFromFormat("Y-m-d H:i:s", $user['created_at'])->format('Y-m-d');
         $today = date("Y-m-d");
 
-        // Total of invoices (always at least one invoice: initial fee)
+        // Total of invoices
         $invoices = Invoice::where('user_id', $franchisee_id)->get()->toArray();
+
         $total_invoices = 0;
         foreach ($invoices as $invoice) {
-            $total_invoices += $invoice['amount'];
+            if(substr($invoice['reference'], 0, 3) != "IF-") // removing initial fee from total
+                $total_invoices += $invoice['amount'];
         }
 
         // Total of cashed money and number of sales
@@ -458,13 +460,11 @@ class FranchiseeController extends Controller
             $sales = Sale::whereBetween('date', [$start_date, $end_date])
                 ->where('user_franchised', $franchisee_id)
                 ->with('sold_dishes')
-                ->get();
+                ->get()->toArray();
 
             if(empty($sales)) {
                 flash("Le franchisé n'a pas réalisé de vente sur la période sélectionnée.")->error();
                 return redirect()->back();
-            } else {
-                $sales = $sales->toArray();
             }
 
             $pdf = PDF::loadView('corporate.franchisee.franchisee_history',

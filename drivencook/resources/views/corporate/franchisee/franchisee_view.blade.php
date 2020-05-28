@@ -167,7 +167,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-md-5">
                             <div class="row d-flex justify-content-center">
-                                Total facturé
+                                Total facturé (hors frais initiaux)
                             </div>
                             <div class="row d-flex justify-content-center">
                                 <h1>{{ number_format($history['total_invoices'], 2, ',', ' ') }} €</h1>
