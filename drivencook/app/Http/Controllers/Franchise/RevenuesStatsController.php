@@ -31,33 +31,14 @@ class RevenuesStatsController extends Controller
     }
 
     public function generate_chart($franchisee_id, $stepSize, $type = 'sales'){
-        // Getting count of franchisee's daily sales
-        $sales_by_day = Sale::where('user_franchised', $franchisee_id)
-                        ->orderBy('date', 'ASC')
-                        ->get()->groupBy('date')->toArray();
+        $data = $this->get_sales_turnover_by_day($franchisee_id);
 
-        // Filling the date and sales arrays
-        $date_labels = [];
-        $nb_sales = [];
-        $nb_revenue = [];
-        $daily_total = 0;
-
-        foreach ($sales_by_day as $date => $daily_sales) {
-            array_push($date_labels, DateTime::createFromFormat("Y-m-d", $date)->format('d/m/Y'));
-            array_push($nb_sales, count($daily_sales));
-            foreach ($daily_sales as $sale) {
-                $daily_total = $this->get_sale_total($sale['id']);
-            }
-            array_push($nb_revenue, $daily_total);
-        }
-
-        // Creating the chart
         $chart = new FranchiseeStatsChart;
-        $chart->labels($date_labels);
+        $chart->labels($data['dates']);
         if ($type == 'sales') {
-            $chart->dataset(trans('franchisee.sales_count'), 'line', $nb_sales)->color('#6408c7')->fill(false);
+            $chart->dataset(trans('franchisee.sales_count'), 'line', $data['nb_sales'])->color('#6408c7')->fill(false);
         } else {
-            $chart->dataset(trans('franchisee.turnover'), 'line', $nb_revenue)->color('#00d1ce')->fill(false);
+            $chart->dataset(trans('franchisee.turnover'), 'line', $data['turnover'])->color('#00d1ce')->fill(false);
         }
         $chart->options([
             'tooltip' => ['show' => true],

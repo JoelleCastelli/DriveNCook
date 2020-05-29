@@ -291,4 +291,26 @@ trait UserTools
         return $sale_total;
     }
 
+    public function get_sales_turnover_by_day($franchisee_id) {
+        $sales_by_day = Sale::where('user_franchised', $franchisee_id)
+                            ->orderBy('date', 'ASC')
+                            ->get()->groupBy('date')->toArray();
+
+        $date_labels = [];
+        $nb_sales = [];
+        $nb_revenue = [];
+
+        foreach ($sales_by_day as $date => $daily_sales) {
+            array_push($date_labels, DateTime::createFromFormat("Y-m-d", $date)->format('d/m/Y'));
+            array_push($nb_sales, count($daily_sales));
+            $daily_total = 0;
+            foreach ($daily_sales as $sale) {
+                $daily_total += $this->get_sale_total($sale['id']);
+            }
+            array_push($nb_revenue, $daily_total);
+        }
+
+        return ['dates' => $date_labels, 'turnover' => $nb_revenue, 'nb_sales' => $nb_sales];
+    }
+
 }
