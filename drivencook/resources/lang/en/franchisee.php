@@ -88,6 +88,7 @@ return [
     'revenues_and_statistics' => 'Revenues and statistics',
     'revenues_current_month' => "Current month <span style='font-size: 20px'>(from :date_start to :date_end)</span>",
     'sales' => 'Sales',
+    'sales_count' => 'Number of sales',
     'safety_inspection' => 'Safety inspection',
     'select_history_dates' => 'Please select a start and end date for the history',
     'sell_count_30_days' => 'Sells count (30 days)',

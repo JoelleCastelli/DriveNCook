@@ -88,6 +88,7 @@ return [
     'revenues_and_statistics' => 'Revenus et statistiques',
     'revenues_current_month' => "Mois en cours <span style='font-size: 20px'>(du :date_start au :date_end)</span>",
     'sales' => 'Ventes',
+    'sales_count' => 'Nombre de ventes',
     'safety_inspection' => 'Contrôle technique',
     'select_history_dates' => 'Veuillez sélectionner une date de début et de fin de l\'historique',
     'sell_count_30_days' => 'Nombre de ventes (30 jours)',
