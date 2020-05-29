@@ -14,44 +14,99 @@
     @yield('style')
 </head>
 <body>
-<nav class="navbar navbar-dark sticky-top bg-dark2 text-light justify-content-between">
-    <span class="d-flex align-items-center">
-        <button href="#menu-toggle" class="btn text-light" id="menu-toggle"><i class="fa fa-bars"></i></button>
-        <a class="navbar-brand"
-           href="{{route('corporate_dashboard')}}">&nbsp;&nbsp;&nbsp;{{ trans('corporate.admin') }}</a>
-    </span>
+{{--<nav class="navbar navbar-dark sticky-top bg-dark2 text-light justify-content-between">--}}
+{{--    <span class="d-flex align-items-center">--}}
+{{--        <button href="#menu-toggle" class="btn text-light" id="menu-toggle"><i class="fa fa-bars"></i></button>--}}
+{{--        <a class="navbar-brand"--}}
+{{--           href="{{route('corporate_dashboard')}}">&nbsp;&nbsp;&nbsp;{{ trans('corporate.admin') }}</a>--}}
+{{--    </span>--}}
 
-    @if (!auth()->guest())
-        <div class="row">
-            <div class="nav-item dropdown">
-                <button class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown">
-                    <img src="{{ asset('img/'.App::getLocale().'_icon.png') }}" height="20">&nbsp;&nbsp;{{ trans('corporate.'. App::getLocale()) }}
-                </button>
-                <div class="dropdown-menu bg-dark" aria-labelledby="userDropdownMenuButton">
+{{--    @if (!auth()->guest())--}}
+{{--        <div class="row">--}}
+{{--            <div class="nav-item dropdown">--}}
+{{--                <button class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown">--}}
+{{--                    <img src="{{ asset('img/'.App::getLocale().'_icon.png') }}" height="20">&nbsp;&nbsp;{{ trans('corporate.'. App::getLocale()) }}--}}
+{{--                </button>--}}
+{{--                <div class="dropdown-menu bg-dark" aria-labelledby="userDropdownMenuButton">--}}
+{{--                    @foreach (Config::get('app.languages') as $language)--}}
+{{--                        @if ($language != App::getLocale())--}}
+{{--                            <a class="dropdown-item text-light" href="{{ route('set_locale', $language) }}">--}}
+{{--                                <img src="{{ asset('img/'.$language.'_icon.png') }}" height="20">&nbsp;&nbsp;{{ trans('corporate.'.$language) }}--}}
+{{--                            </a>--}}
+{{--                        @endif--}}
+{{--                    @endforeach--}}
+{{--                </div>--}}
+{{--            </div>--}}
+
+{{--            <div class="nav-item dropdown ml-4" style="margin-right: 10em;">--}}
+{{--                <button class="btn btn-dark dropdown-toggle" type="button" id="userDropdownMenuButton"--}}
+{{--                        data-toggle="dropdown"--}}
+{{--                        aria-haspopup="true" aria-expanded="false">--}}
+{{--                    <i class="fa fa-user"></i>--}}
+{{--                </button>--}}
+{{--                <div class="dropdown-menu bg-dark" aria-labelledby="userDropdownMenuButton">--}}
+{{--                    <a class="dropdown-item text-light" href="{{route('corporate.update_account')}}">{{ trans('corporate.account') }}</a>--}}
+{{--                    <a class="dropdown-item text-light" href="{{route('corporate_logout')}}">{{ trans('corporate.logout') }}</a>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    @endif--}}
+{{--</nav>--}}
+
+<nav class="navbar navbar-expand-md navbar-dark sticky-top bg-dark2">
+    <button href="#menu-toggle" class="btn text-light" id="menu-toggle"><i class="fa fa-bars"></i></button>
+    <a class="navbar-brand"
+       href="{{route('corporate_dashboard')}}">&nbsp;&nbsp;&nbsp;{{trans('corporate.admin')}}</a>
+
+
+    <div class="mx-auto order-0">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <div class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button">
+                    <img src="{{ asset('img/'.App::getLocale().'_icon.png') }}"
+                         height="20">&nbsp;&nbsp;{{ trans('homepage.'. App::getLocale()) }}
+                </a>
+                <div class="dropdown-menu dropdown-menu-right bg-dark">
                     @foreach (Config::get('app.languages') as $language)
                         @if ($language != App::getLocale())
                             <a class="dropdown-item text-light" href="{{ route('set_locale', $language) }}">
-                                <img src="{{ asset('img/'.$language.'_icon.png') }}" height="20">&nbsp;&nbsp;{{ trans('corporate.'.$language) }}
+                                <img src="{{ asset('img/'.$language.'_icon.png') }}"
+                                     height="20">&nbsp;&nbsp;{{ trans('homepage.'.$language) }}
                             </a>
                         @endif
                     @endforeach
                 </div>
-            </div>
-
-            <div class="nav-item dropdown ml-4" style="margin-right: 10em;">
-                <button class="btn btn-dark dropdown-toggle" type="button" id="userDropdownMenuButton"
-                        data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-user"></i>
-                </button>
-                <div class="dropdown-menu bg-dark" aria-labelledby="userDropdownMenuButton">
-                    <a class="dropdown-item text-light" href="{{route('corporate.update_account')}}">{{ trans('corporate.account') }}</a>
-                    <a class="dropdown-item text-light" href="{{route('corporate_logout')}}">{{ trans('corporate.logout') }}</a>
-                </div>
-            </div>
+            </li>
+            @if (!auth()->guest())
+                <li class="nav-item dropdown ml-4">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-user"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right bg-dark" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item text-light d-flex align-items-baseline"
+                           href="{{route('corporate.update_account')}}">
+                            <i class="fa fa-user"></i>&nbsp;&nbsp;{{ trans('corporate.my_account') }}
+                        </a>
+                        <a class="dropdown-item text-light d-flex align-items-baseline"
+                           href="{{route('corporate_logout')}}">
+                            <i class="fa fa-sign-out-alt"></i>&nbsp;&nbsp;{{ trans('corporate.logout') }}
+                        </a>
+                    </div>
+                </li>
+            @endif
         </div>
-    @endif
+    </div>
+
 </nav>
+
 
 <div id="wrapper">
 

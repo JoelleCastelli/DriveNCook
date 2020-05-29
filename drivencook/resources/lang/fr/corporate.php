@@ -25,6 +25,7 @@ return [
     /**********/
     /* NAVBAR */
     /**********/
+    'my_account'=>'Mon compte',
 
     // Warehouses
     'warehouses' => 'Entrepôts',
