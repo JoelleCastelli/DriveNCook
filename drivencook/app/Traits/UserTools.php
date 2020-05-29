@@ -54,34 +54,38 @@ trait UserTools
         return $truck == 1;
     }
 
-    public function get_current_obligation(){
+    public function get_current_obligation()
+    {
         return FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
     }
 
     // INVOICES
-    public function create_invoice_reference($prefix, $franchisee_id, $invoice_id){
-        $reference_start = $prefix.'-'.$franchisee_id.'-';
+    public function create_invoice_reference($prefix, $franchisee_id, $invoice_id)
+    {
+        $reference_start = $prefix . '-' . $franchisee_id . '-';
         $column_type = DB::select(DB::raw("SHOW COLUMNS FROM invoice WHERE Field = 'reference'"))[0]->Type;
         $column_length = substr(ltrim($column_type, 'varchar('), 0, -1);
         $pad_length = $column_length - strlen($reference_start);
-        $reference = $reference_start.str_pad($invoice_id, $pad_length, "0", STR_PAD_LEFT);
+        $reference = $reference_start . str_pad($invoice_id, $pad_length, "0", STR_PAD_LEFT);
         Invoice::where('id', $invoice_id)->update(['reference' => $reference]);
         return $reference;
     }
 
-    public function generate_first_invoice($franchisee_id){
+    public function generate_first_invoice($franchisee_id)
+    {
         $current_obligation = $this->get_current_obligation();
         $invoice = ['amount' => $current_obligation['entrance_fee'],
-                    'date_emitted' => date("Y-m-d"),
-                    'monthly_fee' => 0,
-                    'initial_fee' => 1,
-                    'user_id' => $franchisee_id];
+            'date_emitted' => date("Y-m-d"),
+            'monthly_fee' => 0,
+            'initial_fee' => 1,
+            'user_id' => $franchisee_id];
         $invoice = Invoice::create($invoice);
         $reference = $this->create_invoice_reference('IF', $franchisee_id, $invoice['id']);
         $this->save_franchisee_invoice_pdf($invoice['id'], $reference);
     }
 
-    public function franchisee_invoice_pdf($id) {
+    public function franchisee_invoice_pdf($id)
+    {
         $purchase_order = [];
         $invoice = Invoice::with('user')->where('id', $id)->first()->toArray();
         $pseudo = Pseudo::where('id', $invoice['user']['pseudo_id'])->first();
@@ -89,21 +93,23 @@ trait UserTools
             $pseudo->toArray();
         if ($invoice['purchase_order_id']) {
             $purchase_order = PurchaseOrder::with('purchased_dishes')
-                                ->where('id', $invoice['purchase_order_id'])
-                                ->first()->toArray();
+                ->where('id', $invoice['purchase_order_id'])
+                ->first()->toArray();
         }
 
         return $pdf = PDF::loadView('franchisee_invoice', ['invoice' => $invoice,
-                                                           'pseudo' => $pseudo,
-                                                           'purchase_order' => $purchase_order]);
+            'pseudo' => $pseudo,
+            'purchase_order' => $purchase_order]);
     }
 
-    public function stream_franchisee_invoice_pdf($id) {
+    public function stream_franchisee_invoice_pdf($id)
+    {
         $pdf = $this->franchisee_invoice_pdf($id);
         return $pdf->stream();
     }
 
-    public function save_franchisee_invoice_pdf($id, $reference) {
+    public function save_franchisee_invoice_pdf($id, $reference)
+    {
         $pdf = $this->franchisee_invoice_pdf($id);
         if (strpos($reference, 'IF') !== FALSE) {
             $path = resource_path('invoices/franchisee_initial_fee/');
@@ -113,7 +119,7 @@ trait UserTools
             $path = resource_path('invoices/franchisee_restock/');
         }
 
-        return $pdf->save($path . '/' . $reference.'.pdf');
+        return $pdf->save($path . '/' . $reference . '.pdf');
     }
 
     // STATS AND REVENUES
@@ -156,7 +162,8 @@ trait UserTools
         );
     }
 
-    public function get_franchisee_history($franchisee_id) {
+    public function get_franchisee_history($franchisee_id)
+    {
 
         // Definition of min and max dates
         $user = $this->get_franchisee_by_id($franchisee_id);
@@ -167,7 +174,7 @@ trait UserTools
         $invoices = Invoice::where('user_id', $franchisee_id)->get()->toArray();
         $total_invoices = 0;
         foreach ($invoices as $invoice) {
-            if(substr($invoice['reference'], 0, 3) != "IF-") // removing initial fee from total
+            if (substr($invoice['reference'], 0, 3) != "IF-") // removing initial fee from total
                 $total_invoices += $invoice['amount'];
         }
 
@@ -175,12 +182,12 @@ trait UserTools
         $sales = $this->get_franchisee_sales($franchisee_id, $creation_date, $today);
 
         // If no sale, return invoices but 0 sales & total
-        if(empty($sales)) {
+        if (empty($sales)) {
             return ["sales_total" => 0,
-                    "sales_count" => 0,
-                    "creation_date" => $creation_date,
-                    "total_invoices" => $total_invoices
-                    ];
+                "sales_count" => 0,
+                "creation_date" => $creation_date,
+                "total_invoices" => $total_invoices
+            ];
         }
 
         $sales_total = 0;
@@ -191,13 +198,14 @@ trait UserTools
         }
 
         return ["sales_total" => $sales_total,
-                "sales_count" => count($sales),
-                "creation_date" => $creation_date,
-                "total_invoices" => $total_invoices
-                ];
+            "sales_count" => count($sales),
+            "creation_date" => $creation_date,
+            "total_invoices" => $total_invoices
+        ];
     }
 
-    public function franchisee_sales_history_pdf(Request $request) {
+    public function franchisee_sales_history_pdf(Request $request)
+    {
         $parameters = $request->except(['_token']);
 
         if (count($parameters) == 3 && !empty($parameters["id"]) && $parameters["start_date"] != NULL && $parameters["start_date"] != NULL) {
@@ -205,7 +213,7 @@ trait UserTools
             $start_date = $parameters["start_date"];
             $end_date = $parameters["end_date"];
 
-            if ($start_date >  $end_date) {
+            if ($start_date > $end_date) {
                 flash(trans('franchisee.history_start_date_cannot_be_higher_than_end'))->error();
                 return redirect()->back();
             }
@@ -213,7 +221,7 @@ trait UserTools
             $franchisee = $this->get_franchisee_by_id($franchisee_id);
             $sales = $this->get_franchisee_sales($franchisee_id, $start_date, $end_date);
 
-            if(empty($sales)) {
+            if (empty($sales)) {
                 flash(trans('franchisee.no_sales'))->error();
                 return redirect()->back();
             }
@@ -232,14 +240,16 @@ trait UserTools
 
     }
 
-    public function get_franchisee_sales($franchisee_id, $start_date, $end_date) {
+    public function get_franchisee_sales($franchisee_id, $start_date, $end_date)
+    {
         return Sale::whereBetween('date', [$start_date, $end_date])
-                    ->where('user_franchised', $franchisee_id)
-                    ->with('sold_dishes')
-                    ->get()->toArray();
+            ->where('user_franchised', $franchisee_id)
+            ->with('sold_dishes')
+            ->get()->toArray();
     }
 
-    public function get_invoicing_period($current_obligation, $date_format) {
+    public function get_invoicing_period($current_obligation, $date_format)
+    {
 
         // First day of billing period : next payment date - 1 month
         // Last day of billing period : next payment date - 1 day
@@ -256,6 +266,14 @@ trait UserTools
             'period_end_date' => $period_end_date
         ];
 
+    }
+
+    public function get_available_pseudo_list()
+    {
+        $unavailable_pseudos = User::whereNotNull('pseudo_id')->get(['pseudo_id'])->toArray();
+        $pseudos = Pseudo::whereNotIn('id', $unavailable_pseudos)->get()->toArray();
+
+        return $pseudos;
     }
 
 }
