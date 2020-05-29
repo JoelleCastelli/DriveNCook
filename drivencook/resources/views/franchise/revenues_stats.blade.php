@@ -117,6 +117,11 @@
         </div>
     </div>
 
+    <div class="col-12 col-lg-12 mb-5">
+        <div id="app">
+            {!! $chart->container() !!}
+        </div>
+    </div>
     <!-- Modal -->
     <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="form">
@@ -181,4 +186,7 @@
             end_date.value = today;
         }
     </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
+    {!! $chart->script() !!}
 @endsection
