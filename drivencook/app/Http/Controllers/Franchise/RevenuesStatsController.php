@@ -47,11 +47,14 @@ class RevenuesStatsController extends Controller
         // Creating the chart
         $chart = new FranchiseeStatsChart;
         $chart->labels($labels);
-        $chart->dataset(trans('franchisee.sales_count'), 'line', $data);
+        $chart->dataset(trans('franchisee.sales_count'), 'line', $data)->color('#6408c7')->fill(false);
         $chart->options([
-            'tooltip' => [
-                'show' => true
-            ]
+            'tooltip' => ['show' => true],
+            'scales' => [
+                'yAxes'=> [[
+                    'ticks'=> ['beginAtZero'=> true, 'stepSize'=>1],
+                ]],
+            ],
         ]);
 
         return $chart;
