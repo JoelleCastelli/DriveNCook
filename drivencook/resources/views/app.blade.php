@@ -90,7 +90,7 @@
                     <i class="fa fa-user"></i>&nbsp;&nbsp;{{ trans('homepage.login') }}
                 </a>
                 <div class="dropdown-menu dropdown-menu-right bg-dark" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item text-light d-flex align-items-baseline" href="#">
+                    <a class="dropdown-item text-light d-flex align-items-baseline" href="{{ route('client_login') }}">
                         <i class="fa fa-user"></i>&nbsp;&nbsp;{{ trans('homepage.login_client') }}
                     </a>
                     <a class="dropdown-item text-light d-flex align-items-baseline" href="{{route('franchise.login')}}">
