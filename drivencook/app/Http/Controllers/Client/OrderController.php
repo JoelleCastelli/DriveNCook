@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\AuthClient;
 use App\Models\Dish;
+use App\Models\FranchiseeStock;
 use App\Models\Truck;
 
 class OrderController extends Controller
@@ -30,15 +31,25 @@ class OrderController extends Controller
             ->with('trucks', $trucks);
     }
 
-    public function client_order()
+    public function client_order($truck_id)
     {
-        $dishes = Dish::all();
+        $truck = Truck::whereKey($truck_id)
+            ->with('user')
+            ->first();
 
-        if(!empty($dishes)) {
-            $dishes = $dishes->toArray();
+        if(!empty($truck)) {
+            $truck = $truck->toArray();
+        }
+
+        $stocks = FranchiseeStock::where('user_id', $truck['user']['id'])
+            ->with('dish')
+            ->get();
+
+        if(!empty($stocks)) {
+            $stocks = $stocks->toArray();
         }
 
         return view('client.order.client_order')
-            ->with('dishes', $dishes);
+            ->with('stocks', $stocks);
     }
 }
