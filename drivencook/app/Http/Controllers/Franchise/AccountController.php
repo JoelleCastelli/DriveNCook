@@ -28,6 +28,7 @@ class AccountController extends Controller
         $truck = $this->get_truck_with_location_only($this->get_franchises_truck($this->get_connected_user()['id'])['id']);
 //        var_dump($truck);die;
         $user = User::with('pseudo')->whereKey($this->get_connected_user()['id'])->first()->toArray();
+//        dd($user);
 //        var_dump($user);die;
         return view('franchise.franchise_dashboard')
             ->with('truck', $truck)

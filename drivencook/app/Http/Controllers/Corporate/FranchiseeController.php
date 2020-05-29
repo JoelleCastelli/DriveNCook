@@ -114,8 +114,7 @@ class FranchiseeController extends Controller
     public function franchisee_update($id)
     {
         $franchisee = $this->get_franchisee_by_id($id);
-        $unavailable_pseudos = User::whereNotNull('pseudo_id')->get(['pseudo_id'])->toArray();
-        $pseudos = Pseudo::whereNotIn('id', $unavailable_pseudos)->get()->toArray();
+        $pseudos = $this->get_available_pseudo_list();
 
         return view('corporate/franchisee/franchisee_update')->with('franchisee', $franchisee)->with('pseudos', $pseudos);
     }
