@@ -23,6 +23,8 @@ return [
     'date_end' => 'Date end:',
     'date_order' => 'Date order',
     'date_start' => 'Date start:',
+    'daily_turnover' => 'Daily turnover',
+    'daily_sales' => 'Daily sales',
     'description' => 'Description',
     'different_plate_count' => 'Different dishes',
     'drained_fluids' => 'Drained fluids',

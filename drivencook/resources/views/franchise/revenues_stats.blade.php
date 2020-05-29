@@ -117,11 +117,35 @@
         </div>
     </div>
 
-    <div class="col-12 col-lg-12 mb-5">
-        <div id="app">
-            {!! $chart->container() !!}
+    <div class="row">
+        <div class="col-12 col-lg-6 mb-5">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <h2>{{ trans('franchisee.daily_sales') }}</h2>
+                </div>
+                <div class="card-body">
+                    <div id="app">
+                        {!! $sales_chart->container() !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6 mb-5">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <h2>{{ trans('franchisee.daily_turnover') }}</h2>
+                </div>
+                <div class="card-body">
+                    <div id="app">
+                        {!! $turnover_chart->container() !!}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+
     <!-- Modal -->
     <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="form">
@@ -188,5 +212,6 @@
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
-    {!! $chart->script() !!}
+    {!! $sales_chart->script() !!}
+    {!! $turnover_chart->script() !!}
 @endsection

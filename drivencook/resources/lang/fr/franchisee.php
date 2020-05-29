@@ -23,6 +23,8 @@ return [
     'date_end' => 'Date de fin :',
     'date_order' => 'Date de commande',
     'date_start' => 'Date de début :',
+    'daily_turnover' => 'Chiffre d\'affaires quotidien',
+    'daily_sales' => 'Nombre de ventes quotidiennes',
     'description' => 'Description',
     'different_plate_count' => 'Plats différents',
     'drained_fluids' => 'Drainage',
