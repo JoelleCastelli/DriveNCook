@@ -9,6 +9,7 @@ use App\Models\Invoice;
 use App\Models\Pseudo;
 use App\Models\PurchaseOrder;
 use App\Models\Sale;
+use App\Models\SoldDish;
 use App\Models\Truck;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade as PDF;
@@ -274,6 +275,20 @@ trait UserTools
         $pseudos = Pseudo::whereNotIn('id', $unavailable_pseudos)->get()->toArray();
 
         return $pseudos;
+    }
+
+    public function get_sale_total($sale_id) {
+        $sold_dishes = SoldDish::where('sale_id', $sale_id)->get();
+        $sale_total = 0;
+
+        if($sold_dishes) {
+            $sold_dishes->toArray();
+            foreach ($sold_dishes as $sold_dish) {
+                $sale_total += $sold_dish['unit_price'] * $sold_dish['quantity'];
+            }
+        }
+
+        return $sale_total;
     }
 
 }
