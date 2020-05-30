@@ -25,13 +25,17 @@ class AccountController extends Controller
 
     public function dashboard()
     {
-        $truck = $this->get_truck_with_location_only($this->get_franchises_truck($this->get_connected_user()['id'])['id']);
+        $truck = $this->get_franchises_truck($this->get_connected_user()['id']);
+        $truckLocation = null;
+        if ($truck != null) {
+            $truckLocation = $this->get_truck_with_location_only($truck['id']);
+        }
 //        var_dump($truck);die;
         $user = User::with('pseudo')->whereKey($this->get_connected_user()['id'])->first()->toArray();
 //        dd($user);
 //        var_dump($user);die;
         return view('franchise.franchise_dashboard')
-            ->with('truck', $truck)
+            ->with('truck', $truckLocation)
             ->with('franchise', $user);
     }
 

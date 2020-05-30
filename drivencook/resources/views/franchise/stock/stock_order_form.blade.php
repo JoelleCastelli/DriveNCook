@@ -19,9 +19,9 @@
                             <select id="warehouse_select" class="form-control">
                                 <option value="choisir" selected disabled>{{trans('franchisee.choose')}}</option>
                                 @foreach($warehouse_list as $warehouse) {{--//prévoir si nul--}}
-                                    <option value="{{$warehouse['id']}}">
-                                        {{$warehouse['name'].' - '.$warehouse['city']['name'].' ('.$warehouse['city']['postcode'].')'}}
-                                    </option>
+                                <option value="{{$warehouse['id']}}">
+                                    {{$warehouse['name'].' - '.$warehouse['city']['name'].' ('.$warehouse['city']['postcode'].')'}}
+                                </option>
                                 @endforeach
                             </select>
                         @else
@@ -50,8 +50,10 @@
                             @foreach($warehouse['stock'] as $product)
                                 @if($product['quantity'] > 0)
                                     <div class="form-group">
-                                        <label for="{{'product_'.$product['dish_id']}}">{{$product['dish']['name'].' '.$product['warehouse_price'].'€/u'}}</label>
-                                        <input class="form-control" type="number" id="{{'product_'.$product['dish_id']}}"
+                                        <label for="{{'product_'.$product['dish_id']}}">{{$product['dish']['name'].' '.$product['warehouse_price'].'€/u'}}
+                                            , Disponible : {{$product['quantity']}}</label>
+                                        <input class="form-control" type="number"
+                                               id="{{'product_'.$product['dish_id']}}"
                                                name="{{'product_'.$product['dish_id']}}"
                                                min="0" step="1" max="{{$product['quantity']}}"
                                                value="0">
@@ -64,7 +66,7 @@
                                 @else
                                     <div class="form-group">
                                         <label for="{{'product_'.$product['dish_id']}}">{{$product['dish']['name'].' '.$product['warehouse_price'].'€/u'}}</label>
-                                        <div class="form-control" type="text">Stock indisponible</div>
+                                        <div class="form-control" type="text">Rupture de stock</div>
                                     </div>
                                 @endif
                             @endforeach

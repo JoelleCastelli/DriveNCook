@@ -54,11 +54,11 @@ class StockController extends Controller
     {
         $warehouses_list = [];
         $warehouses = Warehouse::with('city')
-                                 ->with('available_dishes')
-                                 ->get()->toArray();
+            ->with('available_dishes')
+            ->get()->toArray();
 
         foreach ($warehouses as $warehouse) {
-            if(!empty($warehouse['available_dishes'])) {
+            if (!empty($warehouse['available_dishes'])) {
                 $warehouses_list[] = $warehouse;
             }
         }
@@ -176,18 +176,18 @@ class StockController extends Controller
 
         // invoice creation
         $invoice = ['amount' => $order_total,
-                    'date_emitted' => date("Y-m-d"),
-                    'monthly_fee' => 0,
-                    'initial_fee' => 0,
-                    'user_id' => $this->get_connected_user()['id'],
-                    'purchase_order_id' => $order_id];
+            'date_emitted' => date("Y-m-d"),
+            'monthly_fee' => 0,
+            'initial_fee' => 0,
+            'user_id' => $this->get_connected_user()['id'],
+            'purchase_order_id' => $order_id];
         $invoice = Invoice::create($invoice)->toArray();
         $reference = $this->create_invoice_reference('RS', $this->get_connected_user()['id'], $invoice['id']);
         $this->save_franchisee_invoice_pdf($invoice['id'], $reference);
 
         flash('Commande créée !
-                <a href="'.route('franchise.stream_invoice_pdf', ['id'=>$invoice['id']]).'">Consultez la facture au format PDF</a>
-                ou retrouvez-la dans la rubrique <a href="'.route('franchise.invoices_list').'">Factures</a>.')
+                <a href="' . route('franchise.stream_invoice_pdf', ['id' => $invoice['id']]) . '">Consultez la facture au format PDF</a>
+                ou retrouvez-la dans la rubrique <a href="' . route('franchise.invoices_list') . '">Factures</a>.')
             ->success();
 
         return redirect(route('franchise.stock_dashboard'));
@@ -245,6 +245,21 @@ class StockController extends Controller
             ['user_id', $this->get_connected_user()['id']],
             ['dish_id', request('dish_id')]
         ])->update(['unit_price' => request('unit_price')]);
+
+        return json_encode(array('response' => 'success'));
+    }
+
+    public function stock_update_menu_available()
+    {
+        request()->validate([
+            'dish_id' => ['required', 'integer'],
+            'available' => ['required', 'boolean'],
+        ]);
+
+        FranchiseeStock::where([
+            ['user_id', $this->get_connected_user()['id']],
+            ['dish_id', request('dish_id')]
+        ])->update(['menu' => request('available') ? 1 : 0]);
 
         return json_encode(array('response' => 'success'));
     }
