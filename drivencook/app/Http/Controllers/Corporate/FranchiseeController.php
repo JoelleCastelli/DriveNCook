@@ -208,7 +208,8 @@ class FranchiseeController extends Controller
                     'pseudo_id' => $pseudo_id,
                     'email' => $email,
                     'telephone' => $telephone,
-                    'driving_licence' => $driving_licence]);
+                    'driving_licence' => $driving_licence,
+                    'social_security' => $social_security]);
                 return redirect()->back()->with('success', trans('franchisee_update.update_success'));
             }
         } else {
@@ -380,7 +381,8 @@ class FranchiseeController extends Controller
         return $total;
     }
 
-    public function stream_franchisee_invoice($id) {
+    public function stream_franchisee_invoice($id)
+    {
         return $this->stream_franchisee_invoice_pdf($id);
     }
 

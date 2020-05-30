@@ -277,11 +277,12 @@ trait UserTools
         return $pseudos;
     }
 
-    public function get_sale_total($sale_id) {
+    public function get_sale_total($sale_id)
+    {
         $sold_dishes = SoldDish::where('sale_id', $sale_id)->get();
         $sale_total = 0;
 
-        if($sold_dishes) {
+        if ($sold_dishes) {
             $sold_dishes->toArray();
             foreach ($sold_dishes as $sold_dish) {
                 $sale_total += $sold_dish['unit_price'] * $sold_dish['quantity'];
@@ -291,10 +292,11 @@ trait UserTools
         return $sale_total;
     }
 
-    public function get_sales_turnover_by_day($franchisee_id) {
+    public function get_sales_turnover_by_day($franchisee_id)
+    {
         $sales_by_day = Sale::where('user_franchised', $franchisee_id)
-                            ->orderBy('date', 'ASC')
-                            ->get()->groupBy('date')->toArray();
+            ->orderBy('date', 'ASC')
+            ->get()->groupBy('date')->toArray();
 
         $date_labels = [];
         $nb_sales = [];
@@ -311,6 +313,21 @@ trait UserTools
         }
 
         return ['dates' => $date_labels, 'turnover' => $nb_revenue, 'nb_sales' => $nb_sales];
+    }
+
+    public function is_franchisee_valided($franchisee_id): ?bool
+    {
+        $franchise = User::whereKey($franchisee_id)->first();
+        if ($franchise == null) {
+            return null;
+        }
+        $franchise = $franchise->toArray();
+
+        return $franchise['role'] == "Franchisé"
+            && !empty($franchise['driving_licence'])
+            && !empty($franchise['social_security'])
+            && !empty($franchise['telephone'])
+            && !empty($franchise['pseudo_id']);
     }
 
 }

@@ -106,10 +106,7 @@ class AuthController extends Controller
             flash("Cet utilisateur n'est pas un franchisé")->error();
             return redirect(route('franchise.login'));
         }
-        if (!empty($user['driving_licence'])
-            && !empty($user['social_security'])
-            && !empty($user['telephone'])
-            && !empty($user['pseudo_id'])) {
+        if ($this->is_franchisee_valided($user['id'])) {
             flash("Votre compte a déjà été complété, vous pouvez vous connecter")->warning();
             return redirect(route('franchise.login'));
         }

@@ -10,12 +10,14 @@ use App\Models\SafetyInspection;
 use App\Models\Truck;
 use App\Models\User;
 use App\Traits\EnumValue;
+use App\Traits\UserTools;
 use DateTime;
 use Illuminate\Http\Request;
 
 class TruckController extends Controller
 {
     use EnumValue;
+    use UserTools;
 
     public function __construct()
     {
@@ -446,6 +448,11 @@ class TruckController extends Controller
             'truckId' => ['required', 'integer'],
             'userId' => ['required', 'integer']
         ]);
+
+        if (!$this->is_franchisee_valided(request('userId'))) {
+            flash('L\'utilisateur doit être un franchisé "confirmé" pour avoir un camion')->warning();
+            return back();
+        }
 
         Truck::find(request('truckId'))->update([
             'user_id' => request('userId')
