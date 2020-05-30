@@ -124,7 +124,7 @@
                     <h2>{{ trans('franchisee.daily_sales') }}</h2>
                 </div>
                 <div class="card-body">
-                    <div id="app">
+                    <div id="app1">
                         {!! $sales_chart->container() !!}
                     </div>
                 </div>
@@ -137,14 +137,18 @@
                     <h2>{{ trans('franchisee.daily_turnover') }}</h2>
                 </div>
                 <div class="card-body">
-                    <div id="app">
+                    <select class="sel" name="year">
+                    @foreach($franchisee_activity_years as $year)
+                        <option value="{{ $year }}">{{ $year }} </option>
+                    @endforeach
+                    </select>
+                    <div id="app2">
                         {!! $turnover_chart->container() !!}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 
     <!-- Modal -->
     <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -214,4 +218,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
     {!! $sales_chart->script() !!}
     {!! $turnover_chart->script() !!}
+
+    <script type="text/javascript">
+        let original_api_url = {{ $turnover_chart->id }}_api_url;
+
+        $(".sel").change(function(){
+            let year = $(this).val();
+            console.log(original_api_url);
+            {{ $turnover_chart->id }}_refresh(original_api_url + "?year="+year);
+        });
+    </script>
 @endsection

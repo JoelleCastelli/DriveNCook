@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Franchise;
 
 use App\Http\Controllers\Controller;
-use App\Models\Sale;
 use App\Traits\UserTools;
 use App\Charts\FranchiseeStatsChart;
+use DateInterval;
+use DatePeriod;
 use DateTime;
 
 class RevenuesStatsController extends Controller
@@ -21,9 +22,18 @@ class RevenuesStatsController extends Controller
         $sales_chart = $this->generate_chart($franchisee['id'], 1);
         $turnover_chart = $this->generate_chart($franchisee['id'], 50, 'turnover');
 
+        $franchisee_activity_years = [];
+        $begin = DateTime::createFromFormat("Y-m-d H:i:s", $franchisee['created_at']);
+        $end = new DateTime( 'now' );
+        $daterange = new DatePeriod($begin, new DateInterval('P1Y'), $end);
+        foreach($daterange as $date){
+            $franchisee_activity_years[] = $date->format("Y");
+        }
+
         return view('franchise.revenues_stats')->with('revenues', $current_month_sales)
-                                                    ->with('history', $history)
                                                     ->with('franchisee', $franchisee)
+                                                    ->with('history', $history)
+                                                    ->with('franchisee_activity_years', $franchisee_activity_years)
                                                     ->with('invoicing_period', $invoicing_period)
                                                     ->with('sales_chart', $sales_chart)
                                                     ->with('turnover_chart', $turnover_chart)
@@ -59,6 +69,28 @@ class RevenuesStatsController extends Controller
         ]);
 
         return $chart;
+    }
+
+
+    public function chartLine() {
+        $data = $this->get_sales_turnover_by_day(503);
+        $api = url('/chart-line-ajax');
+        $chart = new FranchiseeStatsChart;
+        $chart->labels($data['dates'])->load($api);
+        return $chart;
+    }
+
+    public function chartLineAjax(Request $request) {
+        $year = $request->has('year') ? $request->year : date('Y');
+        $data = $this->get_sales_turnover_by_day(503);
+
+        $chart = new FranchiseeStatsChart;
+        $chart->dataset('New User Register Chart', 'line', $data['nb_sales'])->options([
+            'fill' => 'true',
+            'borderColor' => '#51C1C0'
+        ]);
+
+        return $chart->api();
     }
 
 }
