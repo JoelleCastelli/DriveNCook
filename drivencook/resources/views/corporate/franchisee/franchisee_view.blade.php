@@ -167,7 +167,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-md-5">
                             <div class="row d-flex justify-content-center">
-                                Total facturé
+                                Total facturé (hors frais initiaux)
                             </div>
                             <div class="row d-flex justify-content-center">
                                 <h1>{{ number_format($history['total_invoices'], 2, ',', ' ') }} €</h1>
@@ -201,7 +201,7 @@
                             <tbody>
                             @foreach($franchisee['invoices'] as $license_fee)
                                 <tr>
-                                    <td>{{$license_fee['amount'].' €'}}</td>
+                                    <td>{{ number_format($license_fee['amount'], 2, ',', ' ').' €'}}</td>
                                     <td>{{$license_fee['status']}}</td>
                                     <td>{{$license_fee['reference']}}</td>
                                     <td>@if ($license_fee['monthly_fee'] == 1)
@@ -219,7 +219,7 @@
                                         DateTime::createFromFormat('Y-m-d',$license_fee['date_paid'])->format('d/m/Y'):'En attente'}}
                                     </td>
                                     <td>
-                                        <a class="ml-2" href="{{route('franchisee_invoice_pdf',['id'=>$license_fee['id']])}}">
+                                        <a class="ml-2" href="{{ route('stream_franchisee_invoice',['id'=>$license_fee['id']]) }}" target="_blank">
                                             <button class="text-light fa fa-file-pdf ml-3"></button>
                                         </a>
                                     </td>

@@ -8,11 +8,13 @@
         "php": ">=7.1",
         "ext-json": "*",
         "barryvdh/laravel-dompdf": "^0.8.6",
+        "consoletvs/charts": "6.*",
         "fideloper/proxy": "~3.3",
         "laracasts/flash": "^3.1",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
         "mariuzzo/laravel-js-localization": "^1.6",
+        "stripe/stripe-php": "^7.36",
         "yajra/laravel-datatables": "1.5"
     },
     "require-dev": {

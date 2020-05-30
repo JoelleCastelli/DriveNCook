@@ -1,6 +1,6 @@
 @extends('franchise.franchise_dashboard')
 @section('title')
-    {{empty($breakdown)?'Ajout d\'une panne' : 'Mise à jour d\'une panne'}}
+    {{empty($breakdown)?trans('franchisee.add_breakdown') : trans('franchisee.update_breakdown')}}
 @endsection
 
 @section('content')
@@ -15,7 +15,7 @@
                         @endif
 
                         <div class="form-group">
-                            <label for="type">Type de panne</label>
+                            <label for="type">{{trans('franchisee.breakdown_type')}}</label>
                             <select class="form-control" id="type" name="type">
                                 @foreach($breakdown_type as $type)
                                     <option
@@ -33,7 +33,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="description">Description</label>
+                            <label for="description">{{trans('franchisee.description')}}</label>
                             <input class="form-control" type="text" id="description" name="description" maxlength="255"
                                     {{!empty($breakdown)?'value='.$breakdown['description']:''}}>
                             @if ($errors->has('description'))
@@ -44,7 +44,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="cost">Coût</label>
+                            <label for="cost">{{trans('franchisee.cost')}}</label>
                             <input {{!empty($breakdown)?'value='.$breakdown['cost']:''}}
                                    class="form-control" type="number" id="cost" name="cost" min="0" step="0.01"
                                    max="999999">
@@ -56,7 +56,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="date">Date</label>
+                            <label for="date">{{trans('franchisee.date')}}</label>
                             <input {{!empty($breakdown)?'value='.$breakdown['date']:''}}
                                    class="form-control" type="date" id="date" name="date">
                             @if ($errors->has('date'))
@@ -67,7 +67,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="status">Status</label>
+                            <label for="status">{{trans('franchisee.status')}}</label>
                             <select class="form-control" id="status" name="status">
                                 @foreach($breakdown_status as $status)
                                     <option
@@ -85,7 +85,7 @@
 
                         <div class="form-group">
                             <button type="submit"
-                                    class="btn btn-info">{{!empty($breakdown)?'Modifier':'Ajouter'}}</button>
+                                    class="btn btn-info">{{!empty($breakdown)?trans('franchisee.update'):trans('franchisee.add')}}</button>
                         </div>
 
                     </form>

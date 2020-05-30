@@ -1,7 +1,7 @@
 @extends('franchise.layout_franchise')
 
 @section('title')
-    Tableau de bord de {{$franchise['firstname'].' '.$franchise['lastname']. ' ('.$franchise['pseudo']['name'].')'}}
+    {{trans('franchisee.dashboard').' '.$franchise['firstname'].' '.$franchise['lastname']. ' ('.(empty($franchise['pseudo'])?trans('franchisee.unknown_pseudo'):$franchise['pseudo']['name']).')'}}
 @endsection
 
 
@@ -12,18 +12,18 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div class="card text-light2">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item bg-indigo">Emplacement du camion :<br>
+                            <li class="list-group-item bg-indigo">{{trans('franchisee.truck_location')}} :<br>
                                 </b><?php
                                 if (empty($truck['location'])) {
-                                    echo 'Non renseigné';
+                                    echo trans('franchisee.unknown');
                                 } else {
                                     echo $truck['location']['address'] . ' (' . $truck['location']['city']['postcode'] . ')';
                                     echo '<br>';
-                                    echo 'Du ' . DateTime::createFromFormat('Y-m-d', $truck['location_date_start'])->format('d/m/Y');
+                                    echo trans('franchisee.from') . ' ' . DateTime::createFromFormat('Y-m-d', $truck['location_date_start'])->format('d/m/Y');
                                     if ($truck['location_date_end'] != null) {
-                                        echo ' au ' . DateTime::createFromFormat('Y-m-d', $truck['location_date_end'])->format('d/m/Y');
+                                        echo ' ' . trans('franchisee.to') . ' ' . DateTime::createFromFormat('Y-m-d', $truck['location_date_end'])->format('d/m/Y');
                                     } else {
-                                        echo ' jusqu\'à une durée indéterminée';
+                                        echo ' ' . trans('franchisee.undetermined_duration');
                                     }
                                 }
                                 ?>
@@ -32,7 +32,7 @@
                             <li class="list-group-item bg-indigo align-content-arround">
                                 <a href="{{route('franchise.truck_view')}}" target="_blank" class="row text-light2">
                                     <div class="col-10">
-                                        Consulter les details
+                                        {{trans('franchisee.view_details')}}
                                     </div>
                                     <div class="col-2">
                                         <i class="fa fa-chevron-right"></i>
@@ -45,11 +45,11 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div class="card text-light2">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item bg-info">Nombre de ventes (30 jours) : #TODO</li>
+                            <li class="list-group-item bg-info">{{trans('franchisee.sell_count_30_days')}} : #TODO</li>
                             <li class="list-group-item bg-info align-content-arround">
                                 <a href="#" target="_blank" class="row text-light2">
                                     <div class="col-10">
-                                        Consulter les details
+                                        {{trans('franchisee.view_details')}}
                                     </div>
                                     <div class="col-2">
                                         <i class="fa fa-chevron-right"></i>
@@ -62,11 +62,13 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div class="card text-light2">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item bg-success">Chiffre d'affaire temps réel (mensuel) : #TODO €</li>
+                            <li class="list-group-item bg-success">{{trans('franchisee.real_time_revenues_monthly')}} :
+                                #TODO €
+                            </li>
                             <li class="list-group-item bg-success align-content-arround">
                                 <a href="#" target="_blank" class="row text-light2">
                                     <div class="col-10">
-                                        Consulter les details
+                                        {{trans('franchisee.view_details')}}
                                     </div>
                                     <div class="col-2">
                                         <i class="fa fa-chevron-right"></i>
@@ -77,7 +79,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 @endsection

@@ -70,9 +70,9 @@ Route::delete('/corporate/unset_franchisee_truck/{id}', [
     'uses' => 'Corporate\FranchiseeController@unset_franchise_truck'
 ]);
 
-Route::get('/corporate/franchisee_invoice_pdf/{id}', [
-    'as' => 'franchisee_invoice_pdf',
-    'uses' => 'Corporate\FranchiseeController@franchisee_invoice_pdf'
+Route::get('/corporate/franchisee_invoice/{id}', [
+    'as' => 'stream_franchisee_invoice',
+    'uses' => 'Corporate\FranchiseeController@stream_franchisee_invoice'
 ]);
 
 Route::post('/corporate/franchisee_sales_history_pdf', [
