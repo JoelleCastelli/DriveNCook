@@ -1,25 +1,20 @@
 @extends('corporate.layout_corporate')
 @section('title')
-    {{ trans('warehouse_view.title') }} : {{ strtoupper($warehouse['name']) }}
+    {{ trans('warehouse.title_view') }} : {{ strtoupper($warehouse['name']) }}
 @endsection
-@section('style')
-    {{--    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet">--}}
-    {{--    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet">--}}
-@endsection
-
 
 @section('content')
     <div class="row">
         <div class="col-12 col-lg-12 mb-5">
             <div class="card">
                 <div class="card-header d-flex align-items-center">
-                    <h2>{{ trans('warehouse_view.warehouse_details_section') }}</h2>
+                    <h2>{{ trans('warehouse.details_section') }}</h2>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><b>{{ trans('warehouse_view.warehouse_name') }} : </b>{{ $warehouse['name'] }}</li>
-                    <li class="list-group-item"><b>{{ trans('warehouse_view.warehouse_address') }} : </b>{{ $warehouse['address'] }}</li>
-                    <li class="list-group-item"><b>{{ trans('warehouse_view.warehouse_city') }} : </b>{{ empty($warehouse['city'])?
-                                        trans('corporate.unknown'):$warehouse['city']['name'] }}</li>
+                    <li class="list-group-item"><b>{{ trans('warehouse.name') }} : </b>{{ $warehouse['name'] }}</li>
+                    <li class="list-group-item"><b>{{ trans('warehouse.address') }} : </b>{{ $warehouse['address'] }}</li>
+                    <li class="list-group-item"><b>{{ trans('warehouse.city') }} : </b>{{ empty($warehouse['city'])?
+                                        trans('warehouse.unknown'):$warehouse['city']['name'] }}</li>
                 </ul>
             </div>
         </div>
@@ -28,7 +23,7 @@
         <div class="col-12 col-lg-12 mb-5">
             <div class="card">
                 <div class="card-header">
-                    <h2>{{ trans('warehouse_view.dishes_section') }}</h2>
+                    <h2>{{ trans('warehouse.sold_out_products') }}</h2>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -36,10 +31,10 @@
                                style="width: 100%">
                             <thead>
                             <tr>
-                                <th>{{ trans('warehouse_view.product') }}</th>
-                                <th>{{ trans('warehouse_view.category') }}</th>
-                                <th>{{ trans('warehouse_view.quantity') }}</th>
-                                <th>{{ trans('warehouse_view.warehouse_price') }}</th>
+                                <th>{{ trans('warehouse.product') }}</th>
+                                <th>{{ trans('warehouse.product_category') }}</th>
+                                <th>{{ trans('warehouse.product_quantity') }}</th>
+                                <th>{{ trans('warehouse.product_price') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -64,7 +59,7 @@
         <div class="col-12 col-lg-12 mb-5">
             <div class="card">
                 <div class="card-header">
-                    <h2>{{ trans('warehouse_view.orders_section') }}</h2>
+                    <h2>{{ trans('warehouse.orders_section') }}</h2>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -72,11 +67,11 @@
                                style="width: 100%">
                             <thead>
                             <tr>
-                                <th>{{ trans('warehouse_order.date') }}</th>
-                                <th>{{ trans('warehouse_order.pseudo') }}</th>
-                                <th>{{ trans('warehouse_order.status') }}</th>
-                                <th>{{ trans('warehouse_order.global_price') }}</th>
-                                <th>{{ trans('corporate.actions') }}</th>
+                                <th>{{ trans('warehouse.order_date') }}</th>
+                                <th>{{ trans('warehouse.order_franchisee_pseudo') }}</th>
+                                <th>{{ trans('warehouse.order_status') }}</th>
+                                <th>{{ trans('warehouse.order_total') }}</th>
+                                <th>{{ trans('warehouse.actions') }}</th>
                             </tr>
                             </thead>
                             <tbody>
