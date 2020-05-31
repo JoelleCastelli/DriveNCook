@@ -2,20 +2,22 @@ import * as THREE from './libs/three.module.js';
 import {THREEx} from './libs/THREEx.KeyboardState.js';
 import Stats from './libs/stats.module.js';
 import * as functions from './functions.js';
+import * as city_builder from './city_builder.js';
 
 Math.radians = (degrees) => degrees * Math.PI / 180;
 
 let keyboard = new THREEx.KeyboardState(); // import de la librairie qui écoute le clavier
 let camera, geometry, light1, renderer, scene, stats, terrain;
+const loader = new THREE.TextureLoader();
 
 let terrainDim = {
-    width: 100,
-    height: 100,
+    width: 1000, //pas de 250
+    height: 1000, //pas de 250
 };
 
 let cameraT = {
-    moveSpeed: 1,
-    rotationSpeed: 0.01
+    moveSpeed: 3,
+    rotationSpeed: 0.03
 };
 
 
