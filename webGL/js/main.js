@@ -44,7 +44,8 @@ function init() {
     terrain = functions.createTerrain(terrainDim.width, terrainDim.height, greenMat,
         terrainDim.width / 2, terrainDim.height / 2, -80);
 
-    scene.add(terrain);
+    const bgTexture = loader.load('../assets/images/sky.jpg');
+    scene.background = bgTexture;
 
     /**
      * light
@@ -56,7 +57,10 @@ function init() {
     /**
      * render options
      */
-    renderer = new THREE.WebGLRenderer({antialias: true});
+    renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha : true,
+    });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
