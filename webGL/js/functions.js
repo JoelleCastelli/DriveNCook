@@ -1,4 +1,6 @@
 import * as THREE from './libs/three.module.js';
+import {FBXLoader} from "./libs/FBXLoader.js";
+
 
 export function createCamera(
     fov = 60,
@@ -88,4 +90,28 @@ export function camControl(keyboard, camera, cameraT) {
     if (keyboard.pressed("e")) {
         camera.rotateOnAxis(vectorZ, -cameraT.rotationSpeed * 0.5);
     }
+    if (camera.position.y < 10) {
+        camera.position.y = 10;
+    }
 }
+
+export function loadStaticFBX(scene, path = null, name = "", scale = 1, posX = 0, posY = 0, posZ = 0, rotY = 0) {
+    let loader = new FBXLoader();
+    let loadedObject;
+    loader.load(path, function (object) {
+
+        object.traverse(function (child) {
+
+            if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        });
+        object.name = name;
+        object.position.set(posX, posY, posZ)
+        object.rotateY(rotY);
+        object.scale.x = object.scale.y = object.scale.z = scale;
+        scene.add(object);
+    });
+}
+
