@@ -41,8 +41,11 @@ class OrderController extends Controller
             $truck = $truck->toArray();
         }
 
-        $stocks = FranchiseeStock::where('user_id', $truck['user']['id'])
-            ->with('dish')
+        $stocks = FranchiseeStock::where([
+            ['user_id', $truck['user']['id']],
+            ['menu', true]
+        ])->with('dish')
+            ->with('user')
             ->get();
 
         if(!empty($stocks)) {
@@ -51,5 +54,10 @@ class OrderController extends Controller
 
         return view('client.order.client_order')
             ->with('stocks', $stocks);
+    }
+
+    public function client_order_submit()
+    {
+        
     }
 }

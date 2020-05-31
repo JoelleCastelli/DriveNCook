@@ -21,4 +21,5 @@ class FranchiseeStock extends \Illuminate\Database\Eloquent\Model
     {
         return $this->belongsTo(Dish::class, 'dish_id');
     }
+
 }
