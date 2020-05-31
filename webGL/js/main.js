@@ -37,24 +37,21 @@ function init() {
     /**
      * init camera
      */
-    camera = functions.createCamera(60, 1, terrainDim.width + terrainDim.height,
-        terrainDim.width / 2, terrainDim.height / 2, 10)
+    camera = functions.createCamera(60, 1, 10000,
+        0, 60, 0)
 
     /**
-     * init terrain
+     * init background
      */
-    terrain = functions.createTerrain(terrainDim.width, terrainDim.height, greenMat,
-        terrainDim.width / 2, terrainDim.height / 2, -80);
 
     const bgTexture = loader.load('../assets/images/sky.jpg');
     scene.background = bgTexture;
 
     /**
-     * light
+     * Build city
      */
-    light1 = functions.createPointLight(2, 0xFEFEFE, 0.5, 0, 20, 0);
 
-    scene.add(light1);
+    city_builder.build_city(scene, terrainDim);
 
     /**
      * render options
