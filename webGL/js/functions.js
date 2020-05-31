@@ -39,7 +39,8 @@ export function createPointLight(
     posZ = 0) {
 
     let geometry = new THREE.SphereBufferGeometry(radius, 32, 32);
-    let light = new THREE.PointLight(color, intensity);
+    let light = new THREE.PointLight(color, intensity, 1000);
+    light.shadow.camera.far = 1500
     light.add(new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({color: color})));
     light.position.set(posX, posY, posZ);
     light.castShadow = true;
@@ -54,14 +55,14 @@ export function camControl(keyboard, camera, cameraT) {
 
 
     if (keyboard.pressed("up")) {
-        if (camera.rotation.x < Math.radians(40)) {
-            camera.rotateOnAxis(vectorX, cameraT.rotationSpeed);
-        }
+        // if (camera.rotation.x < Math.radians(40)) {
+        camera.rotateOnAxis(vectorX, cameraT.rotationSpeed);
+        // }
     }
     if (keyboard.pressed("down")) {
-        if (camera.rotation.x > Math.radians(-40)) {
-            camera.rotateOnAxis(vectorX, -cameraT.rotationSpeed);
-        }
+        // if (camera.rotation.x > Math.radians(-40)) {
+        camera.rotateOnAxis(vectorX, -cameraT.rotationSpeed);
+        // }
     }
     if (keyboard.pressed("left")) {
         camera.rotateOnAxis(vectorY, cameraT.rotationSpeed);
