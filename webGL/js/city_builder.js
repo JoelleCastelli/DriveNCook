@@ -150,3 +150,31 @@ function fill_square_building_2(scene, xStart, zStart) {
     functions.loadStaticFBX(scene, environments.tree_02, "", 0.1, x, 0, z);
 
 }
+function fill_square_building_3(scene, xStart, zStart) {
+    let x = xStart + 40;
+    let z = zStart + 40;
+    functions.loadStaticFBX(scene, buildings.office_round, "", 0.03, x, 70, z);
+    z += 75;
+    functions.loadStaticFBX(scene, buildings.office_square, "", 0.04, x, 70, z);
+    z += 75;
+    functions.loadStaticFBX(scene, buildings.office_square, "", 0.04, x, 70, z);
+    x += 75;
+    functions.loadStaticFBX(scene, buildings.shop_with_roof, "", 0.1, x, 15, z);
+    functions.loadStaticFBX(scene, props.water_tower, "", 0.2, x, 0, z - 75);
+    x += 40;
+    functions.loadStaticFBX(scene, props.bench, "", 0.1, x, 0, z);
+    functions.loadStaticFBX(scene, environments.flower, "", 0.1, x - 10, 0, z + 15);
+    functions.loadStaticFBX(scene, environments.flower, "", 0.1, x - 5, 0, z + 10);
+    functions.loadStaticFBX(scene, environments.flower, "", 0.1, x + 2, 0, z + 11);
+    functions.loadStaticFBX(scene, environments.flower, "", 0.1, x + 10, 0, z + 13);
+    x += 20
+    functions.loadStaticFBX(scene, props.hydrant, "", 0.1, x, 0, z);
+    x += 30
+    functions.loadStaticFBX(scene, vehicles.car_muscle, "", 0.08, x, 0, z);
+    x += 10
+    z -= 100
+    functions.loadStaticFBX(scene, buildings.office_old_small_01, "", 0.06, x, 0, z, Math.radians(180));
+    z -= 60;
+    x -= 70;
+    functions.loadStaticFBX(scene, buildings.station, "", 0.08, x, 0, z, Math.radians(180));
+}
