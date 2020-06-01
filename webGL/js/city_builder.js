@@ -15,18 +15,18 @@ const vehicles = {
 }
 
 const buildings = {
-    apartment_01: '../assets/models/SM_Bld_Apartment_Stack_02.fbx',
-    apartment_02: '../assets/models/SM_Bld_Apartment_Stack_03.fbx',
-    office_octagon: '../assets/models/SM_Bld_OfficeOctagon_01.fbx',
+    apartment_01: '../assets/models/SM_Bld_Apartment_Stack_02.fbx', //scale 0.1, dim : 50x50
+    apartment_02: '../assets/models/SM_Bld_Apartment_Stack_03.fbx',//scale 0.1, dim : 50x50
+    office_octagon: '../assets/models/SM_Bld_OfficeOctagon_01.fbx', // scale 0.09, dim : 200x200
     office_old_large: '../assets/models/SM_Bld_OfficeOld_Large_01.fbx',
-    office_old_small_01: '../assets/models/SM_Bld_OfficeOld_Small_01.fbx',
+    office_old_small_01: '../assets/models/SM_Bld_OfficeOld_Small_01.fbx',// scale 0.06, dim : 60x60
     office_old_small_02: '../assets/models/SM_Bld_OfficeOld_Small_02.fbx',
-    office_round: '../assets/models/SM_Bld_OfficeRound_01.fbx',
-    office_square: '../assets/models/SM_Bld_OfficeSquare_01.fbx',
-    shop: '../assets/models/SM_Bld_Shop_01.fbx',
-    shop_corner: '../assets/models/SM_Bld_Shop_Corner_01.fbx',
+    office_round: '../assets/models/SM_Bld_OfficeRound_01.fbx',// scale 0.03 dim : 60x60, y 70
+    office_square: '../assets/models/SM_Bld_OfficeSquare_01.fbx',// scale 0.04 dim : 60x60 y 70
+    shop: '../assets/models/SM_Bld_Shop_01.fbx',//scale 0.1, dim : 50x50
+    shop_corner: '../assets/models/SM_Bld_Shop_Corner_01.fbx',//scale 0.1, dim : 50x50
     shop_with_roof: '../assets/models/Shop_cover.fbx',
-    station: '../assets/models/SM_Bld_Station_03.fbx',
+    station: '../assets/models/SM_Bld_Station_03.fbx',// scale 0.8
 }
 
 const environments = {
@@ -77,9 +77,9 @@ export function build_city(scene, terrainDim) {
      * light
      */
     scene.add(
-        functions.createPointLight(2, 0xFFFFFF, 1, terrainDim.width / 4, 600, terrainDim.height / 4)
+        functions.createPointLight(2, 0xFFFFFF, 1.2, terrainDim.width / 4, 400, terrainDim.height / 4)
     );
-    scene.add(new THREE.AmbientLight(0xffffff, 0.8))
+    scene.add(new THREE.AmbientLight(0xffffff, 1))
 
     /**
      * Roads
