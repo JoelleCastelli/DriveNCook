@@ -81,8 +81,18 @@ function init() {
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
+    renderer.domElement.id = 'canvas';
     document.body.appendChild(renderer.domElement);
     window.addEventListener('resize', onWindowResize, false);
+    document.addEventListener('keydown', onLoad, false);
+
+}
+
+function onLoad() {
+    const preload = document.querySelector('.container');
+    const canvas = document.querySelector('#canvas');
+    canvas.classList.add('display');
+    preload.classList.add('container-finish');
 }
 
 function onWindowResize() {

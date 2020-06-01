@@ -1,0 +1,56 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css?family=Ubuntu&display=swap");
+
+:root {
+    --duration: 1.5s;
+    --container-size: 250px;
+    --box-size: 33px;
+    --box-border-radius: 50%;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #20E6FF;
+    z-index: 10001;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease;
+}
+
+.container.container-finish {
+    opacity: 0;
+    pointer-events: none;
+}
+
+canvas {
+    display: none;
+}
+
+canvas.display {
+    display: block;
+}
+
+.preloader {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: var(--container-size);
+}
+
+.img-responsive {
+    max-width: 100%;
+    heigth: auto;
+    display: block;
+}
