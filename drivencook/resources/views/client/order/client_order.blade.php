@@ -107,12 +107,17 @@
 
             $('.orderBtn').on('click', function () {
                 let table = $('.orderDish');
-                let order = [];
+                let order = {};
 
+                console.log(table);
                 for(let i = 0; i < table.length; i++) {
                     let id = table[i].id.split('_').slice(-1)[0];
-                    order['"' + id + '"'] = $('#qty' + id).val();
+                    order[id] = parseInt($('#qty' + id).val());
                 }
+
+                order['truck_id'] = window.location.href.split('/').slice(-1)[0];
+
+                order = JSON.stringify(order);
 
                 $.ajax({
                     url: '{{ route('client_order_submit') }}',
@@ -120,18 +125,20 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    data: order,
-                    dataType: 'json',
-                    cache: false,
-                    contentType: false,
-                    processData: false,
+                    data: {
+                        'order': order,
+                    },
                     success: function (data) {
+                        alert(data);
                         if (data['status'] === 'success') {
 
                         } else {
                             let str = '';
-                            for(let i = 0; i < data['errorList'].length; i++) {
-                                str += '\n' + data['errorList'][i];
+
+                            if(data['errorList']) {
+                                for (let i = 0; i < data['errorList'].length; i++) {
+                                    str += '\n' + data['errorList'][i];
+                                }
                             }
                             alert(Lang.get('client/order.create_order_error') + str);
                         }
@@ -146,7 +153,7 @@
                 let id = $(this).attr('id');
                 let ipt = $('#qty' + id);
 
-                if(ipt && $('#ordered' + id).length === 0) {
+                if(ipt && $('#ordered_' + id).length === 0) {
                     if (parseInt(ipt.val()) > 0) {
                         let quantityInput = '<input type="number" class="form-control qtyToOrderIpt" id="qty' + id + '" ' +
                             'style="width: 100%" value="' + ipt.val() + '" min="0" max="' + ipt.attr('max') + '">';
@@ -163,9 +170,16 @@
             });
 
             $('.qtyToOrderIpt').on('change', function () {
-                let max = parseInt($(this).attr('max'))
-                if(parseInt($(this).val()) > max) {
+                let max = parseInt($(this).attr('max'));
+                let min = parseInt($(this).attr('min'));
+                let val = parseInt($(this).val());
+
+                if(val > max) {
                     $(this).val(max);
+                } else if(val < min) {
+                    $(this).val(min);
+                } else {
+                    $(this).val(val);
                 }
             });
         });

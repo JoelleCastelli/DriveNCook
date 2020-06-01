@@ -8,6 +8,7 @@ use App\Http\Middleware\AuthClient;
 use App\Models\Dish;
 use App\Models\FranchiseeStock;
 use App\Models\Truck;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -56,8 +57,23 @@ class OrderController extends Controller
             ->with('stocks', $stocks);
     }
 
-    public function client_order_submit()
+    public function client_order_submit(Request $request)
     {
-        
+        $parameters = $request->all();
+        $errors_list = [];
+        $response_array = [];
+
+        if(!empty($parameters['order'])) {
+            $parameters['order'] = get_object_vars(json_decode($parameters['order']));
+        } else {
+            $errors_list[] = trans('client/order.missing_post_data');
+
+            $response_array = [
+                'status' => 'error',
+                'errorList' => $errors_list
+            ];
+        }
+
+        echo json_encode($response_array);
     }
 }
