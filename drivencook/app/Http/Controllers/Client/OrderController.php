@@ -128,7 +128,9 @@ class OrderController extends Controller
                         'quantity' => $quantity,
                     ];
 
-                    SoldDish::insert($sold_dish);
+                    if($quantity > 0) {
+                        SoldDish::insert($sold_dish);
+                    }
                 }
 
                 $response_array = [

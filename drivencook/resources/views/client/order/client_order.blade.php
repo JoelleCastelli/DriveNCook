@@ -37,6 +37,7 @@
                                     <th>{{ trans('client/order.quantity_to_order') }}</th>
                                     <th>{{ trans('dish.name') }}</th>
                                     <th>{{ trans('dish.category') }}</th>
+                                    <th>{{ trans('client/order.unit_price') }}</th>
                                     <th>{{ trans('dish.description') }}</th>
                                     <th>{{ trans('dish.diet') }}</th>
                                 </tr>
@@ -52,10 +53,11 @@
                                                    id="qty{{ $stock['dish_id'] }}"
                                                    style="width: 100%"
                                                    value="0"
-                                                   min="0"
+                                                   min="1"
                                                    max="{{ $stock['quantity'] }}"></td>
                                         <td id="name{{ $stock['dish_id'] }}">{{ $stock['dish']['name'] }}</td>
                                         <td>{{ trans('dish.category_' . strtolower($stock['dish']['category'])) }}</td>
+                                        <td id="price{{ $stock['dish_id'] }}">{{ $stock['unit_price'] }} €</td>
                                         <td>{{ $stock['dish']['description'] }}</td>
                                         <td>{{ trans('dish.diet_' . strtolower($stock['dish']['diet'])) }}</td>
                                     </tr>
@@ -79,6 +81,7 @@
                                 <tr>
                                     <th scope="col">{{ trans('dish.actions') }}</th>
                                     <th scope="col">{{ trans('client/order.quantity_ordered') }}</th>
+                                    <th scope="col">{{ trans('client/order.line_price') }}</th>
                                     <th scope="col">{{ trans('dish.name') }}</th>
                                 </tr>
                             </thread>
@@ -89,7 +92,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <button class="btn btn-light_blue orderBtn">{{ trans('client/order.order_btn') }}</button>
+                    <button class="btn btn-light_blue orderBtn" id="orderBtnId">{{ trans('client/order.order_btn') }}</button>
                 </div>
             </div>
         </div>
@@ -102,6 +105,32 @@
             $(this).parent().parent().remove();
         });
 
+        $(document).on('change', '.qtyToOrderIpt', function () {
+            let max = parseInt($(this).attr('max'));
+            let min = parseInt($(this).attr('min'));
+            let val = parseInt($(this).val());
+
+            if(val > max) {
+                $(this).val(max);
+            } else if(val < min) {
+                $(this).val(min);
+            } else {
+                $(this).val(val);
+            }
+        });
+
+        $(document).on('change', '.qtyOrderedIpt', function () {
+            let id = $(this).attr('id').split('_').slice(-1)[0];
+
+            if(parseInt($(this).val()) < 1) {
+                $(this).val(1);
+            }
+
+            let linePrice = parseFloat($('#price' + id).text()) * parseInt($(this).val());
+
+            $('#orderedLinePrice' + id).text(linePrice.toFixed(2) + ' €');
+        });
+
         $(document).ready(function () {
             $('#allDishes').DataTable();
 
@@ -109,44 +138,45 @@
                 let table = $('.orderDish');
                 let order = {};
 
-                console.log(table);
-                for(let i = 0; i < table.length; i++) {
-                    let id = table[i].id.split('_').slice(-1)[0];
-                    order[id] = parseInt($('#qty' + id).val());
-                }
-
-                order['truck_id'] = window.location.href.split('/').slice(-1)[0];
-
-                order = JSON.stringify(order);
-
-                $.ajax({
-                    url: '{{ route('client_order_submit') }}',
-                    method: 'post',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    data: {
-                        'order': order,
-                    },
-                    dataType: 'json',
-                    success: function (data) {
-                        if (data['status'] === 'success') {
-
-                        } else {
-                            let str = '';
-
-                            if(data['errorList']) {
-                                for (let i = 0; i < data['errorList'].length; i++) {
-                                    str += '\n' + data['errorList'][i];
-                                }
-                            }
-                            alert(Lang.get('client/order.create_order_error') + str);
-                        }
-                    },
-                    error: function () {
-                        alert(Lang.get('client/order.create_order_error'));
+                if(table.length > 0) {
+                    for (let i = 0; i < table.length; i++) {
+                        let id = table[i].id.split('_').slice(-1)[0];
+                        order[id] = parseInt($('#qty_' + id).val());
                     }
-                });
+
+                    order['truck_id'] = window.location.href.split('/').slice(-1)[0];
+
+                    order = JSON.stringify(order);
+
+                    $.ajax({
+                        url: '{{ route('client_order_submit') }}',
+                        method: 'post',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        data: {
+                            'order': order,
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data['status'] === 'success') {
+
+                            } else {
+                                let str = '';
+
+                                if (data['errorList']) {
+                                    for (let i = 0; i < data['errorList'].length; i++) {
+                                        str += '\n' + data['errorList'][i];
+                                    }
+                                }
+                                alert(Lang.get('client/order.create_order_error') + str);
+                            }
+                        },
+                        error: function () {
+                            alert(Lang.get('client/order.create_order_error'));
+                        }
+                    });
+                }
             });
 
             $('.addToOrderBtn').on('click', function () {
@@ -155,13 +185,15 @@
 
                 if(ipt && $('#ordered_' + id).length === 0) {
                     if (parseInt(ipt.val()) > 0) {
-                        let quantityInput = '<input type="number" class="form-control qtyToOrderIpt" id="qty' + id + '" ' +
-                            'style="width: 100%" value="' + ipt.val() + '" min="0" max="' + ipt.attr('max') + '">';
+                        let quantityInput = '<input type="number" class="form-control qtyToOrderIpt qtyOrderedIpt" id="qty_' + id + '" ' +
+                            'style="width: 100%" value="' + ipt.val() + '" min="1" max="' + ipt.attr('max') + '">';
+                        let linePrice = parseFloat($('#price' + id).text()) * parseInt(ipt.val());
 
                         $('#shopCartContent').append('' +
                             '<tr class="orderDish" id="ordered_' + id + '">' +
                             '<td><button class="text-light fa fa-minus delToOrderBtn"></button></td>' +
                             '<td>' + quantityInput + '</td>' +
+                            '<td id="orderedLinePrice' + id + '">' + linePrice.toFixed(2) + ' €</td>' +
                             '<td>' + $('#name' + id).text() + '</td>' +
                             '</tr>'
                         );
@@ -169,19 +201,6 @@
                 }
             });
 
-            $('.qtyToOrderIpt').on('change', function () {
-                let max = parseInt($(this).attr('max'));
-                let min = parseInt($(this).attr('min'));
-                let val = parseInt($(this).val());
-
-                if(val > max) {
-                    $(this).val(max);
-                } else if(val < min) {
-                    $(this).val(min);
-                } else {
-                    $(this).val(val);
-                }
-            });
         });
     </script>
 @endsection
