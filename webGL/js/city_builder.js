@@ -89,15 +89,15 @@ export function build_city(scene, terrainDim) {
 
 function build_roads(scene, terrainDim) {
     for (let j = 0; j <= terrainDim.width; j += 25) {
-        for (let i = 0; i < terrainDim.height; i += 25) {
+        for (let i = 0; i <= terrainDim.height; i += 25) {
             if (j / 25 % 10 === 0) {
-                if (i / 25 % 10 === 0 || i === terrainDim.height - 25) {
+                if (i / 25 % 10 === 0 || i === terrainDim.height) {
                     functions.loadStaticFBX(scene, environments.road_bare, "", 0.05, -terrainDim.width / 2 + j, 0.1, -terrainDim.height / 2 + 25 + i);
                 } else {
                     functions.loadStaticFBX(scene, environments.road_line, "", 0.05, -terrainDim.width / 2 + j, 0.1, -terrainDim.height / 2 + 25 + i);
                 }
             } else {
-                if (i / 25 % 10 === 0 || i === terrainDim.height - 25) {
+                if (i / 25 % 10 === 0 || i === terrainDim.height) {
                     functions.loadStaticFBX(scene, environments.road_line, "", 0.05, -terrainDim.width / 2 + 25 + j, 0.1, -terrainDim.height / 2 + 25 + i, Math.radians(90));
                 }
             }
