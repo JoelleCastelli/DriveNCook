@@ -92,7 +92,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <button class="btn btn-light_blue orderBtn" id="orderBtnId">{{ trans('client/order.order_btn') }}</button>
+                    <button class="btn btn-light_blue orderBtn">{{ trans('client/order.order_btn') }}<p id="orderBtnId"></p></button>
                 </div>
             </div>
         </div>
@@ -101,8 +101,24 @@
 
 @section('script')
     <script type="text/javascript">
+        function updateTotalOrderPrice() {
+            let orders = $('.orderDish');
+            let sum = 0;
+
+            for(let i = 0; i < orders.length; i++) {
+                let id = orders[i].getAttribute('id').split('_').slice(-1)[0];
+                let linePrice = parseFloat($('#price' + id).text()) * parseInt($('#qty_' + id).val());
+
+                sum += parseFloat(linePrice.toFixed(2));
+            }
+
+            $('#orderBtnId').text(sum.toFixed(2) + ' €');
+        }
+
         $(document).on('click', '.delToOrderBtn', function () {
             $(this).parent().parent().remove();
+
+            updateTotalOrderPrice();
         });
 
         $(document).on('change', '.qtyToOrderIpt', function () {
@@ -129,6 +145,8 @@
             let linePrice = parseFloat($('#price' + id).text()) * parseInt($(this).val());
 
             $('#orderedLinePrice' + id).text(linePrice.toFixed(2) + ' €');
+
+            updateTotalOrderPrice();
         });
 
         $(document).ready(function () {
@@ -199,6 +217,8 @@
                         );
                     }
                 }
+
+                updateTotalOrderPrice();
             });
 
         });
