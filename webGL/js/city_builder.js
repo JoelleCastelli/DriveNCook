@@ -135,6 +135,7 @@ function fill_square_building_1(scene, xStart, zStart) {
 
 
 }
+
 function fill_square_building_2(scene, xStart, zStart) {
     let x = xStart;
     let z = zStart;
@@ -150,6 +151,7 @@ function fill_square_building_2(scene, xStart, zStart) {
     functions.loadStaticFBX(scene, environments.tree_02, "", 0.1, x, 0, z);
 
 }
+
 function fill_square_building_3(scene, xStart, zStart) {
     let x = xStart + 40;
     let z = zStart + 40;
@@ -177,4 +179,19 @@ function fill_square_building_3(scene, xStart, zStart) {
     z -= 60;
     x -= 70;
     functions.loadStaticFBX(scene, buildings.station, "", 0.08, x, 0, z, Math.radians(180));
+}
+
+function fill_square_building_4(scene, xStart, zStart) {
+    let x = xStart;
+    let z = zStart;
+    functions.loadStaticFBX(scene, buildings.office_old_large, "", 0.09, x + 40, 0, z + 180);
+    x += 20;
+    z += 20;
+    functions.loadStaticFBX(scene, environments.tree_01, "", 0.1, x, 0, z);
+    x += 180;
+    functions.loadStaticFBX(scene, environments.tree_01, "", 0.1, x, 0, z);
+    z += 180;
+    functions.loadStaticFBX(scene, environments.tree_01, "", 0.1, x, 0, z);
+    x -= 180;
+    functions.loadStaticFBX(scene, environments.tree_01, "", 0.1, x, 0, z);
 }
