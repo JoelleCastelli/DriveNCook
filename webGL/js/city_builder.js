@@ -85,6 +85,11 @@ export function build_city(scene, terrainDim) {
      * Roads
      */
     build_roads(scene, terrainDim);
+
+    /**
+     * Buildings
+     */
+    add_buildings(scene, terrainDim);
 }
 
 function build_roads(scene, terrainDim) {
@@ -104,6 +109,53 @@ function build_roads(scene, terrainDim) {
         }
     }
 }
+
+function add_buildings(scene, terrainDim) {
+    let xStart = 0;
+    let zStart = 0;
+    // Line 1
+    fill_square_building_1(scene, -terrainDim.width / 2 + 25 + xStart, -terrainDim.height / 2 + 25 + zStart);
+    xStart += 250;
+    fill_square_building_2(scene, -terrainDim.width / 2 + 25 + xStart, -terrainDim.height / 2 + 25 + zStart);
+    xStart += 250;
+    fill_square_building_3(scene, -terrainDim.width / 2 + 25 + xStart, -terrainDim.height / 2 + 25 + zStart);
+    xStart += 250;
+    fill_square_building_4(scene, -terrainDim.width / 2 + 25 + xStart, -terrainDim.height / 2 + 25 + zStart);
+
+    // Line 2
+    xStart = 0;
+    zStart += 250;
+    fill_square_building_4(scene, -terrainDim.width / 2 + 25 + xStart, -terrainDim.height / 2 + 25 + zStart);
+    xStart += 250;
+    fill_square_building_1(scene, -terrainDim.width / 2 + 25 + xStart, -terrainDim.height / 2 + 25 + zStart);
+    xStart += 250;
+    fill_square_building_3(scene, -terrainDim.width / 2 + 25 + xStart, -terrainDim.height / 2 + 25 + zStart);
+    xStart += 250;
+    fill_square_building_2(scene, -terrainDim.width / 2 + 25 + xStart, -terrainDim.height / 2 + 25 + zStart);
+
+    // Line 3
+    xStart = 0;
+    zStart += 250;
+    fill_square_building_2(scene, -terrainDim.width / 2 + 25 + xStart, -terrainDim.height / 2 + 25 + zStart);
+    xStart += 250;
+    fill_square_building_1(scene, -terrainDim.width / 2 + 25 + xStart, -terrainDim.height / 2 + 25 + zStart);
+    xStart += 250;
+    fill_square_building_2(scene, -terrainDim.width / 2 + 25 + xStart, -terrainDim.height / 2 + 25 + zStart);
+    xStart += 250;
+    fill_square_building_4(scene, -terrainDim.width / 2 + 25 + xStart, -terrainDim.height / 2 + 25 + zStart);
+
+    // Line 4
+    xStart = 0;
+    zStart += 250;
+    fill_square_building_3(scene, -terrainDim.width / 2 + 25 + xStart, -terrainDim.height / 2 + 25 + zStart);
+    xStart += 250;
+    fill_square_building_4(scene, -terrainDim.width / 2 + 25 + xStart, -terrainDim.height / 2 + 25 + zStart);
+    xStart += 250;
+    fill_square_building_1(scene, -terrainDim.width / 2 + 25 + xStart, -terrainDim.height / 2 + 25 + zStart);
+    xStart += 250;
+    fill_square_building_2(scene, -terrainDim.width / 2 + 25 + xStart, -terrainDim.height / 2 + 25 + zStart);
+}
+
 function fill_square_building_1(scene, xStart, zStart) {
     let x = xStart + 5;
     let z = zStart + 5;
