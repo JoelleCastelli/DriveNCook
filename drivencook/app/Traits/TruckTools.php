@@ -22,6 +22,16 @@ trait TruckTools
         return $truck;
     }
 
+    public function get_truck_with_franchisee_by_truck_id($truck_id) {
+        $truck = Truck::with('user')
+            ->where('id', $truck_id)
+            ->first();
+        if ($truck != null) {
+            $truck = $truck->toArray();
+        }
+        return $truck;
+    }
+
     public function get_truck_with_location_only($truck_id)
     {
         $truck = Truck::with('location')
