@@ -128,8 +128,8 @@
                     data: {
                         'order': order,
                     },
+                    dataType: 'json',
                     success: function (data) {
-                        alert(data);
                         if (data['status'] === 'success') {
 
                         } else {
