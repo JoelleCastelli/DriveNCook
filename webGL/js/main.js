@@ -16,7 +16,7 @@ let terrainDim = {
 };
 
 let cameraT = {
-    moveSpeed: 3,
+    moveSpeed: 5,
     rotationSpeed: 0.03
 };
 
@@ -38,14 +38,10 @@ function init() {
      * init camera
      */
     camera = functions.createCamera(60, 1, 10000,
-        0, 60, 0)
+        -34.45, 376, 913.7)
+    camera.rotation.x = -0.36;
 
-    /**
-     * init background
-     */
-
-    const bgTexture = loader.load('../assets/images/sky.jpg');
-    scene.background = bgTexture;
+    scene.background = loader.load('../assets/images/sky.jpg');
 
     /**
      * Build city
