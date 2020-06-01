@@ -104,3 +104,34 @@ function build_roads(scene, terrainDim) {
         }
     }
 }
+function fill_square_building_1(scene, xStart, zStart) {
+    let x = xStart + 5;
+    let z = zStart + 5;
+    functions.loadStaticFBX(scene, buildings.apartment_01, "", 0.1, x, 0, z, Math.radians(-90));
+    z += 55;
+    functions.loadStaticFBX(scene, buildings.apartment_01, "", 0.1, x, 0, z, Math.radians(-90));
+    z += 55;
+    functions.loadStaticFBX(scene, buildings.apartment_02, "", 0.1, x, 0, z, Math.radians(-90));
+    z += 55 + 50;
+    functions.loadStaticFBX(scene, buildings.shop_corner, "", 0.1, x, 0, z);
+    x += 105;
+    z -= 20;
+    functions.loadStaticFBX(scene, buildings.station, "", 0.08, x, 0, z);
+    functions.loadStaticFBX(scene, props.water_tower, "", 0.2, x, 0, z - 75);
+
+    x += 60;
+    functions.loadStaticFBX(scene, props.bench, "", 0.1, x, 0, z);
+    x += 25;
+    functions.loadStaticFBX(scene, props.bench, "", 0.1, x, 0, z);
+    x += 20;
+    functions.loadStaticFBX(scene, props.mailbox, "", 0.1, x, 0, z);
+    z -= 30;
+    functions.loadStaticFBX(scene, buildings.office_old_small_01, "", 0.06, x, 0, z, Math.radians(90));
+    z -= 90;
+    functions.loadStaticFBX(scene, buildings.office_old_small_01, "", 0.06, x, 0, z, Math.radians(90));
+    x -= 90;
+    z -= 60;
+    functions.loadStaticFBX(scene, buildings.shop, "", 0.06, x, 0, z, Math.radians(180));
+
+
+}
