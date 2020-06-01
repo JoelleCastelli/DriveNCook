@@ -50,7 +50,7 @@ canvas.display {
 }
 
 .img-responsive {
-    max-width: 100%;
+    max-width: 500px;
     heigth: auto;
     display: block;
 }
