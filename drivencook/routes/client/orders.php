@@ -20,3 +20,13 @@ Route::get('/client/orders', [
     'as' => 'client_orders',
     'uses' => 'Client\OrderController@client_orders'
 ]);
+
+Route::get('/client/sales_history', [
+    'as' => 'client_sales_history',
+    'uses' => 'Client\OrderController@client_sales_history'
+]);
+
+Route::get('/client/sale_display/{sale_id}', [
+    'as' => 'client_sale_display',
+    'uses' => 'Client\OrderController@client_sale_display'
+]);

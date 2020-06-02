@@ -91,7 +91,12 @@
                 @case(route('client_dashboard'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{ route('truck_location_list') }}">
-                            <i class="fa fa-hamburger"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.orders') }}
+                            <i class="fa fa-hamburger"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.order') }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{ route('client_sales_history') }}">
+                            <i class="fa fa-history"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.history') }}
                         </a>
                     </li>
                 @break
@@ -103,6 +108,13 @@
                     </li>
                 @break
                 @case(route('truck_location_list'))
+                    <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{route('client_dashboard')}}">
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.back_dashboard') }}
+                        </a>
+                    </li>
+                @break
+                @case(route('client_sales_history'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{route('client_dashboard')}}">
                             <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.back_dashboard') }}

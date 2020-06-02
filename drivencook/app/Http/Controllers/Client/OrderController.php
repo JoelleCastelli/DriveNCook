@@ -9,6 +9,7 @@ use App\Models\FranchiseeStock;
 use App\Models\Sale;
 use App\Models\SoldDish;
 use App\Models\Truck;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Traits\UserTools;
 use App\Traits\TruckTools;
@@ -111,6 +112,7 @@ class OrderController extends Controller
 
                 $sale = [
                     'online_order' => true,
+                    'date' => Carbon::now()->toDateString(),
                     'user_franchised' => $userId,
                     'user_client' => $this->get_connected_user()['id'],
                     'status' => 'pending'
@@ -154,5 +156,28 @@ class OrderController extends Controller
         }
 
         echo json_encode($response_array);
+    }
+
+    public function client_sales_history()
+    {
+        $sales = Sale::where('user_client', $this->get_connected_user()['id'])
+            ->with('sold_dishes')
+            ->get();
+
+        if(!empty($sales)) {
+            $sales = $sales->toArray();
+        }
+
+        $i = 0;
+        foreach($sales as $sale) {
+            $sum = 0;
+            foreach($sale['sold_dishes'] as $sold_dish) {
+                $sum += $sold_dish['unit_price'] * $sold_dish['quantity'];
+            }
+            $sales[$i++]['total_price'] = $sum;
+        }
+
+        return view('client.order.client_sales_history')
+            ->with('sales', $sales);
     }
 }

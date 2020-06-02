@@ -13,5 +13,9 @@ return [
         'in_progress' => 'warehouse_order.in_progress',
         'sent' => 'warehouse_order.sent',
         'received' => 'warehouse_order.received',
-    ]
+    ],
+    $GLOBALS['SALE_STATUS'] = [
+        'pending' => 'client/sale.pending',
+        'done' => 'client/sale.done',
+    ],
 ];
