@@ -9,6 +9,7 @@ return [
 
     'credit_card' => 'Carte bancaire',
     'cash' => 'Liquide',
+    'not_paid' => 'Non payée',
 
     'is_order' => 'Commande en ligne',
     'is_sale' => 'Achat au camion',

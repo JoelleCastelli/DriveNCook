@@ -9,6 +9,7 @@ return [
 
     'credit_card' => 'Credit card',
     'cash' => 'Cash',
+    'not_paid' => 'Not paid',
 
     'is_order' => 'Online order',
     'is_sale' => 'Truck sale',
