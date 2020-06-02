@@ -38,7 +38,9 @@
                                                         <i class="fa fa-eye"></i>
                                                     </a>
                                                 </td>
-                                                <td>{{ $sale['payment_method'] }}</td>
+                                                <td>{{ $sale['payment_method'] == null ?
+                                                            trans('client/sale.not_paid') :
+                                                            trans($GLOBALS['SALE_PAYMENT_METHOD'][$sale['payment_method']]) }}</td>
                                                 <td>{{ $sale['online_order'] == true ?
                                                             trans('client/sale.is_order') :
                                                             trans('client/sale.is_sale') }}</td>

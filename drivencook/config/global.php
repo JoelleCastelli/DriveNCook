@@ -18,4 +18,8 @@ return [
         'pending' => 'client/sale.pending',
         'done' => 'client/sale.done',
     ],
+    $GLOBALS['SALE_PAYMENT_METHOD'] = [
+        'Carte bancaire' => 'client/sale.credit_card',
+        'Liquide' => 'client/sale.cash',
+    ],
 ];
