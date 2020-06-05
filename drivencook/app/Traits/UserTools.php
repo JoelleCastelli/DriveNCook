@@ -189,7 +189,7 @@ trait UserTools
         $currentDay = new DateTime();
         $currentDay->setDate(date('Y'), date('m'), date('d'));
 
-        if ($currentDay->format('d') <= $franchiseObligation['billing_day']) {
+        if ($currentDay->format('d') < $franchiseObligation['billing_day']) {
             return $currentDay
                 ->setDate(date('Y'), date('m'), $franchiseObligation['billing_day'])
                 ->format('d/m/Y');
