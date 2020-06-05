@@ -1,5 +1,9 @@
 <?php
 return [
+    'Carte bancaire' => 'Carte bancaire',
+    'Liquide' => 'Liquide',
+    'offline' => "Sur place",
+    'online' => "Sur internet",
     'action' => 'Action',
     'add' => 'Ajouter',
     'add_breakdown' => 'Ajouter une panne',
@@ -18,6 +22,7 @@ return [
     'complete_registration' => 'Finaliser l\'enregistrement',
     'continue' => 'Continuer',
     'cost' => 'Coût',
+    'current_month_stats' => 'Statistiques du mois',
     'dashboard' => 'Tableau de bord',
     'date' => 'Date',
     'date_end' => 'Date de fin :',
@@ -79,6 +84,7 @@ return [
     'password' => 'Mot de passe',
     'password_confirmation' => 'Confirmation du mot de passe',
     'password_update' => 'Mise à jour du mot de passe',
+    'payment_methods_breakdown' => 'Répartition par méthodes de paiement',
     'pdf_export' => 'Exporter en PDF',
     'phone' => 'Téléphone',
     'plate' => 'Produit',

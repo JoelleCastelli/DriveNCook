@@ -12,13 +12,18 @@ use App\Models\Sale;
 use App\Models\SoldDish;
 use App\Models\Truck;
 use App\Models\User;
+use App\Traits\EnumValue;
 use Barryvdh\DomPDF\Facade as PDF;
+use DateInterval;
+use DatePeriod;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 trait UserTools
 {
+    use EnumValue;
+
     public function get_franchisee_by_id($id)
     {
         $user = User::with('pseudo')->where('id', $id)->first();
@@ -58,6 +63,26 @@ trait UserTools
     public function get_current_obligation()
     {
         return FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
+    }
+
+    public function get_available_pseudo_list()
+    {
+        $unavailable_pseudos = User::whereNotNull('pseudo_id')->get(['pseudo_id'])->toArray();
+        $pseudos = Pseudo::whereNotIn('id', $unavailable_pseudos)->get()->toArray();
+
+        return $pseudos;
+    }
+
+    public function get_franchisee_activity_period($franchisee_id) {
+        $franchisee = $this->get_franchisee_by_id($franchisee_id);
+        $franchisee_activity_period = [];
+        $begin = DateTime::createFromFormat("Y-m-d H:i:s", $franchisee['created_at']);
+        $end = new DateTime( 'now' );
+        $daterange = new DatePeriod($begin, new DateInterval('P1M'), $end);
+        foreach($daterange as $date){
+            $franchisee_activity_period[$date->format("Y")][] = $date->format("m");
+        }
+        return $franchisee_activity_period;
     }
 
     // INVOICES
@@ -121,6 +146,26 @@ trait UserTools
         }
 
         return $pdf->save($path . '/' . $reference . '.pdf');
+    }
+
+    public function get_invoicing_period($current_obligation, $date_format)
+    {
+
+        // First day of billing period : next payment date - 1 month
+        // Last day of billing period : next payment date - 1 day
+        $next_payment_date = DateTime::createFromFormat("d/m/Y", $this->get_next_payment_date($this->get_current_obligation()));
+        $period_end_date = $next_payment_date->setTime(23, 59, 59);
+        $period_start_date = clone $period_end_date;
+        $period_start_date->modify('-1 month');
+        $period_end_date->modify('-1 day');
+        $period_end_date = $period_end_date->format($date_format);
+        $period_start_date = $period_start_date->format($date_format);
+
+        return [
+            'period_start_date' => $period_start_date,
+            'period_end_date' => $period_end_date
+        ];
+
     }
 
     // STATS AND REVENUES
@@ -292,29 +337,104 @@ trait UserTools
         return $sale_total;
     }
 
-    public function get_sales_turnover_by_day($franchisee_id)
-    {
+    // Return only the dates with sales
+    public function get_sales_turnover_by_day($franchisee_id) {
         $sales_by_day = Sale::where('user_franchised', $franchisee_id)
-            ->orderBy('date', 'ASC')
-            ->get()->groupBy('date')->toArray();
-
-        $date_labels = [];
-        $nb_sales = [];
-        $nb_revenue = [];
+                            ->orderBy('date', 'ASC')
+                            ->get()->groupBy('date')->toArray();
+        $sales_turnover_by_day = [];
 
         foreach ($sales_by_day as $date => $daily_sales) {
-            array_push($date_labels, DateTime::createFromFormat("Y-m-d", $date)->format('d/m/Y'));
-            array_push($nb_sales, count($daily_sales));
+            $day = DateTime::createFromFormat("Y-m-d", $date)->format('d/m/Y');
+            $sales_turnover_by_day[$day]['nb_sales'] = count($daily_sales);
             $daily_total = 0;
             foreach ($daily_sales as $sale) {
                 $daily_total += $this->get_sale_total($sale['id']);
             }
-            array_push($nb_revenue, $daily_total);
+            $sales_turnover_by_day[$day]['revenues'] = $daily_total;
         }
 
-        return ['dates' => $date_labels, 'turnover' => $nb_revenue, 'nb_sales' => $nb_sales];
+        return $sales_turnover_by_day;
     }
 
+    // Return the daily sales and turnover on the month - If nothing on a date: fill with 0
+    public function get_monthly_sales_turnover_by_day($franchisee_id, $month, $year) {
+
+        $sales_turnover_by_day = $this->get_sales_turnover_by_day($franchisee_id);
+
+        // One array for date labels + one array per dataset
+        $monthly_data['dates'] = [];
+        $monthly_data['sales'] = [];
+        $monthly_data['turnover'] = [];
+
+        // Default dates: current month of current year
+        $month = $month == null ? date('m') : $month;
+        $year = $year == null ? date('Y') : $year;
+
+        // Array with every day of the month
+        $days_in_month = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+        for($i = 1; $i <= $days_in_month; $i++) {
+            $prefix = $i < 10 ? '0' : '';
+            $date = $prefix.$i.'/'.$month.'/'.$year;
+            $monthly_data['dates'][] = $date;
+        }
+
+        // If date matches sales day: add data in $dates and $sales
+        foreach ($monthly_data['dates'] as $date) {
+            $is_matching = false;
+            foreach (array_keys($sales_turnover_by_day) as $sale_date) {
+                if ($sale_date == $date) {
+                    $monthly_data['sales'][] = $sales_turnover_by_day[$date]['nb_sales'];
+                    $monthly_data['turnover'][] = $sales_turnover_by_day[$date]['revenues'];
+                    $is_matching = true;
+                    break;
+                }
+            }
+            if ($is_matching == false) {
+                $monthly_data['sales'][] = 0;
+                $monthly_data['turnover'][] = 0;
+            }
+        }
+
+        return $monthly_data;
+    }
+
+    public function get_monthly_sales_by_payment_methods($franchisee_id, $month, $year) {
+        // Default dates: current month of current year
+        $month = $month == null ? date('m') : $month;
+        $year = $year == null ? date('Y') : $year;
+
+        $sales = [];
+        $payment_methods = $this->get_enum_column_values('sale', 'payment_method');
+        foreach ($payment_methods as $payment_method) {
+            $sales['methods'][] = trans("franchisee.$payment_method");
+            $sales['nb_sales'][] = Sale::where('user_franchised', $franchisee_id)
+                                            ->where('payment_method', $payment_method)
+                                            ->whereYear('date', $year)
+                                            ->whereMonth('date', $month)
+                                            ->get()->count();
+        }
+
+        return $sales;
+    }
+
+    public function get_monthly_sales_by_origin($franchisee_id, $month, $year){
+        // Default dates: current month of current year
+        $month = $month == null ? date('m') : $month;
+        $year = $year == null ? date('Y') : $year;
+
+        $sales['origins'] = ['1', '0'];
+        foreach ($sales['origins'] as $origin) {
+            $sales['nb_sales'][] = Sale::where('user_franchised', $franchisee_id)
+                ->where('online_order', $origin)
+                ->whereYear('date', $year)
+                ->whereMonth('date', $month)
+                ->get()->count();
+        }
+        $sales['origins'] = [trans("franchisee.online"), trans("franchisee.offline")];
+
+        return $sales;
+    }
     public function is_franchisee_valided($franchisee_id): ?bool
     {
         $franchise = User::whereKey($franchisee_id)->first();
