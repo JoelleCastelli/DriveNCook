@@ -26,21 +26,16 @@ public class LoginController {
     }
 
     public void Login(ActionEvent event) {
-        System.out.println("Email : " + emailField.getText());
-        System.out.println("Password : " + passwordField.getText());
         statusLabel.setVisible(true);
         statusLabel.setText(emailField.getText());
 
         User loginUser = mainApp.dataBaseDAO.Login(emailField.getText(), passwordField.getText());
         if (loginUser != null) {
-            statusLabel.setTextFill(Color.web("#0cf200"));
-            statusLabel.setText("Login valid !");
             this.mainApp.showUserListView(loginUser);
         } else {
+            statusLabel.setVisible(true);
             statusLabel.setTextFill(Color.web("#f20000"));
-            statusLabel.setText("Login invalid !");
-            this.mainApp.showUserListView(loginUser);
-
+            statusLabel.setText("Identifiants incorrects !");
         }
     }
 

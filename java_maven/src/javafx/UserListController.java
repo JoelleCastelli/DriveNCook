@@ -1,5 +1,7 @@
 package javafx;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
@@ -10,6 +12,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
 public class UserListController {
+
+    private MainApp mainApp;
+
+    //User list
     @FXML
     private TableView<User> userTable;
     @FXML
@@ -19,6 +25,9 @@ public class UserListController {
     @FXML
     TextField searchField;
 
+    //User detail
+    private User loginUser;
+
     @FXML
     private Label emailLabel;
     @FXML
@@ -27,16 +36,25 @@ public class UserListController {
     private Label lastnameLabel;
     @FXML
     private Label roleLabel;
+    @FXML
+    private Label orderLabel;
 
-    private User loginUser;
+    @FXML
+    private TableView<Promotion> promotionTable;
+    @FXML
+    private TableColumn<Promotion, String> promoTypeColumn;
+    @FXML
+    private TableColumn<Promotion, String> promoValueColumn;
 
-    private MainApp mainApp;
 
     @FXML
     private void initialize() {
         // Initialize the person table with the two columns.
 
         emailColumn.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
+
+        promoTypeColumn.setCellValueFactory(cellData -> cellData.getValue().promo_typeProperty());
+        promoValueColumn.setCellValueFactory(cellData -> cellData.getValue().valueProperty());
 
         showUserDetail(null);
 
@@ -65,12 +83,22 @@ public class UserListController {
             firstnameLabel.setText(user.getFirstname());
             lastnameLabel.setText(user.getLastname());
             roleLabel.setText(user.getRole());
+            orderLabel.setText(user.getOrder());
+            getUserPromotions(user);
         } else {
             emailLabel.setText("");
             firstnameLabel.setText("");
             lastnameLabel.setText("");
             roleLabel.setText("");
+            orderLabel.setText("");
         }
+    }
+
+    public void deletePromotion(ActionEvent event) {
+        String selected_user_id = userTable.getSelectionModel().getSelectedItem().getId();
+        int promo_id = Integer.parseInt(promotionTable.getSelectionModel().getSelectedItem().getId());
+        this.mainApp.dataBaseDAO.removePromotion(promo_id);
+        this.mainApp.fillPromotionList(selected_user_id);
     }
 
     private void initTableFilter() {
@@ -95,5 +123,13 @@ public class UserListController {
         SortedList<User> sortedList = new SortedList<>(filteredData);
         sortedList.comparatorProperty().bind(userTable.comparatorProperty());
         userTable.setItems(sortedList);
+    }
+
+    private void getUserPromotions(User user) {
+        mainApp.fillPromotionList(user.getId());
+
+        SortedList<Promotion> sortedList = new SortedList<>(mainApp.getPromotionList());
+        sortedList.comparatorProperty().bind(promotionTable.comparatorProperty());
+        promotionTable.setItems(sortedList);
     }
 }

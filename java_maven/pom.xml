@@ -36,6 +36,7 @@
                 <directory>src/javafx/resources</directory>
                 <includes>
                     <include>**/*.fxml</include>
+                    <include>**/*.css</include>
                 </includes>
                 <filtering>true</filtering>
             </resource>

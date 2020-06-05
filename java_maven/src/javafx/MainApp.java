@@ -19,6 +19,7 @@ public class MainApp extends Application {
 
     public javafx.DataBaseDAO dataBaseDAO;
     private ObservableList<javafx.User> userList = FXCollections.observableArrayList();
+    private ObservableList<javafx.Promotion> promotionList = FXCollections.observableArrayList();
 
 
     @Override
@@ -64,7 +65,6 @@ public class MainApp extends Application {
             rootLayout.setCenter(loginOverview);
 
             javafx.LoginController loginController = loader.getController();
-            loginController.setStatusLabel("coucou");
             loginController.setMainApp(this);
         } catch (IOException e) {
             e.printStackTrace();
@@ -97,5 +97,12 @@ public class MainApp extends Application {
         return userList;
     }
 
+    public void fillPromotionList(String user_id) {
+        promotionList.clear();
+        promotionList.addAll(dataBaseDAO.getUserPromotionsDB(user_id));
+    }
 
+    public ObservableList<Promotion> getPromotionList() {
+        return promotionList;
+    }
 }

@@ -4,20 +4,48 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class User {
+    private final StringProperty id;
     private final StringProperty email;
     private final StringProperty firstname;
     private final StringProperty lastname;
     private final StringProperty role;
+    private final StringProperty order;
 
     public User() {
-        this(null, null, null, null);
+        this(null, null, null, null, null,null);
     }
 
-    public User(String email, String firstname, String lastname, String role) {
+    public User(String id,String email, String firstname, String lastname, String role, String order) {
+        this.id = new SimpleStringProperty(id);
         this.email = new SimpleStringProperty(email);
         this.firstname = new SimpleStringProperty(firstname);
         this.lastname = new SimpleStringProperty(lastname);
         this.role = new SimpleStringProperty(role);
+        this.order = new SimpleStringProperty(order);
+    }
+
+    public String getId() {
+        return id.get();
+    }
+
+    public StringProperty idProperty() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id.set(id);
+    }
+
+    public String getOrder() {
+        return order.get();
+    }
+
+    public StringProperty orderProperty() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order.set(order);
     }
 
     public String getEmail() {
