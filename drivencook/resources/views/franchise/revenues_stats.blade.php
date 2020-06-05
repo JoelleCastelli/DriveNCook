@@ -174,7 +174,7 @@
                             <input type="hidden" name="id" id="id" value="{{ $franchisee['id'] }}">
                         </div>
                         <div class="form-group">
-                            <label for="end_date">{{ trans('franchisee.date_start') }}</label>
+                            <label for="start_date">{{ trans('franchisee.date_start') }}</label>
                             <input type="date" name="start_date" id="start_date"
                                    value=""
                                    class="form-control">
