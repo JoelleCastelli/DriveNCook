@@ -118,32 +118,23 @@
     </div>
 
     <div class="row">
-        <div class="col-12 col-lg-6 mb-5">
+        <div class="col-12 col-lg-12 mb-5">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h2>{{ trans('franchisee.daily_sales') }}</h2>
+                    <h2>{{ trans('franchisee.current_month_stats') }}</h2>
                 </div>
                 <div class="card-body">
-                    <div id="app1">
-                        {!! $sales_chart->container() !!}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-lg-6 mb-5">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between">
-                    <h2>{{ trans('franchisee.daily_turnover') }}</h2>
-                </div>
-                <div class="card-body">
-                    <select class="sel" name="year">
-                    @foreach($franchisee_activity_years as $year)
-                        <option value="{{ $year }}">{{ $year }} </option>
-                    @endforeach
-                    </select>
-                    <div id="app2">
-                        {!! $turnover_chart->container() !!}
+                    <div class="row">
+                        <div class="col-6 col-md-6 col-lg-6">
+                            <div id="sales_chart">
+                                {!! $sales_chart->container() !!}
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-6 col-lg-6">
+                            <div id="turnover_chart">
+                                {!! $turnover_chart->container() !!}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -218,14 +209,4 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
     {!! $sales_chart->script() !!}
     {!! $turnover_chart->script() !!}
-
-    <script type="text/javascript">
-        let original_api_url = {{ $turnover_chart->id }}_api_url;
-
-        $(".sel").change(function(){
-            let year = $(this).val();
-            console.log(original_api_url);
-            {{ $turnover_chart->id }}_refresh(original_api_url + "?year="+year);
-        });
-    </script>
 @endsection

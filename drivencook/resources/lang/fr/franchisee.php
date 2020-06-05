@@ -18,6 +18,7 @@ return [
     'complete_registration' => 'Finaliser l\'enregistrement',
     'continue' => 'Continuer',
     'cost' => 'Coût',
+    'current_month_stats' => 'Statistiques du mois',
     'dashboard' => 'Tableau de bord',
     'date' => 'Date',
     'date_end' => 'Date de fin :',

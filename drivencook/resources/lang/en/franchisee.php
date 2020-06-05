@@ -18,6 +18,7 @@ return [
     'complete_registration' => 'Complete registration',
     'continue' => 'Continue',
     'cost' => 'Cost',
+    'current_month_stats' => 'Current month stats',
     'dashboard' => 'Dashboard',
     'date' => 'Date',
     'date_end' => 'Date end:',
