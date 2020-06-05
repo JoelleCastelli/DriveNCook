@@ -110,7 +110,7 @@
                 @case(route('franchise.truck_view'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{route('franchise.dashboard')}}">
-                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_dashboard')}}
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('corporate.back_dashboard')}}
                         </a>
                     </li>
                     <li class="nav-item">
@@ -133,7 +133,7 @@
                 @case(route('franchise.revenues_stats'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{route('franchise.dashboard')}}">
-                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_dashboard')}}
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('corporate.back_dashboard')}}
                         </a>
                     </li>
                     @break
