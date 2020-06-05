@@ -46,7 +46,11 @@ return [
     'tickets_gestion' => 'Tickets management',
     'update_obligations' => 'Obligations',
     'pseudo_gestion' => 'Pseudonymes',
+    'stocks_orders' => 'Stocks & orders',
+    'invoices' => 'Invoices',
+    'sales_stats' => 'Sales and statistics',
     'back_franchisees_list' => 'Back to franchisees list',
+    'back_franchisees_view' => 'Back to franchisee view',
     // Clients
     'clients' => 'Clients',
     'add_client' => 'Add a client',

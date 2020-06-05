@@ -44,7 +44,11 @@ return [
     'tickets_gestion' => 'Gestion des tickets',
     'update_obligations' => 'Obligations',
     'pseudo_gestion' => 'Pseudonymes',
+    'stocks_orders' => 'Stocks et commandes',
+    'invoices' => 'Factures',
+    'sales_stats' => 'Ventes et statistiques',
     'back_franchisees_list' => 'Retour à la liste des franchisés',
+    'back_franchisees_view' => 'Retour à la page du franchisé',
     // Clients
     'clients' => 'Clients',
     'add_client' => 'Ajouter un client',

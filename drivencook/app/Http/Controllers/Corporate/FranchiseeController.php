@@ -251,6 +251,45 @@ class FranchiseeController extends Controller
             ->with('history', $history);
     }
 
+    public function franchisee_stock_orders($id) {
+        $franchisee = User::whereId($id)
+            ->with('pseudo')
+            ->with('stocks')
+            ->with('purchase_order')
+            ->first()->toArray();
+
+        return view('corporate.franchisee.franchisee_stocks_orders')
+            ->with('franchisee', $franchisee);
+    }
+
+    public function franchisee_invoices_list($id) {
+        $franchisee = User::whereId($id)
+            ->with('pseudo')
+            ->with('invoices')
+            ->first()->toArray();
+
+        return view('corporate.franchisee.franchisee_invoices_list')
+            ->with('franchisee', $franchisee);
+    }
+
+    public function franchisee_sales_stats($id) {
+        $franchisee = User::whereId($id)
+            ->with('pseudo')
+            ->with('sales')
+            ->first()->toArray();
+
+        $revenues = $this->get_franchise_current_month_sale_revenues($id);
+        $history = $this->get_franchisee_history($id);
+        $current_obligation = $this->get_current_obligation();
+        $invoicing_period = $this->get_invoicing_period($current_obligation, "d/m/Y");
+
+        return view('corporate.franchisee.franchisee_sales_stats')
+            ->with('franchisee', $franchisee)
+            ->with('revenues', $revenues)
+            ->with('invoicing_period', $invoicing_period)
+            ->with('history', $history);
+    }
+
     public function update_franchise_obligation()
     {
         $last_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();

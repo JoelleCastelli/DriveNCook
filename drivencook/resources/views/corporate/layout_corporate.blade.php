@@ -314,6 +314,30 @@
                         <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_franchisees_list') }}
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{ route('franchisee_stocks_order', ['id' => collect(request()->segments())->last()]) }}">
+                        <i class="fa fa-box-open"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.stocks_orders') }}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{ route('franchisee_invoices_list', ['id' => collect(request()->segments())->last()]) }}">
+                        <i class="fa fa-file-invoice"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.invoices') }}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{ route('franchisee_sales_stats', ['id' => collect(request()->segments())->last()]) }}">
+                        <i class="fa fa-chart-line"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.sales_stats') }}
+                    </a>
+                </li>
+            @endif
+            @if (strpos(url()->current(), route('franchisee_stocks_order', ['id'=>''])) !== false
+                    || strpos(url()->current(), route('franchisee_invoices_list', ['id'=>''])) !== false
+                    || strpos(url()->current(), route('franchisee_sales_stats', ['id'=>''])) !== false)
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{route('franchisee_view', ['id' => collect(request()->segments())->last()])}}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_franchisees_view') }}
+                    </a>
+                </li>
             @endif
             @if (strpos(url()->current(), route('truck_update', ['id'=>''])) !== false)
                 <li class="nav-item">
