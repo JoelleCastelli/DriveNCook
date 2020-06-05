@@ -15,11 +15,8 @@ use App\Models\FranchiseeStock;
 use App\Models\Truck;
 use App\Models\User;
 use App\Traits\UserTools;
-use Barryvdh\DomPDF\Facade as PDF;
-use DateTime;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\DataTables;
+
 
 class FranchiseeController extends Controller
 {
@@ -282,12 +279,20 @@ class FranchiseeController extends Controller
         $history = $this->get_franchisee_history($id);
         $current_obligation = $this->get_current_obligation();
         $invoicing_period = $this->get_invoicing_period($current_obligation, "d/m/Y");
+        $sales_chart = $this->generate_chart($franchisee['id'], 'sales');
+        $turnover_chart = $this->generate_chart($franchisee['id'], 'turnover');
+        $payment_methods_chart = $this->generate_chart($franchisee['id'], 'payment_methods');
+        $origins_chart = $this->generate_chart($franchisee['id'], 'origin');
 
         return view('corporate.franchisee.franchisee_sales_stats')
             ->with('franchisee', $franchisee)
             ->with('revenues', $revenues)
             ->with('invoicing_period', $invoicing_period)
-            ->with('history', $history);
+            ->with('history', $history)
+            ->with('sales_chart', $sales_chart)
+            ->with('payment_methods_chart', $payment_methods_chart)
+            ->with('origins_chart', $origins_chart)
+            ->with('turnover_chart', $turnover_chart);
     }
 
     public function update_franchise_obligation()

@@ -4,6 +4,7 @@
 namespace App\Traits;
 
 
+use App\Charts\FranchiseeStatsChart;
 use App\Models\FranchiseObligation;
 use App\Models\Invoice;
 use App\Models\Pseudo;
@@ -12,7 +13,6 @@ use App\Models\Sale;
 use App\Models\SoldDish;
 use App\Models\Truck;
 use App\Models\User;
-use App\Traits\EnumValue;
 use Barryvdh\DomPDF\Facade as PDF;
 use DateInterval;
 use DatePeriod;
@@ -421,6 +421,54 @@ trait UserTools
         $sales['origins'] = [trans("franchisee.online"), trans("franchisee.offline")];
 
         return $sales;
+    }
+
+    public function generate_chart($franchisee_id, $type){
+        // Get current month data
+        $monthly_sales_turnover_by_day = $this->get_monthly_sales_turnover_by_day($franchisee_id, null, null);
+        $sales_by_payment_methods = $this->get_monthly_sales_by_payment_methods($franchisee_id, null, null);
+        $sales_by_origin = $this->get_monthly_sales_by_origin($franchisee_id, null, null);
+
+        $chart = new FranchiseeStatsChart;
+
+        if ($type == 'sales') {
+            $chart->labels($monthly_sales_turnover_by_day['dates']);
+            $chart->dataset(trans('franchisee.sales_count'), 'line', $monthly_sales_turnover_by_day['sales'])
+                ->color('#6408c7')
+                ->fill(false);
+        } else if ($type == 'turnover') {
+            $chart->labels($monthly_sales_turnover_by_day['dates']);
+            $chart->dataset(trans('franchisee.turnover'), 'line', $monthly_sales_turnover_by_day['turnover'])
+                ->color('#00d1ce')
+                ->fill(false);
+        } else if ($type == 'payment_methods') {
+            $chart->labels($sales_by_payment_methods['methods']);
+            $chart->displayAxes(false);
+            $chart->dataset(trans('franchisee.payment_methods_breakdown'), 'pie', $sales_by_payment_methods['nb_sales'])
+                ->backgroundColor(['#6408c7', '#00d1ce']);
+        } else if ($type == 'origin') {
+            $chart->labels($sales_by_origin['origins']);
+            $chart->displayAxes(false);
+            $chart->dataset(trans('franchisee.payment_methods_breakdown'), 'pie', $sales_by_origin['nb_sales'])
+                ->backgroundColor(['#6408c7', '#00d1ce']);
+        }
+
+        if ($type == 'sales' || $type == 'turnover') {
+            $stepSize = $type == 'sales' ? 1 : 50;
+            $chart->options([
+                'tooltip' => ['show' => true],
+                'scales' => [
+                    'yAxes' => [
+                        [
+                            'ticks' => ['beginAtZero' => true, 'stepSize' => $stepSize],
+                            'position' => 'left',
+                        ],
+                    ],
+                ]
+            ]);
+        }
+
+        return $chart;
     }
 
 }

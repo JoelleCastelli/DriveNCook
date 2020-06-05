@@ -83,6 +83,42 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-12 col-lg-12 mb-5">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <h2>{{ trans('franchisee.current_month_stats') }}</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6 col-md-6 col-lg-6">
+                            <div id="sales_chart">
+                                {!! $sales_chart->container() !!}
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-6 col-lg-6">
+                            <div id="turnover_chart">
+                                {!! $turnover_chart->container() !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-6 col-md-6 col-lg-6">
+                            <div id="turnover_chart">
+                                {!! $payment_methods_chart->container() !!}
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-6 col-lg-6">
+                            <div id="turnover_chart">
+                                {!! $origins_chart->container() !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal -->
     <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="form">
@@ -146,4 +182,10 @@
             end_date.value = today;
         }
     </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
+    {!! $sales_chart->script() !!}
+    {!! $turnover_chart->script() !!}
+    {!! $payment_methods_chart->script() !!}
+    {!! $origins_chart->script() !!}
 @endsection
