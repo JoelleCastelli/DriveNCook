@@ -1,2 +1,3 @@
-javafx\java\LoginController.class
-javafx\java\MainApp.class
+javafx\UserListController.class
+javafx\DataBaseDAO.class
+javafx\User.class
