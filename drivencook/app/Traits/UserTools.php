@@ -85,6 +85,21 @@ trait UserTools
         return $franchisee_activity_period;
     }
 
+    public function is_franchisee_valided($franchisee_id): ?bool
+    {
+        $franchise = User::whereKey($franchisee_id)->first();
+        if ($franchise == null) {
+            return null;
+        }
+        $franchise = $franchise->toArray();
+
+        return $franchise['role'] == "Franchisé"
+            && !empty($franchise['driving_licence'])
+            && !empty($franchise['social_security'])
+            && !empty($franchise['telephone'])
+            && !empty($franchise['pseudo_id']);
+    }
+
     // INVOICES
     public function create_invoice_reference($prefix, $franchisee_id, $invoice_id)
     {
@@ -294,34 +309,6 @@ trait UserTools
             ->get()->toArray();
     }
 
-    public function get_invoicing_period($current_obligation, $date_format)
-    {
-
-        // First day of billing period : next payment date - 1 month
-        // Last day of billing period : next payment date - 1 day
-        $next_payment_date = DateTime::createFromFormat("d/m/Y", $this->get_next_payment_date($this->get_current_obligation()));
-        $period_end_date = $next_payment_date->setTime(23, 59, 59);
-        $period_start_date = clone $period_end_date;
-        $period_start_date->modify('-1 month');
-        $period_end_date->modify('-1 day');
-        $period_end_date = $period_end_date->format($date_format);
-        $period_start_date = $period_start_date->format($date_format);
-
-        return [
-            'period_start_date' => $period_start_date,
-            'period_end_date' => $period_end_date
-        ];
-
-    }
-
-    public function get_available_pseudo_list()
-    {
-        $unavailable_pseudos = User::whereNotNull('pseudo_id')->get(['pseudo_id'])->toArray();
-        $pseudos = Pseudo::whereNotIn('id', $unavailable_pseudos)->get()->toArray();
-
-        return $pseudos;
-    }
-
     public function get_sale_total($sale_id)
     {
         $sold_dishes = SoldDish::where('sale_id', $sale_id)->get();
@@ -434,20 +421,6 @@ trait UserTools
         $sales['origins'] = [trans("franchisee.online"), trans("franchisee.offline")];
 
         return $sales;
-    }
-    public function is_franchisee_valided($franchisee_id): ?bool
-    {
-        $franchise = User::whereKey($franchisee_id)->first();
-        if ($franchise == null) {
-            return null;
-        }
-        $franchise = $franchise->toArray();
-
-        return $franchise['role'] == "Franchisé"
-            && !empty($franchise['driving_licence'])
-            && !empty($franchise['social_security'])
-            && !empty($franchise['telephone'])
-            && !empty($franchise['pseudo_id']);
     }
 
 }
