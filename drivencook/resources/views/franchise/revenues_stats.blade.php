@@ -136,6 +136,13 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row mt-4">
+                        <div class="col-6 col-md-6 col-lg-6">
+                            <div id="turnover_chart">
+                                {!! $payment_methods_chart->container() !!}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -209,4 +216,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
     {!! $sales_chart->script() !!}
     {!! $turnover_chart->script() !!}
+    {!! $payment_methods_chart->script() !!}
 @endsection

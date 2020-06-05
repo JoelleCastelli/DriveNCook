@@ -1,5 +1,7 @@
 <?php
 return [
+    'Carte bancaire' => 'Carte bancaire',
+    'Liquide' => 'Liquide',
     'action' => 'Action',
     'add' => 'Ajouter',
     'add_breakdown' => 'Ajouter une panne',
@@ -80,6 +82,7 @@ return [
     'password' => 'Mot de passe',
     'password_confirmation' => 'Confirmation du mot de passe',
     'password_update' => 'Mise à jour du mot de passe',
+    'payment_methods_breakdown' => 'Répartition par méthodes de paiement',
     'pdf_export' => 'Exporter en PDF',
     'phone' => 'Téléphone',
     'plate' => 'Produit',

@@ -12,6 +12,7 @@ use App\Models\Sale;
 use App\Models\SoldDish;
 use App\Models\Truck;
 use App\Models\User;
+use App\Traits\EnumValue;
 use Barryvdh\DomPDF\Facade as PDF;
 use DateInterval;
 use DatePeriod;
@@ -21,6 +22,8 @@ use Illuminate\Support\Facades\DB;
 
 trait UserTools
 {
+    use EnumValue;
+
     public function get_franchisee_by_id($id)
     {
         $user = User::with('pseudo')->where('id', $id)->first();
@@ -367,4 +370,22 @@ trait UserTools
         return $monthly_data;
     }
 
+    public function get_sales_by_payment_methods($franchisee_id, $month, $year) {
+        // Default dates: current month of current year
+        $month = $month == null ? date('m') : $month;
+        $year = $year == null ? date('Y') : $year;
+
+        $sales = [];
+        $payment_methods = $this->get_enum_column_values('sale', 'payment_method');
+        foreach ($payment_methods as $payment_method) {
+            $sales['methods'][] = trans("franchisee.$payment_method");
+            $sales['nb_sales'][] = Sale::where('user_franchised', $franchisee_id)
+                                            ->where('payment_method', $payment_method)
+                                            ->whereYear('date', $year)
+                                            ->whereMonth('date', $month)
+                                            ->get()->count();
+        }
+
+        return $sales;
+    }
 }

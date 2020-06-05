@@ -1,5 +1,7 @@
 <?php
 return [
+    'Carte bancaire' => 'Credit card',
+    'Liquide' => 'Cash',
     'action' => 'Action',
     'add' => 'Add',
     'add_breakdown' => 'Add a breakdown',
@@ -80,6 +82,7 @@ return [
     'password' => 'Password',
     'password_confirmation' => 'Password confirmation',
     'password_update' => 'Password update',
+    'payment_methods_breakdown' => 'Breakdown by payment methods',
     'pdf_export' => 'Export in PDF',
     'phone' => 'Phone',
     'plate' => 'Product',
