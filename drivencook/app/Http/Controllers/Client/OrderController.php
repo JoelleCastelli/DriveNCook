@@ -180,4 +180,25 @@ class OrderController extends Controller
         return view('client.order.client_sales_history')
             ->with('sales', $sales);
     }
+
+    public function client_sale_display($sale_id)
+    {
+        $sale = Sale::whereKey($sale_id)
+            ->with('sold_dishes')
+            ->with('user_franchised')
+            ->first();
+
+        if(!empty($sale)) {
+            $sale = $sale->toArray();
+        }
+
+        $sum = 0;
+        foreach($sale['sold_dishes'] as $sold_dish) {
+            $sum += $sold_dish['unit_price'] * $sold_dish['quantity'];
+        }
+        $sale['total_price'] = $sum;
+
+        return view('client.order.client_sale_display')
+            ->with('sale', $sale);
+    }
 }

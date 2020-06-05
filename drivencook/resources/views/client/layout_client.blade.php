@@ -109,14 +109,14 @@
                 @break
                 @case(route('truck_location_list'))
                     <li class="nav-item">
-                        <a class="nav-link text-light2" href="{{route('client_dashboard')}}">
+                        <a class="nav-link text-light2" href="{{ route('client_dashboard') }}">
                             <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.back_dashboard') }}
                         </a>
                     </li>
                 @break
                 @case(route('client_sales_history'))
                     <li class="nav-item">
-                        <a class="nav-link text-light2" href="{{route('client_dashboard')}}">
+                        <a class="nav-link text-light2" href="{{ route('client_dashboard') }}">
                             <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.back_dashboard') }}
                         </a>
                     </li>
@@ -126,8 +126,15 @@
             @endswitch
             @if (strpos(url()->current(), route('client_order', ['id'=>''])) !== false)
                 <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('truck_location_list')}}">
+                    <a class="nav-link text-light2" href="{{ route('truck_location_list') }}">
                         <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/order.back_trucks') }}
+                    </a>
+                </li>
+            @endif
+            @if (strpos(url()->current(), route('client_sale_display', ['id'=>''])) !== false)
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{ route('client_sales_history') }}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/sale.back_sales_history') }}
                     </a>
                 </li>
             @endif

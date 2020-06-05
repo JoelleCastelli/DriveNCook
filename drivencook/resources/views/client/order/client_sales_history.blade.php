@@ -7,6 +7,9 @@
         .clientTitle {
             color: #FFFFFF;
         }
+        .displayOrder:hover {
+            cursor: pointer;
+        }
     </style>
 @stop
 @section('content')
@@ -31,10 +34,9 @@
                                     </thead>
                                     <tbody>
                                         @foreach($sales as $sale)
-                                            <!--{/{empty($franchisee['pseudo'])?'Aucun': $franchisee['pseudo']['name']}}-->
                                             <tr>
                                                 <td>
-                                                    <a href="{{ route('client_sale_display',['id' => $sale['id']]) }}" style="color: inherit">
+                                                    <a href="{{ route('client_sale_display', ['id' => $sale['id']]) }}" style="color: inherit">
                                                         <i class="fa fa-eye"></i>
                                                     </a>
                                                 </td>
