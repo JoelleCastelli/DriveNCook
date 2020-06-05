@@ -142,6 +142,11 @@
                                 {!! $payment_methods_chart->container() !!}
                             </div>
                         </div>
+                        <div class="col-6 col-md-6 col-lg-6">
+                            <div id="turnover_chart">
+                                {!! $origins_chart->container() !!}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -217,4 +222,5 @@
     {!! $sales_chart->script() !!}
     {!! $turnover_chart->script() !!}
     {!! $payment_methods_chart->script() !!}
+    {!! $origins_chart->script() !!}
 @endsection

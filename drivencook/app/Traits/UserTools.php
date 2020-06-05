@@ -370,7 +370,7 @@ trait UserTools
         return $monthly_data;
     }
 
-    public function get_sales_by_payment_methods($franchisee_id, $month, $year) {
+    public function get_monthly_sales_by_payment_methods($franchisee_id, $month, $year) {
         // Default dates: current month of current year
         $month = $month == null ? date('m') : $month;
         $year = $year == null ? date('Y') : $year;
@@ -385,6 +385,24 @@ trait UserTools
                                             ->whereMonth('date', $month)
                                             ->get()->count();
         }
+
+        return $sales;
+    }
+
+    public function get_monthly_sales_by_origin($franchisee_id, $month, $year){
+        // Default dates: current month of current year
+        $month = $month == null ? date('m') : $month;
+        $year = $year == null ? date('Y') : $year;
+
+        $sales['origins'] = ['1', '0'];
+        foreach ($sales['origins'] as $origin) {
+            $sales['nb_sales'][] = Sale::where('user_franchised', $franchisee_id)
+                ->where('online_order', $origin)
+                ->whereYear('date', $year)
+                ->whereMonth('date', $month)
+                ->get()->count();
+        }
+        $sales['origins'] = [trans("franchisee.online"), trans("franchisee.offline")];
 
         return $sales;
     }

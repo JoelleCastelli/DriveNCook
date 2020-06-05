@@ -2,6 +2,8 @@
 return [
     'Carte bancaire' => 'Carte bancaire',
     'Liquide' => 'Liquide',
+    'offline' => "Sur place",
+    'online' => "Sur internet",
     'action' => 'Action',
     'add' => 'Ajouter',
     'add_breakdown' => 'Ajouter une panne',

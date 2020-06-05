@@ -2,6 +2,8 @@
 return [
     'Carte bancaire' => 'Credit card',
     'Liquide' => 'Cash',
+    'offline' => "Offline",
+    'online' => "Online",
     'action' => 'Action',
     'add' => 'Add',
     'add_breakdown' => 'Add a breakdown',

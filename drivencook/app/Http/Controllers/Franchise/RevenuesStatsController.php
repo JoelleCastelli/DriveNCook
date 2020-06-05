@@ -19,6 +19,7 @@ class RevenuesStatsController extends Controller
         $sales_chart = $this->generate_chart($franchisee['id'], 'sales');
         $turnover_chart = $this->generate_chart($franchisee['id'], 'turnover');
         $payment_methods_chart = $this->generate_chart($franchisee['id'], 'payment_methods');
+        $origins_chart = $this->generate_chart($franchisee['id'], 'origin');
 
         return view('franchise.revenues_stats')->with('revenues', $current_month_sales)
             ->with('franchisee', $franchisee)
@@ -26,6 +27,7 @@ class RevenuesStatsController extends Controller
             ->with('invoicing_period', $invoicing_period)
             ->with('sales_chart', $sales_chart)
             ->with('payment_methods_chart', $payment_methods_chart)
+            ->with('origins_chart', $origins_chart)
             ->with('turnover_chart', $turnover_chart)
             ->with('current_obligation', $current_obligation);
     }
@@ -33,7 +35,8 @@ class RevenuesStatsController extends Controller
     public function generate_chart($franchisee_id, $type){
         // Get current month data
         $monthly_sales_turnover_by_day = $this->get_monthly_sales_turnover_by_day($franchisee_id, null, null);
-        $sales_by_payment_methods = $this->get_sales_by_payment_methods($franchisee_id, null, null);
+        $sales_by_payment_methods = $this->get_monthly_sales_by_payment_methods($franchisee_id, null, null);
+        $sales_by_origin = $this->get_monthly_sales_by_origin($franchisee_id, null, null);
 
         $chart = new FranchiseeStatsChart;
 
@@ -52,6 +55,11 @@ class RevenuesStatsController extends Controller
             $chart->displayAxes(false);
             $chart->dataset(trans('franchisee.payment_methods_breakdown'), 'pie', $sales_by_payment_methods['nb_sales'])
                   ->backgroundColor(['#6408c7', '#00d1ce']);
+        } else if ($type == 'origin') {
+            $chart->labels($sales_by_origin['origins']);
+            $chart->displayAxes(false);
+            $chart->dataset(trans('franchisee.payment_methods_breakdown'), 'pie', $sales_by_origin['nb_sales'])
+                ->backgroundColor(['#6408c7', '#00d1ce']);
         }
 
         if ($type == 'sales' || $type == 'turnover') {
