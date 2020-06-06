@@ -13,7 +13,7 @@
                         {{csrf_field()}}
 
                         <div class="form-group">
-                            <label for="location_id">{{ trans('truck_creation.location_name') }}</label>
+                            <label for="location_id">{{ trans('truck.location_name') }}</label>
                             <div class="input-group mb-3">
                                 <select class="custom-select" name="location_id" id="location_id">
                                     <option value="">{{trans('franchisee.not_assigned')}}</option>
@@ -59,7 +59,7 @@
 
                         <div class="form-group">
                             <button type="submit"
-                                    class="btn btn-info">{{ trans('truck.update_location_submit') }}</button>
+                                    class="btn btn-info">{{ trans('franchisee.submit') }}</button>
                         </div>
                     </form>
                 </div>

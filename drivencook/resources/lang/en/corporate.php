@@ -60,6 +60,7 @@ return [
     'trucks' => 'Trucks',
     'add_truck' => 'Add a truck',
     'back_trucks_list' => 'Back to trucks list',
+    'back_to_truck' => 'Back to truck',
     // Revenus & Stats
     'income_stats' => 'Income & statistics',
     // Events

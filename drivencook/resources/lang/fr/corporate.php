@@ -58,6 +58,7 @@ return [
     'trucks' => 'Camions',
     'add_truck' => 'Ajouter un camion',
     'back_trucks_list' => 'Retour à la liste des camions',
+    'back_to_truck' => 'Retour au camion',
     // Revenus & Stats
     'income_stats' => 'Revenus & statistiques',
     // Events

@@ -76,8 +76,8 @@
                         <li class="list-group-item"><b>{{ trans('franchisee.truck_general_state') }}</b>
                             {{ empty($franchisee['truck']['general_state'])? trans('franchisee.not_specified_m') : $franchisee['truck']['general_state'] }}
                         </li>
-                        <li class="list-group-item"><b>{{ trans('franchisee.truck_last_safety_inspection') }}
-                            </b>{{ empty($franchisee['truck']['last_safety_inspection'])? trans('franchisee.not_specified_m') :
+                        <li class="list-group-item"><b>{{ trans('franchisee.truck_last_safety_inspection') }}</b>
+                            {{ empty($franchisee['truck']['last_safety_inspection']) ? trans('franchisee.not_specified_m') :
                                 DateTime::createFromFormat('Y-m-d',$franchisee['truck']['last_safety_inspection']['date'])->format('d/m/Y')
                                 .' ('.$franchisee['truck']['last_safety_inspection']['truck_mileage'].' km)'}}
                         </li>

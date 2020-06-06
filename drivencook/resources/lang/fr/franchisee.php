@@ -12,12 +12,12 @@ return [
     'continue' => 'Continuer',
     'submit' => 'Valider',
     'view_details' => 'Consulter les details',
-    'cost' => 'Coût',
     'dashboard' => 'Tableau de bord',
     'date' => 'Date',
     'events' => 'Évènements',
     'franchise' => 'Franchisé',
     'from' => 'Du',
+    'since' => 'Depuis le',
     'not_assigned' => 'Non assigné',
     'step' => 'Étape :step_number',
     'to' => 'au',
@@ -60,7 +60,7 @@ return [
 
     // Truck
     'truck_info' => 'Informations du camion',
-    'truck_constructor' => 'Constructeur :',
+    'truck_constructor' => 'Marque :',
     'truck_model' => 'Modèle :',
     'truck_purchase_date' => 'Date d\'achat :',
     'truck_licence_plate' => 'Plaque d\'immatriculation :',
@@ -89,6 +89,17 @@ return [
     'update_breakdown' => 'Modifier une panne',
     'update_truck_position' => 'Mettre à jour la position du camion',
     'update_safety_inspection' => 'Modifier un contrôle technique',
+    'breakdown_cost' => 'Coût',
+    'breakdown_status' => 'Statut',
+    'breakdown_type_Batterie' => 'Batterie',
+    'breakdown_type_Moteur' => 'Moteur',
+    'breakdown_type_Alternateur' => 'Alternateur',
+    'breakdown_type_Freins' => 'Freins',
+    'breakdown_type_Refroidissement' => 'Refroidissement',
+    'breakdown_type_Autre' => 'Autre',
+    'breakdown_status_Signalée' => 'Signalée',
+    'breakdown_status_Réparation en cours' => 'Réparation en cours',
+    'breakdown_status_Réparée' => 'Réparée',
 
 
     // Stock and orders

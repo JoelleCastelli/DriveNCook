@@ -1,7 +1,7 @@
 @extends('franchise.layout_franchise')
 
 @section('title')
-    {{trans('franchisee.truck_view')}}
+    {{trans('franchisee.truck')}}
 @endsection
 
 @section('content')
@@ -13,51 +13,52 @@
                 </div>
 
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><b>{{trans('franchisee.constructor')}} :
-                        </b>{{empty($truck['brand'])?'Non renseigné':$truck['brand']}}
+                    <li class="list-group-item"><b>{{ trans('franchisee.truck_constructor') }}</b>
+                        {{ empty($truck['brand'])? trans('franchisee.not_specified_m') : $truck['brand'] }}
                     </li>
-                    <li class="list-group-item"><b>{{trans('franchisee.model')}} :
-                        </b>{{empty($truck['model'])?'Non renseigné':$truck['model']}}
+                    <li class="list-group-item"><b>{{ trans('franchisee.truck_model') }}</b>
+                        {{ empty($truck['model'])? trans('franchisee.not_specified_m') : $truck['model'] }}
                     </li>
-                    <li class="list-group-item"><b>{{trans('franchisee.buyout_date')}} :
-                        </b>{{empty($truck['purchase_date'])?'Non renseigné':
-                                DateTime::createFromFormat('Y-m-d',$truck['purchase_date'])->format('d/m/Y')}}
+                    <li class="list-group-item"><b>{{ trans('franchisee.truck_purchase_date') }}</b>
+                        {{ empty($truck['purchase_date'])? trans('franchisee.not_specified_f'):
+                            DateTime::createFromFormat('Y-m-d',$truck['purchase_date'])->format('d/m/Y')}}
                     </li>
-                    <li class="list-group-item"><b>{{trans('franchisee.licence_plate')}} :
-                        </b>{{empty($truck['license_plate'])?'Non renseigné':$truck['license_plate']}}
+                    <li class="list-group-item"><b>{{ trans('franchisee.truck_licence_plate') }}</b>
+                        {{ empty($truck['license_plate'])? trans('franchisee.not_specified_f') : $truck['license_plate'] }}
                     </li>
-                    <li class="list-group-item"><b>{{trans('franchisee.insurance_number')}} :
-                        </b>{{empty($truck['insurance_number'])?'Non renseigné':$truck['insurance_number']}}
+                    <li class="list-group-item"><b>{{ trans('franchisee.truck_insurance_number') }}</b>
+                        {{ empty($truck['insurance_number'])? trans('franchisee.not_specified_m') : $truck['insurance_number'] }}
                     </li>
-                    <li class="list-group-item"><b>{{trans('franchisee.fuel_type')}} :
-                        </b>{{empty($truck['fuel_type'])?'Non renseigné':$truck['fuel_type']}}
+                    <li class="list-group-item"><b>{{ trans('franchisee.truck_fuel_type') }}</b>
+                        {{ empty($truck['fuel_type'])? trans('franchisee.not_specified_m') : $truck['fuel_type'] }}
                     </li>
-                    <li class="list-group-item"><b>{{trans('franchisee.power')}} :
-                        </b>{{empty($truck['horsepower'])?'Non renseigné':$truck['horsepower'].' CV'}}
+                    <li class="list-group-item"><b>{{ trans('franchisee.truck_power') }}</b>
+                        {{ empty($truck['horsepower'])? trans('franchisee.not_specified_f') : $truck['horsepower'].' CV'}}
                     </li>
-                    <li class="list-group-item"><b>{{trans('franchisee.payload')}} :
-                        </b>{{empty($truck['payload'])?'Non renseigné':$truck['payload'].' KG'}}
+                    <li class="list-group-item"><b>{{ trans('franchisee.truck_payload') }}</b>
+                        {{ empty($truck['payload'])? trans('franchisee.not_specified_f') : $truck['payload'].' KG'}}
                     </li>
-                    <li class="list-group-item"><b>{{trans('franchisee.general_state')}} :
-                        </b>{{empty($truck['general_state'])?'Non renseigné':$truck['general_state']}}
+                    <li class="list-group-item"><b>{{ trans('franchisee.truck_general_state') }}</b>
+                        {{ empty($truck['general_state'])? trans('franchisee.not_specified_m') : $truck['general_state'] }}
                     </li>
-                    <li class="list-group-item"><b>{{trans('franchisee.last_safety_inspection')}} :
-                        </b>{{empty($truck['last_safety_inspection'])?trans('franchisee.unknown'):
-                                DateTime::createFromFormat('Y-m-d',$truck['last_safety_inspection']['date'])->format('d/m/Y')
-                                .' ('.$truck['last_safety_inspection']['truck_mileage'].' km)'}}
+                    <li class="list-group-item"><b>{{ trans('franchisee.truck_last_safety_inspection') }}</b>
+                        {{ empty($truck['last_safety_inspection']) ? trans('franchisee.not_specified_m') :
+                            DateTime::createFromFormat('Y-m-d',$truck['last_safety_inspection']['date'])->format('d/m/Y')
+                            .' ('.$truck['last_safety_inspection']['truck_mileage'].' km)'}}
                     </li>
-                    <li class="list-group-item"><b>{{trans('franchisee.location')}} :
+                    <li class="list-group-item"><b>{{trans('franchisee.truck_position')}}
                         </b><?php
                         if (empty($truck['location'])) {
                             echo trans('franchisee.unknown');
                         } else {
                             echo $truck['location']['address'] . ' (' . $truck['location']['city']['postcode'] . ')';
                             echo '<br>';
-                            echo trans('franchisee.from') . ' ' . DateTime::createFromFormat('Y-m-d', $truck['location_date_start'])->format('d/m/Y');
                             if ($truck['location_date_end'] != null) {
+                                echo trans('franchisee.from') . ' ' . DateTime::createFromFormat('Y-m-d', $truck['location_date_start'])->format('d/m/Y');
                                 echo ' ' . trans('franchisee.to') . ' ' . DateTime::createFromFormat('Y-m-d', $truck['location_date_end'])->format('d/m/Y');
                             } else {
-                                echo ' ' . trans('franchisee.undetermined_duration');
+                                echo trans('franchisee.since') . ' ' . DateTime::createFromFormat('Y-m-d', $truck['location_date_start'])->format('d/m/Y');
+                                echo ' ('.trans('franchisee.undetermined_duration').')';
                             }
                         }
                         ?>
@@ -69,7 +70,7 @@
         <div class="col-12 col-lg-6 mb-5">
             <div class="card">
                 <div class="card-header">
-                    <h2>{{trans('franchisee.breakdown_history')}}</h2>
+                    <h2>{{trans('franchisee.truck_breakdown_history')}}</h2>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -80,9 +81,9 @@
                                 <th>{{trans('franchisee.date')}}</th>
                                 <th>{{trans('franchisee.breakdown_type')}}</th>
                                 <th>{{trans('franchisee.description')}}</th>
-                                <th>{{trans('franchisee.cost')}}</th>
-                                <th>{{trans('franchisee.status')}}</th>
-                                <th>{{trans('franchisee.action')}}</th>
+                                <th>{{trans('franchisee.breakdown_cost')}}</th>
+                                <th>{{trans('franchisee.breakdown_status')}}</th>
+                                <th>{{trans('franchisee.actions')}}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -116,7 +117,7 @@
         <div class="col-12 col-lg-6 mb-5">
             <div class="card">
                 <div class="card-header">
-                    <h2>{{trans('franchisee.safety_inspection_history')}}</h2>
+                    <h2>{{trans('franchisee.truck_safety_inspection_history')}}</h2>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">

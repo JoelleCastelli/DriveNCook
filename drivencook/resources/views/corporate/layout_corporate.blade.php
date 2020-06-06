@@ -339,24 +339,38 @@
                     </a>
                 </li>
             @endif
-            @if (strpos(url()->current(), route('truck_update', ['id'=>''])) !== false)
+            @if (strpos(url()->current(), route('truck_update', ['id'=>''])) !== false ||
+                 strpos(url()->current(), route('truck_view',['id'=>''])) !== false)
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('truck_list')}}">
                         <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_trucks_list') }}
                     </a>
                 </li>
             @endif
+
+
+
+            @if (strpos(url()->current(), route('update_breakdown', ['truckId'=>'', 'breakdownId' => ''])) !== false ||
+                 strpos(url()->current(), route('update_safety_inspection', ['truckId'=>'', 'safetyInspectionId' => ''])) !== false)
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{ route('truck_view', ['id' => request()->segments()[2]]) }}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_to_truck') }}
+                    </a>
+                </li>
+            @endif
+            @if (strpos(url()->current(), route('add_breakdown', ['truckId'=>''])) !== false ||
+             strpos(url()->current(), route('add_safety_inspection', ['truckId'=>''])) !== false)
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{ route('truck_view', ['id' => collect(request()->segments())->last()]) }}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_to_truck') }}
+                    </a>
+                </li>
+            @endif
+
             @if (strpos(url()->current(), route('dish_update', ['id'=>''])) !== false)
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('dish_list')}}">
                         <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_products_list') }}
-                    </a>
-                </li>
-            @endif
-            @if (strpos(url()->current(), route('truck_view',['id'=>''])) !== false)
-                <li class="nav-item">
-                    <a class="nav-link text-light2" href="{{route('truck_list')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_trucks_list') }}
                     </a>
                 </li>
             @endif
