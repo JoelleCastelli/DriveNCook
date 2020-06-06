@@ -31,7 +31,7 @@
          <tabs>
             <Tab closable="false" text="Clients">
                <content>
-                  <SplitPane dividerPositions="0.25" prefHeight="500.0" prefWidth="800.0" stylesheets="@css/table_style.css">
+                  <SplitPane fx:id="splitPane" dividerPositions="0.25" prefHeight="500.0" prefWidth="800.0" stylesheets="@css/table_style.css">
                     <items>
                         <VBox>
                            <children>

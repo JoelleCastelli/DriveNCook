@@ -1,5 +1,7 @@
 package javafx;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.Event;
@@ -9,6 +11,9 @@ import javafx.scene.control.*;
 public class DashboardController {
 
     private MainApp mainApp;
+
+    @FXML
+    private SplitPane splitPane;
 
     //User list
     @FXML
@@ -53,7 +58,13 @@ public class DashboardController {
 
     @FXML
     private void initialize() {
-        // Initialize the person table with the two columns.
+
+        splitPane.getDividers().get(0).positionProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                splitPane.getDividers().get(0).setPosition(0.25);
+            }
+        });
 
         emailColumn.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
         stepColumn.setCellValueFactory(cellData -> cellData.getValue().stepProperty());
