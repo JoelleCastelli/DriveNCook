@@ -318,6 +318,15 @@ class FranchiseeController extends Controller
             $warehouse_percentage = trim($parameters['warehouse_percentage']);
             $billing_day = trim($parameters['billing_day']);
 
+            $current_obligation = $this->get_current_obligation();
+            if($entrance_fee == $current_obligation['entrance_fee'] &&
+                $revenue_percentage == $current_obligation['revenue_percentage'] &&
+                $warehouse_percentage == $current_obligation['warehouse_percentage'] &&
+                $billing_day == $current_obligation['billing_day']) {
+                $errors_list[] = trans('franchisee.values_must_be_different_from_current_obligation');
+                return redirect()->back()->with('error', $errors_list);
+            }
+
             if (!is_numeric($entrance_fee) || $entrance_fee < 0 || $entrance_fee > 9999999) {
                 $error = true;
                 $errors_list[] = trans('franchisee.wrong_initial_fee');

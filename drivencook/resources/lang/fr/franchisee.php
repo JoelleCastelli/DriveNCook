@@ -176,6 +176,7 @@ return [
     'wrong_percentage' => 'Stock corporate incorrect',
     'wrong_billing_day' => 'Jour de facturation mensuelle incorrect',
     'request_error' => 'Erreur dans la requête',
+    'values_must_be_different_from_current_obligation' => 'Les valeurs doivent être différentes des valeurs actuelles',
 
 
     // Sales & Stats
