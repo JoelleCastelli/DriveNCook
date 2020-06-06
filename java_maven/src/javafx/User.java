@@ -9,19 +9,21 @@ public class User {
     private final StringProperty firstname;
     private final StringProperty lastname;
     private final StringProperty role;
+    private final StringProperty loyalty_point;
     private final StringProperty order;
 
     public User() {
-        this(null, null, null, null, null,null);
+        this(null, null, null, null, null, -1, -1);
     }
 
-    public User(String id,String email, String firstname, String lastname, String role, String order) {
+    public User(String id, String email, String firstname, String lastname, String role, int loyalty_point, int order) {
         this.id = new SimpleStringProperty(id);
         this.email = new SimpleStringProperty(email);
         this.firstname = new SimpleStringProperty(firstname);
         this.lastname = new SimpleStringProperty(lastname);
         this.role = new SimpleStringProperty(role);
-        this.order = new SimpleStringProperty(order);
+        this.loyalty_point = new SimpleStringProperty(String.valueOf(loyalty_point));
+        this.order = new SimpleStringProperty(String.valueOf(order));
     }
 
     public String getId() {
@@ -34,6 +36,18 @@ public class User {
 
     public void setId(String id) {
         this.id.set(id);
+    }
+
+    public String getLoyalty_point() {
+        return loyalty_point.get();
+    }
+
+    public StringProperty loyalty_pointProperty() {
+        return loyalty_point;
+    }
+
+    public void setLoyalty_point(String loyalty_point) {
+        this.loyalty_point.set(loyalty_point);
     }
 
     public String getOrder() {

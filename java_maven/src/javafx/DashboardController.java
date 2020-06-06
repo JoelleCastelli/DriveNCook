@@ -1,17 +1,12 @@
 package javafx;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
-public class UserListController {
+public class DashboardController {
 
     private MainApp mainApp;
 
@@ -27,7 +22,7 @@ public class UserListController {
 
     //User detail
     private User loginUser;
-
+    private User selectedUser = null;
     @FXML
     private Label emailLabel;
     @FXML
@@ -38,13 +33,22 @@ public class UserListController {
     private Label roleLabel;
     @FXML
     private Label orderLabel;
+    @FXML
+    private Spinner<Integer> loyaltyPointSpinner;
 
+    private SpinnerValueFactory<Integer> spinnerValueFactory;
+
+    //Fidelity manager
     @FXML
-    private TableView<Promotion> promotionTable;
+    private TableView<FidelityStep> fidelityStepTable;
     @FXML
-    private TableColumn<Promotion, String> promoTypeColumn;
+    private TableColumn<FidelityStep, String> stepColumn;
     @FXML
-    private TableColumn<Promotion, String> promoValueColumn;
+    private TableColumn<FidelityStep, String> reductionColumn;
+    @FXML
+    private TextField stepTextField;
+    @FXML
+    private TextField reductionTextField;
 
 
     @FXML
@@ -52,9 +56,8 @@ public class UserListController {
         // Initialize the person table with the two columns.
 
         emailColumn.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
-
-        promoTypeColumn.setCellValueFactory(cellData -> cellData.getValue().promo_typeProperty());
-        promoValueColumn.setCellValueFactory(cellData -> cellData.getValue().valueProperty());
+        stepColumn.setCellValueFactory(cellData -> cellData.getValue().stepProperty());
+        reductionColumn.setCellValueFactory(cellData -> cellData.getValue().reductionProperty());
 
         showUserDetail(null);
 
@@ -67,8 +70,8 @@ public class UserListController {
     public void setMainApp(MainApp main) {
         this.mainApp = main;
 
-//        userTable.setItems(main.getUserList());
-        initTableFilter();
+        initUserTableFilter();
+        initFidelityStepTable();
     }
 
     public void setLoginUser(User loginUser) {
@@ -79,13 +82,17 @@ public class UserListController {
 
     private void showUserDetail(User user) {
         if (user != null) {
+            spinnerValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, Integer.parseInt(user.getLoyalty_point()));
+            selectedUser = user;
             emailLabel.setText(user.getEmail());
             firstnameLabel.setText(user.getFirstname());
             lastnameLabel.setText(user.getLastname());
             roleLabel.setText(user.getRole());
             orderLabel.setText(user.getOrder());
-            getUserPromotions(user);
+            loyaltyPointSpinner.setValueFactory(spinnerValueFactory);
         } else {
+            selectedUser = null;
+
             emailLabel.setText("");
             firstnameLabel.setText("");
             lastnameLabel.setText("");
@@ -94,14 +101,7 @@ public class UserListController {
         }
     }
 
-    public void deletePromotion(ActionEvent event) {
-        String selected_user_id = userTable.getSelectionModel().getSelectedItem().getId();
-        int promo_id = Integer.parseInt(promotionTable.getSelectionModel().getSelectedItem().getId());
-        this.mainApp.dataBaseDAO.removePromotion(promo_id);
-        this.mainApp.fillPromotionList(selected_user_id);
-    }
-
-    private void initTableFilter() {
+    private void initUserTableFilter() {
         FilteredList<User> filteredData = new FilteredList<>(mainApp.getUserList(), p -> true);
 
         searchField.textProperty().addListener(
@@ -125,11 +125,49 @@ public class UserListController {
         userTable.setItems(sortedList);
     }
 
-    private void getUserPromotions(User user) {
-        mainApp.fillPromotionList(user.getId());
+    private void initFidelityStepTable() {
+        SortedList<FidelityStep> sortedList = new SortedList<>(mainApp.getFidelityStepList());
+        sortedList.comparatorProperty().bind(fidelityStepTable.comparatorProperty());
 
-        SortedList<Promotion> sortedList = new SortedList<>(mainApp.getPromotionList());
-        sortedList.comparatorProperty().bind(promotionTable.comparatorProperty());
-        promotionTable.setItems(sortedList);
+        fidelityStepTable.setItems(sortedList);
+    }
+
+    public void refreshFidelityStepTable() {
+        mainApp.refreshFidelityStepList();
+    }
+
+    public void updateLoyaltyPoint(Event event) {
+        mainApp.dataBaseDAO.updateLoyaltyPoint(Integer.parseInt(selectedUser.getId()), spinnerValueFactory.getValue());
+        mainApp.refreshUserList();
+    }
+
+    public void deleteFidelityStep() {
+        if (!fidelityStepTable.getSelectionModel().isEmpty()) {
+            int fidelityStepId = Integer.parseInt(fidelityStepTable.getSelectionModel().getSelectedItem().getId());
+            mainApp.dataBaseDAO.deleteFidelityStep(fidelityStepId);
+            refreshFidelityStepTable();
+        }
+    }
+
+    public void addFidelityStep() {
+        if (isPositiveNumeric(stepTextField.getText()) && isPositiveNumeric(reductionTextField.getText())) {
+            int step = Integer.parseInt(stepTextField.getText());
+            int reduction = Integer.parseInt(reductionTextField.getText());
+            mainApp.dataBaseDAO.addFidelityStep(step, reduction, Integer.parseInt(loginUser.getId()));
+            refreshFidelityStepTable();
+        }
+    }
+
+
+    public static boolean isPositiveNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            int d = Integer.parseInt(strNum);
+            return d > 0;
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
     }
 }

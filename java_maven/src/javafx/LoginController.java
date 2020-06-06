@@ -6,6 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 
 
@@ -26,9 +28,6 @@ public class LoginController {
     }
 
     public void Login(ActionEvent event) {
-        statusLabel.setVisible(true);
-        statusLabel.setText(emailField.getText());
-
         User loginUser = mainApp.dataBaseDAO.Login(emailField.getText(), passwordField.getText());
         if (loginUser != null) {
             this.mainApp.showUserListView(loginUser);
@@ -42,4 +41,13 @@ public class LoginController {
     public void setMainApp(MainApp main) {
         this.mainApp = main;
     }
+
+    @FXML
+    public void handleEnterPressed(KeyEvent event) {
+
+        if (event.getCode() == KeyCode.ENTER) {
+            Login(null);
+        }
+    }
 }
+
