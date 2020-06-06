@@ -14,37 +14,43 @@
         </div>
     @endif
     <div class="row">
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-12">
             <div class="card">
                 <div class="card-body">
                     <form method="post" action="{{route('franchisee_obligation_update_submit')}}">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                        <div class="form-group">
-                            <label for="entrance_fee">{{ trans('franchisee.invoice_initial_fee') }} (€)</label>
-                            <input type="number" min="0" max="1000000" step="0.01" name="entrance_fee" id="entrance_fee"
-                                   value="{{ $last_obligation['entrance_fee'] }}"
-                                   class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="revenue_percentage">{{ trans('franchisee.invoice_monthly_fee') }} (%)</label>
-                            <input type="number" min="0" max="100" step="0.01" name="revenue_percentage"
-                                   id="revenue_percentage"
-                                   value="{{ $last_obligation['revenue_percentage'] }}"
-                                   class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="warehouse_percentage">{{ trans('franchisee.obligations_warehouse_percentage') }}</label>
-                            <input type="number" min="0" max="100" step="0.01" name="warehouse_percentage"
-                                   id="warehouse_percentage"
-                                   value="{{ $last_obligation['warehouse_percentage'] }}"
-                                   class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="billing_day">{{ trans('franchisee.obligations_billing_day_info') }} (< 28)</label>
-                            <input type="number" min="1" max="28" step="1" name="billing_day" id="billing_day"
-                                   value="{{ $last_obligation['billing_day'] }}"
-                                   class="form-control">
+                        <div class="row">
+                            <div class="col-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="entrance_fee">{{ trans('franchisee.invoice_initial_fee') }} (€)</label>
+                                    <input type="number" min="0" max="1000000" step="0.01" name="entrance_fee" id="entrance_fee"
+                                           value="{{ $last_obligation['entrance_fee'] }}"
+                                           class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="revenue_percentage">{{ trans('franchisee.invoice_monthly_fee') }} (%)</label>
+                                    <input type="number" min="0" max="100" step="0.01" name="revenue_percentage"
+                                           id="revenue_percentage"
+                                           value="{{ $last_obligation['revenue_percentage'] }}"
+                                           class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="warehouse_percentage">{{ trans('franchisee.obligations_warehouse_percentage') }}</label>
+                                    <input type="number" min="0" max="100" step="0.01" name="warehouse_percentage"
+                                           id="warehouse_percentage"
+                                           value="{{ $last_obligation['warehouse_percentage'] }}"
+                                           class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="billing_day">{{ trans('franchisee.obligations_billing_day_info') }} (< 28)</label>
+                                    <input type="number" min="1" max="28" step="1" name="billing_day" id="billing_day"
+                                           value="{{ $last_obligation['billing_day'] }}"
+                                           class="form-control">
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -54,7 +60,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-6 mt-5 mt-md-0">
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-12 mt-5 mt-md-0">
             <div class="card">
                 <div class="card-header">
                     <h2>{{ trans('franchisee.history') }}</h2>
@@ -76,11 +84,11 @@
                             <tbody>
                                 @foreach($obligations as $obligation)
                                     <tr>
-                                        <td>{{$obligation['date_updated']}}</td>
+                                        <td>{{ $obligation['date_updated']}}</td>
                                         <td>{{ number_format($obligation['entrance_fee'], 2, ',', ' ') }} €</td>
                                         <td>{{ number_format($obligation['revenue_percentage'], 2, ',', ' ') }} %</td>
                                         <td>{{ number_format($obligation['warehouse_percentage'], 2, ',', ' ') }} %</td>
-                                        <td>{{$obligation['billing_day']}}</td>
+                                        <td>{{ $obligation['billing_day']}}</td>
                                         <td>{{ $manager['firstname'].' '.$manager['lastname'].' ('.$manager['email'].')' }}</td>
                                     </tr>
                                 @endforeach

@@ -163,6 +163,7 @@ return [
     'obligations_stock_info' => 'Stock obligation information',
     'obligations_warehouse_percentage' => 'Percentage of stock to come from Drive\'N\'Cook:',
     'obligations_last_updated' => 'Last updated:',
+    'last_updated' => 'Last updated',
     'corporate_stock' => 'Corporate stock',
     'obligations_invoice_info' => 'Invoicing information',
     'obligations_revenue_percentage' => 'Percentage of monthly turnover to be paid to Drive\'N\'Cook:',
