@@ -76,6 +76,7 @@
                                 <th>Redevance périodique</th>
                                 <th>Stock corporate</th>
                                 <th>Jour de facturation mensuelle</th>
+                                <th>Modifié par</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -86,6 +87,7 @@
                                     <td>{{ number_format($obligation['revenue_percentage'], 2, ',', ' ') }} %</td>
                                     <td>{{ number_format($obligation['warehouse_percentage'], 2, ',', ' ') }} %</td>
                                     <td>{{$obligation['billing_day']}}</td>
+                                    <td>{{$manager['firstname'].' '.$manager['lastname']}}</td>
                                 </tr>
                             @endforeach
                             </tbody>

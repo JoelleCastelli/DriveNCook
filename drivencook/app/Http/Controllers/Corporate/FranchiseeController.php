@@ -297,9 +297,11 @@ class FranchiseeController extends Controller
 
     public function update_franchise_obligation()
     {
+        $manager = $this->get_connected_user();
         $last_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
         $franchisee_obligations = FranchiseObligation::all()->sortByDesc('id')->toArray();
         return view('corporate.franchisee.franchisee_obligations_update')
+            ->with('manager', $manager)
             ->with('obligations', $franchisee_obligations)
             ->with('last_obligation', $last_obligation);
     }
