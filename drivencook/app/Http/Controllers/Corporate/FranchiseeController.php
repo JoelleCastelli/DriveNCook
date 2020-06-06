@@ -345,10 +345,10 @@ class FranchiseeController extends Controller
                 'billing_day' => $billing_day,
                 'date_updated' => date('Y-m-d')];
             FranchiseObligation::insert($obligation);
-            return redirect()->route('request_error')->with('success', trans('franchisee.obligation_updated'));
+            return redirect()->route('franchisee_obligation_update')->with('success', trans('franchisee.obligation_updated'));
 
         } else {
-            $errors_list[] = trans('franchisee.wrong_billing_day');
+            $errors_list[] = trans('franchisee.request_error');
             return redirect()->back()->with('error', $errors_list);
         }
     }
