@@ -158,13 +158,24 @@ return [
 
 
     // Obligations
+    'franchisee_obligations' => 'Obligations des franchisés',
     'obligations' => 'Obligations',
     'obligations_stock_info' => 'Informations sur les obligations de stock',
     'obligations_warehouse_percentage' => 'Pourcentage de stock devant être issu de Drive\'N\'Cook :',
     'obligations_last_updated' => 'Date de mise à jour :',
+    'last_updated' => 'Date de mise à jour',
+    'corporate_stock' => 'Stock corporate',
     'obligations_invoice_info' => 'Informations sur la facturation',
     'obligations_revenue_percentage' => 'Pourcentage du chiffre d\'affaires mensuel devant être reversé à Drive\'N\'Cook :',
     'obligations_billing_day' => 'Jour de facturation mensuelle : <b>le :day du mois</b>',
+    'obligations_billing_day_info' => 'Jour de facturation mensuelle',
+    'updated_by' => 'Modifié par',
+    'obligation_updated' => 'Obligations du franchisé mises à jour !',
+    'wrong_initial_fee' => 'Redevance initiale forfaitaire incorrecte',
+    'wrong_monthly_fee' => 'Redevance périodique incorrecte',
+    'wrong_percentage' => 'Stock corporate incorrect',
+    'wrong_billing_day' => 'Jour de facturation mensuelle incorrect',
+    'request_error' => 'Erreur dans la requête',
 
 
     // Sales & Stats

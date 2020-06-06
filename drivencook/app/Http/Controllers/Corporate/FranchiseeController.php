@@ -320,19 +320,19 @@ class FranchiseeController extends Controller
 
             if (!is_numeric($entrance_fee) || $entrance_fee < 0 || $entrance_fee > 9999999) {
                 $error = true;
-                $errors_list[] = 'Redevance initiale forfaitaire incorrecte';
+                $errors_list[] = trans('franchisee.wrong_initial_fee');
             }
             if (!is_numeric($revenue_percentage) || $revenue_percentage < 0 || $revenue_percentage > 100) {
                 $error = true;
-                $errors_list[] = 'Redevance périodique incorrecte';
+                $errors_list[] = trans('franchisee.wrong_monthly_fee');
             }
             if (!is_numeric($warehouse_percentage) || $warehouse_percentage < 0 || $warehouse_percentage > 100) {
                 $error = true;
-                $errors_list[] = 'Stock corporate incorrect';
+                $errors_list[] = trans('franchisee.wrong_percentage');
             }
             if (!ctype_digit($billing_day) || $billing_day < 1 || $billing_day > 28) {
                 $error = true;
-                $errors_list[] = 'Jour de facturation mensuelle incorrect';
+                $errors_list[] = trans('franchisee.wrong_billing_day');
             }
 
             if ($error) {
@@ -345,10 +345,10 @@ class FranchiseeController extends Controller
                 'billing_day' => $billing_day,
                 'date_updated' => date('Y-m-d')];
             FranchiseObligation::insert($obligation);
-            return redirect()->route('franchisee_obligation_update')->with('success', 'Obligations du franchisé mises à jour !');
+            return redirect()->route('request_error')->with('success', trans('franchisee.obligation_updated'));
 
         } else {
-            $errors_list[] = 'Erreur dans la requête Post !';
+            $errors_list[] = trans('franchisee.wrong_billing_day');
             return redirect()->back()->with('error', $errors_list);
         }
     }

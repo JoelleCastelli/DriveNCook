@@ -158,13 +158,23 @@ return [
 
 
     // Obligations
+    'franchisee_obligations' => 'Franchisees obligations',
     'obligations' => 'Obligations',
     'obligations_stock_info' => 'Stock obligation information',
     'obligations_warehouse_percentage' => 'Percentage of stock to come from Drive\'N\'Cook:',
     'obligations_last_updated' => 'Last updated:',
+    'corporate_stock' => 'Corporate stock',
     'obligations_invoice_info' => 'Invoicing information',
     'obligations_revenue_percentage' => 'Percentage of monthly turnover to be paid to Drive\'N\'Cook:',
     'obligations_billing_day' => 'Billing day: <b> every :day of the month</b>',
+    'obligations_billing_day_info' => 'Billing day',
+    'updated_by' => 'Updated by',
+    'obligation_updated' => 'Obligations updated!',
+    'wrong_initial_fee' => 'Incorrect initial fee',
+    'wrong_monthly_fee' => 'Incorrect fixed fee',
+    'wrong_percentage' => 'Incorrect corporate stock',
+    'wrong_billing_day' => 'Incorrect billing day',
+    'request_error' => 'Request error',
 
 
     // Sales & Stats
