@@ -6,4 +6,6 @@ return [
     'back_dashboard' => 'Home',
 
     'actions' => 'Actions',
+
+    'delete_account' => 'Delete your account',
 ];

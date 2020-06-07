@@ -7,4 +7,5 @@ return [
 
     'actions' => 'Actions',
 
+    'delete_account' => 'Supprimer votre compte',
 ];
