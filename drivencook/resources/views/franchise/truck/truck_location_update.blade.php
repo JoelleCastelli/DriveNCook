@@ -1,6 +1,6 @@
 @extends('franchise.franchise_dashboard')
 @section('title')
-    Mettre à jour la position du camion
+    {{trans('franchisee.update_truck_position')}}
 @endsection
 
 
@@ -13,10 +13,10 @@
                         {{csrf_field()}}
 
                         <div class="form-group">
-                            <label for="location_id">{{ trans('truck_creation.location_name') }}</label>
+                            <label for="location_id">{{ trans('truck.location_name') }}</label>
                             <div class="input-group mb-3">
                                 <select class="custom-select" name="location_id" id="location_id">
-                                    <option value="">Non assigné</option>
+                                    <option value="">{{trans('franchisee.not_assigned')}}</option>
                                     @foreach($location_list as $location)
                                         <option {{$location['id'] == $truck['location_id']?'selected':''}}
                                                 value={{ $location['id'] }}>
@@ -34,7 +34,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="location_date_start">Date de début</label>
+                            <label for="location_date_start">{{trans('franchisee.date_start')}}</label>
                             <input type="date" class="form-control" id="location_date_start" name="location_date_start"
                                    value="{{$truck['location_date_start']}}" required/>
                             @if ($errors->has('location_date_start'))
@@ -46,7 +46,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="location_date_end">Date de fin</label>
+                            <label for="location_date_end">{{trans('franchisee.date_end')}}</label>
                             <input type="date" class="form-control" id="location_date_end" name="location_date_end"
                                    value="{{$truck['location_date_end']}}"/>
                             @if ($errors->has('location_date_end'))
@@ -59,7 +59,7 @@
 
                         <div class="form-group">
                             <button type="submit"
-                                    class="btn btn-info">{{ trans('truck.update_location_submit') }}</button>
+                                    class="btn btn-info">{{ trans('franchisee.submit') }}</button>
                         </div>
                     </form>
                 </div>

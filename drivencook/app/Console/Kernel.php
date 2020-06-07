@@ -5,9 +5,11 @@ namespace App\Console;
 use App\Models\FranchiseObligation;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Traits\UserTools;
 
 class Kernel extends ConsoleKernel
 {
+    use UserTools;
     /**
      * The Artisan commands provided by your application.
      *
@@ -25,7 +27,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $current_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
+        $current_obligation = $this->get_current_obligation();
          $schedule->command('invoices:generate_monthly')
                   ->monthlyOn($current_obligation['billing_day'], '10:00');
     }

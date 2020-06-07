@@ -5,7 +5,7 @@
 @endsection
 
 @section('title')
-    Tableau de bord
+    {{ trans('dashboard_corporate.dashboard') }}
 @endsection
 
 
@@ -16,11 +16,11 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div class="card text-light2">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item bg-info">Nombre d'entrepôts : {{ $nbWarehouses }}</li>
+                            <li class="list-group-item bg-info">{{ trans('dashboard_corporate.nb_warehouses') }} {{ $nbWarehouses }}</li>
                             <li class="list-group-item bg-info align-content-arround">
                                 <a href="{{ route('warehouse_list') }}" target="_blank" class="row text-light2">
                                     <div class="col-10">
-                                        Consulter les détails
+                                        {{ trans('dashboard_corporate.see_details') }}
                                     </div>
                                     <div class="col-2">
                                         <i class="fa fa-chevron-right"></i>
@@ -33,11 +33,11 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div class="card text-light2">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item bg-indigo">Nombre de franchisés : {{$nbfranchisees}}</li>
+                            <li class="list-group-item bg-indigo">{{ trans('dashboard_corporate.nb_franchisees') }} {{$nbfranchisees}}</li>
                             <li class="list-group-item bg-indigo align-content-arround">
                                 <a href="{{route('franchisee_list')}}" target="_blank" class="row text-light2">
                                     <div class="col-10">
-                                        Consulter les détails
+                                        {{ trans('dashboard_corporate.see_details') }}
                                     </div>
                                     <div class="col-2">
                                         <i class="fa fa-chevron-right"></i>
@@ -50,11 +50,11 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div class="card text-light2">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item bg-danger">Nombre de clients : undefined</li>
+                            <li class="list-group-item bg-danger">{{ trans('dashboard_corporate.nb_clients') }} undefined</li>
                             <li class="list-group-item bg-danger align-content-arround">
                                 <a href="#" class="row text-light2">
                                     <div class="col-10">
-                                        Consulter les détails
+                                        {{ trans('dashboard_corporate.see_details') }}
                                     </div>
                                     <div class="col-2">
                                         <i class="fa fa-chevron-right"></i>
@@ -67,11 +67,11 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div class="card text-light2">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item bg-success">Prochaine facturation : {{$revenues['next_invoice']}} €</li>
+                            <li class="list-group-item bg-success">{{ trans('dashboard_corporate.next_invoice') }} {{$revenues['next_invoice']}} €</li>
                             <li class="list-group-item bg-success align-content-arround">
                                 <a href="#" class="row text-light2">
                                     <div class="col-10">
-                                        Consulter les détails
+                                        {{ trans('dashboard_corporate.see_details') }}
                                     </div>
                                     <div class="col-2">
                                         <i class="fa fa-chevron-right"></i>

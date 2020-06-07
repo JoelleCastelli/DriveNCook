@@ -127,14 +127,14 @@
                         <td class="nb">{{ number_format($invoice['amount'], 2, ',', ' ') }} €</td>
                     </tr>
                 @else
-                    @for ($i = 0; $i < 10; $i++)
+                    @foreach ($purchase_order['purchased_dishes'] as $purchased_dish)
                         <tr class="item-row">
-                            <td>Lasagnes</td>
-                            <td class="nb">4 €</td>
-                            <td class="nb">1</td>
-                            <td class="nb">4 €</td>
+                            <td>{{ $purchased_dish['dish']['name'] }}</td>
+                            <td class="nb">{{ number_format($purchased_dish['unit_price'], 2, ',', ' ') }} €</td>
+                            <td class="nb">{{ $purchased_dish['quantity'] }}</td>
+                            <td class="nb">{{ number_format($purchased_dish['unit_price'] * $purchased_dish['quantity'], 2, ',', ' ') }} €</td>
                         </tr>
-                    @endfor
+                    @endforeach
                 @endif
 
                 <tr>

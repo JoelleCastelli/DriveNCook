@@ -70,12 +70,27 @@ Route::delete('/corporate/unset_franchisee_truck/{id}', [
     'uses' => 'Corporate\FranchiseeController@unset_franchise_truck'
 ]);
 
-Route::get('/corporate/franchisee_invoice_pdf/{id}', [
-    'as' => 'franchisee_invoice_pdf',
-    'uses' => 'Corporate\FranchiseeController@franchisee_invoice_pdf'
+Route::get('/corporate/franchisee_invoice/{id}', [
+    'as' => 'stream_franchisee_invoice',
+    'uses' => 'Corporate\FranchiseeController@stream_franchisee_invoice'
 ]);
 
 Route::post('/corporate/franchisee_sales_history_pdf', [
     'as' => 'franchisee_sales_history_pdf',
     'uses' => 'Corporate\FranchiseeController@franchisee_sales_history_pdf'
+]);
+
+Route::get('/corporate/franchisee_stocks_order/{id}', [
+    'as' => 'franchisee_stocks_order',
+    'uses' => 'Corporate\FranchiseeController@franchisee_stock_orders'
+]);
+
+Route::get('/corporate/franchisee_invoices_list/{id}', [
+    'as' => 'franchisee_invoices_list',
+    'uses' => 'Corporate\FranchiseeController@franchisee_invoices_list'
+]);
+
+Route::get('/corporate/franchisee_sales_stats/{id}', [
+    'as' => 'franchisee_sales_stats',
+    'uses' => 'Corporate\FranchiseeController@franchisee_sales_stats'
 ]);
