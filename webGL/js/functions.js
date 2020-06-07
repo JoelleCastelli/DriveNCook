@@ -50,11 +50,13 @@ export function createPointLight(
     return light;
 }
 
-export function camControl(keyboard, camera, cameraT, scene) {
+export function camControl(keyboard, group, cameraT, truckPivot) {
     let vectorX = new THREE.Vector3(1, 0, 0);
     let vectorY = new THREE.Vector3(0, 1, 0);
     let vectorZ = new THREE.Vector3(0, 0, 1);
-    let truck = camera.getObjectByName("food_truck");
+    let truck = group.getObjectByName("food_truck");
+    // console.log("Position, x:" + group.position.x + ", z:" + group.position.z);
+
 
     // if (keyboard.pressed("up")) {
     //     // if (camera.rotation.x < Math.radians(40)) {
@@ -73,33 +75,33 @@ export function camControl(keyboard, camera, cameraT, scene) {
     //     camera.rotateOnAxis(vectorY, -cameraT.rotationSpeed);
     // }
     if (keyboard.pressed("z")) {
-        camera.translateZ(-cameraT.moveSpeed);
+        group.translateZ(-cameraT.moveSpeed);
     }
     if (keyboard.pressed("s")) {
-        camera.translateZ(cameraT.moveSpeed);
+        group.translateZ(cameraT.moveSpeed);
     }
     if (keyboard.pressed("q")) {
         // camera.translateX(-cameraT.moveSpeed);
-        camera.rotateOnAxis(vectorY, cameraT.rotationSpeed);
-        truck.rotation.y += 0.015;
+        group.rotateOnAxis(vectorY, cameraT.rotationSpeed);
+        truck.rotation.y += truckPivot;
     } else if (truck.rotation.y > 0) {
-        truck.rotation.y -= 0.015;
+        truck.rotation.y -= truckPivot * 2;
     }
     if (keyboard.pressed("d")) {
         // camera.translateX(cameraT.moveSpeed);
-        camera.rotateOnAxis(vectorY, -cameraT.rotationSpeed);
-        truck.rotation.y -= 0.015;
-    }else if (truck.rotation.y < 0) {
-        truck.rotation.y += 0.015;
+        group.rotateOnAxis(vectorY, -cameraT.rotationSpeed);
+        truck.rotation.y -= truckPivot;
+    } else if (truck.rotation.y < 0) {
+        truck.rotation.y += truckPivot * 2;
     }
 
     if (keyboard.pressed("a")) {
-        camera.rotateOnAxis(vectorZ, cameraT.rotationSpeed * 0.5);
+        group.rotateOnAxis(vectorZ, cameraT.rotationSpeed * 0.5);
     }
     if (keyboard.pressed("e")) {
-        camera.rotateOnAxis(vectorZ, -cameraT.rotationSpeed * 0.5);
+        group.rotateOnAxis(vectorZ, -cameraT.rotationSpeed * 0.5);
     }
-    camera.position.y = 1;
+    group.position.y = 1;
 }
 
 export function loadStaticFBX(scene, path = null, name = "", scale = 1, posX = 0, posY = 0, posZ = 0, rotY = 0) {
@@ -120,5 +122,12 @@ export function loadStaticFBX(scene, path = null, name = "", scale = 1, posX = 0
         object.scale.x = object.scale.y = object.scale.z = scale;
         scene.add(object);
     });
+}
+
+export function updateArrow(arrow, object) {
+    arrow.lookAt(object.position.x, 30, object.position.z);
+    arrow.rotation.y += Math.radians(180);
+    arrow.rotation.z += Math.radians(90);
+
 }
 
