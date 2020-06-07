@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\AuthClient;
 use App\Models\FranchiseeStock;
+use App\Models\FidelityStep;
 use App\Models\Sale;
 use App\Models\SoldDish;
 use App\Models\Truck;
@@ -59,12 +60,31 @@ class OrderController extends Controller
             ->with('user')
             ->get();
 
+        $fidelity_step = '';
+
         if(!empty($stocks)) {
             $stocks = $stocks->toArray();
+
+            $fidelity_step = FidelityStep::where('user_id', $stocks[0]['user']['id'])
+                ->orderBy('reduction')
+                ->get();
+
+            if(!empty($fidelity_step)) {
+                $fidelity_step = $fidelity_step->toArray();
+            }
+        }
+
+        $client = User::whereKey($this->get_connected_user())
+            ->first();
+
+        if(!empty($client)) {
+            $client = $client->toArray();
         }
 
         return view('client.order.client_order')
-            ->with('stocks', $stocks);
+            ->with('stocks', $stocks)
+            ->with('promotions', $fidelity_step)
+            ->with('client', $client);
     }
 
     public function check_order_array($array): bool
@@ -208,5 +228,51 @@ class OrderController extends Controller
 
         return view('client.order.client_sale_display')
             ->with('sale', $sale);
+    }
+
+    public function client_order_cancel($id)
+    {
+        if (!ctype_digit($id)) {
+            $response_array = [
+                'status' => 'error',
+                'error' => 'warehouse_stock.id_not_digit'
+            ];
+        } else {
+            $errors_list = [];
+
+            $sale = Sale::where([
+                ['id', $id],
+                ['user_client', $this->get_connected_user()['id']],
+            ])->first();
+
+            if (!empty($sale)) {
+                $sold_dishes = SoldDish::where('sale_id', $id)
+                    ->get();
+
+                if (!empty($sold_dishes)) {
+                    foreach ($sold_dishes as $sold_dish) {
+                        SoldDish::where([
+                            ['dish_id', $sold_dish->dish_id],
+                            ['sale_id', $sale->id]
+                        ])->delete();
+                    }
+                }
+                Sale::whereKey($sale->id)
+                    ->delete();
+
+                $response_array = [
+                    'status' => 'success'
+                ];
+            } else {
+                $errors_list[] = trans('client/order.sale_and_client_do_not_match');
+
+                $response_array = [
+                    'status' => 'error',
+                    'errorList' => $errors_list
+                ];
+            }
+        }
+
+        echo json_encode($response_array);
     }
 }

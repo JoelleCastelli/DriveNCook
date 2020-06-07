@@ -80,6 +80,16 @@
                     <h2>{{ trans('client/order.shopping_cart') }}</h2>
                 </div>
                 <div class="card-body">
+                    <label class="col-form-label">{{ trans('client/order.discount_amount') }}</label>
+                    <select class="custom-select" id="discountSelection">
+                        <option value="" selected>{{ trans('client/order.select_menu_no_discount') }}</option>
+                        @foreach($promotions as $promotion)
+                            @if($promotion['step'] <= $client['loyalty_point'])
+                                <option value="{{ $promotion['reduction'] }}" id="discount_{{ $promotion['id'] }}">-{{ $promotion['reduction'] }} €</option>
+                            @endif
+                        @endforeach
+                    </select><br><br>
+                    <label class="col-form-label">{{ trans('client/order.dishes') }}</label>
                     <div class="table-responsive">
                         <table class="table table-hover table-striped table-bordered table-dark"
                                style="width: 100%">
@@ -118,7 +128,13 @@
                 sum += parseFloat(linePrice.toFixed(2));
             }
 
-            $('#orderBtnId').text(sum.toFixed(2) + ' €');
+            let discount = $('#discountSelection');
+            if(discount !== '' && sum > 0) {
+                console.log(discount.val());
+                sum -= discount.val();
+            }
+
+            if(sum > 0) $('#orderBtnId').text(sum.toFixed(2) + ' €');
         }
 
         $(document).on('click', '.delToOrderBtn', function () {
@@ -152,6 +168,10 @@
 
             $('#orderedLinePrice' + id).text(linePrice.toFixed(2) + ' €');
 
+            updateTotalOrderPrice();
+        });
+
+        $(document).on('change', '#discountSelection', function () {
             updateTotalOrderPrice();
         });
 

@@ -96,6 +96,45 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#dishes').DataTable();
+
+            $('#cancelOrderBtn').on('click', function () {
+                let url = window.location.href;
+                let orderId = url.substring(url.lastIndexOf('/') + 1);
+
+                console.log(orderId);
+
+                if (confirm(Lang.get('dish.delete_confirm'))) {
+                    if (!isNaN(parseInt(orderId))) {
+                        let url_delete = '{{ route('client_order_cancel', ['id'=>':id']) }}';
+                        url_delete = url_delete.replace(':id', orderId);
+                        $.ajax({
+                            url: url_delete,
+                            method: "delete",
+                            dataType: 'json',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function (data) {
+                                if (data['status'] === 'success') {
+                                    window.location.replace('{{ route('client_sales_history') }}');
+                                } else {
+                                    let str = 'yo';
+
+                                    if (data['errorList']) {
+                                        for (let i = 0; i < data['errorList'].length; i++) {
+                                            str += '\n' + data['errorList'][i];
+                                        }
+                                    }
+                                    alert(Lang.get('order.delete_error') + str);
+                                }
+                            },
+                            error: function () {
+                                alert(Lang.get('order.delete_error'));
+                            }
+                        })
+                    }
+                }
+            })
         });
 
     </script>
