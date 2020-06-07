@@ -14,8 +14,19 @@ class AccountController extends Controller
 {
     use UserTools;
 
-    public function dashboard() {
-        return view('client.client_dashboard');
+    public function dashboard()
+    {
+        $clientId = $this->get_connected_user()['id'];
+        $client = User::whereKey($clientId)
+            ->first();
+
+        $sales = Sale::where('user_client', $clientId)
+            ->get();
+        $nbSales = count($sales);
+
+        return view('client.client_dashboard')
+            ->with('client', $client)
+            ->with('nbSales', $nbSales);
     }
 
     public function registration()
