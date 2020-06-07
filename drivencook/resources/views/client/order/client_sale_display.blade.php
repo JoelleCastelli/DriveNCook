@@ -85,6 +85,11 @@
             </div>
         </div>
     </div>
+    @if($sale['online_order'] == true && $sale['status'] != 'done')
+        <button class="btn btn-danger"
+                id="cancelOrderBtn"
+                style="width: 100%">{{ trans('client/sale.cancel_order') }}</button>
+    @endif
 @endsection
 
 @section('script')
