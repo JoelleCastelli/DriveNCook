@@ -16,7 +16,6 @@ use App\Traits\UserTools;
 class TruckController extends Controller
 {
     use UserTools;
-    use EnumValue;
     use TruckTools;
 
     public function __construct()
@@ -27,7 +26,7 @@ class TruckController extends Controller
     private function check_truck_assignation(): bool
     {
         if (!$this->does_have_assigned_truck($this->get_connected_user()['id'])) {
-            flash("Vous n'avez pas de camion attribué, veuillez contacter un responsable Drive N Cook")->warning();
+            flash(trans('truck.no_truck_assigned'))->warning();
             return false;
         }
         return true;
@@ -98,7 +97,7 @@ class TruckController extends Controller
 
         $breakdown = Breakdown::find($breakdown_id);
         if ($breakdown == null) {
-            flash('Erreur, la pane n\'existe pas !')->error();
+            flash(trans('truck.breakdown_doesnt_exist'))->error();
             return back();
         }
         $breakdown = $breakdown->toArray();
@@ -133,7 +132,7 @@ class TruckController extends Controller
                 'status' => request('status'),
             ]);
 
-            flash('Panne modifié')->success();
+            flash(trans('truck.breakdown_updated'))->success();
         } else {
             Breakdown::insert([
                 'type' => request('type'),
@@ -144,7 +143,7 @@ class TruckController extends Controller
                 'truck_id' => $this->get_franchises_truck($this->get_connected_user()['id']),
             ]);
 
-            flash('Nouvelle panne ajouté')->success();
+            flash(trans('truck.breakdown_created'))->success();
         }
 
         return redirect(route('franchise.truck_view'));
@@ -167,7 +166,7 @@ class TruckController extends Controller
 
         $safety_inspection = SafetyInspection::find($safety_inspecton_id);
         if ($safety_inspection == null) {
-            flash('Erreur, la pane n\'existe pas !')->error();
+            flash(trans('truck.inspection_doesnt_exist'))->error();
             return back();
         }
         $safety_inspection = $safety_inspection->toArray();
@@ -196,7 +195,7 @@ class TruckController extends Controller
                 'truck_id' => $this->get_franchises_truck($this->get_connected_user()['id'])['id']
             ]);
 
-            flash('Contrôle technique modifié')->success();
+            flash(trans('truck.inspection_updated'))->success();
         } else {
             SafetyInspection::insert([
                 'date' => request('date'),
@@ -207,7 +206,7 @@ class TruckController extends Controller
                 'truck_id' => $this->get_franchises_truck($this->get_connected_user()['id'])['id']
             ]);
 
-            flash('Contrôle technique ajouté')->success();
+            flash(trans('truck.inspection_created'))->success();
         }
 
         return redirect(route('franchise.truck_view'));

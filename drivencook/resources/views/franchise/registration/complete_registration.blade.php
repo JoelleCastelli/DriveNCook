@@ -43,6 +43,23 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="pseudo">{{trans('franchisee.choose_pseudo')}}</label>
+                    <div class="input-group">
+                        <select class="custom-select" name="pseudo" id="pseudo" required>
+                                <option disabled selected value>{{trans("franchisee.choose_pseudo")}}</option>
+                                @foreach($pseudos as $pseudo)
+                                        <option value="{{ $pseudo['id'] }}">{{ $pseudo['name'] }}</option>
+                                @endforeach
+                        </select>
+                    </div>
+                    @if ($errors->has('pseudo'))
+                        <span class="badge-danger">
+                            {{$errors->first('pseudo')}}
+                        </span>
+                    @endif
+                </div>
+
+                <div class="form-group">
                     <label for="password">{{trans('franchisee.password')}}</label>
                     <input type="password" class="form-control" id="password" name="password"
                            placeholder="{{trans('franchisee.enter_password')}}" minlength="6" required>

@@ -25,6 +25,7 @@ return [
     /**********/
     /* NAVBAR */
     /**********/
+    'my_account'=>'Mon compte',
 
     // Warehouses
     'warehouses' => 'Entrepôts',
@@ -43,7 +44,11 @@ return [
     'tickets_gestion' => 'Gestion des tickets',
     'update_obligations' => 'Obligations',
     'pseudo_gestion' => 'Pseudonymes',
+    'stocks_orders' => 'Stocks et commandes',
+    'invoices' => 'Factures',
+    'sales_stats' => 'Ventes et statistiques',
     'back_franchisees_list' => 'Retour à la liste des franchisés',
+    'back_franchisees_view' => 'Retour à la page du franchisé',
     // Clients
     'clients' => 'Clients',
     'add_client' => 'Ajouter un client',
@@ -53,6 +58,7 @@ return [
     'trucks' => 'Camions',
     'add_truck' => 'Ajouter un camion',
     'back_trucks_list' => 'Retour à la liste des camions',
+    'back_to_truck' => 'Retour au camion',
     // Revenus & Stats
     'income_stats' => 'Revenus & statistiques',
     // Events

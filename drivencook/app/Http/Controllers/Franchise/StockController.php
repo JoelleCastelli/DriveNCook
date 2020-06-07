@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Middleware\AuthFranchise;
 use App\Models\Dish;
 use App\Models\FranchiseeStock;
+use App\Models\FranchiseObligation;
+use App\Models\Invoice;
 use App\Models\PurchasedDish;
 use App\Models\PurchaseOrder;
 use App\Models\Warehouse;
@@ -14,6 +16,7 @@ use App\Models\WarehousStock;
 use App\Traits\EnumValue;
 use App\Traits\UserTools;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Stripe\Charge;
 use Stripe\Customer;
@@ -39,19 +42,29 @@ class StockController extends Controller
         $stock = FranchiseeStock::with('dish')
             ->where('user_id', $user_id)
             ->get()->toArray();
-//        var_dump($purchase_order);
-//        var_dump($stock);
+        $current_obligation = $this->get_current_obligation();
+        $current_obligation['date_updated'] = DateTime::createFromFormat("Y-m-d", $current_obligation['date_updated'])->format('d/m/Y');
         return view('franchise.stock.stock_dashboard')
             ->with('stock', $stock)
-            ->with('purchase_order', $purchase_order);
+            ->with('purchase_order', $purchase_order)
+            ->with('current_obligation', $current_obligation);
     }
 
     public function stock_order()
     {
-        $warehouse_list = Warehouse::with('city')->get()->toArray();
-//        var_dump($warehouse_list);die;
+        $warehouses_list = [];
+        $warehouses = Warehouse::with('city')
+            ->with('available_dishes')
+            ->get()->toArray();
+
+        foreach ($warehouses as $warehouse) {
+            if (!empty($warehouse['available_dishes'])) {
+                $warehouses_list[] = $warehouse;
+            }
+        }
+
         return view('franchise.stock.stock_order_form')
-            ->with("warehouse_list", $warehouse_list);
+            ->with("warehouse_list", $warehouses_list);
     }
 
     public function stock_order_warehouse($warehouse_id)
@@ -122,13 +135,13 @@ class StockController extends Controller
                 'currency' => 'eur'
             ));
 
-            return $this->stock_order_validate();
+            return $this->stock_order_validate($order_total_cents / 100);
         } catch (\Exception $ex) {
             return $ex->getMessage();
         }
     }
 
-    public function stock_order_validate()
+    public function stock_order_validate($order_total)
     {
         $order = request()->session()->pull('order', null);
         if ($order == null) {
@@ -160,7 +173,23 @@ class StockController extends Controller
                 'quantity' => $previous_warehouse_stock - $order_dish['quantity']
             ]);
         }
-        flash('Commande créé !')->success();
+
+        // invoice creation
+        $invoice = ['amount' => $order_total,
+            'date_emitted' => date("Y-m-d"),
+            'monthly_fee' => 0,
+            'initial_fee' => 0,
+            'user_id' => $this->get_connected_user()['id'],
+            'purchase_order_id' => $order_id];
+        $invoice = Invoice::create($invoice)->toArray();
+        $reference = $this->create_invoice_reference('RS', $this->get_connected_user()['id'], $invoice['id']);
+        $this->save_franchisee_invoice_pdf($invoice['id'], $reference);
+
+        flash('Commande créée !
+                <a href="' . route('franchise.stream_invoice_pdf', ['id' => $invoice['id']]) . '">Consultez la facture au format PDF</a>
+                ou retrouvez-la dans la rubrique <a href="' . route('franchise.invoices_list') . '">Factures</a>.')
+            ->success();
+
         return redirect(route('franchise.stock_dashboard'));
     }
 
@@ -216,6 +245,21 @@ class StockController extends Controller
             ['user_id', $this->get_connected_user()['id']],
             ['dish_id', request('dish_id')]
         ])->update(['unit_price' => request('unit_price')]);
+
+        return json_encode(array('response' => 'success'));
+    }
+
+    public function stock_update_menu_available()
+    {
+        request()->validate([
+            'dish_id' => ['required', 'integer'],
+            'available' => ['required', 'boolean'],
+        ]);
+
+        FranchiseeStock::where([
+            ['user_id', $this->get_connected_user()['id']],
+            ['dish_id', request('dish_id')]
+        ])->update(['menu' => request('available') ? 1 : 0]);
 
         return json_encode(array('response' => 'success'));
     }

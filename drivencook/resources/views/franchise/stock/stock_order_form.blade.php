@@ -15,14 +15,18 @@
                             : {{trans('franchisee.choose_warehouse')}} :</h2>
                     </div>
                     <div class="card-body">
-                        <select id="warehouse_select" class="form-control">
-                            <option value="choisir" selected disabled>{{trans('franchisee.choose')}}</option>
-                            @foreach($warehouse_list as $warehouse)
+                        @if(!empty($warehouse_list))
+                            <select id="warehouse_select" class="form-control">
+                                <option value="choisir" selected disabled>{{trans('franchisee.choose')}}</option>
+                                @foreach($warehouse_list as $warehouse) {{--//prévoir si nul--}}
                                 <option value="{{$warehouse['id']}}">
                                     {{$warehouse['name'].' - '.$warehouse['city']['name'].' ('.$warehouse['city']['postcode'].')'}}
                                 </option>
-                            @endforeach
-                        </select>
+                                @endforeach
+                            </select>
+                        @else
+                            {{ trans('franchisee.warehouse_no_stock') }}
+                        @endif
                     </div>
                 </div>
             </div>
@@ -44,18 +48,27 @@
                             <input type="hidden" name="warehouse_id" value="{{$warehouse['id']}}">
 
                             @foreach($warehouse['stock'] as $product)
-                                <div class="form-group">
-                                    <label for="{{'product_'.$product['dish_id']}}">{{$product['dish']['name'].' '.$product['warehouse_price'].'€/u'}}</label>
-                                    <input class="form-control" type="number" id="{{'product_'.$product['dish_id']}}"
-                                           name="{{'product_'.$product['dish_id']}}"
-                                           min="0" step="1" max="{{$product['quantity']}}"
-                                           value="0">
-                                    @if ($errors->has('product_'.$product['dish_id']))
-                                        <span class="badge-danger">
-                                    {{$errors->first('product_'.$product['dish_id'])}}
-                                </span>
-                                    @endif
-                                </div>
+                                @if($product['quantity'] > 0)
+                                    <div class="form-group">
+                                        <label for="{{'product_'.$product['dish_id']}}">{{$product['dish']['name'].' '.$product['warehouse_price'].'€/u'}}
+                                            , Disponible : {{$product['quantity']}}</label>
+                                        <input class="form-control" type="number"
+                                               id="{{'product_'.$product['dish_id']}}"
+                                               name="{{'product_'.$product['dish_id']}}"
+                                               min="0" step="1" max="{{$product['quantity']}}"
+                                               value="0">
+                                        @if ($errors->has('product_'.$product['dish_id']))
+                                            <span class="badge-danger">
+                                                {{$errors->first('product_'.$product['dish_id'])}}
+                                            </span>
+                                        @endif
+                                    </div>
+                                @else
+                                    <div class="form-group">
+                                        <label for="{{'product_'.$product['dish_id']}}">{{$product['dish']['name'].' '.$product['warehouse_price'].'€/u'}}</label>
+                                        <div class="form-control" type="text">Rupture de stock</div>
+                                    </div>
+                                @endif
                             @endforeach
                             <div class="form-group">
                                 <button type="submit"

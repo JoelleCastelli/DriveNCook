@@ -7,6 +7,34 @@
 @section('content')
     <div class="row">
 
+        <div class="col-12 col-lg-12 mb-5">
+            <div class="card">
+                <div class="card-header">
+                    <h2>{{ trans('franchisee.obligations_stock_info') }}</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <div class="card text-light2">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item bg-indigo">{{ trans('franchisee.obligations_warehouse_percentage') }}
+                                        <b>{{ $current_obligation['warehouse_percentage'] }} %</b></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-6">
+                            <div class="card text-light2">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item bg-info">{{ trans('franchisee.obligations_last_updated') }}
+                                        <b>{{ $current_obligation['date_updated'] }}</b></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="col-12 col-lg-6 mb-5">
             <div class="card">
                 <div class="card-header">
@@ -77,6 +105,7 @@
                                 <th>{{trans('franchisee.plate')}}</th>
                                 <th>{{trans('franchisee.quantity')}}</th>
                                 <th>{{trans('franchisee.sell_price')}}</th>
+                                <th>{{trans('franchisee.menu_available')}}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -92,6 +121,18 @@
                                                 data-target="#formModal">
                                         </button>
 
+                                    </td>
+                                    <td id="menu_{{$stock_dish['dish_id']}}">
+                                        <?php
+                                        if ($stock_dish['menu']) { ?>
+                                        {{trans('franchisee.available')}} <i class="fas fa-ban"
+                                                                             onclick="onUpdateMenuSubmit({{$stock_dish['dish_id']}}, 0)"></i>
+                                        <?php } else { ?>
+                                        {{trans('franchisee.unavailable')}} <i class="fas fa-check"
+                                                                               onclick="onUpdateMenuSubmit({{$stock_dish['dish_id']}}, 1)"></i>
+                                        <?php
+                                        }
+                                        ?>
                                     </td>
                                 </tr>
                             @endforeach
@@ -202,6 +243,41 @@
                             let priceTd = row.getElementsByTagName('td')[2];
                             priceTd.innerText = unit_price + ' €';
 
+                        } else {
+                            alert("{{trans('franchisee.ajax_error')}}\n" + dataJ.message);
+                        }
+                    },
+                    error: function (data) {
+                        const dataJ = JSON.parse(data);
+                        alert("{{trans('franchisee.ajax_error')}}\n" + dataJ.message);
+                    }
+                })
+            }
+        }
+
+        function onUpdateMenuSubmit(dish_id, available) {
+            if (!isNaN(dish_id)) {
+                $.ajax({
+                    url: '{{route('franchise.stock_update_menu_available')}}',
+                    method: "post",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {'dish_id': dish_id, 'available': available},
+                    success: function (data) {
+                        const dataJ = JSON.parse(data);
+                        if (dataJ.response === "success") {
+                            document.getElementById('closeModal').click();
+                            alert('{{trans('franchisee.menu_available_updated')}}');
+
+                            let td = document.getElementById("menu_" + dish_id)
+                            if (available) {
+                                td.innerHTML = '{{trans('franchisee.available')}} ' +
+                                    '<i class="fas fa-ban" onclick="onUpdateMenuSubmit(' + dish_id + ', 0)"></i>';
+                            } else {
+                                td.innerHTML = '{{trans('franchisee.unavailable')}} ' +
+                                    '<i class="fas fa-check" onclick="onUpdateMenuSubmit(' + dish_id + ', 1)"></i>';
+                            }
                         } else {
                             alert("{{trans('franchisee.ajax_error')}}\n" + dataJ.message);
                         }

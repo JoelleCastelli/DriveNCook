@@ -1,10 +1,43 @@
 @extends('franchise.layout_franchise')
 @section('title')
-    Liste des factures
+    {{ trans('franchisee.invoices_list') }}
 @endsection
 
 
 @section('content')
+
+    <div class="col-12 col-lg-12 mb-5">
+        <div class="card">
+            <div class="card-header">
+                <h2>{{ trans('franchisee.obligations_invoice_info') }}</h2>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="card text-light2">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item bg-indigo">{{ trans('franchisee.obligations_revenue_percentage') }} <b>{{ $current_obligation['revenue_percentage'] }} %</b></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="card text-light2">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item bg-success">{!! trans('franchisee.obligations_billing_day',['day'=>$current_obligation['billing_day']]) !!}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                        <div class="card text-light2">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item bg-info">{{ trans('franchisee.obligations_last_updated') }} <b>{{ $current_obligation['date_updated'] }}</b></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-12 col-lg-12 mb-5">
             <div class="card">
@@ -14,11 +47,11 @@
                                style="width: 100%">
                             <thead>
                                 <tr>
-                                    <th>Date d'émission</th>
-                                    <th>Référence</th>
-                                    <th>Montant</th>
-                                    <th>Type de facture</th>
-                                    <th>Statut</th>
+                                    <th>{{ trans('franchisee.invoice_emission_date') }}</th>
+                                    <th>{{ trans('franchisee.invoice_reference') }}</th>
+                                    <th>{{ trans('franchisee.invoice_amount') }}</th>
+                                    <th>{{ trans('franchisee.invoice_type') }}</th>
+                                    <th>{{ trans('franchisee.invoice_status') }}</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -31,15 +64,15 @@
                                         <td>{{ $invoice['reference'] }}</td>
                                         <td>{{ number_format($invoice['amount'], 2, ',', ' ') }} €</td>
                                         <td>@if ($invoice['monthly_fee'] == 1)
-                                                Redevance périodique
+                                                {{ trans('franchisee.invoice_monthly_fee') }}
                                             @elseif ($invoice['initial_fee'] == 1)
-                                                Redevance initiale forfaitaire
+                                                {{ trans('franchisee.invoice_initial_fee') }}
                                             @else
-                                                Réassort
+                                                {{ trans('franchisee.invoice_restock') }}
                                             @endif</td>
-                                        <td>{{ $invoice['status'] }}</td>
+                                        <td>{{ trans('franchisee.invoice_status_'.$invoice['status']) }}</td>
                                         <td class="text-center">
-                                            <a class="ml-2" href="#">
+                                            <a class="ml-2" href="{{ route('franchise.stream_invoice_pdf',['id'=>$invoice['id']]) }}" target="_blank">
                                                 <button class="text-light fa fa-file-pdf ml-3"></button>
                                             </a>
                                         </td>

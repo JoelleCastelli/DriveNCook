@@ -39,6 +39,11 @@ Route::post('/franchise/stock/update', [
     'uses' => 'Franchise\StockController@stock_update_submit'
 ]);
 
+Route::post('/franchise/stock/update_menu_available', [
+    'as' => 'franchise.stock_update_menu_available',
+    'uses' => 'Franchise\StockController@stock_update_menu_available'
+]);
+
 Route::post('/franchise/stock/new_order_charge/{order_total_cents}', [
     'as' => 'franchise.stock_order_charge',
     'uses' => 'Franchise\StockController@charge'

@@ -101,7 +101,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light2" href="#">
+                        <a class="nav-link text-light2" href="{{ route('franchise.revenues_stats') }}">
                             <i class="fa fa-chart-line"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.revenues_and_statistics')}}
                         </a>
                     </li>
@@ -110,7 +110,7 @@
                 @case(route('franchise.truck_view'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{route('franchise.dashboard')}}">
-                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_dashboard')}}
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('corporate.back_dashboard')}}
                         </a>
                     </li>
                     <li class="nav-item">
@@ -123,16 +123,17 @@
                 @case(route('franchise.truck_breakdown_add'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{route('franchise.truck_view')}}">
-                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_truck_management')}}
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('corporate.back_to_truck')}}
                         </a>
                     </li>
                     @break
                 @case(route('franchise.stock_dashboard'))
                 @case(route('franchise.update_account'))
                 @case(route('franchise.invoices_list'))
+                @case(route('franchise.revenues_stats'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{route('franchise.dashboard')}}">
-                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_dashboard')}}
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('corporate.back_dashboard')}}
                         </a>
                     </li>
                     @break
@@ -143,7 +144,7 @@
             @if (strpos(url()->current(), route('franchise.truck_safety_inspection_update', ['id'=>''])) !== false)
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('franchise.truck_view')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_truck_management')}}
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('corporate.back_to_truck')}}
                     </a>
                 </li>
             @endif

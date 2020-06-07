@@ -2,7 +2,7 @@
 @section('style')
 @endsection
 @section('title')
-    {{empty($safety_inspection)?'Ajout d\'un contrôle technique' : 'Mise à jour d\'un contrôle technique'}}
+    {{ empty($safety_inspection) ? trans('truck.new_inspection') : trans('truck.inspection_update') }}
 @endsection
 
 @section('content')
@@ -18,7 +18,7 @@
                         <input type="hidden" id="truck_id" name="truck_id" value="{{$truck_id}}">
 
                         <div class="form-group">
-                            <label for="date">Date</label>
+                            <label for="date">{{ trans('truck.safety_inspection_date') }}</label>
                             <input {{!empty($safety_inspection)?'value='.$safety_inspection['date']:''}}
                                    class="form-control" type="date" id="date" name="date">
                             @if ($errors->has('date'))
@@ -29,7 +29,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="truck_age">Age du camion (année(s))</label>
+                            <label for="truck_age">{{ trans('truck.truck_age') }}</label>
                             <input {{!empty($safety_inspection)?'value='.$safety_inspection['truck_age']:''}}
                                    class="form-control" type="number" id="truck_age" name="truck_age" min="0" step="1"
                                    max="100">
@@ -41,7 +41,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="truck_mileage">Kilométrage du camion (km)</label>
+                            <label for="truck_mileage">{{ trans('truck.mileage') }}</label>
                             <input {{!empty($safety_inspection)?'value='.$safety_inspection['truck_mileage']:''}}
                                    class="form-control" type="number" id="truck_mileage" name="truck_mileage" min="0"
                                    step="1"
@@ -54,7 +54,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="replaced_parts">Parties remplacés</label>
+                            <label for="replaced_parts">{{ trans('truck.replaced_parts') }}</label>
                             <input value="{{!empty($safety_inspection)?$safety_inspection['replaced_parts']:''}}"
                                    class="form-control" type="text" id="replaced_parts" name="replaced_parts"
                                    maxlength="150">
@@ -66,7 +66,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="drained_fluids">Drainage</label>
+                            <label for="drained_fluids">{{ trans('truck.drained_fluids') }}</label>
                             <input class="form-control" type="text" id="drained_fluids" name="drained_fluids"
                                    maxlength="150"
                                     value="{{!empty($safety_inspection)?$safety_inspection['drained_fluids']:''}}">
@@ -79,9 +79,8 @@
 
                         <div class="form-group">
                             <button type="submit"
-                                    class="btn btn-info">{{!empty($safety_inspection)?'Modifier':'Ajouter'}}</button>
+                                    class="btn btn-info">{{!empty($safety_inspection) ? trans('truck.update_submit') : trans('truck.submit') }}</button>
                         </div>
-
                     </form>
                 </div>
             </div>
