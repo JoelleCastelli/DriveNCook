@@ -13,4 +13,5 @@ return [
     'quantity_ordered' => 'Quantity ordered',
 
     'order_btn' => 'Order',
+    'free' => 'FREE'
 ];

@@ -135,7 +135,7 @@
 
             if(orders.length > 0) {
                 if (sum <= 0) {
-                    $('#orderBtnId').text('FREE');
+                    $('#orderBtnId').text('{{ trans('client/order.free') }}');
                 } else {
                     $('#orderBtnId').text(sum.toFixed(2) + ' €');
                 }

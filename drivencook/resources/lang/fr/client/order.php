@@ -13,4 +13,5 @@ return [
     'quantity_ordered' => 'Quantité commandée',
 
     'order_btn' => 'Commander',
+    'free' => 'GRATUIT'
 ];
