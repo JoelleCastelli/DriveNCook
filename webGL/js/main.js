@@ -85,6 +85,20 @@ function init() {
         });
     })
 
+    fbxLoader.load('../assets/models/Arrow.fbx', function (object) {
+        object.scale.x = object.scale.y = object.scale.z = 0.2;
+        object.position.set(0, 30, 10);
+        object.rotation.z += Math.radians(90);
+        object.name = "arrow";
+        pivot.add(object);
+        object.traverse(function (child) {
+            if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        });
+    });
+
     scene.background = loader.load('../assets/images/sky.jpg');
 
     /**
