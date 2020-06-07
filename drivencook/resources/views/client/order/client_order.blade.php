@@ -108,7 +108,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <button class="btn btn-light_blue orderBtn">{{ trans('client/order.order_btn') }}<p id="orderBtnId"></p></button>
+                    <button class="btn btn-light_blue orderBtn">{{ trans('client/order.order_btn') }}<p id="orderBtnId" style="margin-bottom: 5px"></p></button>
                 </div>
             </div>
         </div>
@@ -130,11 +130,18 @@
 
             let discount = $('#discountSelection');
             if(discount !== '' && sum > 0) {
-                console.log(discount.val());
                 sum -= discount.val();
             }
 
-            if(sum > 0) $('#orderBtnId').text(sum.toFixed(2) + ' €');
+            if(orders.length > 0) {
+                if (sum <= 0) {
+                    $('#orderBtnId').text('FREE');
+                } else {
+                    $('#orderBtnId').text(sum.toFixed(2) + ' €');
+                }
+            } else {
+                $('#orderBtnId').text('');
+            }
         }
 
         $(document).on('click', '.delToOrderBtn', function () {
@@ -188,7 +195,15 @@
                         order[id] = parseInt($('#qty_' + id).val());
                     }
 
+                    let discountId = $('#discountSelection').find(':checked').attr('id');
+
                     order['truck_id'] = window.location.href.split('/').slice(-1)[0];
+                    if(discountId !== undefined) {
+                        discountId = discountId.substring(discountId.lastIndexOf('_') + 1);
+                    } else {
+                        discountId = '';
+                    }
+                    order['discount_id'] = discountId;
 
                     order = JSON.stringify(order);
 

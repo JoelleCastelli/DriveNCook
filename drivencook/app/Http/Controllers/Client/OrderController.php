@@ -99,6 +99,7 @@ class OrderController extends Controller
             }
 
             unset($array['truck_id']);
+            unset($array['discount_id']);
 
             foreach($array as $dishId => $quantity) {
                 $result = FranchiseeStock::where([
@@ -141,6 +142,16 @@ class OrderController extends Controller
 
                 $saleId = Sale::insertGetId($sale);
 
+                $fidelityStep = '';
+                $discountId = $parameters['order']['discount_id'];
+                if($discountId !== '') {
+                    $fidelityStep = FidelityStep::where([
+                        ['id', $discountId],
+                        ['user_id', $userId]
+                    ])->first();
+                }
+
+                unset($parameters['order']['discount_id']);
                 unset($parameters['order']['truck_id']);
 
                 $sum = 0;
@@ -152,13 +163,28 @@ class OrderController extends Controller
                         'unit_price' => $unitPrice,
                         'quantity' => $quantity,
                     ];
-                    $sum += $unitPrice;
+                    $sum += $unitPrice * $quantity;
                     if($quantity > 0) {
                         SoldDish::insert($sold_dish);
                     }
                 }
 
-                $loyaltyPoint = $sum * 0.1;
+                $subPoint = 0;
+                if($fidelityStep !== '') {
+                    $subPoint = $fidelityStep->step;
+                }
+
+                $client = User::whereKey($this->get_connected_user()['id'])
+                    ->first();
+
+                /**
+                 * client points + 10% of total price as points - points used
+                 */
+                $loyaltyPoint = $sum * 0.1 - $subPoint;
+                $loyaltyPoint = $client->loyalty_point + (int)$loyaltyPoint;
+                if($loyaltyPoint < 0) {
+                    $loyaltyPoint = 0;
+                }
 
                 User::whereKey($this->get_connected_user()['id'])
                     ->update(['loyalty_point' => (int)$loyaltyPoint]);

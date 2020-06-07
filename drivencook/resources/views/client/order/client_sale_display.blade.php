@@ -101,8 +101,6 @@
                 let url = window.location.href;
                 let orderId = url.substring(url.lastIndexOf('/') + 1);
 
-                console.log(orderId);
-
                 if (confirm(Lang.get('dish.delete_confirm'))) {
                     if (!isNaN(parseInt(orderId))) {
                         let url_delete = '{{ route('client_order_cancel', ['id'=>':id']) }}';
