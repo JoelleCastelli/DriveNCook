@@ -12,5 +12,6 @@ return [
     'actions' => 'Actions',
 
     'loyalty_point' => 'Your loyalty points',
+    'sales' => 'Purchases',
     'show_details' => 'Details'
 ];
