@@ -15,11 +15,8 @@ use App\Models\FranchiseeStock;
 use App\Models\Truck;
 use App\Models\User;
 use App\Traits\UserTools;
-use Barryvdh\DomPDF\Facade as PDF;
-use DateTime;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\DataTables;
+
 
 class FranchiseeController extends Controller
 {
@@ -208,7 +205,8 @@ class FranchiseeController extends Controller
                     'pseudo_id' => $pseudo_id,
                     'email' => $email,
                     'telephone' => $telephone,
-                    'driving_licence' => $driving_licence]);
+                    'driving_licence' => $driving_licence,
+                    'social_security' => $social_security]);
                 return redirect()->back()->with('success', trans('franchisee_update.update_success'));
             }
         } else {
@@ -250,10 +248,62 @@ class FranchiseeController extends Controller
             ->with('history', $history);
     }
 
+    public function franchisee_stock_orders($id) {
+        $franchisee = User::whereId($id)
+            ->with('pseudo')
+            ->with('stocks')
+            ->with('purchase_order')
+            ->first()->toArray();
+
+        return view('corporate.franchisee.franchisee_stocks_orders')
+            ->with('franchisee', $franchisee);
+    }
+
+    public function franchisee_invoices_list($id) {
+        $franchisee = User::whereId($id)
+            ->with('pseudo')
+            ->with('invoices')
+            ->first()->toArray();
+
+        return view('corporate.franchisee.franchisee_invoices_list')
+            ->with('franchisee', $franchisee);
+    }
+
+    public function franchisee_sales_stats($id) {
+        $franchisee = User::whereId($id)
+            ->with('pseudo')
+            ->with('sales')
+            ->first()->toArray();
+
+        $revenues = $this->get_franchise_current_month_sale_revenues($id);
+        $history = $this->get_franchisee_history($id);
+        $current_obligation = $this->get_current_obligation();
+        $invoicing_period = $this->get_invoicing_period($current_obligation, "d/m/Y");
+        $sales_chart = $this->generate_chart($franchisee['id'], 'sales');
+        $turnover_chart = $this->generate_chart($franchisee['id'], 'turnover');
+        $payment_methods_chart = $this->generate_chart($franchisee['id'], 'payment_methods');
+        $origins_chart = $this->generate_chart($franchisee['id'], 'origin');
+
+        return view('corporate.franchisee.franchisee_sales_stats')
+            ->with('franchisee', $franchisee)
+            ->with('revenues', $revenues)
+            ->with('invoicing_period', $invoicing_period)
+            ->with('history', $history)
+            ->with('sales_chart', $sales_chart)
+            ->with('payment_methods_chart', $payment_methods_chart)
+            ->with('origins_chart', $origins_chart)
+            ->with('turnover_chart', $turnover_chart);
+    }
+
     public function update_franchise_obligation()
     {
         $last_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
         $franchisee_obligations = FranchiseObligation::all()->sortByDesc('id')->toArray();
+        foreach ($franchisee_obligations as &$franchisee_obligation) {
+            $manager = User::where('id', $franchisee_obligation['user_id'])->first()->toArray();
+            $franchisee_obligation['manager'] = $manager['firstname'].' '.$manager['lastname'].' ('.$manager['email'].')';
+        }
+
         return view('corporate.franchisee.franchisee_obligations_update')
             ->with('obligations', $franchisee_obligations)
             ->with('last_obligation', $last_obligation);
@@ -271,37 +321,48 @@ class FranchiseeController extends Controller
             $warehouse_percentage = trim($parameters['warehouse_percentage']);
             $billing_day = trim($parameters['billing_day']);
 
+            $current_obligation = $this->get_current_obligation();
+            if($entrance_fee == $current_obligation['entrance_fee'] &&
+                $revenue_percentage == $current_obligation['revenue_percentage'] &&
+                $warehouse_percentage == $current_obligation['warehouse_percentage'] &&
+                $billing_day == $current_obligation['billing_day']) {
+                $errors_list[] = trans('franchisee.values_must_be_different_from_current_obligation');
+                return redirect()->back()->with('error', $errors_list);
+            }
+
             if (!is_numeric($entrance_fee) || $entrance_fee < 0 || $entrance_fee > 9999999) {
                 $error = true;
-                $errors_list[] = 'Redevance initiale forfaitaire incorrecte';
+                $errors_list[] = trans('franchisee.wrong_initial_fee');
             }
             if (!is_numeric($revenue_percentage) || $revenue_percentage < 0 || $revenue_percentage > 100) {
                 $error = true;
-                $errors_list[] = 'Redevance périodique incorrecte';
+                $errors_list[] = trans('franchisee.wrong_monthly_fee');
             }
             if (!is_numeric($warehouse_percentage) || $warehouse_percentage < 0 || $warehouse_percentage > 100) {
                 $error = true;
-                $errors_list[] = 'Stock corporate incorrect';
+                $errors_list[] = trans('franchisee.wrong_percentage');
             }
             if (!ctype_digit($billing_day) || $billing_day < 1 || $billing_day > 28) {
                 $error = true;
-                $errors_list[] = 'Jour de facturation mensuelle incorrect';
+                $errors_list[] = trans('franchisee.wrong_billing_day');
             }
 
             if ($error) {
                 return redirect()->back()->with('error', $errors_list);
             }
 
+            $manager_id = $this->get_connected_user()['id'];
             $obligation = ['entrance_fee' => $entrance_fee,
                 'revenue_percentage' => $revenue_percentage,
                 'warehouse_percentage' => $warehouse_percentage,
                 'billing_day' => $billing_day,
-                'date_updated' => date('Y-m-d')];
+                'date_updated' => date('Y-m-d'),
+                'user_id' => $manager_id];
             FranchiseObligation::insert($obligation);
-            return redirect()->route('franchisee_obligation_update')->with('success', 'Obligations du franchisé mises à jour !');
+            return redirect()->route('franchisee_obligation_update')->with('success', trans('franchisee.obligation_updated'));
 
         } else {
-            $errors_list[] = 'Erreur dans la requête Post !';
+            $errors_list[] = trans('franchisee.request_error');
             return redirect()->back()->with('error', $errors_list);
         }
     }
@@ -380,7 +441,8 @@ class FranchiseeController extends Controller
         return $total;
     }
 
-    public function stream_franchisee_invoice($id) {
+    public function stream_franchisee_invoice($id)
+    {
         return $this->stream_franchisee_invoice_pdf($id);
     }
 

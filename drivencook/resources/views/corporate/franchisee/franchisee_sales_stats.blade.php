@@ -1,44 +1,11 @@
-@extends('franchise.layout_franchise')
+@extends('corporate.layout_corporate')
 @section('title')
-    {{ trans('franchisee.revenues_and_statistics') }}
+    {{ ucfirst($franchisee['firstname']).' '.strtoupper($franchisee['lastname']).' ('.$franchisee['pseudo']['name'].')' }}
+    - {{ trans('franchisee.sales_stats') }}
 @endsection
 
-
 @section('content')
-    <div class="col-12 col-lg-12 mb-5">
-        <div class="card">
-            <div class="card-header">
-                <h2>{{ trans('franchisee.obligations_invoice_info') }}</h2>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
-                        <div class="card text-light2">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item bg-indigo">{{ trans('franchisee.obligations_revenue_percentage') }} <b>{{ $current_obligation['revenue_percentage'] }} %</b></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
-                        <div class="card text-light2">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item bg-success">{!! trans('franchisee.obligations_billing_day',['day'=>$current_obligation['billing_day']]) !!}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
-                        <div class="card text-light2">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item bg-info">{{ trans('franchisee.obligations_last_updated') }} <b>{{ DateTime::createFromFormat("Y-m-d", $current_obligation['date_updated'])->format('d/m/Y') }}</b></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="row">
-
         <div class="col-12 col-lg-6 mb-5">
             <div class="card">
                 <div class="card-header">
@@ -76,7 +43,6 @@
                 </div>
             </div>
         </div>
-
         <div class="col-12 col-lg-6 mb-5">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
@@ -163,7 +129,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="post" action="{{ route('sales_history_pdf') }}">
+                <form method="post" action="{{ route('franchisee_sales_history_pdf') }}">
                     {{csrf_field()}}
                     <input type="hidden" id="formId" name="id" value="">
 
@@ -191,7 +157,6 @@
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">{{ trans('franchisee.generate') }}</button>
                         </div>
-
                     </div>
                 </form>
             </div>

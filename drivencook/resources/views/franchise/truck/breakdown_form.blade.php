@@ -8,19 +8,19 @@
         <div class="col-12 col-lg-6 mb-5">
             <div class="card">
                 <div class="card-body">
-                    <form method="post" action="{{route('franchise.truck_breakdown_submit')}}">
+                    <form method="post" action="{{ route('franchise.truck_breakdown_submit') }}">
                         {{csrf_field()}}
                         @if (!empty($breakdown))
-                            <input type="hidden" id="id" name="id" value="{{$breakdown['id']}}">
+                            <input type="hidden" id="id" name="id" value="{{ $breakdown['id'] }}">
                         @endif
 
                         <div class="form-group">
-                            <label for="type">{{trans('franchisee.breakdown_type')}}</label>
+                            <label for="type">{{ trans('franchisee.breakdown_type') }}</label>
                             <select class="form-control" id="type" name="type">
                                 @foreach($breakdown_type as $type)
                                     <option
                                             {{!empty($breakdown) && $breakdown['type'] == $type ? 'selected':''}}
-                                            value="{{$type}}">{{$type}}
+                                            value="{{ $type }}">{{ trans('franchisee.breakdown_type_'.$type) }}
                                     </option>
                                 @endforeach
                             </select>
@@ -44,7 +44,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="cost">{{trans('franchisee.cost')}}</label>
+                            <label for="cost">{{trans('franchisee.breakdown_cost')}}</label>
                             <input {{!empty($breakdown)?'value='.$breakdown['cost']:''}}
                                    class="form-control" type="number" id="cost" name="cost" min="0" step="0.01"
                                    max="999999">
@@ -67,12 +67,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="status">{{trans('franchisee.status')}}</label>
+                            <label for="status">{{trans('franchisee.breakdown_status')}}</label>
                             <select class="form-control" id="status" name="status">
                                 @foreach($breakdown_status as $status)
                                     <option
                                             {{!empty($breakdown) && $breakdown['status'] == $status ? 'selected':''}}
-                                            value="{{$status}}">{{$status}}
+                                            value="{{$status}}">{{trans('franchisee.breakdown_status_'.$status)}}
                                     </option>
                                 @endforeach
                             </select>
@@ -87,7 +87,6 @@
                             <button type="submit"
                                     class="btn btn-info">{{!empty($breakdown)?trans('franchisee.update'):trans('franchisee.add')}}</button>
                         </div>
-
                     </form>
                 </div>
             </div>

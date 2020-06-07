@@ -110,7 +110,7 @@
                 @case(route('franchise.truck_view'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{route('franchise.dashboard')}}">
-                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_dashboard')}}
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('corporate.back_dashboard')}}
                         </a>
                     </li>
                     <li class="nav-item">
@@ -123,7 +123,7 @@
                 @case(route('franchise.truck_breakdown_add'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{route('franchise.truck_view')}}">
-                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_truck_management')}}
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('corporate.back_to_truck')}}
                         </a>
                     </li>
                     @break
@@ -133,7 +133,7 @@
                 @case(route('franchise.revenues_stats'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{route('franchise.dashboard')}}">
-                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_dashboard')}}
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('corporate.back_dashboard')}}
                         </a>
                     </li>
                     @break
@@ -144,7 +144,7 @@
             @if (strpos(url()->current(), route('franchise.truck_safety_inspection_update', ['id'=>''])) !== false)
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('franchise.truck_view')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_truck_management')}}
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('corporate.back_to_truck')}}
                     </a>
                 </li>
             @endif

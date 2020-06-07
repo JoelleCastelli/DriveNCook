@@ -2,11 +2,6 @@
 @section('title')
     {{ trans('warehouse_dishes.title') }} : {{ strtoupper($warehouse['name']) }}
 @endsection
-@section('style')
-    {{--    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet">--}}
-    {{--    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet">--}}
-@endsection
-
 
 @section('content')
     <input type="hidden" id="warehouseId" value="{{ $warehouse['id'] }}">
@@ -14,7 +9,7 @@
         <div class="col-12 col-lg-12 mb-5">
             <div class="card">
                 <div class="card-header">
-                    <h2>{{ trans('warehouse_dishes.dishes_section') }}</h2>
+                    <h2>{{ trans('warehouse.products') }}</h2>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -22,11 +17,11 @@
                                style="width: 100%">
                             <thead>
                             <tr>
-                                <th>{{ trans('warehouse_dishes.product') }}</th>
-                                <th>{{ trans('warehouse_dishes.category') }}</th>
-                                <th>{{ trans('warehouse_dishes.quantity') }}</th>
-                                <th>{{ trans('warehouse_dishes.warehouse_price') }}</th>
-                                <th>{{ trans('corporate.actions') }}</th>
+                                <th>{{ trans('warehouse.product') }}</th>
+                                <th>{{ trans('warehouse.product_category') }}</th>
+                                <th>{{ trans('warehouse.product_quantity') }}</th>
+                                <th>{{ trans('warehouse.product_price') }}</th>
+                                <th>{{ trans('warehouse.actions') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -63,18 +58,18 @@
                         <div class="form-group">
                             <input type="hidden" id="dishId">
                             <ul class="list-group list-group-flush">
-                                <b>{{ trans('warehouse_dishes.dish_category') }} : </b><li class="list-group-item" id="dishCategory"></li>
+                                <b>{{ trans('warehouse.product_category') }} : </b><li class="list-group-item" id="dishCategory"></li>
                             </ul>
-                            <label for="dishQuantity" class="col-form-label"><b>{{ trans('warehouse_dishes.dish_quantity') }}</b></label>
+                            <label for="dishQuantity" class="col-form-label"><b>{{ trans('warehouse.product_quantity') }}</b></label>
                             <input type="number" class="form-control" id="dishQuantity">
-                            <label for="dishWarehousePrice" class="col-form-label"><b>{{ trans('warehouse_dishes.dish_warehouse_price') }}</b></label>
+                            <label for="dishWarehousePrice" class="col-form-label"><b>{{ trans('warehouse.product_price') }}</b></label>
                             <input type="number" class="form-control" id="dishWarehousePrice">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('warehouse_dishes.dish_close') }}</button>
-                    <button type="button" class="btn btn-primary" id="updateDish">{{ trans('warehouse_dishes.dish_update') }}</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('warehouse.cancel') }}</button>
+                    <button type="button" class="btn btn-primary" id="updateDish">{{ trans('warehouse.update') }}</button>
                 </div>
             </div>
         </div>

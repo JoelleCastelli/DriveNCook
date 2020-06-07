@@ -10,12 +10,13 @@ use App\Models\SafetyInspection;
 use App\Models\Truck;
 use App\Models\User;
 use App\Traits\EnumValue;
+use App\Traits\UserTools;
 use DateTime;
 use Illuminate\Http\Request;
 
 class TruckController extends Controller
 {
-    use EnumValue;
+    use UserTools;
 
     public function __construct()
     {
@@ -83,17 +84,17 @@ class TruckController extends Controller
 
             if (strlen($brand) < 1 || strlen($brand) > 30) {
                 $error = true;
-                $errors_list[] = trans('truck_creation.brand_error');
+                $errors_list[] = trans('truck.brand_error');
             }
 
             if (strlen($model) < 1 || strlen($model) > 30) {
                 $error = true;
-                $errors_list[] = trans('truck_creation.model_error');
+                $errors_list[] = trans('truck.model_error');
             }
 
             if (!($functional === 'on' || $functional === 'off')) {
                 $error = true;
-                $errors_list[] = trans('truck_creation.functional_error');
+                $errors_list[] = trans('truck.functional_error');
             } else {
                 if ($functional === 'on') {
                     $functional = true;
@@ -105,88 +106,88 @@ class TruckController extends Controller
             $purchase_date_split = explode("-", $purchase_date);
             if (!checkdate($purchase_date_split[1], $purchase_date_split[2], $purchase_date_split[0])) {
                 $error = true;
-                $errors_list[] = trans('truck_creation.purchase_date_error');
+                $errors_list[] = trans('truck.purchase_date_error');
             }
 
             if (!preg_match('/^[A-Z]{2}-[0-9]{3}-[A-Z]{2}$/', $license_plate)) {
                 $error = true;
-                $errors_list[] = trans('truck_creation.license_plate_error');
+                $errors_list[] = trans('truck.license_plate_error');
             }
 
             if (!preg_match('/^[A-Z0-9]{15}$/', $registration_document)) {
                 $error = true;
-                $errors_list[] = trans('truck_creation.registration_document_error');
+                $errors_list[] = trans('truck.registration_document_error');
             }
 
             if (!preg_match('/^[A-Z0-9]{20}$/', $insurance_number)) {
                 $error = true;
-                $errors_list[] = trans('truck_creation.insurance_number_error');
+                $errors_list[] = trans('truck.insurance_number_error');
             }
 
             if (!in_array($fuel_type, $fuel_type_options)) {
                 $error = true;
-                $errors_list[] = trans('truck_creation.fuel_type_error');
+                $errors_list[] = trans('truck.fuel_type_error');
             }
 
             if (!preg_match('/^[0-9]{20}$/', $chassis_number)) {
                 $error = true;
-                $errors_list[] = trans('truck_creation.chassis_number_error');
+                $errors_list[] = trans('truck.chassis_number_error');
             }
 
             if (!preg_match('/^[0-9]{20}$/', $engine_number)) {
                 $error = true;
-                $errors_list[] = trans('truck_creation.engine_number_error');
+                $errors_list[] = trans('truck.engine_number_error');
             }
 
             if ($horsepower < 1) {
                 $error = true;
-                $errors_list[] = trans('truck_creation.horsepower_error');
+                $errors_list[] = trans('truck.horsepower_error');
             }
 
             if ($weight_empty < 1) {
                 $error = true;
-                $errors_list[] = trans('truck_creation.weight_empty_error');
+                $errors_list[] = trans('truck.weight_empty_error');
             }
 
             if ($payload < 2) {
                 $error = true;
-                $errors_list[] = trans('truck_creation.payload_error');
+                $errors_list[] = trans('truck.payload_error');
             }
 
             if (strlen($general_state) < 1 || strlen($general_state) > 255) {
                 $error = true;
-                $errors_list[] = trans('truck_creation.general_state_error');
+                $errors_list[] = trans('truck.general_state_error');
             }
 
             if (!preg_match('/^[A-Za-z -_]+$/', $location_name)) {
                 $error = true;
-                $errors_list[] = trans('truck_creation.location_name_error');
+                $errors_list[] = trans('truck.location_name_error');
             } else {
                 $location_id = $this->get_location_id_by_name($location_name);
                 if (empty($location_id)) {
                     $error = true;
-                    $errors_list[] = trans('truck_creation.location_name_error');
+                    $errors_list[] = trans('truck.location_name_error');
                 }
             }
 
             $location_date_start_split = explode('-', $location_date_start);
             if (!checkdate($location_date_start_split[1], $location_date_start_split[2], $location_date_start_split[0])) {
                 $error = true;
-                $errors_list[] = trans('truck_creation.location_date_start_error');
+                $errors_list[] = trans('truck.location_date_start_error');
             }
 
             $date1 = new DateTime($purchase_date);
             $date2 = new DateTime($location_date_start);
             if ($date1 > $date2) {
                 $error = true;
-                $errors_list[] = trans('truck_creation.date_timeline_error');
+                $errors_list[] = trans('truck.date_timeline_error');
             }
 
             if (!$error) {
                 $result = $this->get_truck($license_plate, $registration_document, $insurance_number, $chassis_number, $engine_number);
                 if (count($result) != 0) {
                     $error = true;
-                    $errors_list[] = trans('truck_creation.duplicate_entry_error');
+                    $errors_list[] = trans('truck.duplicate_entry_error');
                 }
             }
 
@@ -203,10 +204,10 @@ class TruckController extends Controller
                     'location_date_start' => $location_date_start
                 ];
                 Truck::insert($truck);
-                return redirect()->route('truck_creation')->with('success', trans('truck_creation.new_truck_success'));
+                return redirect()->route('truck_creation')->with('success', trans('truck.new_truck_success'));
             }
         } else {
-            $errors_list[] = trans('truck_creation.empty_fields');
+            $errors_list[] = trans('truck.empty_fields');
             return redirect()->back()->with('error', $errors_list);
         }
     }
@@ -367,7 +368,7 @@ class TruckController extends Controller
             }
         } else {
             $error = true;
-            $errors_list[] = "Nombre de champs incorrect";
+            $errors_list[] = trans('truck.wrong_fields_number');
         }
 
         if ($error) {
@@ -416,8 +417,6 @@ class TruckController extends Controller
             ->with('safety_inspection')
             ->first()->toArray();
 
-//        var_dump($truck);die;
-
         return view('corporate.truck.truck_view')->with("truck", $truck)->with("unassigned", $this->get_unassigned_truck_franchisees());
     }
 
@@ -447,10 +446,15 @@ class TruckController extends Controller
             'userId' => ['required', 'integer']
         ]);
 
+        if (!$this->is_franchisee_valided(request('userId'))) {
+            flash(trans('truck.franchisee_must_be_validated'))->warning();
+            return back();
+        }
+
         Truck::find(request('truckId'))->update([
             'user_id' => request('userId')
         ]);
-        flash('Le camion a bien été assigné')->success();
+        flash(trans('truck.truck_assigned'))->success();
         return back();
     }
 
@@ -463,7 +467,7 @@ class TruckController extends Controller
     public function add_breakdown($truck_id)
     {
         if (Truck::find($truck_id) == null) {
-            flash('Erreur, l\'id est incorrect !')->error();
+            flash(trans('truck.incorrect_id'))->error();
             return back();
         }
         $breakdown_type = $this->get_enum_column_values('breakdown', 'type');
@@ -478,7 +482,7 @@ class TruckController extends Controller
     {
         $breakdown = Breakdown::find($breakdown_id);
         if (Truck::find($truck_id) == null || $breakdown == null) {
-            flash('Erreur, l\'id est incorrect !')->error();
+            flash(trans('truck.incorrect_id'))->error();
             return back();
         }
         $breakdown = $breakdown->toArray();
@@ -514,7 +518,7 @@ class TruckController extends Controller
                 'truck_id' => request('truck_id'),
             ]);
 
-            flash('Panne modifié')->success();
+            flash(trans('truck.breakdown_updated'))->success();
         } else {
             Breakdown::insert([
                 'type' => request('type'),
@@ -525,7 +529,7 @@ class TruckController extends Controller
                 'truck_id' => request('truck_id'),
             ]);
 
-            flash('Nouvelle panne ajouté')->success();
+            flash(trans('truck.breakdown_created'))->success();
         }
 
         return redirect()->route('truck_view', ['id' => request('truck_id')]);
@@ -540,7 +544,7 @@ class TruckController extends Controller
     public function add_safety_inspection($truck_id)
     {
         if (Truck::find($truck_id) == null) {
-            flash('Erreur, l\'id est incorrect !')->error();
+            flash(trans('truck.incorrect_id'))->error();
             return back();
         }
 
@@ -552,7 +556,7 @@ class TruckController extends Controller
     {
         $safety_inspection = SafetyInspection::find($safety_inspection_id);
         if (Truck::find($truck_id) == null || $safety_inspection == null) {
-            flash('Erreur, l\'id est incorrect !')->error();
+            flash(trans('truck.incorrect_id'))->error();
             return back();
         }
         $safety_inspection = $safety_inspection->toArray();
@@ -580,7 +584,7 @@ class TruckController extends Controller
                 'truck_id' => request('truck_id')
             ]);
 
-            flash('Contrôle technique mis à jour')->success();
+            flash(trans('truck.inspection_updated'))->success();
         } else {
             SafetyInspection::insert([
                 'date' => request('date'),
@@ -591,7 +595,7 @@ class TruckController extends Controller
                 'truck_id' => request('truck_id')
             ]);
 
-            flash('Contrôle technique ajouté')->success();
+            flash(trans('truck.inspection_created'))->success();
         }
         return redirect()->route('truck_view', ['id' => request('truck_id')]);
     }

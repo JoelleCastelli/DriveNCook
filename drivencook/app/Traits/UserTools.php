@@ -4,6 +4,7 @@
 namespace App\Traits;
 
 
+use App\Charts\FranchiseeStatsChart;
 use App\Models\FranchiseObligation;
 use App\Models\Invoice;
 use App\Models\Pseudo;
@@ -12,7 +13,6 @@ use App\Models\Sale;
 use App\Models\SoldDish;
 use App\Models\Truck;
 use App\Models\User;
-use App\Traits\EnumValue;
 use Barryvdh\DomPDF\Facade as PDF;
 use DateInterval;
 use DatePeriod;
@@ -83,6 +83,21 @@ trait UserTools
             $franchisee_activity_period[$date->format("Y")][] = $date->format("m");
         }
         return $franchisee_activity_period;
+    }
+
+    public function is_franchisee_valided($franchisee_id): ?bool
+    {
+        $franchise = User::whereKey($franchisee_id)->first();
+        if ($franchise == null) {
+            return null;
+        }
+        $franchise = $franchise->toArray();
+
+        return $franchise['role'] == "Franchisé"
+            && !empty($franchise['driving_licence'])
+            && !empty($franchise['social_security'])
+            && !empty($franchise['telephone'])
+            && !empty($franchise['pseudo_id']);
     }
 
     // INVOICES
@@ -174,7 +189,7 @@ trait UserTools
         $currentDay = new DateTime();
         $currentDay->setDate(date('Y'), date('m'), date('d'));
 
-        if ($currentDay->format('d') <= $franchiseObligation['billing_day']) {
+        if ($currentDay->format('d') < $franchiseObligation['billing_day']) {
             return $currentDay
                 ->setDate(date('Y'), date('m'), $franchiseObligation['billing_day'])
                 ->format('d/m/Y');
@@ -294,11 +309,12 @@ trait UserTools
             ->get()->toArray();
     }
 
-    public function get_sale_total($sale_id) {
+    public function get_sale_total($sale_id)
+    {
         $sold_dishes = SoldDish::where('sale_id', $sale_id)->get();
         $sale_total = 0;
 
-        if($sold_dishes) {
+        if ($sold_dishes) {
             $sold_dishes->toArray();
             foreach ($sold_dishes as $sold_dish) {
                 $sale_total += $sold_dish['unit_price'] * $sold_dish['quantity'];
@@ -406,4 +422,53 @@ trait UserTools
 
         return $sales;
     }
+
+    public function generate_chart($franchisee_id, $type){
+        // Get current month data
+        $monthly_sales_turnover_by_day = $this->get_monthly_sales_turnover_by_day($franchisee_id, null, null);
+        $sales_by_payment_methods = $this->get_monthly_sales_by_payment_methods($franchisee_id, null, null);
+        $sales_by_origin = $this->get_monthly_sales_by_origin($franchisee_id, null, null);
+
+        $chart = new FranchiseeStatsChart;
+
+        if ($type == 'sales') {
+            $chart->labels($monthly_sales_turnover_by_day['dates']);
+            $chart->dataset(trans('franchisee.sales_count'), 'line', $monthly_sales_turnover_by_day['sales'])
+                ->color('#6408c7')
+                ->fill(false);
+        } else if ($type == 'turnover') {
+            $chart->labels($monthly_sales_turnover_by_day['dates']);
+            $chart->dataset(trans('franchisee.turnover'), 'line', $monthly_sales_turnover_by_day['turnover'])
+                ->color('#00d1ce')
+                ->fill(false);
+        } else if ($type == 'payment_methods') {
+            $chart->labels($sales_by_payment_methods['methods']);
+            $chart->displayAxes(false);
+            $chart->dataset(trans('franchisee.payment_methods_breakdown'), 'pie', $sales_by_payment_methods['nb_sales'])
+                ->backgroundColor(['#6408c7', '#00d1ce']);
+        } else if ($type == 'origin') {
+            $chart->labels($sales_by_origin['origins']);
+            $chart->displayAxes(false);
+            $chart->dataset(trans('franchisee.payment_methods_breakdown'), 'pie', $sales_by_origin['nb_sales'])
+                ->backgroundColor(['#6408c7', '#00d1ce']);
+        }
+
+        if ($type == 'sales' || $type == 'turnover') {
+            $stepSize = $type == 'sales' ? 1 : 50;
+            $chart->options([
+                'tooltip' => ['show' => true],
+                'scales' => [
+                    'yAxes' => [
+                        [
+                            'ticks' => ['beginAtZero' => true, 'stepSize' => $stepSize],
+                            'position' => 'left',
+                        ],
+                    ],
+                ]
+            ]);
+        }
+
+        return $chart;
+    }
+
 }
