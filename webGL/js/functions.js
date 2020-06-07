@@ -1,4 +1,6 @@
 import * as THREE from './libs/three.module.js';
+import {FBXLoader} from "./libs/FBXLoader.js";
+
 
 export function createCamera(
     fov = 60,
@@ -39,7 +41,8 @@ export function createPointLight(
     posZ = 0) {
 
     let geometry = new THREE.SphereBufferGeometry(radius, 32, 32);
-    let light = new THREE.PointLight(color, intensity);
+    let light = new THREE.PointLight(color, intensity, 1000);
+    light.shadow.camera.far = 1500
     light.add(new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({color: color})));
     light.position.set(posX, posY, posZ);
     light.castShadow = true;
@@ -47,28 +50,28 @@ export function createPointLight(
     return light;
 }
 
-export function camControl(keyboard, camera, cameraT) {
+export function camControl(keyboard, camera, cameraT, scene) {
     let vectorX = new THREE.Vector3(1, 0, 0);
     let vectorY = new THREE.Vector3(0, 1, 0);
     let vectorZ = new THREE.Vector3(0, 0, 1);
+    let truck = camera.getObjectByName("food_truck");
 
-
-    if (keyboard.pressed("up")) {
-        if (camera.rotation.x < Math.radians(40)) {
-            camera.rotateOnAxis(vectorX, cameraT.rotationSpeed);
-        }
-    }
-    if (keyboard.pressed("down")) {
-        if (camera.rotation.x > Math.radians(-40)) {
-            camera.rotateOnAxis(vectorX, -cameraT.rotationSpeed);
-        }
-    }
-    if (keyboard.pressed("left")) {
-        camera.rotateOnAxis(vectorY, cameraT.rotationSpeed);
-    }
-    if (keyboard.pressed("right")) {
-        camera.rotateOnAxis(vectorY, -cameraT.rotationSpeed);
-    }
+    // if (keyboard.pressed("up")) {
+    //     // if (camera.rotation.x < Math.radians(40)) {
+    //     camera.rotateOnAxis(vectorX, cameraT.rotationSpeed);
+    //     // }
+    // }
+    // if (keyboard.pressed("down")) {
+    //     // if (camera.rotation.x > Math.radians(-40)) {
+    //     camera.rotateOnAxis(vectorX, -cameraT.rotationSpeed);
+    //     // }
+    // }
+    // if (keyboard.pressed("left")) {
+    //     camera.rotateOnAxis(vectorY, cameraT.rotationSpeed);
+    // }
+    // if (keyboard.pressed("right")) {
+    //     camera.rotateOnAxis(vectorY, -cameraT.rotationSpeed);
+    // }
     if (keyboard.pressed("z")) {
         camera.translateZ(-cameraT.moveSpeed);
     }
@@ -76,15 +79,46 @@ export function camControl(keyboard, camera, cameraT) {
         camera.translateZ(cameraT.moveSpeed);
     }
     if (keyboard.pressed("q")) {
-        camera.translateX(-cameraT.moveSpeed);
+        // camera.translateX(-cameraT.moveSpeed);
+        camera.rotateOnAxis(vectorY, cameraT.rotationSpeed);
+        truck.rotation.y += 0.015;
+    } else if (truck.rotation.y > 0) {
+        truck.rotation.y -= 0.015;
     }
     if (keyboard.pressed("d")) {
-        camera.translateX(cameraT.moveSpeed);
+        // camera.translateX(cameraT.moveSpeed);
+        camera.rotateOnAxis(vectorY, -cameraT.rotationSpeed);
+        truck.rotation.y -= 0.015;
+    }else if (truck.rotation.y < 0) {
+        truck.rotation.y += 0.015;
     }
+
     if (keyboard.pressed("a")) {
         camera.rotateOnAxis(vectorZ, cameraT.rotationSpeed * 0.5);
     }
     if (keyboard.pressed("e")) {
         camera.rotateOnAxis(vectorZ, -cameraT.rotationSpeed * 0.5);
     }
+    camera.position.y = 1;
 }
+
+export function loadStaticFBX(scene, path = null, name = "", scale = 1, posX = 0, posY = 0, posZ = 0, rotY = 0) {
+    let loader = new FBXLoader();
+    let loadedObject;
+    loader.load(path, function (object) {
+
+        object.traverse(function (child) {
+
+            if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        });
+        object.name = name;
+        object.position.set(posX, posY, posZ)
+        object.rotateY(rotY);
+        object.scale.x = object.scale.y = object.scale.z = scale;
+        scene.add(object);
+    });
+}
+
