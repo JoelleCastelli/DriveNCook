@@ -1,6 +1,6 @@
 @extends('franchise.layout_franchise')
 @section('title')
-    Commande
+    {{trans('franchisee.order')}}
 @endsection
 
 @section('content')
@@ -8,17 +8,18 @@
         <div class="col-12 col-lg-6 mb-5">
             <div class="card">
                 <div class="card-header d-flex align-items-center">
-                    <h2>Informations de la commande</h2>
+                    <h2>{{trans('franchisee.order_info')}}</h2>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><b>Date de commande : </b>{{$order['date']}}</li>
-                    <li class="list-group-item"><b>Statut de la commande : </b>{{$order['status']}}</li>
-                    <li class="list-group-item"><b>Entrepôt : </b>{{$order['warehouse']['name']}}</li>
-                    <li class="list-group-item"><b>Adresse de l'entrpôt : </b>
+                    <li class="list-group-item"><b>{{trans('franchisee.date_order')}} : </b>{{$order['date']}}</li>
+                    <li class="list-group-item"><b>{{trans('franchisee.order_status')}} : </b>{{$order['status']}}</li>
+                    <li class="list-group-item"><b>{{trans('franchisee.order_status')}}
+                            : </b>{{$order['warehouse']['name']}}</li>
+                    <li class="list-group-item"><b>{{trans('franchisee.warehouse_location')}} : </b>
                         {{$order['warehouse']['address'].' - '.$order['warehouse']['city']['name'].
                         ' ('.$order['warehouse']['city']['postcode'].')'}}
                     </li>
-                    <li class="list-group-item"><b>Total : </b>
+                    <li class="list-group-item"><b>{{trans('franchisee.total')}} : </b>
                         <?php
                         $total = 0;
                         foreach ($order['purchased_dishes'] as $dish) {
@@ -33,7 +34,7 @@
         <div class="col-12 col-lg-6 mb-5">
             <div class="card">
                 <div class="card-header">
-                    <h2>Produits commandés</h2>
+                    <h2>{{trans('franchisee.products_ordered')}}</h2>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -41,11 +42,11 @@
                                style="width: 100%">
                             <thead>
                             <tr>
-                                <th>Plat</th>
-                                <th>Quantité commandé</th>
-                                <th>Prix unitaire</th>
-                                <th>Total</th>
-                                <th>Quantité envoyé</th>
+                                <th>{{trans('franchisee.plate')}}</th>
+                                <th>{{trans('franchisee.quantity')}}</th>
+                                <th>{{trans('franchisee.unit_price')}}</th>
+                                <th>{{trans('franchisee.total')}}</th>
+                                <th>{{trans('franchisee.quantity_sent')}}</th>
                             </tr>
                             </thead>
                             <tbody>

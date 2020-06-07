@@ -35,6 +35,11 @@ Route::delete('/corporate/unset_franchisee_truck/{id}', [
     'uses' => 'Corporate\TruckController@unset_franchise_truck'
 ]);
 
+Route::post('/corporate/set_franchisee_truck/', [
+    'as' => 'set_franchisee_truck',
+    'uses' => 'Corporate\TruckController@set_franchise_truck'
+]);
+
 
 Route::get('/corporate/truck_view/{id}', [
     'as' => 'truck_view',

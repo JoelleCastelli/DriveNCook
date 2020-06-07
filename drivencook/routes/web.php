@@ -11,6 +11,9 @@
 |
 */
 
+require_once('client/account.php');
+require_once('client/auth.php');
+require_once('client/orders.php');
 require_once('corporate/auth.php');
 require_once('corporate/franchisees.php');
 require_once('corporate/trucks.php');
@@ -21,6 +24,8 @@ require_once('corporate/client.php');
 require_once('franchise/home.php');
 require_once('franchise/truck.php');
 require_once('franchise/stock.php');
+require_once('franchise/invoice.php');
+require_once('franchise/revenues_stats.php');
 
 Route::get('/', function () {
     return view('home');

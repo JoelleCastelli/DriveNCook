@@ -27,7 +27,7 @@
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+<nav class="navbar navbar-expand-md navbar-dark sticky-top bg-dark">
     <a class="navbar-brand" href="/">
         <img src="{{asset('img/logo_transparent_3.png')}}" height="60" class="d-inline-block align-top" alt="">
     </a>
@@ -90,7 +90,7 @@
                     <i class="fa fa-user"></i>&nbsp;&nbsp;{{ trans('homepage.login') }}
                 </a>
                 <div class="dropdown-menu dropdown-menu-right bg-dark" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item text-light d-flex align-items-baseline" href="#">
+                    <a class="dropdown-item text-light d-flex align-items-baseline" href="{{ route('client_login') }}">
                         <i class="fa fa-user"></i>&nbsp;&nbsp;{{ trans('homepage.login_client') }}
                     </a>
                     <a class="dropdown-item text-light d-flex align-items-baseline" href="{{route('franchise.login')}}">

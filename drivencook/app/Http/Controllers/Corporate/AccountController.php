@@ -51,7 +51,7 @@ class AccountController extends Controller
 
         User::whereKey($this->get_connected_user()['id'])
             ->update(request()->except('_token'));
-        flash('Compte modifié')->success();
+        flash(trans('corporate_account.update_ok'))->success();
         return back();
     }
 
@@ -63,7 +63,7 @@ class AccountController extends Controller
 
         $this->update_user_password($this->get_connected_user()['id'], request('password'));
 
-        flash('Mot de passe modifié')->success();
+        flash(trans('corporate_account.update_pwd_ok'))->success();
         return back();
     }
 

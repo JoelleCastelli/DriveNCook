@@ -5,7 +5,7 @@
 @endsection
 
 @section('title')
-    {{ trans('warehouse_list.title') }}
+    {{ trans('warehouse.title_list') }}
 @endsection
 
 @section('content')
@@ -20,10 +20,10 @@
                                        style="width: 100%">
                                     <thead>
                                     <tr>
-                                        <th>{{ trans('warehouse_list.name') }}</th>
-                                        <th>{{ trans('warehouse_list.address') }}</th>
-                                        <th>{{ trans('warehouse_list.city') }}</th>
-                                        <th>{{ trans('corporate.actions') }}</th>
+                                        <th>{{ trans('warehouse.name') }}</th>
+                                        <th>{{ trans('warehouse.address') }}</th>
+                                        <th>{{ trans('warehouse.city') }}</th>
+                                        <th>{{ trans('warehouse.actions') }}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
