@@ -25,7 +25,13 @@
         <div class="col-8">
             <div class="card">
                 <div class="card-header">
-                    <h2>{{ trans('client/order.franchisee_menu') . ' ' . $stocks[0]['user']['firstname'] . ' ' . $stocks[0]['user']['lastname'] }}</h2>
+                    <h2>
+                        @if(count($stocks) > 0)
+                            {{ trans('client/order.franchisee_menu') . ' ' . $stocks[0]['user']['firstname'] . ' ' . $stocks[0]['user']['lastname'] }}
+                        @else
+                            {{ trans('client/order.franchisee_menu_empty') }}
+                        @endif
+                    </h2>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">

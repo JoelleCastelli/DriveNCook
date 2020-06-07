@@ -5,6 +5,7 @@ return [
     'title_dishes' => 'You can now add some products to your order...',
     'shopping_cart' => 'Your shopping cart:',
     'franchisee_menu' => 'Menu from',
+    'franchisee_menu_empty' => 'Empty menu',
 
     'back_trucks' => 'Truck list',
 

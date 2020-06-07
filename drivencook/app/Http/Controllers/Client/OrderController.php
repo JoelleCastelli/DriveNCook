@@ -9,6 +9,7 @@ use App\Models\FranchiseeStock;
 use App\Models\Sale;
 use App\Models\SoldDish;
 use App\Models\Truck;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Traits\UserTools;
@@ -122,18 +123,25 @@ class OrderController extends Controller
 
                 unset($parameters['order']['truck_id']);
 
+                $sum = 0;
                 foreach($parameters['order'] as $dishId => $quantity) {
+                    $unitPrice = $this->get_franchisee_stock($dishId, $userId)['unit_price'];
                     $sold_dish = [
                         'dish_id' => $dishId,
                         'sale_id' => $saleId,
-                        'unit_price' => $this->get_franchisee_stock($dishId, $userId)['unit_price'],
+                        'unit_price' => $unitPrice,
                         'quantity' => $quantity,
                     ];
-
+                    $sum += $unitPrice;
                     if($quantity > 0) {
                         SoldDish::insert($sold_dish);
                     }
                 }
+
+                $loyaltyPoint = $sum * 0.1;
+
+                User::whereKey($this->get_connected_user()['id'])
+                    ->update(['loyalty_point' => (int)$loyaltyPoint]);
 
                 $response_array = [
                     'status' => 'success'
