@@ -89,7 +89,7 @@
                                         <td>{{ number_format($obligation['revenue_percentage'], 2, ',', ' ') }} %</td>
                                         <td>{{ number_format($obligation['warehouse_percentage'], 2, ',', ' ') }} %</td>
                                         <td>{{ $obligation['billing_day']}}</td>
-                                        <td>{{ $manager['firstname'].' '.$manager['lastname'].' ('.$manager['email'].')' }}</td>
+                                        <td>{{ $obligation['manager'] }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

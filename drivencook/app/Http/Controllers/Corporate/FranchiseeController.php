@@ -297,11 +297,14 @@ class FranchiseeController extends Controller
 
     public function update_franchise_obligation()
     {
-        $manager = $this->get_connected_user();
         $last_obligation = FranchiseObligation::all()->sortByDesc('id')->first()->toArray();
         $franchisee_obligations = FranchiseObligation::all()->sortByDesc('id')->toArray();
+        foreach ($franchisee_obligations as &$franchisee_obligation) {
+            $manager = User::where('id', $franchisee_obligation['user_id'])->first()->toArray();
+            $franchisee_obligation['manager'] = $manager['firstname'].' '.$manager['lastname'].' ('.$manager['email'].')';
+        }
+
         return view('corporate.franchisee.franchisee_obligations_update')
-            ->with('manager', $manager)
             ->with('obligations', $franchisee_obligations)
             ->with('last_obligation', $last_obligation);
     }
@@ -348,11 +351,13 @@ class FranchiseeController extends Controller
                 return redirect()->back()->with('error', $errors_list);
             }
 
+            $manager_id = $this->get_connected_user()['id'];
             $obligation = ['entrance_fee' => $entrance_fee,
                 'revenue_percentage' => $revenue_percentage,
                 'warehouse_percentage' => $warehouse_percentage,
                 'billing_day' => $billing_day,
-                'date_updated' => date('Y-m-d')];
+                'date_updated' => date('Y-m-d'),
+                'user_id' => $manager_id];
             FranchiseObligation::insert($obligation);
             return redirect()->route('franchisee_obligation_update')->with('success', trans('franchisee.obligation_updated'));
 
