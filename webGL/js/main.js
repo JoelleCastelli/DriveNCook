@@ -4,6 +4,7 @@ import Stats from './libs/stats.module.js';
 import {GUI} from './libs/dat.gui.module.js';
 import * as functions from './functions.js';
 import * as city_builder from './city_builder.js';
+import * as game from './game.js';
 import {FBXLoader} from "./libs/FBXLoader.js";
 
 Math.radians = (degrees) => degrees * Math.PI / 180;
@@ -107,6 +108,12 @@ function init() {
 
     city_builder.build_city(scene, terrainDim);
 
+    /**
+     * Game
+     */
+
+    foodObjectName = "initFood";
+
     startGUI();
     /**
      * Init music
@@ -146,7 +153,13 @@ function onWindowResize() {
 
 function animate() {
     requestAnimationFrame(animate);
-    functions.camControl(keyboard, pivot, cameraT, scene);
+    functions.camControl(keyboard, pivot, cameraT, 0.01);
+    foodObjectName = game.updateGame(pivot, scene, foodObjectName);
+    if (foodObjectName === "initFood") {
+        guiParams.score += 10;
+        updateScore();
+    }
+
     render();
 }
 
