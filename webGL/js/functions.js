@@ -109,9 +109,10 @@ export function camControl(keyboard, group, cameraT, truckPivot, terrainDim) {
 }
 
 export function terrainLimitCollider(object, terrainDim) {
-    object.position.x = Math.max(object.position.x, -terrainDim.width / 2 - 5);
+
+    object.position.x = Math.max(object.position.x, -terrainDim.width / 2 + 5);
     object.position.x = Math.min(object.position.x, terrainDim.width / 2 + 20);
-    object.position.z = Math.max(object.position.z, -terrainDim.height / 2 - 5);
+    object.position.z = Math.max(object.position.z, -terrainDim.height / 2 + 5);
     object.position.z = Math.min(object.position.z, terrainDim.height / 2 + 20);
 }
 

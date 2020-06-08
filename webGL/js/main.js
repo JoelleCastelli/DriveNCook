@@ -190,7 +190,6 @@ function startGUI() {
     });
 
     gui.add(guiParams, 'blank').name("Score : " + guiParams.score);
-    console.log(gui);
 }
 
 function updateScore() {

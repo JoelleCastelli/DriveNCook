@@ -55,7 +55,6 @@ export function updateGame(pivot, scene, objectName) {
             break;
         case "initPerson":
             characterPosR = THREE.Math.randInt(0, characterPos.length - 1);
-            console.log(characterPosR)
             objectName = initPerson(scene, characterPos[characterPosR][0], characterPos[characterPosR][1]);
             break;
     }
