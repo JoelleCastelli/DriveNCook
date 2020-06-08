@@ -65,7 +65,7 @@ function init() {
     camera.rotation.x = -0.35;
     camera.add(listener);
     pivot = new THREE.Group();
-    pivot.position.set(-10, 1, 550);
+    pivot.position.set(10, 1, 450);
 
     pivot.add(camera);
     camera.position.set(0, 60, 60)
