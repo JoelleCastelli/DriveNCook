@@ -98,12 +98,12 @@ export function camControl(keyboard, group, cameraT, truckPivot, terrainDim) {
         truck.rotation.y += truckPivot * 2;
     }
 
-    if (keyboard.pressed("a")) {
-        group.rotateOnAxis(vectorZ, cameraT.rotationSpeed * 0.5);
-    }
-    if (keyboard.pressed("e")) {
-        group.rotateOnAxis(vectorZ, -cameraT.rotationSpeed * 0.5);
-    }
+    // if (keyboard.pressed("a")) {
+    //     group.rotateOnAxis(vectorZ, cameraT.rotationSpeed * 0.5);
+    // }
+    // if (keyboard.pressed("e")) {
+    //     group.rotateOnAxis(vectorZ, -cameraT.rotationSpeed * 0.5);
+    // }
     group.position.y = 1;
     terrainLimitCollider(group, terrainDim);
 }
