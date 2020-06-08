@@ -153,7 +153,7 @@ function onWindowResize() {
 
 function animate() {
     requestAnimationFrame(animate);
-    functions.camControl(keyboard, pivot, cameraT, 0.01,terrainDim);
+    functions.camControl(keyboard, pivot, cameraT, 0.01, terrainDim);
     foodObjectName = game.updateGame(pivot, scene, foodObjectName);
     if (foodObjectName === "initFood") {
         guiParams.score += 10;
@@ -170,10 +170,11 @@ function render() {
 
 function music() {
     let audioLoader = new THREE.AudioLoader();
-    audioLoader.load('../assets/sound/catgroove.ogg', function (buffer) {
+    // audioLoader.load('../assets/sound/catgroove.ogg', function (buffer) {
+    audioLoader.load('../assets/sound/Deja_Vu.ogg', function (buffer) {
         sound.setBuffer(buffer);
         sound.setLoop(true);
-        sound.setVolume(guiParams.volume);
+        sound.setVolume(guiParams.volume / 5);
         sound.play();
     })
 }
@@ -186,7 +187,7 @@ function startGUI() {
     gui.add(guiParams, 'PlayPauseMusic').name('Play/Pause music');
     gui.add(guiParams, 'RestartMusic').name('Restart music')
     gui.add(guiParams, 'volume').name('Music volume').min(0).max(2).step(0.1).onChange(function () {
-        sound.setVolume(guiParams.volume);
+        sound.setVolume(guiParams.volume / 5);
     });
 
     gui.add(guiParams, 'blank').name("Score : " + guiParams.score);
