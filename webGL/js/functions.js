@@ -50,30 +50,32 @@ export function createPointLight(
     return light;
 }
 
-export function camControl(keyboard, group, cameraT, truckPivot) {
+export function camControl(keyboard, group, cameraT, truckPivot, terrainDim) {
     let vectorX = new THREE.Vector3(1, 0, 0);
     let vectorY = new THREE.Vector3(0, 1, 0);
     let vectorZ = new THREE.Vector3(0, 0, 1);
     let truck = group.getObjectByName("food_truck");
     // console.log("Position, x:" + group.position.x + ", z:" + group.position.z);
 
+    /*
+        if (keyboard.pressed("up")) {
+            // if (camera.rotation.x < Math.radians(40)) {
+            camera.rotateOnAxis(vectorX, cameraT.rotationSpeed);
+            // }
+        }
+        if (keyboard.pressed("down")) {
+            // if (camera.rotation.x > Math.radians(-40)) {
+            camera.rotateOnAxis(vectorX, -cameraT.rotationSpeed);
+            // }
+        }
+        if (keyboard.pressed("left")) {
+            camera.rotateOnAxis(vectorY, cameraT.rotationSpeed);
+        }
+        if (keyboard.pressed("right")) {
+            camera.rotateOnAxis(vectorY, -cameraT.rotationSpeed);
+        }
+    */
 
-    // if (keyboard.pressed("up")) {
-    //     // if (camera.rotation.x < Math.radians(40)) {
-    //     camera.rotateOnAxis(vectorX, cameraT.rotationSpeed);
-    //     // }
-    // }
-    // if (keyboard.pressed("down")) {
-    //     // if (camera.rotation.x > Math.radians(-40)) {
-    //     camera.rotateOnAxis(vectorX, -cameraT.rotationSpeed);
-    //     // }
-    // }
-    // if (keyboard.pressed("left")) {
-    //     camera.rotateOnAxis(vectorY, cameraT.rotationSpeed);
-    // }
-    // if (keyboard.pressed("right")) {
-    //     camera.rotateOnAxis(vectorY, -cameraT.rotationSpeed);
-    // }
     if (keyboard.pressed("z")) {
         group.translateZ(-cameraT.moveSpeed);
     }
@@ -102,11 +104,15 @@ export function camControl(keyboard, group, cameraT, truckPivot) {
         group.rotateOnAxis(vectorZ, -cameraT.rotationSpeed * 0.5);
     }
     group.position.y = 1;
+    terrainLimitCollider(group, terrainDim);
 }
 
-export function loadStaticFBX(scene, path = null, name = "", scale = 1, posX = 0, posY = 0, posZ = 0, rotY = 0) {
-    let loader = new FBXLoader();
-    let loadedObject;
+export function terrainLimitCollider(object, terrainDim) {
+    object.position.x = Math.max(object.position.x, -terrainDim.width / 2 - 5);
+    object.position.x = Math.min(object.position.x, terrainDim.width / 2 + 20);
+    object.position.z = Math.max(object.position.z, -terrainDim.height / 2 - 5);
+    object.position.z = Math.min(object.position.z, terrainDim.height / 2 + 20);
+}
     loader.load(path, function (object) {
 
         object.traverse(function (child) {

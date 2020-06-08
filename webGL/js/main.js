@@ -153,7 +153,7 @@ function onWindowResize() {
 
 function animate() {
     requestAnimationFrame(animate);
-    functions.camControl(keyboard, pivot, cameraT, 0.01);
+    functions.camControl(keyboard, pivot, cameraT, 0.01,terrainDim);
     foodObjectName = game.updateGame(pivot, scene, foodObjectName);
     if (foodObjectName === "initFood") {
         guiParams.score += 10;
