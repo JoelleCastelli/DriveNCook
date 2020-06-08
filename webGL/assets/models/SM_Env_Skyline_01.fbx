@@ -743,20 +743,20 @@ Objects:  {
 	Video: 1356478432, "Video::DiffuseColor_Texture", "Clip" {
 		Type: "Clip"
 		Properties70:  {
-			P: "Path", "KString", "XRefUrl", "", "C:\Users\Unknow\Downloads\New Unity Project\Assets\PolygonCity\Textures\PolygonCity_Texture_Skyline.tga"
-			P: "RelPath", "KString", "XRefUrl", "", "..\..\..\Downloads\New Unity Project\Assets\PolygonCity\Textures\PolygonCity_Texture_Skyline.tga"
+			P: "Path", "KString", "XRefUrl", "", "PolygonCity_Texture_Skyline.tga"
+			P: "RelPath", "KString", "XRefUrl", "", "PolygonCity_Texture_Skyline.tga"
 		}
 		UseMipMap: 0
-		Filename: "C:\Users\Unknow\Downloads\New Unity Project\Assets\PolygonCity\Textures\PolygonCity_Texture_Skyline.tga"
-		RelativeFilename: "..\..\..\Downloads\New Unity Project\Assets\PolygonCity\Textures\PolygonCity_Texture_Skyline.tga"
+		Filename: "PolygonCity_Texture_Skyline.tga"
+		RelativeFilename: "PolygonCity_Texture_Skyline.tga"
 	}
 	Texture: 1356477952, "Texture::DiffuseColor_Texture", "" {
 		Type: "TextureVideoClip"
 		Version: 202
 		TextureName: "Texture::DiffuseColor_Texture"
 		Media: "Video::DiffuseColor_Texture"
-		FileName: "C:\Users\Unknow\Downloads\New Unity Project\Assets\PolygonCity\Textures\PolygonCity_Texture_Skyline.tga"
-		RelativeFilename: "..\..\..\Downloads\New Unity Project\Assets\PolygonCity\Textures\PolygonCity_Texture_Skyline.tga"
+		FileName: "PolygonCity_Texture_Skyline.tga"
+		RelativeFilename: "PolygonCity_Texture_Skyline.tga"
 		ModelUVTranslation: 0,0
 		ModelUVScaling: 1,1
 		Texture_Alpha_Source: "None"
