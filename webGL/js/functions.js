@@ -1,5 +1,6 @@
 import * as THREE from './libs/three.module.js';
 import {FBXLoader} from "./libs/FBXLoader.js";
+import {TGALoader} from "./libs/TGALoader.js";
 
 
 export function createCamera(
@@ -113,11 +114,21 @@ export function terrainLimitCollider(object, terrainDim) {
     object.position.z = Math.max(object.position.z, -terrainDim.height / 2 - 5);
     object.position.z = Math.min(object.position.z, terrainDim.height / 2 + 20);
 }
+
+export function loadStaticFBX(scene, path = null, name = "", scale = 1, posX = 0, posY = 0, posZ = 0, rotY = 0, transparency = false) {
+    let manager = new THREE.LoadingManager();
+    manager.addHandler(/\.tga$/i, new TGALoader());
+    let loader = new FBXLoader(manager);
     loader.load(path, function (object) {
 
         object.traverse(function (child) {
 
             if (child.isMesh) {
+                if (transparency) {
+                    child.material.transparent = true;
+                    child.material.alphaTest = 0.5;
+                }
+
                 child.castShadow = true;
                 child.receiveShadow = true;
             }
