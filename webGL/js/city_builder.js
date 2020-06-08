@@ -42,6 +42,7 @@ const environments = {
     tree_01: '../assets/models/SM_Env_Tree_01.fbx',
     tree_02: '../assets/models/SM_Env_Tree_02.fbx',
     tree_03: '../assets/models/SM_Env_Tree_03.fbx',
+    skyline: '../assets/models/SM_Env_Skyline_01.fbx',
 }
 
 const props = {
@@ -61,7 +62,7 @@ const props = {
     water_tower: '../assets/models/SM_Prop_Water_Tower_01.fbx',
 }
 
-const baseMat = new THREE.MeshStandardMaterial({color: 0x7E7E7E});
+const baseMat = new THREE.MeshStandardMaterial({color: 0xfefefe});
 
 
 export function build_city(scene, terrainDim) {
@@ -90,6 +91,20 @@ export function build_city(scene, terrainDim) {
      * Buildings
      */
     add_buildings(scene, terrainDim);
+
+    /**
+     * Skyline
+     */
+    functions.loadStaticFBX(scene, environments.skyline, "", 0.05, 0, 0, 0, 0, true);
+
+    let geometry = new THREE.CircleGeometry(terrainDim.width + 100, 32);
+    let circle = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({color: 0x00C2FF}));
+    circle.receiveShadow = true;
+    circle.rotation.x += Math.radians(-90);
+    circle.position.set(0, -1, 0)
+    scene.add(circle);
+
+
 }
 
 function build_roads(scene, terrainDim) {
