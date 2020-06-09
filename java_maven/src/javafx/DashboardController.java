@@ -40,6 +40,9 @@ public class DashboardController {
     @FXML
     private Label orderLabel;
     @FXML
+    private Label userStatusLabel;
+
+    @FXML
     private Spinner<Integer> loyaltyPointSpinner;
 
     private SpinnerValueFactory<Integer> spinnerValueFactory;
@@ -104,6 +107,7 @@ public class DashboardController {
             roleLabel.setText(user.getRole());
             orderLabel.setText(user.getOrder());
             loyaltyPointSpinner.setValueFactory(spinnerValueFactory);
+            updateUserStatusLabel("", false);
         } else {
             selectedUser = null;
 
@@ -127,10 +131,7 @@ public class DashboardController {
 
                         String lowerCaseFilter = newValue.toLowerCase();
 
-                        if (User.getEmail().toLowerCase().contains(lowerCaseFilter)) {
-                            return true;
-                        }
-                        return false;
+                        return User.getEmail().toLowerCase().contains(lowerCaseFilter);
                     });
                 }));
 
@@ -153,9 +154,9 @@ public class DashboardController {
     public void updateLoyaltyPoint(Event event) {
         if (mainApp.dataBaseDAO.updateLoyaltyPoint(Integer.parseInt(selectedUser.getId()), spinnerValueFactory.getValue()) == 1) {
             mainApp.updateUserLoyaltyPoint(selectedUser.getId(), spinnerValueFactory.getValue().toString());
-            //TODO success status (user list)
+            updateUserStatusLabel("Les points de fidélité de l'utilisateur ont été mis à jour", false);
         } else {
-            //TODO error status (user list)
+            updateUserStatusLabel("Erreur lors de la mise à jour des points de fidélité de l'utilisateur", true);
         }
 //        mainApp.refreshUserList();
     }
@@ -232,5 +233,14 @@ public class DashboardController {
             stepStatusLabel.setTextFill(Color.web("#00FF08"));
         }
         stepStatusLabel.setText(message);
+    }
+
+    public void updateUserStatusLabel(String message, boolean error) {
+        if (error) {
+            userStatusLabel.setTextFill(Color.web("#FF0900"));
+        } else {
+            userStatusLabel.setTextFill(Color.web("#00FF08"));
+        }
+        userStatusLabel.setText(message);
     }
 }

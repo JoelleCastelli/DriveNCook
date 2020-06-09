@@ -6,7 +6,7 @@
 
     <groupId>fr.drivencook</groupId>
     <artifactId>javafx</artifactId>
-    <version>1.2</version>
+    <version>1.2.5</version>
 
     <name>javafx-fidelity-manager</name>
     <packaging>jar</packaging>
