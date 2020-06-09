@@ -108,8 +108,8 @@ export function build_city(scene, terrainDim) {
 }
 
 function build_ocean(scene, terrainDim) {
-    for (let i = -terrainDim.width; i < terrainDim.width; i += 300) {
-        for (let j = -terrainDim.height; j < terrainDim.height; j += 300) {
+    for (let i = -terrainDim.width; i <= terrainDim.width; i += 300) {
+        for (let j = -terrainDim.height; j <= terrainDim.height; j += 300) {
             functions.loadStaticFBX(scene, environments.ocean, "", 0.1, i, -4.5, j);
         }
     }
