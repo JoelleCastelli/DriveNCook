@@ -7,6 +7,7 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.paint.Color;
 
 public class DashboardController {
 
@@ -54,6 +55,8 @@ public class DashboardController {
     private TextField stepTextField;
     @FXML
     private TextField reductionTextField;
+    @FXML
+    private Label stepStatusLabel;
 
 
     @FXML
@@ -148,15 +151,25 @@ public class DashboardController {
     }
 
     public void updateLoyaltyPoint(Event event) {
-        mainApp.dataBaseDAO.updateLoyaltyPoint(Integer.parseInt(selectedUser.getId()), spinnerValueFactory.getValue());
-        mainApp.refreshUserList();
+        if (mainApp.dataBaseDAO.updateLoyaltyPoint(Integer.parseInt(selectedUser.getId()), spinnerValueFactory.getValue()) == 1) {
+            mainApp.updateUserLoyaltyPoint(selectedUser.getId(), spinnerValueFactory.getValue().toString());
+            //TODO success status (user list)
+        } else {
+            //TODO error status (user list)
+        }
+//        mainApp.refreshUserList();
     }
 
     public void deleteFidelityStep() {
         if (!fidelityStepTable.getSelectionModel().isEmpty()) {
             int fidelityStepId = Integer.parseInt(fidelityStepTable.getSelectionModel().getSelectedItem().getId());
-            mainApp.dataBaseDAO.deleteFidelityStep(fidelityStepId);
-            refreshFidelityStepTable();
+            if (mainApp.dataBaseDAO.deleteFidelityStep(fidelityStepId) == 1) {
+                mainApp.removeFidelityStepItem(String.valueOf(fidelityStepId));
+                updateStepStatusLabel("Palier de reduction retiré", false);
+            } else {
+                updateStepStatusLabel("Erreur lors de la suppression du palier", true);
+            }
+//            refreshFidelityStepTable();
         }
     }
 
@@ -164,9 +177,24 @@ public class DashboardController {
         if (isPositiveNumeric(stepTextField.getText()) && isPositiveNumeric(reductionTextField.getText())) {
             int step = Integer.parseInt(stepTextField.getText());
             int reduction = Integer.parseInt(reductionTextField.getText());
-            mainApp.dataBaseDAO.addFidelityStep(step, reduction, Integer.parseInt(loginUser.getId()));
-            refreshFidelityStepTable();
+            if (newStepCoherence(step, reduction)) {
+                int id = mainApp.dataBaseDAO.addFidelityStep(step, reduction, Integer.parseInt(loginUser.getId()));
+                if (id < 1) {
+                    updateStepStatusLabel("Erreur lors de l'ajout du palier", true);
+                    return;
+                }
+                updateStepStatusLabel("Palier de reduction ajouté", false);
+                mainApp.addFidelityStepItem(new FidelityStep(String.valueOf(id),
+                        String.valueOf(step),
+                        String.valueOf(reduction),
+                        loginUser.getId()));
+            } else {
+                updateStepStatusLabel("Problème de cohérence du nouveau palier par rapport aux anciens", true);
+            }
+        } else {
+            updateStepStatusLabel("Problème de valeurs dans le nouveau palier", true);
         }
+//            refreshFidelityStepTable();
     }
 
 
@@ -180,5 +208,29 @@ public class DashboardController {
         } catch (NumberFormatException nfe) {
             return false;
         }
+    }
+
+    public boolean newStepCoherence(int step, int reduction) {
+        SortedList<FidelityStep> sortedList = new SortedList<>(mainApp.getFidelityStepList());
+        boolean result = true;
+        for (FidelityStep fidelityStep : sortedList) {
+            if (step >= Integer.parseInt(fidelityStep.getStep()) &&
+                    reduction <= Integer.parseInt(fidelityStep.getReduction())) {
+                result = false;
+            } else if (step <= Integer.parseInt(fidelityStep.getStep()) &&
+                    reduction >= Integer.parseInt(fidelityStep.getReduction())) {
+                result = false;
+            }
+        }
+        return result;
+    }
+
+    public void updateStepStatusLabel(String message, boolean error) {
+        if (error) {
+            stepStatusLabel.setTextFill(Color.web("#FF0900"));
+        } else {
+            stepStatusLabel.setTextFill(Color.web("#00FF08"));
+        }
+        stepStatusLabel.setText(message);
     }
 }

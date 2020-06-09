@@ -11,6 +11,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Collections;
 
 public class MainApp extends Application {
 
@@ -18,6 +19,7 @@ public class MainApp extends Application {
 
         launch(args);
     }
+
     private Stage primaryStage;
 
     private BorderPane rootLayout;
@@ -106,6 +108,28 @@ public class MainApp extends Application {
     public void refreshUserList() {
         userList.clear();
         userList.addAll(dataBaseDAO.getUserListDB());
+    }
+
+    public void removeFidelityStepItem(String id) {
+        fidelityStepList.removeIf(obj -> obj.getId().equals(id));
+    }
+
+    public void addFidelityStepItem(FidelityStep fidelityStep) {
+        fidelityStepList.add(fidelityStep);
+        Collections.sort(fidelityStepList);
+    }
+
+    public void updateUserLoyaltyPoint(String userId, String loyaltyPoints) {
+        userList.get(getIndexOfUserListById(userId)).setLoyalty_point(loyaltyPoints);
+    }
+
+    public int getIndexOfUserListById(String id) {
+        for (int i = 0; i < userList.size(); i++) {
+            if (userList.get(i).getId().equals(id)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public ObservableList<javafx.User> getUserList() {
