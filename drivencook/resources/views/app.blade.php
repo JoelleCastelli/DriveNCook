@@ -72,13 +72,15 @@
         <div class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button">
-                    <img src="{{ asset('img/'.App::getLocale().'_icon.png') }}" height="20">&nbsp;&nbsp;{{ trans('homepage.'. App::getLocale()) }}
+                    <img src="{{ asset('img/'.App::getLocale().'_icon.png') }}"
+                         height="20">&nbsp;&nbsp;{{ trans('homepage.'. App::getLocale()) }}
                 </a>
                 <div class="dropdown-menu bg-dark">
                     @foreach (Config::get('app.languages') as $language)
                         @if ($language != App::getLocale())
                             <a class="dropdown-item text-light" href="{{ route('set_locale', $language) }}">
-                                <img src="{{ asset('img/'.$language.'_icon.png') }}" height="20">&nbsp;&nbsp;{{ trans('homepage.'.$language) }}
+                                <img src="{{ asset('img/'.$language.'_icon.png') }}"
+                                     height="20">&nbsp;&nbsp;{{ trans('homepage.'.$language) }}
                             </a>
                         @endif
                     @endforeach
@@ -170,7 +172,8 @@
                 <h5 class="font-weight-bold text-uppercase mt-3 mb-3">{{ trans('homepage.become_franchisee') }}</h5>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="#">{{ trans('homepage.concept') }}</a>
+                        <a class="nav-link text-light"
+                           href="https://webgl.drivencook.fr">{{ trans('homepage.concept') }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-light" href="#">{{ trans('homepage.form') }}</a>
@@ -183,7 +186,8 @@
                         <a class="nav-link text-light" href="tel:0606060606"><i class="fa fa-phone"></i> 01 56 06 90 41</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="mailto:contact@drivencook.fr"><i class="fa fa-envelope"></i> contact@drivencook.fr</a>
+                        <a class="nav-link text-light" href="mailto:contact@drivencook.fr"><i
+                                    class="fa fa-envelope"></i> contact@drivencook.fr</a>
                     </li>
                 </ul>
             </div>
