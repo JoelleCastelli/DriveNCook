@@ -25,6 +25,7 @@ return [
     'undetermined_duration' => 'Durée indéterminée',
     'unknown' => 'Inconnu',
     'update' => 'Mettre à jour',
+    'not_set' => 'Non défini',
 
 
     // Franchisee info
