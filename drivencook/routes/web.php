@@ -14,6 +14,7 @@
 require_once('client/account.php');
 require_once('client/auth.php');
 require_once('client/orders.php');
+require_once('corporate/administrator.php');
 require_once('corporate/auth.php');
 require_once('corporate/franchisees.php');
 require_once('corporate/trucks.php');

@@ -13,6 +13,7 @@ return [
     'logout_ok' => 'Déconnexion réussie',
     'login_incorrect' => 'Vos identifiants sont incorrects.',
     'must_be_corporate' => 'Vous devez être connecté.e en tant que Corporate pour accéder à cette page',
+    'must_be_admin' => 'Vous devez être connecté.e en tant qu\'Administrateur pour accéder à cette page',
 
 
     // Header

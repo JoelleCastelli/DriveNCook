@@ -13,6 +13,7 @@ return [
     'logout_ok' => 'Successful logout',
     'login_incorrect' => 'Your credentials are incorrect.',
     'must_be_corporate' => 'You must log in as Corporate to visit this page',
+    'must_be_admin' => 'You must log in as Administrator to visit this page',
 
 
     // Header
