@@ -42,6 +42,8 @@ const environments = {
     tree_01: '../assets/models/SM_Env_Tree_01.fbx',
     tree_02: '../assets/models/SM_Env_Tree_02.fbx',
     tree_03: '../assets/models/SM_Env_Tree_03.fbx',
+    skyline: '../assets/models/SM_Env_Skyline_01.fbx',
+    ocean: '../assets/models/SM_Env_Ocean_Tile_01.fbx'
 }
 
 const props = {
@@ -61,7 +63,7 @@ const props = {
     water_tower: '../assets/models/SM_Prop_Water_Tower_01.fbx',
 }
 
-const baseMat = new THREE.MeshStandardMaterial({color: 0x7E7E7E});
+const baseMat = new THREE.MeshStandardMaterial({color: 0xfefefe});
 
 
 export function build_city(scene, terrainDim) {
@@ -90,6 +92,27 @@ export function build_city(scene, terrainDim) {
      * Buildings
      */
     add_buildings(scene, terrainDim);
+
+    /**
+     * Skyline
+     */
+    functions.loadStaticFBX(scene, environments.skyline, "", 0.05, 0, 0, 0, 0, true);
+
+    let geometry = new THREE.CircleGeometry(terrainDim.width + 100, 32);
+
+    /**
+     * Ocean
+     */
+    build_ocean(scene, terrainDim);
+
+}
+
+function build_ocean(scene, terrainDim) {
+    for (let i = -terrainDim.width; i <= terrainDim.width; i += 300) {
+        for (let j = -terrainDim.height; j <= terrainDim.height; j += 300) {
+            functions.loadStaticFBX(scene, environments.ocean, "", 0.1, i, -4.5, j);
+        }
+    }
 }
 
 function build_roads(scene, terrainDim) {
