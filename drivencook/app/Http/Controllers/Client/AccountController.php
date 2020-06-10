@@ -182,7 +182,7 @@ class AccountController extends Controller
 
             if (!$error) {
                 $result = $this->get_client($email);
-                if (count($result) != 0) {
+                if ($result) {
                     $error = true;
                     $errors_list[] = trans('client/registration.duplicate_entry_error');
                 }
