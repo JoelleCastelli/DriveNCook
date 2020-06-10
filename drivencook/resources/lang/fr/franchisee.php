@@ -26,6 +26,7 @@ return [
     'unknown' => 'Inconnu',
     'update' => 'Mettre à jour',
     'not_set' => 'Non défini',
+    'create_account' => 'Créer un compte',
 
 
     // Franchisee info
@@ -44,6 +45,7 @@ return [
     'enter_driving_licence' => 'Entrez le numéro de permis de conduire',
     'enter_email' => 'Entrez l\'adresse e-mail',
     'enter_password' => 'Entrez le mot de passe',
+    'enter_pseudo' => 'Choisissez votre pseudonyme',
     'enter_phone' => 'Entrez le numéro de téléphone',
     'enter_social_security' => 'Entrez le numéro de sécurité sociale',
     'not_specified_m' => 'Non renseigné',
@@ -55,8 +57,11 @@ return [
     'password_update' => 'Mise à jour du mot de passe',
     'login' => 'Se connecter',
     'logout' => 'Se déconnecter',
+    'first_login' => 'Première connexion',
     'update_account' => 'Modifier mon compte',
     'unknown_pseudo' => 'Pseudo inconnu',
+    'pseudo' => 'Pseudonyme',
+    'no_pseudo_available' => 'Aucun pseudonyme disponible, contactez l\'équipe Drive\'N\'Cook',
 
 
     // Truck

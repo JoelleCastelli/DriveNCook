@@ -12,6 +12,11 @@ Route::post('/client/registration_submit', [
     'uses' => 'Client\AccountController@registration_submit'
 ]);
 
+Route::post('/client/light_registration_submit', [
+    'as' => 'light_registration_submit',
+    'uses' => 'Client\AccountController@light_registration_submit'
+]);
+
 Route::group(['middleware' => AuthClient::class], function() {
     Route::get('/client', [
         'as' => 'client_dashboard',

@@ -33,4 +33,6 @@ return [
     'franchisee_details_section' => 'Information du franchisé',
     'franchisee_email' => 'E-mail',
     'franchisee_phone' => 'Téléphone',
+
+    'cancel_order' => 'Annuler la commande',
 ];

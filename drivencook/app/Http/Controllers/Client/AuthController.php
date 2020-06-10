@@ -6,8 +6,6 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\AuthClient;
-use App\Traits\UserTools;
-use Illuminate\Support\Facades\App;
 
 
 class AuthController extends Controller
@@ -39,19 +37,15 @@ class AuthController extends Controller
             ]);
 
         if ($result) {
-            flash(trans('auth.connected'))->success();
-            return redirect(route('client_dashboard'));
+            return back();
         }
 
-        return back()->withInput()->withErrors([
-            'email' => 'auth.failed'
-        ]);
+        return back()->withInput()->withErrors(['client_login' => trans('auth.failed')]);
     }
 
     public function logout()
     {
         auth()->logout();
-        flash(trans('auth.disconnected'))->success();
-        return redirect(route('client_login'));
+        return redirect(route('homepage'));
     }
 }

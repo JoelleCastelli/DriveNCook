@@ -80,6 +80,16 @@
                     <h2>{{ trans('client/order.shopping_cart') }}</h2>
                 </div>
                 <div class="card-body">
+                    <label class="col-form-label">{{ trans('client/order.discount_amount') }}</label>
+                    <select class="custom-select" id="discountSelection">
+                        <option value="" selected>{{ trans('client/order.select_menu_no_discount') }}</option>
+                        @foreach($promotions as $promotion)
+                            @if($promotion['step'] <= $client['loyalty_point'])
+                                <option value="{{ $promotion['reduction'] }}" id="discount_{{ $promotion['id'] }}">-{{ $promotion['reduction'] }} €</option>
+                            @endif
+                        @endforeach
+                    </select><br><br>
+                    <label class="col-form-label">{{ trans('client/order.dishes') }}</label>
                     <div class="table-responsive">
                         <table class="table table-hover table-striped table-bordered table-dark"
                                style="width: 100%">
@@ -98,7 +108,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <button class="btn btn-light_blue orderBtn">{{ trans('client/order.order_btn') }}<p id="orderBtnId"></p></button>
+                    <button class="btn btn-light_blue orderBtn">{{ trans('client/order.order_btn') }}<p id="orderBtnId" style="margin-bottom: 5px"></p></button>
                 </div>
             </div>
         </div>
@@ -118,7 +128,20 @@
                 sum += parseFloat(linePrice.toFixed(2));
             }
 
-            $('#orderBtnId').text(sum.toFixed(2) + ' €');
+            let discount = $('#discountSelection');
+            if(discount !== '' && sum > 0) {
+                sum -= discount.val();
+            }
+
+            if(orders.length > 0) {
+                if (sum <= 0) {
+                    $('#orderBtnId').text('{{ trans('client/order.free') }}');
+                } else {
+                    $('#orderBtnId').text(sum.toFixed(2) + ' €');
+                }
+            } else {
+                $('#orderBtnId').text('');
+            }
         }
 
         $(document).on('click', '.delToOrderBtn', function () {
@@ -155,6 +178,10 @@
             updateTotalOrderPrice();
         });
 
+        $(document).on('change', '#discountSelection', function () {
+            updateTotalOrderPrice();
+        });
+
         $(document).ready(function () {
             $('#allDishes').DataTable();
 
@@ -168,7 +195,15 @@
                         order[id] = parseInt($('#qty_' + id).val());
                     }
 
+                    let discountId = $('#discountSelection').find(':checked').attr('id');
+
                     order['truck_id'] = window.location.href.split('/').slice(-1)[0];
+                    if(discountId !== undefined) {
+                        discountId = discountId.substring(discountId.lastIndexOf('_') + 1);
+                    } else {
+                        discountId = '';
+                    }
+                    order['discount_id'] = discountId;
 
                     order = JSON.stringify(order);
 
