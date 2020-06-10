@@ -27,7 +27,7 @@ public class DataBaseDAO {
             st = cn.createStatement();
 
             String sql = "select user.id, email, firstname, lastname, role, loyalty_point, count(sale.id) as orders from user " +
-                    "left join sale on user.id = sale.user_client where user.role = 'Client' group by user.id";
+                    "left join sale on user.id = sale.user_client where user.role = 'Client' group by user.id order by email";
 
             rs = st.executeQuery(sql);
 
@@ -144,19 +144,20 @@ public class DataBaseDAO {
         return null;
     }
 
-    public void updateLoyaltyPoint(int user_id, int loyalty_point) {
+    public int updateLoyaltyPoint(int user_id, int loyalty_point) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             cn = DriverManager.getConnection(url, user, db_password);
 
             String sql = "UPDATE user SET loyalty_point = ? WHERE id = ?";
-            ps = cn.prepareStatement(sql);
+            ps = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, loyalty_point);
             ps.setInt(2, user_id);
 
-            ps.execute();
-
+            if (ps.executeUpdate() == 1) {
+                return 1;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -169,22 +170,27 @@ public class DataBaseDAO {
                 e.printStackTrace();
             }
         }
+        return 0;
     }
 
-    public void addFidelityStep(int step, int reduction, int user_id) {
+    public int addFidelityStep(int step, int reduction, int user_id) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             cn = DriverManager.getConnection(url, user, db_password);
 
             String sql = "insert into fidelity_step (step, reduction, user_id) VALUES (?,?,?)";
-            ps = cn.prepareStatement(sql);
+            ps = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, step);
             ps.setInt(2, reduction);
             ps.setInt(3, user_id);
 
-            ps.execute();
-
+            if (ps.executeUpdate() == 1) {
+                ResultSet rs = ps.getGeneratedKeys();
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -197,20 +203,22 @@ public class DataBaseDAO {
                 e.printStackTrace();
             }
         }
+        return 0;
     }
 
-    public void deleteFidelityStep(int id) {
+    public int deleteFidelityStep(int id) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             cn = DriverManager.getConnection(url, user, db_password);
 
             String sql = "DELETE FROM fidelity_step WHERE id = ?";
-            ps = cn.prepareStatement(sql);
+            ps = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, id);
 
-            ps.execute();
-
+            if (ps.executeUpdate() == 1) {
+                return 1;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -223,6 +231,7 @@ public class DataBaseDAO {
                 e.printStackTrace();
             }
         }
+        return 0;
     }
 }
 

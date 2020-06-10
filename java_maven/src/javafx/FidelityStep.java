@@ -3,7 +3,7 @@ package javafx;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class FidelityStep {
+public class FidelityStep implements Comparable<FidelityStep> {
     private final StringProperty id;
     private final StringProperty step;
     private final StringProperty reduction;
@@ -66,5 +66,10 @@ public class FidelityStep {
 
     public void setUser_id(String user_id) {
         this.user_id.set(user_id);
+    }
+
+    @Override
+    public int compareTo(FidelityStep fidelityStep) {
+        return (Integer.compare(Integer.parseInt(this.getStep()), Integer.parseInt(fidelityStep.getStep())));
     }
 }

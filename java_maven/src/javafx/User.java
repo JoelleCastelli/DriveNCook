@@ -3,7 +3,7 @@ package javafx;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class User {
+public class User implements Comparable<User> {
     private final StringProperty id;
     private final StringProperty email;
     private final StringProperty firstname;
@@ -24,6 +24,11 @@ public class User {
         this.role = new SimpleStringProperty(role);
         this.loyalty_point = new SimpleStringProperty(String.valueOf(loyalty_point));
         this.order = new SimpleStringProperty(String.valueOf(order));
+    }
+
+    @Override
+    public int compareTo(User user) {
+        return this.getEmail().compareTo(user.getEmail());
     }
 
     public String getId() {
