@@ -13,4 +13,12 @@ return [
     'quantity_ordered' => 'Quantité commandée',
 
     'order_btn' => 'Commander',
+    'free' => 'GRATUIT',
+
+    'pseudo' => 'Pseudonyme',
+    'franchisee' => 'Franchisé',
+    'location_name' => 'Emplacement',
+    'address' => 'Adresse',
+    'brand' => 'Marque',
+    'model' => 'Modèle',
 ];

@@ -33,4 +33,6 @@ return [
     'franchisee_details_section' => 'Franchisee data',
     'franchisee_email' => 'Email',
     'franchisee_phone' => 'Phone',
+
+    'cancel_order' => 'Cancel order',
 ];
