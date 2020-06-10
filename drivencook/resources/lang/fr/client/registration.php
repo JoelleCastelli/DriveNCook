@@ -21,6 +21,7 @@ return [
     'firstname_error' => 'Le nom de famille doit contenir entre 2 et 30 caractères',
     'email_format_error' => 'Le format d\'e-mail est incorrect',
     'email_error' => 'L\'email existe déjà',
+    'captcha_error' => 'Veuillez confirmer que vous n\'êtes pas un robot ! A moins que... ?',
 
     //Success
     'new_client_success' => 'Votre compte a été créé : connectez-vous dès maintenant !',

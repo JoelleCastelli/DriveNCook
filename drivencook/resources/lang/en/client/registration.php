@@ -21,6 +21,7 @@ return [
     'firstname_error' => 'Firstname must contain between 2 and 30 characters',
     'email_format_error' => 'Email format is incorrect',
     'email_error' => 'Email already exists',
+    'captcha_error' => 'Please confirm you\'re not a robot! Unless you are...?',
 
     //Success
     'new_client_success' => 'Your account has been created: log in now!',

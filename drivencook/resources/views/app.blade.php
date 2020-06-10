@@ -25,6 +25,7 @@
                 background-size: cover;
             }
         </style>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     </head>
 
     <body>
@@ -338,6 +339,10 @@
                                             </div>
                                         </div>
 
+                                        <div class="form-group">
+                                            <div class="form-group g-recaptcha" data-sitekey="{{ env('CAPTCHA_SITE_KEY') }}"></div>
+                                        </div>
+
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                                         <div class="form-group">
@@ -543,7 +548,7 @@
 
         <script type="text/javascript" src="/js/app.js"></script>
 
-        <!-- MODAL SCRIPTS -->
+        <!-- SCRIPTS -->
         @if($errors->has('client_login') || $errors->has('client_registration_success')
             || $errors->has('client_login_necessary'))
             <script>
