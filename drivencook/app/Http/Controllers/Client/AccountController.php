@@ -128,6 +128,78 @@ class AccountController extends Controller
         }
     }
 
+    public function light_registration_submit(Request $request)
+    {
+        $parameters = $request->except(['_token']);
+        $error = false;
+        $errors_list = [];
+
+        if (
+            count($parameters) == 5 && !empty($parameters['lastname']) &&
+            !empty($parameters['firstname']) && !empty($parameters['email']) &&
+            !empty($parameters['password']) && !empty($parameters['password_confirm'])
+        ) {
+            $lastname = strtoupper($parameters['lastname']);
+            $firstname = ucfirst($parameters['firstname']);
+            $email = $parameters['email'];
+            $password = $parameters['password'];
+            $password_confirm = $parameters['password_confirm'];
+
+            if (strlen($lastname) < 2 || strlen($lastname) > 30) {
+                $error = true;
+                $errors_list[] = trans('client/registration.lastname_error');
+            }
+
+            if (strlen($firstname) < 2 || strlen($firstname) > 30) {
+                $error = true;
+                $errors_list[] = trans('client/registration.firstname_error');
+            }
+
+            if (!preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/', $email)
+                || strlen($email) > 100) {
+                $error = true;
+                $errors_list[] = trans('client/registration.email_format_error');
+            }
+
+            if (!preg_match('/^(?=.*\d)(?=.*[.*@#\-_$%^&+=§!\?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z.*@#\-_$%^&+=§!\?]{6,100}$/', $password)) {
+                $error = true;
+                $errors_list[] = trans('client/registration.password_error');
+            } else if($password !== $password_confirm) {
+                $error = true;
+                $errors_list[] = trans('client/registration.password_confirm_error');
+            }
+
+            if (!$error) {
+                $result = $this->get_client($email);
+                if (count($result) != 0) {
+                    $error = true;
+                    $errors_list[] = trans('client/registration.duplicate_entry_error');
+                }
+            }
+
+            if ($error) {
+                return back()->withInput()->withErrors(['client_registration' => $errors_list]);
+            } else {
+                $client = [
+                    'lastname' => $lastname, 'firstname' => $firstname, 'email' => $email,
+                    'role' => 'Client', 'password' => hash('sha256', $password),
+                ];
+                User::insert($client);
+                return back()->withInput()->withErrors(
+                    ['client_registration_success' => trans('client/registration.new_client_success')]
+                );
+            }
+        } else {
+            $errors_list[] = trans('client/registration.empty_fields');
+            $str = '';
+            foreach($errors_list as $error) {
+                $str .= $error . '<br>';
+            }
+            flash($str)->error();
+            return redirect()->back();
+        }
+    }
+
     public function account() {
         $client = User::whereKey($this->get_connected_user()['id'])
             ->first();

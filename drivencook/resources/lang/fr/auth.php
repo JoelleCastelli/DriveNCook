@@ -27,12 +27,20 @@ return [
     'my_account' => 'Mon compte',
     'logout' => 'Se déconnecter',
 
-    'failed' => 'Vos identifiants sont incorrectes.',
+    'failed' => 'Vos identifiants sont incorrects.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-    'connected' => 'Connexion réussie.',
-    'disconnected' => 'Déconnecté avec succès.',
+    'connected' => 'Connexion réussie',
+    'disconnected' => 'Déconnexion réussie',
 
     'try_client_with_client_not_connected' => 'Vous devez être connecté.e en tant que Client pour accéder à cette page',
+    'email_necessary' => 'Veuillez indiquer votre e-mail',
+    'password_necessary' => 'Veuillez entrer votre mot de passe',
+    'login_necessary' => 'Merci de rentrer vos informations de connexion',
+
+    'no_user_found' => 'Aucun compte ne correspond à cette adresse e-mail',
+    'no_franchisee_found' => 'Cette adresse e-mail ne correspond pas à un compte Franchisé',
+    'already_validated' => 'Votre compte a déjà été complété, vous pouvez vous connecter !',
+    'franchisee_confirmation_success' => 'Vous êtes prêt.e, connectez-vous dès maintenant !',
 
 
 ];

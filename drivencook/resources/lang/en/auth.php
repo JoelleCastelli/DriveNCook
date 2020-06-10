@@ -33,4 +33,12 @@ return [
     'disconnected' => 'Disconnected with success.',
 
     'try_client_with_client_not_connected' => 'You need to be connected as Client to show this page',
+    'email_necessary' => 'Please enter your e-mail',
+    'password_necessary' => 'Please enter your password',
+    'login_necessary' => 'Please enter your login information',
+
+    'no_user_found' => 'No account matches this email address',
+    'no_franchisee_found' => 'This email address does not correspond to a Franchisee account',
+    'already_validated' => 'Your account has already been completed, you can log in!',
+    'franchisee_confirmation_success' => 'You are ready to go, log in now!',
 ];

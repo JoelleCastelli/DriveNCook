@@ -25,6 +25,7 @@ return [
     'undetermined_duration' => 'Undetermined duration',
     'unknown' => 'Unknown',
     'update' => 'Update',
+    'create_account' => 'Create an account',
 
 
     // Franchisee info
@@ -43,6 +44,7 @@ return [
     'enter_driving_licence' => 'Enter a driving licence number',
     'enter_email' => 'Enter email address',
     'enter_password' => 'Enter password',
+    'enter_pseudo' => 'Select a pseudonym',
     'enter_phone' => 'Enter phone number',
     'enter_social_security' => 'Enter a social security number',
     'not_specified_m' => 'Not specified',
@@ -54,8 +56,11 @@ return [
     'password_update' => 'Password update',
     'login' => 'Login',
     'logout' => 'Logout',
+    'first_login' => 'First login',
     'update_account' => 'Update my account',
     'unknown_pseudo' => 'Unknown pseudo',
+    'pseudo' => 'Pseudonyme',
+    'no_pseudo_available' => 'No pseudonym available, contact the Drive\'N\'Cook team',
 
 
     // Truck
