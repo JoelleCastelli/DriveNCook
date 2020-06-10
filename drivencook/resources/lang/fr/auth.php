@@ -32,7 +32,9 @@ return [
     'connected' => 'Connexion réussie',
     'disconnected' => 'Déconnexion réussie',
 
-    'try_client_with_client_not_connected' => 'Vous devez être connecté.e en tant que Client pour accéder à cette page',
+    'try_client_with_client_not_connected' => 'Vous devez être connecté.e à votre compte client pour accéder à cette page',
+    'try_franchisee_not_connected' => 'Vous devez être connecté.e à votre compte Franchisé pour accéder à cette page',
+    'try_franchisee_not_completed' => 'Vous devez compléter vos informations pour accéder à votre compte',
     'email_necessary' => 'Veuillez indiquer votre e-mail',
     'password_necessary' => 'Veuillez entrer votre mot de passe',
     'login_necessary' => 'Merci de rentrer vos informations de connexion',

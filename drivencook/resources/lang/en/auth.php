@@ -32,7 +32,9 @@ return [
     'connected' => 'Successful connection.',
     'disconnected' => 'Disconnected with success.',
 
-    'try_client_with_client_not_connected' => 'You need to be connected as Client to show this page',
+    'try_client_with_client_not_connected' => 'You must be logged into your Client account to access this page',
+    'try_franchisee_not_connected' => 'You must be logged to your Franchisee account to access this page',
+    'try_franchisee_not_completed' => 'You must complete your information to access your account',
     'email_necessary' => 'Please enter your e-mail',
     'password_necessary' => 'Please enter your password',
     'login_necessary' => 'Please enter your login information',

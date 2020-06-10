@@ -224,6 +224,10 @@
                                 <span style="padding: 3px" class="badge-danger">
                                     {{ $errors->first('client_login') }}
                                 </span>
+                            @elseif($errors->has('client_login_necessary'))
+                                <div style="padding: 3px" class="badge-danger">
+                                    {{ $errors->first('client_login_necessary') }}
+                                </div>
                             @elseif ($errors->has('client_registration'))
                                 @foreach ($errors->all() as $message)
                                     <div style="padding: 3px" class="badge-danger">
@@ -375,6 +379,14 @@
                                 <span style="padding: 3px" class="badge-success">
                                     {{ $errors->first('franchisee_confirmation_success') }}
                                 </span>
+                            @elseif ($errors->has('franchisee_login_necessary'))
+                                <div style="padding: 3px" class="badge-danger">
+                                    {{ $errors->first('franchisee_login_necessary') }}
+                                </div>
+                            @elseif ($errors->has('franchisee_complete_registration_necessary'))
+                                <div style="padding: 3px" class="badge-warning">
+                                    {{ $errors->first('franchisee_complete_registration_necessary') }}
+                                </div>
                             @endif
 
                             <!-- Tabs -->
@@ -532,11 +544,13 @@
         <script type="text/javascript" src="/js/app.js"></script>
 
         <!-- MODAL SCRIPTS -->
-        @if($errors->has('client_login') || $errors->has('client_registration_success'))
+        @if($errors->has('client_login') || $errors->has('client_registration_success')
+            || $errors->has('client_login_necessary'))
             <script>
                 $('#formModal_client').modal('show');
             </script>
-        @elseif($errors->has('franchisee_login') || $errors->has('franchisee_first_login') || $errors->has('franchisee_confirmation_success'))
+        @elseif($errors->has('franchisee_login') || $errors->has('franchisee_first_login')
+                || $errors->has('franchisee_confirmation_success') || $errors->has('franchisee_login_necessary'))
             <script>
                 $('#formModal_franchisee').modal('show');
             </script>
