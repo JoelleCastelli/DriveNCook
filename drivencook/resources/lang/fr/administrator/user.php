@@ -1,9 +1,11 @@
 <?php
 
 return [
-    'title' => 'Tous les utilisateurs',
-    'users_section' => 'Utilisateurs',
-    'users_nb' => 'Nombre total d\'utilisateurs',
+    'title' => 'Tous les administrateurs',
+    'users_section' => 'Comptes',
+    'users_nb' => 'Nombre total d\'administrateurs',
+
+    'add_admin' => 'Ajouter un administrateur',
 
     'name' => 'Nom',
     'firstname' => 'Prénom',
