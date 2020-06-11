@@ -9,20 +9,20 @@ public class User implements Comparable<User> {
     private final StringProperty firstname;
     private final StringProperty lastname;
     private final StringProperty role;
-    private final StringProperty loyalty_point;
+    private final StringProperty loyaltyPoint;
     private final StringProperty order;
 
     public User() {
         this(null, null, null, null, null, -1, -1);
     }
 
-    public User(String id, String email, String firstname, String lastname, String role, int loyalty_point, int order) {
+    public User(String id, String email, String firstname, String lastname, String role, int loyaltyPoint, int order) {
         this.id = new SimpleStringProperty(id);
         this.email = new SimpleStringProperty(email);
         this.firstname = new SimpleStringProperty(firstname);
         this.lastname = new SimpleStringProperty(lastname);
         this.role = new SimpleStringProperty(role);
-        this.loyalty_point = new SimpleStringProperty(String.valueOf(loyalty_point));
+        this.loyaltyPoint = new SimpleStringProperty(String.valueOf(loyaltyPoint));
         this.order = new SimpleStringProperty(String.valueOf(order));
     }
 
@@ -43,16 +43,16 @@ public class User implements Comparable<User> {
         this.id.set(id);
     }
 
-    public String getLoyalty_point() {
-        return loyalty_point.get();
+    public String getLoyaltyPoint() {
+        return loyaltyPoint.get();
     }
 
-    public StringProperty loyalty_pointProperty() {
-        return loyalty_point;
+    public StringProperty loyaltyPointProperty() {
+        return loyaltyPoint;
     }
 
-    public void setLoyalty_point(String loyalty_point) {
-        this.loyalty_point.set(loyalty_point);
+    public void setLoyaltyPoint(String loyaltyPoint) {
+        this.loyaltyPoint.set(loyaltyPoint);
     }
 
     public String getOrder() {

@@ -34,3 +34,5 @@ QR_code/qrcode_reader/.idea/
 QR_code/qrcode_reader/cmake-build-debug/
 
 .idea/
+
+java_maven/target/

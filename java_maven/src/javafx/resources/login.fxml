@@ -19,9 +19,9 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <TextField fx:id="emailField" alignment="CENTER" onKeyPressed="#handleEnterPressed" prefHeight="50.0" prefWidth="250.0" promptText="Email" stylesheets="@css/text_field.css" />
-            <PasswordField fx:id="passwordField" alignment="CENTER" onKeyPressed="#handleEnterPressed" prefHeight="50.0" prefWidth="250.0" promptText="Password" stylesheets="@css/text_field.css" />
-            <Button fx:id="loginButton" mnemonicParsing="false" onAction="#Login" prefHeight="50.0" prefWidth="200.0" styleClass="button-submit" stylesheets="@css/button_style.css" text="Login" textAlignment="CENTER" textFill="WHITE" />
+            <TextField fx:id="emailField" alignment="CENTER" onKeyPressed="#handleEnterPressed" prefHeight="50.0" prefWidth="250.0" promptText="Email" stylesheets="@css/textField.css" />
+            <PasswordField fx:id="passwordField" alignment="CENTER" onKeyPressed="#handleEnterPressed" prefHeight="50.0" prefWidth="250.0" promptText="Password" stylesheets="@css/textField.css" />
+            <Button fx:id="loginButton" mnemonicParsing="false" onAction="#Login" prefHeight="50.0" prefWidth="200.0" styleClass="button-submit" stylesheets="@css/buttonStyle.css" text="Login" textAlignment="CENTER" textFill="WHITE" />
          </children>
       </VBox>
       <Label fx:id="statusLabel" text="Status" textFill="#fc1111" visible="false" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0">

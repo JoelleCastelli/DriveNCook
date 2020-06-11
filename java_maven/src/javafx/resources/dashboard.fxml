@@ -13,11 +13,11 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <TabPane layoutY="70.0" stylesheets="@css/tab_style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
+      <TabPane layoutY="70.0" stylesheets="@css/tabStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
          <tabs>
             <Tab closable="false" text="Clients">
                <content>
-                  <SplitPane fx:id="splitPane" dividerPositions="0.25" prefHeight="500.0" prefWidth="800.0" stylesheets="@css/table_style.css">
+                  <SplitPane fx:id="splitPane" dividerPositions="0.25" prefHeight="500.0" prefWidth="800.0" stylesheets="@css/tableStyle.css">
                     <items>
                         <VBox>
                            <children>
@@ -73,7 +73,7 @@
                                        </GridPane.margin>
                                        <children>
                                           <Spinner fx:id="loyaltyPointSpinner" editable="true" prefWidth="120.0" stylesheets="@css/spinner.css" />
-                                          <Button mnemonicParsing="false" onAction="#updateLoyaltyPoint" styleClass="button-submit" stylesheets="@css/button_style.css" text="Modifier" />
+                                          <Button mnemonicParsing="false" onAction="#updateLoyaltyPoint" styleClass="button-submit" stylesheets="@css/buttonStyle.css" text="Modifier" />
                                        </children>
                                     </HBox>
                                     <Label text="Points de fidélité" textFill="#fefefe" GridPane.rowIndex="5" />
@@ -97,7 +97,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="fidelityStepTable" layoutX="41.0" layoutY="22.0" pickOnBounds="false" prefHeight="200.0" prefWidth="420.0" stylesheets="@css/table_style.css" AnchorPane.bottomAnchor="155.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="30.0">
+                        <TableView fx:id="fidelityStepTable" layoutX="41.0" layoutY="22.0" pickOnBounds="false" prefHeight="200.0" prefWidth="420.0" stylesheets="@css/tableStyle.css" AnchorPane.bottomAnchor="155.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="30.0">
                           <columns>
                             <TableColumn fx:id="stepColumn" editable="false" prefWidth="206.0" sortable="false" text="Palier" />
                             <TableColumn fx:id="reductionColumn" editable="false" minWidth="0.0" prefWidth="213.0" sortable="false" text="Reduction" />
@@ -106,13 +106,13 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <HBox alignment="CENTER_RIGHT" layoutX="582.0" layoutY="250.0" prefHeight="58.0" prefWidth="168.0" spacing="20.0" stylesheets="@css/button_style.css" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="580.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="315.0">
+                        <HBox alignment="CENTER_RIGHT" layoutX="582.0" layoutY="250.0" prefHeight="58.0" prefWidth="168.0" spacing="20.0" stylesheets="@css/buttonStyle.css" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="580.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="315.0">
                            <children>
                               <Button mnemonicParsing="false" onAction="#addFidelityStep" styleClass="button-submit" text="Ajouter" />
                               <Button mnemonicParsing="false" onAction="#deleteFidelityStep" styleClass="button-cancel" text="Supprimer" />
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" layoutX="50.0" layoutY="252.0" prefHeight="50.0" prefWidth="200.0" spacing="20.0" stylesheets="@css/text_field.css" AnchorPane.bottomAnchor="85.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="250.0">
+                        <HBox alignment="CENTER" layoutX="50.0" layoutY="252.0" prefHeight="50.0" prefWidth="200.0" spacing="20.0" stylesheets="@css/textField.css" AnchorPane.bottomAnchor="85.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="250.0">
                            <children>
                               <TextField fx:id="stepTextField" promptText="Nouveau palier" HBox.hgrow="ALWAYS" />
                               <TextField fx:id="reductionTextField" promptText="Nouvelle reduction" HBox.hgrow="ALWAYS" />

@@ -99,7 +99,7 @@ public class DashboardController {
 
     private void showUserDetail(User user) {
         if (user != null) {
-            spinnerValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, Integer.parseInt(user.getLoyalty_point()));
+            spinnerValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, Integer.parseInt(user.getLoyaltyPoint()));
             selectedUser = user;
             emailLabel.setText(user.getEmail());
             firstnameLabel.setText(user.getFirstname());
