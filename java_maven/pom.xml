@@ -30,7 +30,6 @@
             <version>1.11</version>
         </dependency>
     </dependencies>
-
     <build>
         <finalName>drivencook-${project.version}</finalName>
         <sourceDirectory>src</sourceDirectory>
