@@ -29,6 +29,11 @@
             <artifactId>commons-codec</artifactId>
             <version>1.11</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.openjfx</groupId>-->
+<!--            <artifactId>javafx-maven-plugin</artifactId>-->
+<!--            <version>0.0.4</version>-->
+<!--        </dependency>-->
     </dependencies>
     <build>
         <finalName>drivencook-${project.version}</finalName>
@@ -66,7 +71,9 @@
                         </goals>
                         <configuration>
                             <archive>
+                                <index>true</index>
                                 <manifest>
+                                    <addClasspath>true</addClasspath>
                                     <mainClass>javafx.MainApp</mainClass>
                                 </manifest>
                             </archive>
@@ -77,6 +84,14 @@
                     </execution>
                 </executions>
             </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.openjfx</groupId>-->
+<!--                <artifactId>javafx-maven-plugin</artifactId>-->
+<!--                <version>0.0.4</version>-->
+<!--                <configuration>-->
+<!--                    <mainClass>javafx.MainApp</mainClass>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 </project>
