@@ -4,14 +4,13 @@
 namespace App\Http\Controllers\Corporate;
 
 use App\Http\Controllers\Controller;
-use App\Models\City;
 use App\Models\Dish;
+use App\Models\Location;
 use App\Models\PurchasedDish;
 use App\Models\PurchaseOrder;
 use App\Models\Warehouse;
 use App\Models\WarehousStock;
 use App\Traits\EnumValue;
-use App\Traits\UserTools;
 use Illuminate\Http\Request;
 
 class WarehouseController extends Controller
@@ -25,21 +24,18 @@ class WarehouseController extends Controller
 
     public function warehouse_creation()
     {
-        $cities = City::all();
-        if (!empty($cities)) {
-            $cities = $cities->toArray();
+        $warehouses_locations = [];
+        $warehouses = Warehouse::all()->toArray();
+        foreach ($warehouses as $warehouse) {
+            $warehouses_locations[] = $warehouse['location_id'];
         }
-        return view('corporate/warehouse/warehouse_creation')->with('cities', $cities);
-    }
 
-    public function get_warehouse($name)
-    {
-        return Warehouse::where('name', $name)->get();
-    }
+        $locations = Location::whereNotIn('id', $warehouses_locations)->get();
+        if (!empty($locations)) {
+            $locations = $locations->toArray();
+        }
 
-    public function get_city($id)
-    {
-        return count(City::where('id', $id)->get());
+        return view('corporate/warehouse/warehouse_creation')->with('locations', $locations);
     }
 
     public function warehouse_creation_submit(Request $request)
@@ -48,43 +44,103 @@ class WarehouseController extends Controller
         $error = false;
         $errors_list = [];
 
-        if (
-            count($parameters) == 3 && !empty($parameters["name"]) && !empty($parameters["address"]) && !empty($parameters["city"])
-        ) {
-            $name = strtoupper($parameters["name"]);
-            $address = strtoupper($parameters["address"]);
-            $city_id = $parameters["city"];
+        // Check that only one address option has been selected
+        if($parameters["existing_location_id"] != null && $parameters["new_address_full"] != null) {
+            $errors_list = ['Please select only one option'];
+            return redirect()->back()->with('error', $errors_list);
+        }
 
-            if (strlen($name) < 1 || strlen($name) > 30) {
+        if (count($parameters) == 9) {
+            $warehouse_name = strtoupper($parameters["warehouse_name"]);
+            $existing_location_id = $parameters["existing_location_id"];
+            $new_address['full_name'] = $parameters["new_address_full"];
+            $new_address['latitude'] = $parameters["new_address_lat"];
+            $new_address['longitude'] = $parameters["new_address_lon"];
+            $new_address['address'] = $parameters["new_address_address"];
+            $new_address['city'] = $parameters["new_address_city"];
+            $new_address['postcode'] = $parameters["new_address_postcode"];
+            $new_address['country'] = $parameters["new_address_country"];
+
+            if (strlen($warehouse_name) == 0) {
+                $error = true;
+                $errors_list[] = trans('warehouse_creation.enter_name');
+            }
+
+            if (strlen($warehouse_name) > 30) {
                 $error = true;
                 $errors_list[] = trans('warehouse_creation.name_error');
             }
 
-            if ($this->get_city($city_id) == 0) {
+            // Check that warehouse name is not already in warehouse DB
+            $duplicate = Warehouse::where('name', $warehouse_name)->first();
+            if ($duplicate != null) {
                 $error = true;
-                $errors_list[] = trans('warehouse_creation.city_error');
+                $errors_list[] = trans('warehouse_creation.duplicate_entry_error');
             }
 
-            if (strlen($address) < 1 || strlen($address) > 100 || !preg_match('/^[A-Za-z -_]+$/', $address)) {
-                $error = true;
-                $errors_list[] = trans('warehouse_creation.address_error');
-            }
+            if($existing_location_id != null) { // Option 1: selection of existing location
 
-            if (!$error) {
-                $result = $this->get_warehouse($name);
-                if (count($result) != 0) {
+                // Check that location ID is not already associated to another warehouse
+                $duplicate = Warehouse::where('location_id', $existing_location_id)->first();
+                if ($duplicate != null) {
                     $error = true;
-                    $errors_list[] = trans('warehouse_creation.duplicate_entry_error');
+                    $errors_list[] = trans('warehouse_creation.existing_warehouse_on_location');
+                }
+
+            } else { // Option 2: location creation
+
+                if (strlen($new_address['address']) < 1 || strlen($new_address['address']) > 100) {
+                    $error = true;
+                    $errors_list[] = trans('warehouse_creation.address_error');
+                }
+                if (strlen($new_address['city']) > 50) {
+                    $error = true;
+                    $errors_list[] = 'Error, incorrect city name size';
+                }
+                if (strlen($new_address['postcode']) > 7) {
+                    $errors_list[] = 'Error, incorrect postcode size';
+                }
+                if (strlen($new_address['country']) > 50) {
+                    $errors_list[] = 'Error, incorrect country name size';
+                }
+
+                // Check that there's no location name duplicate
+                $duplicate = Location::where('name', $warehouse_name)->first();
+                if ($duplicate != null) {
+                    $error = true;
+                    $errors_list[] = trans('warehouse_creation.existing_location_name');
+                }
+
+                // Check that there's no location lat/lon duplicate
+                $duplicate = Location::where([
+                    ['latitude', $new_address['latitude']],
+                    ['longitude', $new_address['longitude']]
+                ])->first();
+
+                if ($duplicate != null) {
+                    $error = true;
+                    $errors_list[] = trans('warehouse_creation.existing_location', ['location_name' => $duplicate->toArray()['name']]);
                 }
             }
 
             if ($error) {
                 return redirect()->back()->with('error', $errors_list);
             } else {
-                $warehouse = [
-                    'name' => $name, 'address' => $address, 'city_id' => $city_id
-                ];
-                Warehouse::insert($warehouse);
+                if($existing_location_id != null) {
+                    $location_id = $existing_location_id;
+                } else {
+                    $location_id = Location::insertGetId([
+                        'name' => $warehouse_name,
+                        'address' => $new_address['address'],
+                        'city' => $new_address['city'],
+                        'postcode' => $new_address['postcode'],
+                        'country' => $new_address['country'],
+                        'latitude' => $new_address['latitude'],
+                        'longitude' => $new_address['longitude']
+                    ]);
+                }
+                $warehouse = ['name' => $warehouse_name, 'location_id' => $location_id];
+                Warehouse::create($warehouse);
                 return redirect()->route('warehouse_creation')->with('success', trans('warehouse_creation.new_warehouse_success'));
             }
         } else {
@@ -100,13 +156,19 @@ class WarehouseController extends Controller
             return view('corporate.warehouse.warehouse_list');
         $warehouse = $warehouse->toArray();
 
-        $cities = City::all();
-        if (!empty($cities)) {
-            $cities = $cities->toArray();
+        $warehouses_locations = [];
+        $warehouses = Warehouse::all()->toArray();
+        foreach ($warehouses as $warehouse) {
+            $warehouses_locations[] = $warehouse['location_id'];
+        }
+
+        $locations = Location::whereNotIn('id', $warehouses_locations)->get();
+        if (!empty($locations)) {
+            $locations = $locations->toArray();
         }
 
         return view('corporate.warehouse.warehouse_update')
-            ->with('cities', $cities)
+            ->with('locations', $locations)
             ->with('warehouse', $warehouse);
     }
 
@@ -116,36 +178,27 @@ class WarehouseController extends Controller
         $error = false;
         $errors_list = [];
 
-        if (
-            count($parameters) == 4 &&
-            !empty($parameters["name"]) && !empty($parameters["address"]) &&
-            !empty($parameters["city"]) && !empty($parameters["id"])
-        ) {
+        if (count($parameters) == 3 && !empty($parameters["id"]) && !empty($parameters["name"])
+                                    && !empty($parameters["location_id"])) {
             $id = $parameters["id"];
-            $name = strtoupper($parameters["name"]);
-            $address = strtoupper($parameters["address"]);
-            $city_id = $parameters["city"];
+            $name = $parameters["name"];
+            $location_id = $parameters["location_id"];
 
             if (strlen($name) < 1 || strlen($name) > 30) {
                 $error = true;
                 $errors_list[] = trans('warehouse_creation.name_error');
             }
 
-            if ($this->get_city($city_id) == 0) {
+            if (Location::where('id', $location_id)->get() == null) {
                 $error = true;
                 $errors_list[] = trans('warehouse_creation.city_error');
-            }
-
-            if (strlen($address) < 1 || strlen($address) > 100 || !preg_match('/^[A-Za-z -_]+$/', $address)) {
-                $error = true;
-                $errors_list[] = trans('warehouse_creation.address_error');
             }
 
             if ($error) {
                 return redirect()->back()->with('error', $errors_list);
             } else {
                 $warehouse = [
-                    'name' => $name, 'address' => $address, 'city_id' => $city_id
+                    'name' => $name, 'location_id' => $location_id
                 ];
                 Warehouse::find($id)->update($warehouse);
                 return redirect()->route('warehouse_update', ['id' => $id])->with('success', trans('warehouse_update.update_warehouse_success'));
@@ -156,9 +209,8 @@ class WarehouseController extends Controller
         }
     }
 
-    public function warehouse_list()
-    {
-        $warehouses = Warehouse::with('city')
+    public function warehouse_list(){
+        $warehouses = Warehouse::with('location')
             ->get()->toArray();
         return view('corporate.warehouse.warehouse_list')->with('warehouses', $warehouses);
     }
@@ -166,7 +218,7 @@ class WarehouseController extends Controller
     public function warehouse_view($id)
     {
         $warehouse = Warehouse::whereKey($id)
-            ->with('city')
+            ->with('location')
             ->with('stock')
             ->with('purchase_order')
             ->first();

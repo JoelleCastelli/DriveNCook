@@ -15,6 +15,12 @@ return [
     'submit' => 'Submit',
     'details_section' => 'Warehouse information',
     'unknown' => 'Unknown',
+    'or' => 'or',
+
+    'add_new_location' => 'Add a new location:',
+    'new_location_name_tooltip' => 'The new location name will be the warehouse name',
+    'select_existing_location' => 'Select an existing location:',
+    'select_existing_location_tooltip' => 'Locations already associated to a warehouse are not displayed',
 
     // Errors and success
     'empty_fields' => 'Every field must be filled',
