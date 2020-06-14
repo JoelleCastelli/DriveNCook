@@ -36,6 +36,15 @@
                             {{ trans('client/order.franchisee_menu_empty') }}
                         @endif
                     </h2>
+                    @if(!empty($truck['location']['postcode'])
+                     && !empty($truck['location']['city'])
+                     && !empty($truck['location']['address'])
+                     && !empty($truck['location']['country']))
+                        {{ $truck['location']['address'] . ' - '
+                         . $truck['location']['postcode'] . ' - '
+                         . $truck['location']['city'] . ' - '
+                         . $truck['location']['country'] }}
+                    @endif
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">

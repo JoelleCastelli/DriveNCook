@@ -33,6 +33,7 @@
                                     <tbody>
                                         @foreach($trucks as $truck)
                                             @if(!empty($truck['user'])
+                                             && !empty($truck['location']['address'])
                                              && !empty($truck['location']['name'])
                                              && !empty($truck['location']['postcode'])
                                              && !empty($truck['location']['city'])

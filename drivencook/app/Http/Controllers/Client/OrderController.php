@@ -42,6 +42,7 @@ class OrderController extends Controller
     {
         $truck = Truck::whereKey($truck_id)
             ->with('user')
+            ->with('location')
             ->first();
 
         if(!empty($truck)) {
@@ -79,7 +80,8 @@ class OrderController extends Controller
         return view('client.order.client_order')
             ->with('stocks', $stocks)
             ->with('promotions', $fidelity_step)
-            ->with('client', $client);
+            ->with('client', $client)
+            ->with('truck', $truck);
     }
 
     public function check_order_array($array): bool
