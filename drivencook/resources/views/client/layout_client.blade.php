@@ -66,9 +66,13 @@
                         <i class="fa fa-user"></i>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right bg-dark" aria-labelledby="userDropdownMenuButton">
-                        <a class="dropdown-item text-light" href="{{route('client_account')}}">{{ trans('auth.my_account') }}</a>
-                        <a class="dropdown-item text-light" href="{{route('client_logout')}}">{{ trans('auth.logout') }}</a>
+                        <a class="dropdown-item text-light" href="{{ route('client_account') }}">{{ trans('auth.my_account') }}</a>
+                        <a class="dropdown-item text-light" href="{{ route('client_logout') }}">{{ trans('auth.logout') }}</a>
                     </div>
+                @else
+                    <a class="nav-link" href="#" data-toggle="modal" data-target="#formModal_client">
+                        <i class="fa fa-user"></i>&nbsp;&nbsp;{{ trans('client/global.login_client') }}
+                    </a>
                 @endif
             </li>
         </div>
@@ -113,11 +117,13 @@
                     </li>
                 @break
                 @case(route('truck_location_list'))
-                    <li class="nav-item">
-                        <a class="nav-link text-light2" href="{{ route('client_dashboard') }}">
-                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.back_dashboard') }}
-                        </a>
-                    </li>
+                    @if(!auth()->guest())
+                        <li class="nav-item">
+                            <a class="nav-link text-light2" href="{{ route('client_dashboard') }}">
+                                <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.back_dashboard') }}
+                            </a>
+                        </li>
+                    @endif
                 @break
                 @case(route('client_sales_history'))
                     <li class="nav-item">
@@ -156,6 +162,158 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+</div>
+
+<!-- MODAL CLIENT LOGIN -->
+<div class="modal fade" id="formModal_client" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="form">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">{{ trans('homepage.login_client') }}</h5>
+                <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div role="tabpanel">
+
+                    @if ($errors->has('client_login'))
+                        <span style="padding: 3px" class="badge-danger">
+                                    {{ $errors->first('client_login') }}
+                                </span>
+                    @elseif($errors->has('client_login_necessary'))
+                        <div style="padding: 3px" class="badge-danger">
+                            {{ $errors->first('client_login_necessary') }}
+                        </div>
+                    @elseif ($errors->has('client_registration'))
+                        @foreach ($errors->all() as $message)
+                            <div style="padding: 3px" class="badge-danger">
+                                {{ $message }}
+                            </div>
+                        @endforeach
+                    @elseif ($errors->has('client_registration_success'))
+                        <span style="padding: 3px" class="badge-success">
+                                    {{ $errors->first('client_registration_success') }}
+                                </span>
+                @endif
+
+                <!-- Tabs -->
+                    <ul class="nav nav-tabs mb-1" role="tablist">
+                        <li class="active nav-item">
+                            <a href="#client_login" class="nav-link active" aria-controls="uploadTab" role="tab" data-toggle="tab">{{ trans('franchisee.login') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#client_registration" class="nav-link" aria-controls="browseTab" role="tab" data-toggle="tab">{{ trans('franchisee.create_account') }}</a>
+                        </li>
+                    </ul>
+
+                    <!-- Tabs content -->
+                    <div class="tab-content">
+
+                        {{-- Tab client login --}}
+                        <div role="tabpanel" class="tab-pane active" id="client_login">
+                            <form name="client_form" method="post" action="{{ route('client_login') }}">
+                                {{ csrf_field() }}
+
+                                <div class="form-group">
+                                    <label for="email">{{ trans('auth.email') }}</label>
+                                    <input type="email" name="email" class="form-control" id="email"
+                                           placeholder="{{ trans('auth.set_email') }}"
+                                           value="{{ old('email') }}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">{{ trans('auth.password') }}</label>
+                                    <input type="password" name="password" class="form-control" id="password"
+                                           placeholder="{{ trans('auth.set_password') }}" required>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('franchisee.cancel') }}</button>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">{{ trans('franchisee.login') }}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        {{-- Tab client registration --}}
+                        <div role="tabpanel" class="tab-pane" id="client_registration">
+                            <form method="post" action="{{ route('light_registration_submit') }}">
+                                <div class="row">
+
+                                    <div class="col-6 col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="firstname">{{ trans('client/registration.firstname') }}</label>
+                                            <input type="text" name="firstname" id="firstname"
+                                                   placeholder="{{ trans('client/registration.set_firstname') }}"
+                                                   value="{{ old('firstname') }}"
+                                                   class="form-control"
+                                                   minlength="2" maxlength="30" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="lastname">{{ trans('client/registration.lastname') }}</label>
+                                            <input type="text" name="lastname" id="lastname"
+                                                   placeholder="{{ trans('client/registration.set_lastname') }}"
+                                                   value="{{ old('lastname') }}"
+                                                   class="form-control"
+                                                   minlength="2" maxlength="30" required>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">{{ trans('client/registration.email') }}</label>
+                                    <input type="email" name="email" id="email"
+                                           placeholder="{{ trans('client/registration.set_email') }}"
+                                           value="{{ old('email') }}"
+                                           class="form-control"
+                                           maxlength="100" required>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-6 col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="password">{{ trans('client/registration.password') }}</label>
+                                            <input type="password" name="password" id="password"
+                                                   placeholder="{{ trans('client/registration.set_password') }}"
+                                                   class="form-control"
+                                                   minlength="6" maxlength="100" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="password_confirm">{{ trans('client/registration.password_confirm') }}</label>
+                                            <input type="password" name="password_confirm" id="password_confirm"
+                                                   placeholder="{{ trans('client/registration.set_password_confirm') }}"
+                                                   class="form-control"
+                                                   minlength="6" maxlength="100" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="form-group g-recaptcha" data-sitekey="{{ env('CAPTCHA_SITE_KEY') }}"></div>
+                                </div>
+
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                                <div class="form-group">
+                                    <button type="submit"
+                                            class="btn btn-info"
+                                            id="submitBtn">{{ trans('client/registration.submit') }}</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
