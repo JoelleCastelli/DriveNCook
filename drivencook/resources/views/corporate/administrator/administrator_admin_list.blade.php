@@ -37,18 +37,20 @@
                     </thead>
                     <tbody>
                     @foreach($users as $user)
-                        <tr id="{{ 'row_'.$user['id'] }}">
-                            <td>
-                                <button onclick="deleteUser({{ $user['id'] }})"
-                                        class="text-light fa fa-trash ml-2"></button>
+                        @if($user['id'] != auth()->user()->id)
+                            <tr id="{{ 'row_'.$user['id'] }}">
+                                <td>
+                                    <button onclick="deleteUser({{ $user['id'] }})"
+                                            class="text-light fa fa-trash ml-2"></button>
 
-                            </td>
-                            <td>{{ $user['lastname'] }}</td>
-                            <td>{{ $user['firstname'] }}</td>
-                            <td>{{ $user['telephone'] }}</td>
-                            <td>{{ $user['email'] }}</td>
-                            <td>{{ $user['created_at'] }}</td>
-                        </tr>
+                                </td>
+                                <td>{{ $user['lastname'] }}</td>
+                                <td>{{ $user['firstname'] }}</td>
+                                <td>{{ $user['telephone'] }}</td>
+                                <td>{{ $user['email'] }}</td>
+                                <td>{{ $user['created_at'] }}</td>
+                            </tr>
+                        @endif
                     @endforeach
                     </tbody>
                 </table>
