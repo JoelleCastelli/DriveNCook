@@ -2,6 +2,7 @@
 
 return [
     'title' => 'Votre achat',
+    'history_title' => 'Votre historique d\'achats',
 
     'back_sales_history' => 'Historique',
 
