@@ -83,11 +83,13 @@
                     <label class="col-form-label">{{ trans('client/order.discount_amount') }}</label>
                     <select class="custom-select" id="discountSelection">
                         <option value="" selected>{{ trans('client/order.select_menu_no_discount') }}</option>
-                        @foreach($promotions as $promotion)
-                            @if($promotion['step'] <= $client['loyalty_point'])
-                                <option value="{{ $promotion['reduction'] }}" id="discount_{{ $promotion['id'] }}">-{{ $promotion['reduction'] }} €</option>
-                            @endif
-                        @endforeach
+                        @if(!empty($promotions))
+                            @foreach($promotions as $promotion)
+                                @if($promotion['step'] <= $client['loyalty_point'])
+                                    <option value="{{ $promotion['reduction'] }}" id="discount_{{ $promotion['id'] }}">-{{ $promotion['reduction'] }} €</option>
+                                @endif
+                            @endforeach
+                        @endif
                     </select><br><br>
                     <label class="col-form-label">{{ trans('client/order.dishes') }}</label>
                     <div class="table-responsive">
