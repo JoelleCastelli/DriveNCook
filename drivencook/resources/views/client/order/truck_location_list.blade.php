@@ -32,7 +32,10 @@
                                     </thead>
                                     <tbody>
                                         @foreach($trucks as $truck)
-                                            @if(!empty($truck['user']) && !empty($truck['location']['name']))
+                                            @if(!empty($truck['user'])
+                                             && !empty($truck['location']['name'])
+                                             && !empty($truck['location']['city']['name'])
+                                             && !empty($truck['location']['city']['country']['name']))
                                             <tr>
                                                 <td>
                                                     <a href="{{ route('client_order',['id'=>$truck['id']]) }}" style="color: inherit">
