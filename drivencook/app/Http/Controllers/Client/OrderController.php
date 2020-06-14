@@ -218,6 +218,7 @@ class OrderController extends Controller
     {
         $sales = Sale::where('user_client', $this->get_connected_user()['id'])
             ->with('sold_dishes')
+            ->orderBy('date', 'dsc')
             ->get();
 
         if(!empty($sales)) {
@@ -279,12 +280,18 @@ class OrderController extends Controller
 
                 if (!empty($sold_dishes)) {
                     foreach ($sold_dishes as $sold_dish) {
+                        FranchiseeStock::where([
+                            ['user_id', $sale->user_franchised],
+                            ['dish_id', $sold_dish->dish_id]
+                        ])->increment('quantity', $sold_dish->quantity);
+
                         SoldDish::where([
                             ['dish_id', $sold_dish->dish_id],
                             ['sale_id', $sale->id]
                         ])->delete();
                     }
                 }
+
                 Sale::whereKey($sale->id)
                     ->delete();
 
