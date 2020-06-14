@@ -102,6 +102,11 @@
                 @break
                 @case(route('client_account'))
                     <li class="nav-item">
+                        <a class="nav-link text-light2" href="{{ route('client_dashboard') }}">
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.back_dashboard') }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link text-light2" id="deleteAccount">
                             <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.delete_account') }}
                         </a>
