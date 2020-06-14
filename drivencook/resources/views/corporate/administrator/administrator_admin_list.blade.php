@@ -64,10 +64,10 @@
             $('#allusers').DataTable();
         });
 
-        function deleteFranchise(id) {
-            if (confirm("Voulez-vous vraiment supprimer ce franchisé ? Toutes les données associées seront supprimées")) {
+        function deleteUser(id) {
+            if (confirm("Voulez-vous vraiment supprimer cet administrateur ? Toutes les données associées seront supprimées")) {
                 if (!isNaN(id)) {
-                    let urlB = '{{route('franchisee_delete',['id'=>':id'])}}';
+                    let urlB = '{{ route('admin_delete', ['id'=>':id']) }}';
                     urlB = urlB.replace(':id', id);
                     $.ajax({
                         url: urlB,
@@ -77,7 +77,7 @@
                         },
                         success: function (data) {
                             if (data == id) {
-                                alert("Franchisé supprimé");
+                                alert("Administrateur supprimé");
                                 $('#allusers').DataTable().row('#row_' + id).remove().draw();
                             } else {
                                 alert("Une erreur est survenue lors de la suppression, veuillez rafraîchir la page");

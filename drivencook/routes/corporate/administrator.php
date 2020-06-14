@@ -14,3 +14,8 @@ Route::post('/corporate/administrator/admin_creation_submit', [
     'as' => 'admin_creation_submit',
     'uses' => 'Corporate\AdministratorController@admin_creation_submit'
 ]);
+
+Route::delete('/corporate/administrator/admin_delete/{id}', [
+    'as' => 'admin_delete',
+    'uses' => 'Corporate\AdministratorController@admin_delete'
+]);

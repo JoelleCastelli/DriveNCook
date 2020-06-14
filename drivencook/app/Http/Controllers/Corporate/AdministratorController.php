@@ -5,11 +5,21 @@ namespace App\Http\Controllers\Corporate;
 
 
 use App\Http\Controllers\Controller;
+use App\Models\FranchiseeStock;
+use App\Models\Invoice;
+use App\Models\PurchasedDish;
+use App\Models\PurchaseOrder;
+use App\Models\Sale;
+use App\Models\SoldDish;
+use App\Models\Truck;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Traits\UserTools;
 
 class AdministratorController extends Controller
 {
+    use UserTools;
+
     public function __construct()
     {
         $this->middleware('App\Http\Middleware\AuthAdministrator');
@@ -114,5 +124,29 @@ class AdministratorController extends Controller
             flash($str)->error();
             return redirect()->back();
         }
+    }
+
+    public function admin_delete($id)
+    {
+        if (!ctype_digit($id)) {
+            return 'error';
+        }
+        Truck::where('user_id', $id)->update(['user_id' => NULL]);
+        Invoice::where('user_id', $id)->delete();
+
+        $purchaseOrder = PurchaseOrder::where('user_id', $id)->get(['id']);
+        if (!empty($purchaseOrder)) {
+            PurchasedDish::whereIn('dish_id', $purchaseOrder->toArray())->delete();
+            PurchaseOrder::where('user_id', $id)->delete();
+        }
+
+        $sale = Sale::where('user_franchised', $id)->get(['id']);
+        if (!empty($sale)) {
+            SoldDish::whereIn('dish_id', $sale->toArray())->delete();
+            Sale::where('user_franchised', $id)->delete();
+        }
+        FranchiseeStock::where('user_id', $id)->delete();
+        $this->delete_user($id);
+        return $id;
     }
 }
