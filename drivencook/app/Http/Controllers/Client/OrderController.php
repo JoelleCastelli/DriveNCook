@@ -62,7 +62,7 @@ class OrderController extends Controller
 
         $fidelity_step = '';
 
-        if(!empty($stocks)) {
+        if(!empty($stocks) && !empty($stocks[0])) {
             $stocks = $stocks->toArray();
 
             $fidelity_step = FidelityStep::where('user_id', $stocks[0]['user']['id'])
@@ -167,6 +167,11 @@ class OrderController extends Controller
                     if($quantity > 0) {
                         SoldDish::insert($sold_dish);
                     }
+
+                    FranchiseeStock::where([
+                        ['user_id', $userId],
+                        ['dish_id', $dishId]
+                    ])->decrement('quantity', $quantity);
                 }
 
                 $subPoint = 0;
