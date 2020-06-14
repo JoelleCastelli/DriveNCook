@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Location extends Model
 {
@@ -14,12 +15,13 @@ class Location extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'address', 'city_id',
+        'name', 'address', 'city_id', 'latitude', 'longitude', 'city', 'postcode', 'country',
     ];
 
     /**
      * The attributes that should be hidden for arrays.
      *
+     * @return BelongsTo
      * @var array
      */
 
