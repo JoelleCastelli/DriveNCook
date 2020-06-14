@@ -23,11 +23,6 @@ class OrderController extends Controller
     use TruckTools;
     use StockTools;
 
-    public function __construct()
-    {
-        $this->middleware(AuthClient::class);
-    }
-
     public function truck_location_list()
     {
         $trucks = Truck::where('functional', true)
