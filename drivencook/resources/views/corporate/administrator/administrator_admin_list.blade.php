@@ -37,21 +37,20 @@
                     </thead>
                     <tbody>
                     @foreach($users as $user)
-                        <tr id="{{ 'row_'.$user['id'] }}">
-                            <td>
-                                <a href="{{ route('user_view',['id'=>$user['id']]) }}">
-                                    <button class="text-light fa fa-eye"></button>
-                                </a>
-                                <button onclick="deleteUser({{ $user['id'] }})"
-                                        class="text-light fa fa-trash ml-2"></button>
+                        @if($user['id'] != auth()->user()->id)
+                            <tr id="{{ 'row_'.$user['id'] }}">
+                                <td>
+                                    <button onclick="deleteUser({{ $user['id'] }})"
+                                            class="text-light fa fa-trash ml-2"></button>
 
-                            </td>
-                            <td>{{ $user['lastname'] }}</td>
-                            <td>{{ $user['firstname'] }}</td>
-                            <td>{{ $user['telephone'] }}</td>
-                            <td>{{ $user['email'] }}</td>
-                            <td>{{ $user['created_at'] }}</td>
-                        </tr>
+                                </td>
+                                <td>{{ $user['lastname'] }}</td>
+                                <td>{{ $user['firstname'] }}</td>
+                                <td>{{ $user['telephone'] }}</td>
+                                <td>{{ $user['email'] }}</td>
+                                <td>{{ $user['created_at'] }}</td>
+                            </tr>
+                        @endif
                     @endforeach
                     </tbody>
                 </table>
@@ -67,10 +66,10 @@
             $('#allusers').DataTable();
         });
 
-        function deleteFranchise(id) {
-            if (confirm("Voulez-vous vraiment supprimer ce franchisé ? Toutes les données associées seront supprimées")) {
+        function deleteUser(id) {
+            if (confirm("Voulez-vous vraiment supprimer cet administrateur ? Toutes les données associées seront supprimées")) {
                 if (!isNaN(id)) {
-                    let urlB = '{{route('franchisee_delete',['id'=>':id'])}}';
+                    let urlB = '{{ route('admin_delete', ['id'=>':id']) }}';
                     urlB = urlB.replace(':id', id);
                     $.ajax({
                         url: urlB,
@@ -80,7 +79,7 @@
                         },
                         success: function (data) {
                             if (data == id) {
-                                alert("Franchisé supprimé");
+                                alert("Administrateur supprimé");
                                 $('#allusers').DataTable().row('#row_' + id).remove().draw();
                             } else {
                                 alert("Une erreur est survenue lors de la suppression, veuillez rafraîchir la page");

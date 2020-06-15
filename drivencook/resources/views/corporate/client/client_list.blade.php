@@ -90,3 +90,38 @@
         </div>
     </div>
 @endsection
+@section('script')
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#allclients').DataTable();
+        });
+
+        function deleteClient(id) {
+            if (confirm("Voulez-vous vraiment supprimer ce client ? Toutes les données associées seront supprimées")) {
+                if (!isNaN(id)) {
+                    let urlB = '{{ route('client_delete', ['id'=>':id']) }}';
+                    urlB = urlB.replace(':id', id);
+                    $.ajax({
+                        url: urlB,
+                        method: "delete",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (data) {
+                            if (data == id) {
+                                alert("Client supprimé");
+                                $('#allclients').DataTable().row('#row_' + id).remove().draw();
+                            } else {
+                                alert("Une erreur est survenue lors de la suppression, veuillez rafraîchir la page");
+                            }
+                        },
+                        error: function () {
+                            alert("Une erreur est survenue lors de la suppression, veuillez rafraîchir la page");
+                        }
+                    })
+                }
+            }
+        }
+    </script>
+@endsection

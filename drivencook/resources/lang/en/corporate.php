@@ -29,7 +29,8 @@ return [
 
     'my_account'=>'My account',
 
-
+    // Admin
+    'admin_page' => 'Administration',
     // Warehouses
     'warehouses' => 'Warehouses',
     'add_warehouse' => 'Add a warehouse',

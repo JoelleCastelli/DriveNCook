@@ -1,9 +1,11 @@
 <?php
 
 return [
-    'title' => 'All users',
-    'users_section' => 'Users',
-    'users_nb' => 'Total number of users',
+    'title' => 'All administrators',
+    'users_section' => 'Account',
+    'users_nb' => 'Total number of administrators',
+
+    'add_admin' => 'Add an administrator',
 
     'name' => 'Name',
     'firstname' => 'First name',
