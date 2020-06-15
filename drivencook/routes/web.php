@@ -37,3 +37,17 @@ Route::get('/{language}', function ($language) {
     return back();
 })->name('set_locale');
 
+Route::post('/forgot_password/', [
+    'as' => 'forgot_password',
+    'uses' => 'Auth\ForgotPasswordController@send_email'
+]);
+
+Route::get('/reset_password/{token}', [
+    'as' => 'reset_password',
+    'uses' => 'Auth\ResetPasswordController@reset_password'
+]);
+
+Route::post('/reset_password/', [
+    'as' => 'reset_password_submit',
+    'uses' => 'Auth\ResetPasswordController@reset_password_submit'
+]);
