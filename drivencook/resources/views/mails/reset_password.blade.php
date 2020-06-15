@@ -25,7 +25,7 @@
     <br>
 
     <img src="https://dev.drivencook.fr/img/logo_transparent_2.png" alt="logo_drivencook" class="img-fluid mt-5"
-         style="max-width: 400px">
+         width="400">
 
     <h2 class="h2">{{ trans('mail.staff_signature') }}</h2>
 </div>
