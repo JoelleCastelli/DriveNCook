@@ -15,10 +15,12 @@ use App\Models\Truck;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Traits\UserTools;
+use App\Traits\EmailTools;
 
 class AdministratorController extends Controller
 {
     use UserTools;
+    use EmailTools;
 
     public function __construct()
     {
@@ -61,15 +63,18 @@ class AdministratorController extends Controller
         $errors_list = [];
 
         if (
-            count($parameters) == 5 && !empty($parameters['lastname']) &&
-            !empty($parameters['firstname']) && !empty($parameters['email']) &&
-            !empty($parameters['password']) && !empty($parameters['password_confirm'])
+            count($parameters) == 3 && !empty($parameters['lastname']) &&
+            !empty($parameters['firstname']) && !empty($parameters['email'])
         ) {
             $lastname = strtoupper($parameters['lastname']);
             $firstname = ucfirst($parameters['firstname']);
             $email = $parameters['email'];
-            $password = $parameters['password'];
-            $password_confirm = $parameters['password_confirm'];
+
+            try {
+                $password = substr(str_shuffle(bin2hex(random_bytes(50))), 0, 50);
+            } catch (\Exception $e) {
+                abort(500);
+            }
 
             if (strlen($lastname) < 2 || strlen($lastname) > 30) {
                 $error = true;
@@ -87,14 +92,6 @@ class AdministratorController extends Controller
                 $errors_list[] = trans('administrator/creation.email_format_error');
             }
 
-            if (!preg_match('/^(?=.*\d)(?=.*[.*@#\-_$%^&+=§!\?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z.*@#\-_$%^&+=§!\?]{6,100}$/', $password)) {
-                $error = true;
-                $errors_list[] = trans('administrator/creation.password_error');
-            } else if($password !== $password_confirm) {
-                $error = true;
-                $errors_list[] = trans('administrator/creation.password_confirm_error');
-            }
-
             if (!$error) {
                 $result = $this->get_admin_by_email($email);
                 if ($result != null) {
@@ -106,11 +103,25 @@ class AdministratorController extends Controller
             if ($error) {
                 return back()->withInput()->withErrors(['admin_creation' => $errors_list]);
             } else {
+                $token='';
+                try {
+                    $token = substr(str_shuffle(bin2hex(random_bytes(50))), 0, 50);
+                } catch (\Exception $e) {
+                    abort(500);
+                }
+
                 $admin = [
                     'lastname' => $lastname, 'firstname' => $firstname, 'email' => $email,
                     'role' => 'Administrateur', 'password' => hash('sha256', $password),
                 ];
-                User::insert($admin);
+
+                $id = User::insertGetId($admin);
+
+                $user = User::whereKey($id);
+
+                $user->update(['password_token' => $token]);
+                $this->sendNewAccountMail($email, $token);
+
                 return back()->withInput()->withErrors(
                     ['admin_creation_success' => trans('administrator/creation.new_admin_success')]
                 );

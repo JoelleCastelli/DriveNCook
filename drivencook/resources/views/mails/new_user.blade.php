@@ -15,14 +15,19 @@
 
 <div class="container">
     @yield('content')
-    {{ trans('mail.hello') }} {{$name}},<br>
-    {{ trans('mail.reset_link_sent') }}
+    {{ trans('mail.hello') }} {{ $name }},<br><br>
+
+    {{ trans('mail.new_account') }}
 
     <br>
 
-    <a href="{{route('reset_password',['token'=>$token])}}">{{route('reset_password',['token'=>$token])}}</a>
+    <a href="{{ route('reset_password', ['token' => $token]) }}">{{ route('reset_password', ['token' => $token]) }}</a>
 
-    <br>
+    <br><br>
+
+    {{ trans('mail.account_type') }} : {{ $role }}
+
+    <br><br>
 
     <img src="https://dev.drivencook.fr/img/logo_transparent_2.png" alt="logo_drivencook" class="img-fluid mt-5"
          width="400">
