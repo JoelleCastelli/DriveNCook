@@ -88,6 +88,7 @@ class ClientController extends Controller
     {
         Sale::where("user_client", $client_id)->delete();
         $this->delete_user($client_id);
+        return $client_id;
     }
 
     public function view_client($client_id)
