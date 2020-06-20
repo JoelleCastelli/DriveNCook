@@ -32,6 +32,10 @@ Route::get('/', function () {
     return view('home');
 })->name('homepage');
 
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
 Route::get('/{language}', function ($language) {
     Session::put('locale', $language);
     return back();

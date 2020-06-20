@@ -48,7 +48,7 @@
                 </a>
             </li>
             <li class="nav-item {{ url()->current() == route('homepage')?"":"" }}">
-                <a class="nav-link" href="{{route('homepage')}}">
+                <a class="nav-link" href="{{route('truck_location_list')}}">
                     <i class="fa fa-map-marker-alt"></i> {{ trans('homepage.find_truck') }}
                 </a>
             </li>
@@ -57,13 +57,13 @@
                     <i class="fa fa-newspaper"></i> {{ trans('homepage.news') }}
                 </a>
             </li>
-            <li class="nav-item {{ url()->current() == route('homepage')?"":"" }}">
-                <a class="nav-link" href="{{route('homepage')}}">
+            <li class="nav-item {{ url()->current() == route('about')?"active":"" }}">
+                <a class="nav-link" href="{{route('about')}}">
                     <i class="fa fa-info-circle"></i> {{ trans('homepage.about') }}
                 </a>
             </li>
-            <li class="nav-item {{ url()->current() == route('homepage')?"":"" }}">
-                <a class="nav-link" href="{{route('homepage')}}">
+            <li class="nav-item">
+                <a class="nav-link" href="mailto:contact@drivencook.fr">
                     <i class="fa fa-address-book"></i> {{ trans('homepage.contact') }}
                 </a>
             </li>
@@ -182,12 +182,12 @@
                             <i class="fa fa-newspaper"></i> {{ trans('homepage.news') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="{{ route('homepage') }}">
+                        <a class="nav-link" href="{{route('about')}}">
                             <i class="fa fa-info-circle"></i> {{ trans('homepage.about') }}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="{{ route('homepage') }}">
+                        <a class="nav-link text-light" href="mailto:contact@drivencook.fr">
                             <i class="fa fa-address-book"></i> {{ trans('homepage.contact') }}</a>
                     </li>
                 </ul>
@@ -199,7 +199,8 @@
                 <h5 class="font-weight-bold text-uppercase mt-3 mb-3">{{ trans('homepage.become_franchisee') }}</h5>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="#">{{ trans('homepage.concept') }}</a>
+                        <a class="nav-link text-light"
+                           href="https://webgl.drivencook.fr">{{ trans('homepage.concept') }}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-light" href="#">{{ trans('homepage.form') }}</a>
