@@ -63,7 +63,7 @@
                     </li>
                     <li class="list-group-item"><b>{{ trans('truck.location') }}:</b>
                         {{ empty($truck['location']) ? trans('truck.not_specified_f') :
-                                $truck['location']['address'].' ('.$truck['location']['city']['postcode'].')'}}
+                                $truck['location']['address'].' ('.$truck['location']['postcode'].')'}}
                     </li>
                 </ul>
 

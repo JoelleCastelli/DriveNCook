@@ -22,6 +22,7 @@ require_once('corporate/warehouses.php');
 require_once('corporate/dishes.php');
 require_once('corporate/country_city.php');
 require_once('corporate/client.php');
+require_once('corporate/event.php');
 require_once('franchise/home.php');
 require_once('franchise/truck.php');
 require_once('franchise/stock.php');

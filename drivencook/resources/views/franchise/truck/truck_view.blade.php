@@ -51,7 +51,7 @@
                         if (empty($truck['location'])) {
                             echo trans('franchisee.unknown');
                         } else {
-                            echo $truck['location']['address'] . ' (' . $truck['location']['city']['postcode'] . ')';
+                            echo $truck['location']['address'] . ' (' . $truck['location']['postcode'] . ')';
                             echo '<br>';
                             if ($truck['location_date_end'] != null) {
                                 echo trans('franchisee.from') . ' ' . DateTime::createFromFormat('Y-m-d', $truck['location_date_start'])->format('d/m/Y');

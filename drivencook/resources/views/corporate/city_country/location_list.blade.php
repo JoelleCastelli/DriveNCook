@@ -28,8 +28,8 @@
                             <tr id="{{'row_'.$location['id']}}">
                                 <td>{{$location['name']}}</td>
                                 <td>{{$location['address']}}</td>
-                                <td>{{empty($location['city'])?'Non renseigné':$location['city']['name'].' ('.$location['city']['postcode'].')'}}</td>
-                                <td>{{empty($location['city']['country'])?'Non renseigné':$location['city']['country']['name']}}</td>
+                                <td>{{empty($location['city'])?'Non renseigné':$location['city'].' ('.$location['postcode'].')'}}</td>
+                                <td>{{empty($location['country'])?'Non renseigné':$location['country']}}</td>
                                 <td>
                                     <button onclick="onUpdateModal('{{$location['id']}}','{{$location['name']}}','{{$location['address']}}','{{$location['city_id']}}')"
                                             class="fa fa-edit" data-toggle="modal"
