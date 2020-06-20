@@ -61,8 +61,7 @@ class OrderController extends Controller
         if(!empty($stocks) && !empty($stocks[0])) {
             $stocks = $stocks->toArray();
 
-            $fidelity_step = FidelityStep::where('user_id', $stocks[0]['user']['id'])
-                ->orderBy('reduction')
+            $fidelity_step = FidelityStep::orderBy('reduction')
                 ->get();
 
             if(!empty($fidelity_step)) {
