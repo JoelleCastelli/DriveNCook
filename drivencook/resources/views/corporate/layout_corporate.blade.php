@@ -337,6 +337,13 @@
                     </a>
                 </li>
                 @break
+                @case(route('corporate.event_creation'))
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{route('corporate.event_list')}}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_event_list') }}
+                    </a>
+                </li>
+                @break
 
 
                 @default
@@ -501,7 +508,7 @@
     </div>
 </div>
 
-<script type="text/javascript" src="/js/app.js"></script>
+<script type="text/javascript" src="{{asset('js/app.js')}}"></script>
 <script>
     $("#menu-toggle").click(function (e) {
         e.preventDefault();

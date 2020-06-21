@@ -3,7 +3,9 @@
     {{trans('corporate.event_list')}}
 @endsection
 
-
+@section('style')
+{{--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.1/fullcalendar.min.css"/>--}}
+@endsection
 @section('content')
 
     {{--    <div class="card">--}}
@@ -30,7 +32,7 @@
     {{--        </div>--}}
     {{--    </div>--}}
 
-    <div class="card mt-5" id="event-list">
+    <div class="col-12 col-xl-8 card mt-5" id="event-list">
         <div class="card-body">
             <div class="table-responsive">
                 <table id="allEvents" class="table table-hover table-striped table-bordered table-dark"
@@ -54,8 +56,8 @@
                             <td>{{$event['title']}}</td>
                             <td>{{strlen($event['description']) > 100 ? substr($event['description'], 0, 100) . '...' : $event['description']}}</td>
                             <td>{{empty($event['location']['city'])? trans('franchisee.not_specified_f') : $event['location']['city']}}</td>
-                            <td>{{DateTime::createFromFormat('Y-m-d',$event['date_start'])->format('d/m/Y')}}</td>
-                            <td>{{DateTime::createFromFormat('Y-m-d',$event['date_end'])->format('d/m/Y')}}</td>
+                            <td>{{$event['date_start']}}</td>
+                            <td>{{$event['date_end']}}</td>
                             <td>
                                 <a href="{{route('corporate.event_view',['event_id'=>$event['id']])}}">
                                     <button class="text-light fa fa-eye"></button>
@@ -73,9 +75,24 @@
             </div>
         </div>
     </div>
+
+    <div class="col-12 col-xl-8 card mt-5" id="event-list">
+        <div class="card-header">
+            <h2>
+                {{trans('corporate.calendar')}}
+            </h2>
+        </div>
+        <div class="card-body">
+            {!! $calendar_details->calendar() !!}
+        </div>
+    </div>
 @endsection
 
 @section('script')
+{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>--}}
+{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.1/fullcalendar.min.js"></script>--}}
+
+    {!! $calendar_details->script() !!}
     <script type="text/javascript">
 
         $(document).ready(function () {

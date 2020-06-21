@@ -6,12 +6,19 @@ namespace App\Http\Controllers\Corporate;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\EventInvited;
+use App\Models\Location;
 use App\Models\User;
 use App\Traits\EmailTools;
+use App\Traits\EnumValue;
+use App\Traits\UserTools;
+use MaddHatter\LaravelFullcalendar\Facades\Calendar;
 
 class EventController extends Controller
 {
     use EmailTools;
+
+//    use EnumValue;
+    use UserTools;
 
     public function __construct()
     {
@@ -21,8 +28,24 @@ class EventController extends Controller
     public function event_list()
     {
         $event_list = Event::with('user')->with('location')->with('invited')->orderByDesc('date_start')->get()->toArray();
+        $event_calendar = [];
+        foreach ($event_list as $key => $event) {
+            $event_calendar[] = Calendar::event(
+                $event['title'],
+                true,
+                new \DateTime($event['date_start']),
+                new \DateTime($event['date_end']),
+                $event['id'],
+                [
+                    'url' => route('corporate.event_view', ['event_id' => $event['id']])
+                ]
+            );
+        }
+        $calendar_details = Calendar::addEvents($event_calendar);
 //        dd($event_list);
-        return view('corporate.events.event_list')->with('event_list', $event_list);
+        return view('corporate.events.event_list')
+            ->with('calendar_details', $calendar_details)
+            ->with('event_list', $event_list);
     }
 
     public function event_view($event_id)
@@ -53,7 +76,54 @@ class EventController extends Controller
 
     public function event_create()
     {
+        return view('corporate.events.event_creation');
+    }
 
+    public function event_create_type()
+    {
+        request()->validate([
+            'type' => ['required'],
+        ]);
+        $type = request('type');
+        if (!in_array($type, $this->get_enum_column_values('event', 'type'))) {
+            abort(404);
+        }
+        $location_list = Location::all()->toArray();
+        $user_list = User::whereIn('role', ['Client', 'Franchisé'])->get()->toArray();
+
+        return view('corporate.events.event_creation')
+            ->with('user_list', $user_list)
+            ->with('location_list', $location_list)
+            ->with('type', $type);
+    }
+
+    public function event_create_submit()
+    {
+        request()->validate([
+            'type' => 'required',
+            'title' => ['required', 'string', 'max:100'],
+            'description' => ['required', 'string'],
+            'date_start' => ['required', 'date', 'after_or_equal:today'],
+            'date_end' => ['required', 'date', 'after_or_equal:date_start']
+        ]);
+        $data = request()->except('_token');
+
+        $id = Event::insertGetId([
+            'type' => $data['type'],
+            'date_start' => $data['date_start'],
+            'date_end' => $data['date_end'],
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'location_id' => $data['location_id'],
+            'user_id' => $this->get_connected_user()['id'],
+        ]);
+        if ($data['type'] == 'private') {
+            foreach ($data['invited'] as $user_id) {
+                $this->event_invite_user($id, $user_id);
+            }
+        }
+        flash("Evenement créé")->success();
+        return redirect()->route('corporate.event_list');
     }
 
     public function event_invite_user($event_id, $user_id)
@@ -73,11 +143,6 @@ class EventController extends Controller
         flash($user->email . ' invité')->success();
 
         return redirect()->route('corporate.event_view', ['event_id' => $event_id]);
-    }
-
-    public function event_create_type()
-    {
-        //request post
     }
 
     public function event_delete($event_id)

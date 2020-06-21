@@ -9,7 +9,17 @@ Route::get('/corporate/event/create', [
     'uses' => 'Corporate\EventController@event_create'
 ]);
 
-Route::get('/corporate/event/{event_id}', [
+Route::post('/corporate/event/create/', [
+    'as' => 'corporate.event_creation_type',
+    'uses' => 'Corporate\EventController@event_create_type'
+]);
+
+Route::post('/corporate/event/create/submit', [
+    'as' => 'corporate.event_creation_submit',
+    'uses' => 'Corporate\EventController@event_create_submit'
+]);
+
+Route::get('/corporate/event/view/{event_id}', [
     'as' => 'corporate.event_view',
     'uses' => 'Corporate\EventController@event_view'
 ]);

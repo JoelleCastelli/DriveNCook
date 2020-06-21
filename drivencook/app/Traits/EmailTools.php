@@ -45,9 +45,9 @@ trait EmailTools
         $data = array(
             'name' => $to_name,
             'title' => $event['title'],
-            'begin' => DateTime::createFromFormat('Y-m-d',$event['date_start'])->format('d/m/Y'),
-            'end' => DateTime::createFromFormat('Y-m-d',$event['date_end'])->format('d/m/Y'),
-            'address' => $event['location']['address'],
+            'begin' => DateTime::createFromFormat('Y-m-d', $event['date_start'])->format('d/m/Y'),
+            'end' => DateTime::createFromFormat('Y-m-d', $event['date_end'])->format('d/m/Y'),
+            'address' => empty($event['location']) ? 'No address' : $event['location']['address'] . ' - ' . $event['location']['city'] . ' (' . $event['location']['name'] . ')',
             'description' => $event['description']
         );
         Mail::send('mails.event_invite', $data, function ($message) use ($to_name, $user_mail) {

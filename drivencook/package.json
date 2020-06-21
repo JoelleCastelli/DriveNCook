@@ -20,7 +20,7 @@
     "datatables.net-bs4": "^1.10.21",
     "font-awesome": "^4.7.0",
     "fs": "0.0.1-security",
-    "jquery": "^3.5.1",
+    "jquery": "3.5.0",
     "jquery-ui": "^1.12.1",
     "jsdom": "^16.2.2",
     "laravel-mix": "^1.0",
