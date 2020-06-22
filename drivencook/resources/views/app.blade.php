@@ -16,9 +16,12 @@
             /* The image used */
             background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url({{asset('img/food_truck.jpg')}});
             /* Set a specific height */
-            height: 860px;
-
-            /* Create the parallax scrolling effect */
+            @if(url()->current() == route('homepage'))
+             height: 860px;
+            @else
+             height: 100%;
+            @endif
+ /* Create the parallax scrolling effect */
             background-attachment: fixed;
             background-position: center;
             background-repeat: no-repeat;
@@ -52,8 +55,8 @@
                     <i class="fa fa-map-marker-alt"></i> {{ trans('homepage.find_truck') }}
                 </a>
             </li>
-            <li class="nav-item {{ url()->current() == route('homepage')?"":"" }}">
-                <a class="nav-link" href="{{route('homepage')}}">
+            <li class="nav-item {{ url()->current() == route('news')?"active":"" }}">
+                <a class="nav-link" href="{{route('news')}}">
                     <i class="fa fa-newspaper"></i> {{ trans('homepage.news') }}
                 </a>
             </li>
@@ -135,7 +138,6 @@
     @include('flash::message')
     @yield('content')
 </div>
-
 <!-- FOOTER -->
 <footer class="page-footer font-small bg-dark text-light">
     <div class="container-fluid text-center text-md-left">

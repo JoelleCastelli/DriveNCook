@@ -37,6 +37,11 @@ Route::get('/about', function () {
     return view('about');
 })->name('about');
 
+Route::get('/news', [
+    'as' => 'news',
+    'uses' => 'HomeController@news'
+]);
+
 Route::get('/{language}', function ($language) {
     Session::put('locale', $language);
     return back();
