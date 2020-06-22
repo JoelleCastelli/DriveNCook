@@ -389,6 +389,13 @@
                     </a>
                 </li>
             @endif
+            @if (strpos(url()->current(), route('corporate.event_update', ['event_id'=>''])) !== false)
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{route('corporate.event_list')}}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_event_list') }}
+                    </a>
+                </li>
+            @endif
             @if (strpos(url()->current(), route('franchisee_stocks_order', ['id'=>''])) !== false
                     || strpos(url()->current(), route('franchisee_invoices_list', ['id'=>''])) !== false
                     || strpos(url()->current(), route('franchisee_sales_stats', ['id'=>''])) !== false)

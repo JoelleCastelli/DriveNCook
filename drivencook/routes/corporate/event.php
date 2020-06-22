@@ -24,14 +24,24 @@ Route::get('/corporate/event/view/{event_id}', [
     'uses' => 'Corporate\EventController@event_view'
 ]);
 
-Route::get('/corporate/event/{event_id}/{user_id}', [
+Route::get('/corporate/event/{event_id}/invite/{user_id}', [
     'as' => 'corporate.event_invite_user',
     'uses' => 'Corporate\EventController@event_invite_user'
+]);
+
+Route::get('/corporate/event/{event_id}/remove_invite/{user_id}', [
+    'as' => 'corporate.event_remove_invite_user',
+    'uses' => 'Corporate\EventController@event_remove_invite_user'
 ]);
 
 Route::get('/corporate/event/update/{event_id}', [
     'as' => 'corporate.event_update',
     'uses' => 'Corporate\EventController@event_update'
+]);
+
+Route::post('/corporate/event/update/', [
+    'as' => 'corporate.event_update_submit',
+    'uses' => 'Corporate\EventController@event_update_submit'
 ]);
 
 Route::delete('/corporate/event_delete/{event_id}', [

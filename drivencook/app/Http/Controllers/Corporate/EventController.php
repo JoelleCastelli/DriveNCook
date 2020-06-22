@@ -50,12 +50,11 @@ class EventController extends Controller
 
     public function event_view($event_id)
     {
-        $event = Event::with('user')->with('location')->with('invited')->orderByDesc('date_start')->whereKey($event_id)->first();
+        $event = Event::with('user')->with('location')->with('invited')->whereKey($event_id)->first();
         if (empty($event)) {
             abort(404);
         }
         $event = $event->toArray();
-
         $user_list = [];
         if ($event['type'] == 'private') {
             $invited_id = [];
@@ -71,7 +70,34 @@ class EventController extends Controller
 
     public function event_update($event_id)
     {
+        $event = Event::whereKey($event_id)->first();
+        if (empty($event)) {
+            abort(404);
+        }
+        $location_list = Location::all()->toArray();
 
+        return view('corporate.events.event_update')
+            ->with('location_list', $location_list)
+            ->with('event', $event);
+    }
+
+    public function event_update_submit()
+    {
+        request()->validate([
+            'event_id' => ['required', 'numeric'],
+            'title' => ['required', 'string', 'max:100'],
+            'location_id' => ['nullable', 'numeric'],
+            'description' => ['required', 'string'],
+            'date_start' => ['required', 'date', 'after_or_equal:today'],
+            'date_end' => ['required', 'date', 'after_or_equal:date_start']
+        ]);
+
+        $params = request()->except(['_token', 'event_id']);
+
+        Event::whereKey(request('event_id'))->update($params);
+
+        flash(trans('corporate.event_update_success_message'))->success();
+        return redirect()->route('corporate.event_list');
     }
 
     public function event_create()
@@ -124,6 +150,16 @@ class EventController extends Controller
         }
         flash("Evenement créé")->success();
         return redirect()->route('corporate.event_list');
+    }
+
+    public function event_remove_invite_user($event_id, $user_id)
+    {
+        EventInvited::where([
+            ['event_id', $event_id],
+            ['user_id', $user_id]
+        ])->delete();
+
+        return $user_id;
     }
 
     public function event_invite_user($event_id, $user_id)

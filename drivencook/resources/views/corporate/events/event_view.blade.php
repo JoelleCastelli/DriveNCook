@@ -21,6 +21,11 @@
                         <b>{{trans('corporate.end')}} : </b>
                         {{DateTime::createFromFormat('Y-m-d',$event['date_end'])->format('d/m/Y')}}
                     </li>
+                    @if (!empty($event['location']))
+                        <li class="list-group-item"><b>{{trans('truck.location')}} : {{$event['location']['name']}}</b>
+                                    - {{$event['location']['address'].' - '.$event['location']['city'].' ('.$event['location']['postcode'].')'}}
+                        </li>
+                    @endif
                     <li class="list-group-item text-justify"><b>{{trans('corporate.description')}} : </b><br>
                         {{$event['description']}}
                     </li>
@@ -40,7 +45,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="allEvents" class="table table-hover table-striped table-bordered table-dark"
+                            <table id="invitedUsers" class="table table-hover table-striped table-bordered table-dark"
                                    style="width: 100%">
                                 <thead>
                                 <tr>
@@ -67,7 +72,7 @@
                                                 <button class="text-light fa fa-eye"></button>
                                             </a>
 
-                                            <button onclick="removeUser({{$invited['user']['id']}})"
+                                            <button onclick="eventRemoveInviteUser({{$event['id']}}, {{$invited['user']['id']}})"
                                                     class="text-light fa fa-ban ml-2"></button>
                                         </td>
                                     </tr>
@@ -108,7 +113,6 @@
 
                                     @foreach($user_list as $user)
                                         <tr>
-
                                             <td>{{$user['lastname']}}</td>
                                             <td>{{$user['firstname']}}</td>
                                             <td>{{$user['email']}}</td>
@@ -137,5 +141,34 @@
             $('#client_orders').DataTable();
             $('#inviteUser').DataTable();
         });
+
+        function eventRemoveInviteUser(event_id, user_id) {
+            if (confirm("Voulez-vous vraiment retirer cet invité ?")) {
+                if (!isNaN(event_id) && !isNaN(user_id)) {
+                    let urlB = '{{route('corporate.event_remove_invite_user',['event_id' => ':event_id', 'user_id' => ':user_id'])}}';
+                    urlB = urlB.replace(':event_id', event_id);
+                    urlB = urlB.replace(':user_id', user_id);
+                    $.ajax({
+                        url: urlB,
+                        method: "get",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (data) {
+                            if (data == user_id) {
+                                alert("Invité retiré");
+                                $('#invitedUsers').DataTable().row('#row_user' + user_id).remove().draw();
+                            } else {
+                                alert("Une erreur est survenue lors de l'annulation, veuillez rafraîchir la page");
+                            }
+                        },
+                        error: function () {
+                            alert("Une erreur est survenue lors de l'annulation, veuillez rafraîchir la page");
+                        }
+                    })
+                }
+            }
+        }
+
     </script>
 @endsection
