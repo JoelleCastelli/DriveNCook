@@ -23,7 +23,8 @@
     <br><br>
 
     {{$description}}
-
+    <br>
+    Tu peux dès à présent suivre cet évènement en te connectant à ton compte !
     <br><br>
 
     <img src="https://dev.drivencook.fr/img/logo_transparent_2.png" alt="logo_drivencook" class="img-fluid mt-5"

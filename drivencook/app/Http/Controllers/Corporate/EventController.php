@@ -37,7 +37,8 @@ class EventController extends Controller
                 new \DateTime($event['date_end']),
                 $event['id'],
                 [
-                    'url' => route('corporate.event_view', ['event_id' => $event['id']])
+                    'url' => route('corporate.event_view', ['event_id' => $event['id']]),
+                    'color' => $event['type'] == 'private' ? '#e90606' : ($event['type'] == 'public' ? '#378006' : '#06a2e9')
                 ]
             );
         }

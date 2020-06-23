@@ -31450,6 +31450,8 @@ __webpack_require__(142);
 __webpack_require__(145);
 
 __webpack_require__(147);
+// require('@fullcalendar/core/main.js');
+// require('@fullcalendar/bootstrap/main.js');
 __webpack_require__(149);
 __webpack_require__(150);
 window.Vue = __webpack_require__(151);

@@ -23,12 +23,25 @@
                     </li>
                     @if (!empty($event['location']))
                         <li class="list-group-item"><b>{{trans('truck.location')}} : {{$event['location']['name']}}</b>
-                                    - {{$event['location']['address'].' - '.$event['location']['city'].' ('.$event['location']['postcode'].')'}}
+                            - {{$event['location']['address'].' - '.$event['location']['city'].' ('.$event['location']['postcode'].')'}}
                         </li>
                     @endif
                     <li class="list-group-item text-justify"><b>{{trans('corporate.description')}} : </b><br>
                         {{$event['description']}}
                     </li>
+                    @if (!empty($event['location']))
+                        <div class="card-footer">
+                            <iframe
+                                    width="100%"
+                                    height="450"
+                                    frameborder="0" style="border:0"
+                                    src="https://www.google.com/maps/embed/v1/place?key={{env('GOOGLE_MAPS_API_KEY')}}&q={{$event['location']['address'].' '.$event['location']['city'].' '.$event['location']['postcode']}}"
+                                    {{--                                    src="https://www.google.com/maps/embed/v1/place?key={{env('GOOGLE_MAPS_API_KEY')}}&q=Space+Needle,Seattle+WA"--}}
+                                    allowfullscreen>
+                            </iframe>
+                        </div>
+                    @endif
+
                 </ul>
                 <div class="card-footer">
                     <a href="{{route('corporate.event_update',['event_id'=>$event['id']])}}">
@@ -139,7 +152,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#client_orders').DataTable();
-            $('#inviteUser').DataTable();
+            $('#invitedUsers').DataTable();
         });
 
         function eventRemoveInviteUser(event_id, user_id) {

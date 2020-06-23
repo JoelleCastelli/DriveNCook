@@ -12,8 +12,10 @@ require('datatables.net-bs4/js/dataTables.bootstrap4.min.js');
 
 
 require('./fullcalendar.min.js');
+// require('@fullcalendar/core/main.js');
+// require('@fullcalendar/bootstrap/main.js');
 require('./moment.min.js');
-require('./jquery.sumoselect.min.js')
+require('./jquery.sumoselect.min.js');
 window.Vue = require('vue');
 
 

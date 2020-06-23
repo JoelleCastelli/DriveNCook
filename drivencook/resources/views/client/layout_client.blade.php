@@ -46,13 +46,15 @@
         <div class="navbar-nav ml-auto">
             <li class="nav-item dropdown ml-4">
                 <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button">
-                    <img src="{{ asset('img/'.App::getLocale().'_icon.png') }}" height="20">&nbsp;&nbsp;{{ trans('homepage.'. App::getLocale()) }}
+                    <img src="{{ asset('img/'.App::getLocale().'_icon.png') }}"
+                         height="20">&nbsp;&nbsp;{{ trans('homepage.'. App::getLocale()) }}
                 </a>
                 <div class="dropdown-menu dropdown-menu-right bg-dark">
                     @foreach (Config::get('app.languages') as $language)
                         @if ($language != App::getLocale())
                             <a class="dropdown-item text-light" href="{{ route('set_locale', $language) }}">
-                                <img src="{{ asset('img/'.$language.'_icon.png') }}" height="20">&nbsp;&nbsp;{{ trans('homepage.'.$language) }}
+                                <img src="{{ asset('img/'.$language.'_icon.png') }}"
+                                     height="20">&nbsp;&nbsp;{{ trans('homepage.'.$language) }}
                             </a>
                         @endif
                     @endforeach
@@ -66,8 +68,10 @@
                         <i class="fa fa-user"></i>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right bg-dark" aria-labelledby="userDropdownMenuButton">
-                        <a class="dropdown-item text-light" href="{{ route('client_account') }}">{{ trans('auth.my_account') }}</a>
-                        <a class="dropdown-item text-light" href="{{ route('client_logout') }}">{{ trans('auth.logout') }}</a>
+                        <a class="dropdown-item text-light"
+                           href="{{ route('client_account') }}">{{ trans('auth.my_account') }}</a>
+                        <a class="dropdown-item text-light"
+                           href="{{ route('client_logout') }}">{{ trans('auth.logout') }}</a>
                     </div>
                 @else
                     <a class="nav-link" href="#" data-toggle="modal" data-target="#formModal_client">
@@ -86,51 +90,57 @@
         <ul class="sidebar-nav">
             @switch(url()->current())
                 @case(route('registration'))
-                    <li class="nav-item">
-                        <a class="nav-link text-light2" href="{{ route('client_login') }}">
-                            <i class="fa fa-lock"></i>&nbsp;&nbsp;&nbsp;{{ trans('auth.connection_btn') }}
-                        </a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{ route('client_login') }}">
+                        <i class="fa fa-lock"></i>&nbsp;&nbsp;&nbsp;{{ trans('auth.connection_btn') }}
+                    </a>
+                </li>
                 @break
                 @case(route('client_dashboard'))
-                    <li class="nav-item">
-                        <a class="nav-link text-light2" href="{{ route('truck_location_list') }}">
-                            <i class="fa fa-hamburger"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.order') }}
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-light2" href="{{ route('client_sales_history') }}">
-                            <i class="fa fa-history"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.history') }}
-                        </a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{ route('truck_location_list') }}">
+                        <i class="fa fa-hamburger"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.order') }}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{ route('client_sales_history') }}">
+                        <i class="fa fa-history"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.history') }}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{route('client.event_list')}}">
+                        <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp;&nbsp;{{trans('client.events')}}
+                    </a>
+                </li>
                 @break
                 @case(route('client_account'))
-                    <li class="nav-item">
-                        <a class="nav-link text-light2" href="{{ route('client_dashboard') }}">
-                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.back_dashboard') }}
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-light2" id="deleteAccount">
-                            <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.delete_account') }}
-                        </a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{ route('client_dashboard') }}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.back_dashboard') }}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light2" id="deleteAccount">
+                        <i class="fa fa-trash"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.delete_account') }}
+                    </a>
+                </li>
                 @break
                 @case(route('truck_location_list'))
-                    @if(!auth()->guest())
-                        <li class="nav-item">
-                            <a class="nav-link text-light2" href="{{ route('client_dashboard') }}">
-                                <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.back_dashboard') }}
-                            </a>
-                        </li>
-                    @endif
-                @break
-                @case(route('client_sales_history'))
+                @if(!auth()->guest())
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{ route('client_dashboard') }}">
                             <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.back_dashboard') }}
                         </a>
                     </li>
+                @endif
+                @break
+                @case(route('client_sales_history'))
+                @case(route('client.event_list'))
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{ route('client_dashboard') }}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('client/global.back_dashboard') }}
+                    </a>
+                </li>
                 @break
                 @default
                 @break
@@ -149,13 +159,20 @@
                     </a>
                 </li>
             @endif
+            @if (strpos(url()->current(), route('client.event_view', ['event_id'=>''])) !== false)
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{ route('client.event_list') }}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('event.back_event_list') }}
+                    </a>
+                </li>
+            @endif
         </ul>
     </div>
     <div id="page-content-wrapper">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="mb-3 clientTitle">@yield('title', 'DriveNCook.fr')</h1>
+                    <h1 class="mb-3 clientTitle text-light">@yield('title', 'DriveNCook.fr')</h1>
                     @include('flash::message')
 
                     @yield('content')
@@ -204,10 +221,12 @@
                     <!-- Tabs -->
                         <ul class="nav nav-tabs mb-1" role="tablist">
                             <li class="active nav-item">
-                                <a href="#client_login" class="nav-link active" aria-controls="uploadTab" role="tab" data-toggle="tab">{{ trans('franchisee.login') }}</a>
+                                <a href="#client_login" class="nav-link active" aria-controls="uploadTab" role="tab"
+                                   data-toggle="tab">{{ trans('franchisee.login') }}</a>
                             </li>
                             <li class="nav-item">
-                                <a href="#client_registration" class="nav-link" aria-controls="browseTab" role="tab" data-toggle="tab">{{ trans('franchisee.create_account') }}</a>
+                                <a href="#client_registration" class="nav-link" aria-controls="browseTab" role="tab"
+                                   data-toggle="tab">{{ trans('franchisee.create_account') }}</a>
                             </li>
                         </ul>
 
@@ -231,9 +250,11 @@
                                                placeholder="{{ trans('auth.set_password') }}" required>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('franchisee.cancel') }}</button>
+                                        <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">{{ trans('franchisee.cancel') }}</button>
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-primary">{{ trans('franchisee.login') }}</button>
+                                            <button type="submit"
+                                                    class="btn btn-primary">{{ trans('franchisee.login') }}</button>
                                         </div>
                                     </div>
                                 </form>
@@ -300,7 +321,8 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <div class="form-group g-recaptcha" data-sitekey="{{ env('CAPTCHA_SITE_KEY') }}"></div>
+                                        <div class="form-group g-recaptcha"
+                                             data-sitekey="{{ env('CAPTCHA_SITE_KEY') }}"></div>
                                     </div>
 
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">

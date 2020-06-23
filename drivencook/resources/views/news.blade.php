@@ -9,7 +9,25 @@
                         <h3>{{$news['title']}}</h3>
                     </div>
                     <div class="card-body">
-                        drhioegohoehrgoenrhioryàhe
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item bg-dark">
+                                <b>{{trans('corporate.start')}} : </b>
+                                {{DateTime::createFromFormat('Y-m-d',$news['date_start'])->format('d/m/Y')}}
+                            </li>
+                            <li class="list-group-item bg-dark">
+                                <b>{{trans('corporate.end')}} : </b>
+                                {{DateTime::createFromFormat('Y-m-d',$news['date_end'])->format('d/m/Y')}}
+                            </li>
+                            @if (!empty($news['location']))
+                                <li class="list-group-item bg-dark"><b>{{trans('truck.location')}}
+                                        : {{$news['location']['name']}}</b>
+                                    - {{$news['location']['address'].' - '.$news['location']['city'].' ('.$news['location']['postcode'].')'}}
+                                </li>
+                            @endif
+                            <li class="list-group-item text-justify bg-dark"><b>{{trans('corporate.description')}} : </b><br>
+                                {{$news['description']}}
+                            </li>
+                        </ul>
                     </div>
                     @if (!empty($news['location']))
                         <div class="card-footer">
@@ -17,8 +35,8 @@
                                     width="100%"
                                     height="450"
                                     frameborder="0" style="border:0"
-{{--                                    src="https://www.google.com/maps/embed/v1/place?key={{env('GOOGLE_MAPS_API_KEY')}}&q={{$news['location']['address'].' '.$news['location']['city'].' '.$news['location']['postcode']}}"--}}
-                                    src="https://www.google.com/maps/embed/v1/place?key={{env('GOOGLE_MAPS_API_KEY')}}&q=Space+Needle,Seattle+WA"
+                                    src="https://www.google.com/maps/embed/v1/place?key={{env('GOOGLE_MAPS_API_KEY')}}&q={{$news['location']['address'].' '.$news['location']['city'].' '.$news['location']['postcode']}}"
+                                    {{--                                    src="https://www.google.com/maps/embed/v1/place?key={{env('GOOGLE_MAPS_API_KEY')}}&q=Space+Needle,Seattle+WA"--}}
                                     allowfullscreen>
                             </iframe>
                         </div>
