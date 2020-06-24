@@ -89,7 +89,7 @@ class EventController extends Controller
             'title' => ['required', 'string', 'max:100'],
             'location_id' => ['nullable', 'numeric'],
             'description' => ['required', 'string'],
-            'date_start' => ['required', 'date', 'after_or_equal:today'],
+            'date_start' => ['required', 'date'],
             'date_end' => ['required', 'date', 'after_or_equal:date_start']
         ]);
 
@@ -97,7 +97,7 @@ class EventController extends Controller
 
         Event::whereKey(request('event_id'))->update($params);
 
-        flash(trans('corporate.event_update_success_message'))->success();
+        flash(trans('event.event_update_success_message'))->success();
         return redirect()->route('corporate.event_list');
     }
 
@@ -130,7 +130,7 @@ class EventController extends Controller
             'type' => 'required',
             'title' => ['required', 'string', 'max:100'],
             'description' => ['required', 'string'],
-            'date_start' => ['required', 'date', 'after_or_equal:today'],
+            'date_start' => ['required', 'date'],
             'date_end' => ['required', 'date', 'after_or_equal:date_start']
         ]);
         $data = request()->except('_token');
