@@ -26,7 +26,7 @@ return [
     /**********/
     /* NAVBAR */
     /**********/
-    'my_account'=>'Mon compte',
+    'my_account' => 'Mon compte',
 
     // Admin
     'admin_page' => 'Administration',
@@ -72,4 +72,13 @@ return [
     'back_countries_list' => 'Retour à la liste des pays',
     // Back
     'back_dashboard' => 'Retour au tableau de bord',
+
+
+    'event_list' => 'Liste des événements',
+    'title' => 'Titre',
+    'description' => 'Description',
+    'city' => 'Ville',
+    'start' => 'Début',
+    'end' => 'Fin',
+    'add_event' => 'Ajouter un événement',
 ];

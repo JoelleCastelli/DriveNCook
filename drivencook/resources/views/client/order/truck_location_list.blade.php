@@ -32,7 +32,12 @@
                                     </thead>
                                     <tbody>
                                         @foreach($trucks as $truck)
-                                            @if(!empty($truck['user']) && !empty($truck['location']['name']))
+                                            @if(!empty($truck['user'])
+                                             && !empty($truck['location']['address'])
+                                             && !empty($truck['location']['name'])
+                                             && !empty($truck['location']['postcode'])
+                                             && !empty($truck['location']['city'])
+                                             && !empty($truck['location']['country']))
                                             <tr>
                                                 <td>
                                                     <a href="{{ route('client_order',['id'=>$truck['id']]) }}" style="color: inherit">
@@ -43,8 +48,9 @@
                                                 <td>{{ $truck['user']['firstname'] . '  ' . $truck['user']['lastname'] }}</td>
                                                 <td>{{ $truck['location']['name'] }}</td>
                                                 <td>{{ $truck['location']['address'] . ' - '
-                                                . $truck['location']['city']['name'] . ' - '
-                                                . $truck['location']['city']['country']['name'] }}
+                                                . $truck['location']['postcode'] . ' - '
+                                                . $truck['location']['city'] . ' - '
+                                                . $truck['location']['country'] }}
                                                 </td>
                                                 <td>{{ $truck['brand'] }}</td>
                                                 <td>{{ $truck['model'] }}</td>

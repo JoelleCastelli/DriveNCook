@@ -36,7 +36,8 @@ class Truck extends Model
 
     public function location()
     {
-        return $this->belongsTo(Location::class, 'location_id')->with('city');
+//        return $this->belongsTo(Location::class, 'location_id')->with('city');
+        return $this->belongsTo(Location::class, 'location_id');
     }
 
     public function breakdowns()
@@ -52,4 +53,5 @@ class Truck extends Model
     {
         return $this->hasOne(SafetyInspection::class, 'truck_id')->orderByDesc('id');
     }
+
 }

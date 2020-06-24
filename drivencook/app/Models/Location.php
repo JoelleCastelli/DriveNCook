@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Location extends Model
 {
@@ -20,6 +21,7 @@ class Location extends Model
     /**
      * The attributes that should be hidden for arrays.
      *
+     * @return BelongsTo
      * @var array
      */
 

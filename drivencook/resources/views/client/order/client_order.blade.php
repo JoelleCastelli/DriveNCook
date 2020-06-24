@@ -1,6 +1,10 @@
 @extends('client.layout_client')
 @section('title')
-    {{ trans('client/order.title_dishes') }}
+    @if(!auth()->guest())
+        {{ trans('client/order.title_dishes') }}
+    @else
+        {{ trans('client/order.title_dishes_offline') }}
+    @endif
 @endsection
 @section('style')
     <style>
@@ -32,6 +36,15 @@
                             {{ trans('client/order.franchisee_menu_empty') }}
                         @endif
                     </h2>
+                    @if(!empty($truck['location']['postcode'])
+                     && !empty($truck['location']['city'])
+                     && !empty($truck['location']['address'])
+                     && !empty($truck['location']['country']))
+                        {{ $truck['location']['address'] . ' - '
+                         . $truck['location']['postcode'] . ' - '
+                         . $truck['location']['city'] . ' - '
+                         . $truck['location']['country'] }}
+                    @endif
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -39,8 +52,10 @@
                                style="width: 100%">
                             <thead>
                                 <tr>
-                                    <th>{{ trans('dish.actions') }}</th>
-                                    <th>{{ trans('client/order.quantity_to_order') }}</th>
+                                    @if(!auth()->guest())
+                                        <th>{{ trans('dish.actions') }}</th>
+                                        <th>{{ trans('client/order.quantity_to_order') }}</th>
+                                    @endif
                                     <th>{{ trans('dish.name') }}</th>
                                     <th>{{ trans('dish.category') }}</th>
                                     <th>{{ trans('client/order.unit_price') }}</th>
@@ -52,15 +67,17 @@
                             <tbody>
                                 @foreach($stocks as $stock)
                                     <tr>
-                                        <td>
-                                            <button class="text-light fa fa-plus addToOrderBtn" id="{{ $stock['dish_id'] }}"></button>
-                                        </td>
-                                        <td><input type="number" class="form-control qtyToOrderIpt"
-                                                   id="qty{{ $stock['dish_id'] }}"
-                                                   style="width: 100%"
-                                                   value="0"
-                                                   min="1"
-                                                   max="{{ $stock['quantity'] }}"></td>
+                                        @if(!auth()->guest())
+                                            <td>
+                                                <button class="text-light fa fa-plus addToOrderBtn" id="{{ $stock['dish_id'] }}"></button>
+                                            </td>
+                                            <td><input type="number" class="form-control qtyToOrderIpt"
+                                                       id="qty{{ $stock['dish_id'] }}"
+                                                       style="width: 100%"
+                                                       value="0"
+                                                       min="1"
+                                                       max="{{ $stock['quantity'] }}"></td>
+                                        @endif
                                         <td id="name{{ $stock['dish_id'] }}">{{ $stock['dish']['name'] }}</td>
                                         <td>{{ trans('dish.category_' . strtolower($stock['dish']['category'])) }}</td>
                                         <td id="price{{ $stock['dish_id'] }}">{{ $stock['unit_price'] }} €</td>
@@ -74,44 +91,56 @@
                 </div>
             </div>
         </div>
-        <div class="col-4">
-            <div class="card">
-                <div class="card-header">
-                    <h2>{{ trans('client/order.shopping_cart') }}</h2>
-                </div>
-                <div class="card-body">
-                    <label class="col-form-label">{{ trans('client/order.discount_amount') }}</label>
-                    <select class="custom-select" id="discountSelection">
-                        <option value="" selected>{{ trans('client/order.select_menu_no_discount') }}</option>
-                        @foreach($promotions as $promotion)
-                            @if($promotion['step'] <= $client['loyalty_point'])
-                                <option value="{{ $promotion['reduction'] }}" id="discount_{{ $promotion['id'] }}">-{{ $promotion['reduction'] }} €</option>
+        @if(!auth()->guest())
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>{{ trans('client/order.shopping_cart') }}</h2>
+                    </div>
+                    <div class="card-body">
+                        <label class="col-form-label">{{ trans('client/order.discount_amount') }}</label>
+                        <select class="custom-select" id="discountSelection">
+                            <option value="" selected>{{ trans('client/order.select_menu_no_discount') }}</option>
+                            @if(!empty($promotions))
+                                @foreach($promotions as $promotion)
+                                    @if($promotion['step'] <= $client['loyalty_point'])
+                                        <option value="{{ $promotion['reduction'] }}" id="discount_{{ $promotion['id'] }}">-{{ $promotion['reduction'] }} €</option>
+                                    @endif
+                                @endforeach
                             @endif
-                        @endforeach
-                    </select><br><br>
-                    <label class="col-form-label">{{ trans('client/order.dishes') }}</label>
-                    <div class="table-responsive">
-                        <table class="table table-hover table-striped table-bordered table-dark"
-                               style="width: 100%">
-                            <thread>
-                                <tr>
-                                    <th scope="col">{{ trans('dish.actions') }}</th>
-                                    <th scope="col">{{ trans('client/order.quantity_ordered') }}</th>
-                                    <th scope="col">{{ trans('client/order.line_price') }}</th>
-                                    <th scope="col">{{ trans('dish.name') }}</th>
-                                </tr>
-                            </thread>
-                            <tbody id="shopCartContent">
+                        </select><br><br>
+                        <label class="col-form-label">{{ trans('client/order.dishes') }}</label>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped table-bordered table-dark"
+                                   style="width: 100%">
+                                <thread>
+                                    <tr>
+                                        <th scope="col">{{ trans('dish.actions') }}</th>
+                                        <th scope="col">{{ trans('client/order.quantity_ordered') }}</th>
+                                        <th scope="col">{{ trans('client/order.line_price') }}</th>
+                                        <th scope="col">{{ trans('dish.name') }}</th>
+                                    </tr>
+                                </thread>
+                                <tbody id="shopCartContent">
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-light_blue orderBtn">{{ trans('client/order.order_btn') }}<p id="orderBtnId" style="margin-bottom: 5px"></p></button>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <button class="btn btn-light_blue orderBtn">{{ trans('client/order.order_btn') }}<p id="orderBtnId" style="margin-bottom: 5px"></p></button>
+            </div>
+        @else
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-body">
+                        {{ trans('client/order.to_order_connection_require') }}
+                    </div>
                 </div>
             </div>
-        </div>
+        @endif
     </div>
 @endsection
 

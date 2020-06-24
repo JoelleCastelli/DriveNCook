@@ -2,6 +2,7 @@
 
 return [
     'title' => 'Your purchase',
+    'history_title' => 'Your purchases history',
 
     'back_sales_history' => 'History',
 

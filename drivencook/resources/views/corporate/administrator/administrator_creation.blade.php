@@ -55,22 +55,6 @@
                                    maxlength="100">
                         </div>
 
-                        <div class="form-group">
-                            <label for="password">{{ trans('administrator/creation.password') }}</label>
-                            <input type="password" name="password" id="password"
-                                   placeholder="{{ trans('administrator/creation.set_password') }}"
-                                   class="form-control"
-                                   maxlength="100">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password_confirm">{{ trans('administrator/creation.password_confirm') }}</label>
-                            <input type="password" name="password_confirm" id="password_confirm"
-                                   placeholder="{{ trans('administrator/creation.set_password_confirm') }}"
-                                   class="form-control"
-                                   maxlength="100">
-                        </div>
-
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                         <div class="form-group">

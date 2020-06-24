@@ -23,11 +23,6 @@ class OrderController extends Controller
     use TruckTools;
     use StockTools;
 
-    public function __construct()
-    {
-        $this->middleware(AuthClient::class);
-    }
-
     public function truck_location_list()
     {
         $trucks = Truck::where('functional', true)
@@ -47,6 +42,7 @@ class OrderController extends Controller
     {
         $truck = Truck::whereKey($truck_id)
             ->with('user')
+            ->with('location')
             ->first();
 
         if(!empty($truck)) {
@@ -62,11 +58,10 @@ class OrderController extends Controller
 
         $fidelity_step = '';
 
-        if(!empty($stocks)) {
+        if(!empty($stocks) && !empty($stocks[0])) {
             $stocks = $stocks->toArray();
 
-            $fidelity_step = FidelityStep::where('user_id', $stocks[0]['user']['id'])
-                ->orderBy('reduction')
+            $fidelity_step = FidelityStep::orderBy('reduction')
                 ->get();
 
             if(!empty($fidelity_step)) {
@@ -84,7 +79,8 @@ class OrderController extends Controller
         return view('client.order.client_order')
             ->with('stocks', $stocks)
             ->with('promotions', $fidelity_step)
-            ->with('client', $client);
+            ->with('client', $client)
+            ->with('truck', $truck);
     }
 
     public function check_order_array($array): bool
@@ -167,6 +163,11 @@ class OrderController extends Controller
                     if($quantity > 0) {
                         SoldDish::insert($sold_dish);
                     }
+
+                    FranchiseeStock::where([
+                        ['user_id', $userId],
+                        ['dish_id', $dishId]
+                    ])->decrement('quantity', $quantity);
                 }
 
                 $subPoint = 0;
@@ -216,6 +217,7 @@ class OrderController extends Controller
     {
         $sales = Sale::where('user_client', $this->get_connected_user()['id'])
             ->with('sold_dishes')
+            ->orderBy('date', 'dsc')
             ->get();
 
         if(!empty($sales)) {
@@ -277,12 +279,18 @@ class OrderController extends Controller
 
                 if (!empty($sold_dishes)) {
                     foreach ($sold_dishes as $sold_dish) {
+                        FranchiseeStock::where([
+                            ['user_id', $sale->user_franchised],
+                            ['dish_id', $sold_dish->dish_id]
+                        ])->increment('quantity', $sold_dish->quantity);
+
                         SoldDish::where([
                             ['dish_id', $sold_dish->dish_id],
                             ['sale_id', $sale->id]
                         ])->delete();
                     }
                 }
+
                 Sale::whereKey($sale->id)
                     ->delete();
 

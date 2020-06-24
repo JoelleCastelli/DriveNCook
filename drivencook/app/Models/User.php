@@ -19,7 +19,7 @@ class User extends Model implements Authenticatable
      */
 
     protected $fillable = [
-        'lastname', 'firstname', 'birthdate','telephone', 'pseudo_id', 'email', 'role', 'driving_licence', 'social_security', 'password',
+        'lastname', 'firstname', 'birthdate', 'telephone', 'pseudo_id', 'email', 'role', 'driving_licence', 'social_security', 'password', 'password_token'
     ];
 
     /**
@@ -59,9 +59,9 @@ class User extends Model implements Authenticatable
     public function last_paid_invoice_fee()
     {
         return $this->hasOne(Invoice::class, 'user_id')
-                    ->where('status', 'Payée')
-                    ->where('monthly_fee', 1)
-                    ->orderByDesc('id');
+            ->where('status', 'Payée')
+            ->where('monthly_fee', 1)
+            ->orderByDesc('id');
     }
 
     public function truck()

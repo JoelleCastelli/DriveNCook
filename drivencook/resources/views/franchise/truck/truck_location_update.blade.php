@@ -20,7 +20,7 @@
                                     @foreach($location_list as $location)
                                         <option {{$location['id'] == $truck['location_id']?'selected':''}}
                                                 value={{ $location['id'] }}>
-                                            {{ $location['name'] .' - '. $location['address'].' ('.$location['city']['postcode'].')' }}
+                                            {{ $location['name'] .' - '. $location['address'].' ('.$location['postcode'].')' }}
                                         </option>
                                     @endforeach
                                 </select>

@@ -11,7 +11,9 @@
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "devDependencies": {
-    "@fortawesome/fontawesome-free": "^5.13.0",
+    "@fortawesome/fontawesome-free": "^5.13.1",
+    "@fullcalendar/bootstrap": "~5.0.0",
+    "@fullcalendar/core": "~5.0.0",
     "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
     "child_process": "^1.0.2",
@@ -20,19 +22,22 @@
     "datatables.net-bs4": "^1.10.21",
     "font-awesome": "^4.7.0",
     "fs": "0.0.1-security",
-    "jquery": "^3.5.1",
+    "jquery": "3.5.0",
     "jquery-ui": "^1.12.1",
     "jsdom": "^16.2.2",
-    "laravel-mix": "^1.0",
+    "laravel-mix": "^5.0.4",
     "lodash": "^4.17.4",
     "net": "^1.0.2",
     "popper.js": "^1.16.1",
-    "startbootstrap-simple-sidebar": "^5.1.1",
+    "resolve-url-loader": "^3.1.0",
+    "sass": "^1.26.9",
+    "sass-loader": "^8.0.2",
+    "startbootstrap-simple-sidebar": "^5.1.2",
     "tls": "0.0.1",
-    "vue": "^2.5.7"
+    "vue": "^2.5.7",
+    "vue-template-compiler": "^2.6.11"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.13.0",
     "chart.js": "^2.9.3",
     "child_process": "^1.0.2",
     "font-awesome": "^4.7.0",
@@ -40,7 +45,6 @@
     "jquery-ui": "^1.12.1",
     "jsdom": "^16.2.2",
     "net": "^1.0.2",
-    "startbootstrap-simple-sidebar": "^5.1.1",
     "tls": "0.0.1"
   }
 }

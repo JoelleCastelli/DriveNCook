@@ -1,6 +1,6 @@
 @extends('client.layout_client')
 @section('title')
-    {{ trans('client/order.title') }}
+    {{ trans('client/sale.history_title') }}
 @endsection
 @section('style')
     <style>
