@@ -1,10 +1,10 @@
 @extends('corporate.layout_corporate')
 @section('title')
-    {{trans('corporate.event_list')}}
+    {{trans('event.event_list')}}
 @endsection
 
 @section('style')
-{{--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.1/fullcalendar.min.css"/>--}}
+    {{--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.1/fullcalendar.min.css"/>--}}
 @endsection
 @section('content')
 
@@ -40,11 +40,11 @@
                     <thead>
                     <tr>
                         <th>Type</th>
-                        <th>{{trans('corporate.title')}}</th>
-                        <th>{{trans('corporate.description')}}</th>
-                        <th>{{trans('corporate.city')}}</th>
-                        <th>{{trans('corporate.start')}}</th>
-                        <th>{{trans('corporate.end')}}</th>
+                        <th>{{trans('event.title')}}</th>
+                        <th>{{trans('event.description')}}</th>
+                        <th>{{trans('event.city')}}</th>
+                        <th>{{trans('event.start')}}</th>
+                        <th>{{trans('event.end')}}</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -52,10 +52,10 @@
 
                     @foreach($event_list as $event)
                         <tr id="{{'row_'.$event['id']}}">
-                            <td>{{trans('corporate.'.$event['type'])}}</td>
+                            <td>{{trans('event.event_'.$event['type'])}}</td>
                             <td>{{$event['title']}}</td>
                             <td>{{strlen($event['description']) > 100 ? substr($event['description'], 0, 100) . '...' : $event['description']}}</td>
-                            <td>{{empty($event['location']['city'])? trans('franchisee.not_specified_f') : $event['location']['city']}}</td>
+                            <td>{{empty($event['location']['city'])? trans('event.location_not_specified') : $event['location']['city']}}</td>
                             <td>{{$event['date_start']}}</td>
                             <td>{{$event['date_end']}}</td>
                             <td>
@@ -79,7 +79,7 @@
     <div class="col-12 col-xl-8 card mt-5" id="event-list">
         <div class="card-header">
             <h2>
-                {{trans('corporate.calendar')}}
+                {{trans('event.calendar')}}
             </h2>
         </div>
         <div class="card-body">
@@ -89,8 +89,8 @@
 @endsection
 
 @section('script')
-{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>--}}
-{{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.1/fullcalendar.min.js"></script>--}}
+    {{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"></script>--}}
+    {{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.1/fullcalendar.min.js"></script>--}}
 
     {!! $calendar_details->script() !!}
     <script type="text/javascript">

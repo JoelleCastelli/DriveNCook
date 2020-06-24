@@ -11,20 +11,21 @@
                     <div class="card-body">
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item bg-dark">
-                                <b>{{trans('corporate.start')}} : </b>
+                                <b>{{trans('event.start')}} : </b>
                                 {{DateTime::createFromFormat('Y-m-d',$news['date_start'])->format('d/m/Y')}}
                             </li>
                             <li class="list-group-item bg-dark">
-                                <b>{{trans('corporate.end')}} : </b>
+                                <b>{{trans('event.end')}} : </b>
                                 {{DateTime::createFromFormat('Y-m-d',$news['date_end'])->format('d/m/Y')}}
                             </li>
                             @if (!empty($news['location']))
-                                <li class="list-group-item bg-dark"><b>{{trans('truck.location')}}
+                                <li class="list-group-item bg-dark"><b>{{trans('event.location')}}
                                         : {{$news['location']['name']}}</b>
                                     - {{$news['location']['address'].' - '.$news['location']['city'].' ('.$news['location']['postcode'].')'}}
                                 </li>
                             @endif
-                            <li class="list-group-item text-justify bg-dark"><b>{{trans('corporate.description')}} : </b><br>
+                            <li class="list-group-item text-justify bg-dark"><b>{{trans('event.description')}}
+                                    : </b><br>
                                 {{$news['description']}}
                             </li>
                         </ul>

@@ -1,13 +1,13 @@
 @extends('corporate.layout_corporate')
 @section('title')
-    {{trans('corporate.event_update')}}
+    {{trans('event.event_update')}}
 @endsection
 
 @section('content')
     <div class="col-8 col-xl-6 mt-5">
         <div class="card">
             <div class="card-header">
-                <h2>{{trans('corporate.event_type').' : '.trans('corporate.event_'.$event['type'])}}</h2>
+                <h2>{{trans('event.event_type').' : '.trans('event.event_'.$event['type'])}}</h2>
             </div>
             <div class="card-body">
                 <form method="post" action="{{route('corporate.event_update_submit')}}">
@@ -16,7 +16,7 @@
 
                     <div class="form-group">
                         <label for="title">
-                            {{trans('corporate.title')}}
+                            {{trans('event.title')}}
                         </label>
                         <input type="text" class="form-control" name="title" id="title" maxlength="100"
                                value="{{$event['title']}}" required>
@@ -29,10 +29,10 @@
                     </div>
                     <div class="form-group">
                         <label for="date_start">
-                            {{trans('corporate.start')}}
+                            {{trans('event.start')}}
                         </label>
                         <input type="date" name="date_start" id="date_start" class="form-control"
-                               min="{{date('Y-m-d')}}" value="{{$event['date_start']}}" required>
+                               value="{{$event['date_start']}}" required>
                         @if ($errors->has('date_start'))
                             <span class="badge-danger">
                                     {{$errors->first('date_start')}}
@@ -41,10 +41,10 @@
                     </div>
                     <div class="form-group">
                         <label for="date_end">
-                            {{trans('corporate.end')}}
+                            {{trans('event.end')}}
                         </label>
                         <input type="date" name="date_end" id="date_end" class="form-control"
-                               min="{{date('Y-m-d')}}" value="{{$event['date_end']}}" required>
+                               value="{{$event['date_end']}}" required>
                         @if ($errors->has('date_end'))
                             <span class="badge-danger">
                                     {{$errors->first('date_end')}}
@@ -53,9 +53,9 @@
 
                     </div>
                     <div class="form-group">
-                        <label for="location_id">{{trans('truck.location')}}</label><br>
+                        <label for="location_id">{{trans('event.location')}}</label><br>
                         <select name="location_id" id="location_id" class="form-control selectsearch">
-                            <option value="">{{trans('corporate.no-address')}}</option>
+                            <option value="">{{trans('event.no-address')}}</option>
                             @foreach($location_list as $location)
                                 <option value="{{$location['id']}}" {{$location['id'] == $event['location_id'] ? 'selected' : ''}}>
                                     {{$location['address'].' - '.$location['city'].' ('.$location['name'].')'}}
@@ -70,7 +70,7 @@
 
                     </div>
                     <div class="form-group">
-                        <label for="description">Description</label>
+                        <label for="description">{{trans('event.description')}}</label>
                         <textarea id="description" name="description" class="form-control"
                                   required>{{$event['description']}}</textarea>
                         @if ($errors->has('description'))
@@ -81,7 +81,7 @@
                     </div>
 
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary">{{trans('corporate.update_event')}}</button>
+                        <button type="submit" class="btn btn-primary">{{trans('event.event_update')}}</button>
                     </div>
                 </form>
             </div>

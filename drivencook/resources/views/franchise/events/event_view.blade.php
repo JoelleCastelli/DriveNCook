@@ -12,7 +12,7 @@
                     <h2>{{trans('event.event_info')}}</h2>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><b>Type : </b>{{trans('event.'.$event['type'])}}</li>
+                    <li class="list-group-item"><b>{{trans('event.event_type')}} : </b>{{trans('event.event_'.$event['type'])}}</li>
                     <li class="list-group-item">
                         <b>{{trans('event.start')}} : </b>
                         {{DateTime::createFromFormat('Y-m-d',$event['date_start'])->format('d/m/Y')}}
@@ -22,7 +22,7 @@
                         {{DateTime::createFromFormat('Y-m-d',$event['date_end'])->format('d/m/Y')}}
                     </li>
                     @if (!empty($event['location']))
-                        <li class="list-group-item"><b>{{trans('truck.location')}} : {{$event['location']['name']}}</b>
+                        <li class="list-group-item"><b>{{trans('event.location')}} : {{$event['location']['name']}}</b>
                             - {{$event['location']['address'].' - '.$event['location']['city'].' ('.$event['location']['postcode'].')'}}
                         </li>
                     @endif
