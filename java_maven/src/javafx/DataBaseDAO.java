@@ -2,14 +2,13 @@ package javafx;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.ArrayList;
 
 public class DataBaseDAO {
-    private String url = "jdbc:mysql://134.122.107.73:3306/drivencook";
-    private String user = "mysql";
-    private String db_password = "ESGIgroupe6";
+    private final String url = "jdbc:mysql://134.122.107.73:3306/drivencook";
+    private final String user = "mysql";
+    private final String dbPassword = "ESGIgroupe6";
     private Connection cn = null;
     private PreparedStatement ps = null;
     private Statement st = null;
@@ -22,7 +21,7 @@ public class DataBaseDAO {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            cn = DriverManager.getConnection(url, user, db_password);
+            cn = DriverManager.getConnection(url, user, dbPassword);
 
             st = cn.createStatement();
 
@@ -66,7 +65,7 @@ public class DataBaseDAO {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            cn = DriverManager.getConnection(url, user, db_password);
+            cn = DriverManager.getConnection(url, user, dbPassword);
 
             st = cn.createStatement();
 
@@ -101,17 +100,17 @@ public class DataBaseDAO {
     }
 
     public User Login(String email, String password) {
-        String hashed_password = DigestUtils.sha256Hex(password);
+        String hashedPassword = DigestUtils.sha256Hex(password);
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            cn = DriverManager.getConnection(url, user, db_password);
+            cn = DriverManager.getConnection(url, user, dbPassword);
 
             String sql = "SELECT id, email,firstname,lastname,role FROM user WHERE email = ? AND password = ? AND role IN ('Administrateur', 'Corporate')";
             ps = cn.prepareStatement(sql);
             ps.setString(1, email);
-            ps.setString(2, hashed_password);
+            ps.setString(2, hashedPassword);
 
             rs = ps.executeQuery();
 
@@ -144,16 +143,16 @@ public class DataBaseDAO {
         return null;
     }
 
-    public int updateLoyaltyPoint(int user_id, int loyalty_point) {
+    public int updateLoyaltyPoint(int userId, int loyaltyPoint) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            cn = DriverManager.getConnection(url, user, db_password);
+            cn = DriverManager.getConnection(url, user, dbPassword);
 
             String sql = "UPDATE user SET loyalty_point = ? WHERE id = ?";
             ps = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, loyalty_point);
-            ps.setInt(2, user_id);
+            ps.setInt(1, loyaltyPoint);
+            ps.setInt(2, userId);
 
             if (ps.executeUpdate() == 1) {
                 return 1;
@@ -173,17 +172,17 @@ public class DataBaseDAO {
         return 0;
     }
 
-    public int addFidelityStep(int step, int reduction, int user_id) {
+    public int addFidelityStep(int step, int reduction, int userId) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            cn = DriverManager.getConnection(url, user, db_password);
+            cn = DriverManager.getConnection(url, user, dbPassword);
 
             String sql = "insert into fidelity_step (step, reduction, user_id) VALUES (?,?,?)";
             ps = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, step);
             ps.setInt(2, reduction);
-            ps.setInt(3, user_id);
+            ps.setInt(3, userId);
 
             if (ps.executeUpdate() == 1) {
                 ResultSet rs = ps.getGeneratedKeys();
@@ -210,7 +209,7 @@ public class DataBaseDAO {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            cn = DriverManager.getConnection(url, user, db_password);
+            cn = DriverManager.getConnection(url, user, dbPassword);
 
             String sql = "DELETE FROM fidelity_step WHERE id = ?";
             ps = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);

@@ -5,18 +5,18 @@ import javafx.beans.property.StringProperty;
 
 public class Promotion {
     private final StringProperty id;
-    private final StringProperty user_id;
-    private final StringProperty promo_type;
+    private final StringProperty userId;
+    private final StringProperty promoType;
     private final StringProperty value;
 
     public Promotion() {
         this(null, null, null, null);
     }
 
-    public Promotion(String id, String user_id, String promo_type, String value) {
+    public Promotion(String id, String userId, String promoType, String value) {
         this.id = new SimpleStringProperty(id);
-        this.user_id = new SimpleStringProperty(user_id);
-        this.promo_type = new SimpleStringProperty(promo_type);
+        this.userId = new SimpleStringProperty(userId);
+        this.promoType = new SimpleStringProperty(promoType);
         this.value = new SimpleStringProperty(value);
     }
 
@@ -32,28 +32,28 @@ public class Promotion {
         this.id.set(id);
     }
 
-    public String getUser_id() {
-        return user_id.get();
+    public String getUserId() {
+        return userId.get();
     }
 
-    public StringProperty user_idProperty() {
-        return user_id;
+    public StringProperty userIdProperty() {
+        return userId;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id.set(user_id);
+    public void setUserId(String userId) {
+        this.userId.set(userId);
     }
 
-    public String getPromo_type() {
-        return promo_type.get();
+    public String getPromoType() {
+        return promoType.get();
     }
 
-    public StringProperty promo_typeProperty() {
-        return promo_type;
+    public StringProperty promoTypeProperty() {
+        return promoType;
     }
 
-    public void setPromo_type(String promo_type) {
-        this.promo_type.set(promo_type);
+    public void setPromoType(String promoType) {
+        this.promoType.set(promoType);
     }
 
     public String getValue() {

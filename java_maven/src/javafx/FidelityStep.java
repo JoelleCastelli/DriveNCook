@@ -7,17 +7,17 @@ public class FidelityStep implements Comparable<FidelityStep> {
     private final StringProperty id;
     private final StringProperty step;
     private final StringProperty reduction;
-    private final StringProperty user_id;
+    private final StringProperty userId;
 
     public FidelityStep() {
         this(null, null, null, null);
     }
 
-    public FidelityStep(String id, String step, String reduction, String user_id) {
+    public FidelityStep(String id, String step, String reduction, String userId) {
         this.id = new SimpleStringProperty(id);
         this.step = new SimpleStringProperty(step);
         this.reduction = new SimpleStringProperty(reduction);
-        this.user_id = new SimpleStringProperty(user_id);
+        this.userId = new SimpleStringProperty(userId);
     }
 
     public String getId() {
@@ -56,16 +56,16 @@ public class FidelityStep implements Comparable<FidelityStep> {
         this.reduction.set(reduction);
     }
 
-    public String getUser_id() {
-        return user_id.get();
+    public String getUserId() {
+        return userId.get();
     }
 
-    public StringProperty user_idProperty() {
-        return user_id;
+    public StringProperty userIdProperty() {
+        return userId;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id.set(user_id);
+    public void setUserId(String userId) {
+        this.userId.set(userId);
     }
 
     @Override

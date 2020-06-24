@@ -120,7 +120,7 @@ public class MainApp extends Application {
     }
 
     public void updateUserLoyaltyPoint(String userId, String loyaltyPoints) {
-        userList.get(getIndexOfUserListById(userId)).setLoyalty_point(loyaltyPoints);
+        userList.get(getIndexOfUserListById(userId)).setLoyaltyPoint(loyaltyPoints);
     }
 
     public int getIndexOfUserListById(String id) {
