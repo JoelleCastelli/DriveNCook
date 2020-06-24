@@ -152,7 +152,7 @@
             @if (strpos(url()->current(), route('franchise.event_view', ['event_id'=>''])) !== false)
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('franchise.event_list')}}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('event.back_to_event_list')}}
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('event.back_event_list')}}
                     </a>
                 </li>
             @endif

@@ -18,12 +18,12 @@
                        style="width: 100%">
                     <thead>
                     <tr>
-                        <th>Type</th>
-                        <th>{{trans('client/event.title')}}</th>
-                        <th>{{trans('client/event.description')}}</th>
-                        <th>{{trans('client/event.city')}}</th>
-                        <th>{{trans('client/event.start')}}</th>
-                        <th>{{trans('client/event.end')}}</th>
+                        <th>{{trans('event.event_type')}}</th>
+                        <th>{{trans('event.title')}}</th>
+                        <th>{{trans('event.description')}}</th>
+                        <th>{{trans('event.city')}}</th>
+                        <th>{{trans('event.start')}}</th>
+                        <th>{{trans('event.end')}}</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -31,10 +31,10 @@
 
                     @foreach($event_list as $event)
                         <tr id="{{'row_'.$event['id']}}">
-                            <td>{{trans($GLOBALS['EVENT_TYPE'][$event['type']])}}</td>
+                            <td>{{trans('event.event_'.$event['type'])}}</td>
                             <td>{{$event['title']}}</td>
                             <td>{{strlen($event['description']) > 100 ? substr($event['description'], 0, 100) . '...' : $event['description']}}</td>
-                            <td>{{empty($event['location']['city'])? trans('franchisee.not_specified_f') : $event['location']['city']}}</td>
+                            <td>{{empty($event['location']['city'])? trans('event.no-address') : $event['location']['city']}}</td>
                             <td>{{$event['date_start']}}</td>
                             <td>{{$event['date_end']}}</td>
                             <td><a href="{{route('client.event_view',['event_id'=>$event['id']])}}">
