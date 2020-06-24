@@ -39,9 +39,6 @@
                     @foreach($users as $user)
                         <tr id="{{ 'row_'.$user['id'] }}">
                             <td>
-                                <a href="{{ route('user_view',['id'=>$user['id']]) }}">
-                                    <button class="text-light fa fa-eye"></button>
-                                </a>
                                 <button onclick="deleteUser({{ $user['id'] }})"
                                         class="text-light fa fa-trash ml-2"></button>
 

@@ -4,141 +4,244 @@
     Gestion des emplacements camions
 @endsection
 
+@section('style')
+    <style>
+        .pac-container {
+            background-color: #FFF;
+            z-index: 20;
+            position: fixed;
+            display: inline-block;
+            float: left;
+        }
+        .modal{
+            z-index: 20;
+        }
+        .modal-backdrop{
+            z-index: 10;
+        }​
+    </style>
+@endsection
+
 @section('content')
     <div class="row">
-        <div class="col-12 col-md-8">
+        <div class="col-12 col-md-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h2>Liste des emplacements camions</h2>
+                    <h2>Ajouter une nouvelle adresse</h2>
                 </div>
                 <div class="card-body">
-                    <table id="all_locations" class="table table-hover table-striped table-bordered table-dark"
-                           style="width: 100%">
-                        <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Adresse</th>
-                            <th>Ville</th>
-                            <th>Pays</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($location_list as $location)
-                            <tr id="{{'row_'.$location['id']}}">
-                                <td>{{$location['name']}}</td>
-                                <td>{{$location['address']}}</td>
-                                <td>{{empty($location['city'])?'Non renseigné':$location['city']['name'].' ('.$location['city']['postcode'].')'}}</td>
-                                <td>{{empty($location['city']['country'])?'Non renseigné':$location['city']['country']['name']}}</td>
-                                <td>
-                                    <button onclick="onUpdateModal('{{$location['id']}}','{{$location['name']}}','{{$location['address']}}','{{$location['city_id']}}')"
-                                            class="fa fa-edit" data-toggle="modal"
-                                            data-target="#formModal"></button>
-                                    <button onclick="onDelete({{$location['id']}})"
-                                            class="fa fa-trash ml-3"></button>
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                <div class="card-footer">
-                    <button type="button" onclick="onCreateModal()" class="btn btn-light_blue" data-toggle="modal"
-                            data-target="#formModal">Ajouter
-                    </button>
+                    <form>
+                        {{csrf_field()}}
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input id="new_location_name_input" class="form-control" type="text" placeholder="Enter a name" required>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <input id="new_location_input" class="form-control" type="text" placeholder="Enter an address" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <input type="hidden" id="map_latitude" value="">
+                        <input type="hidden" id="map_longitude" value="">
+                        <input type="hidden" id="map_address" value="">
+                        <input type="hidden" id="map_city" value="">
+                        <input type="hidden" id="map_postcode" value="">
+                        <input type="hidden" id="map_country" value="">
+                        <button type="button" class="btn btn-primary" id="modalSubmit" onclick="onSubmit('create')">Ajouter</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+
+
+
+    <div class="card mt-5" id="locations-list">
+        <div class="card-header d-flex justify-content-between">
+            <h2>Liste des emplacements camions</h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="all_locations" class="table table-hover table-striped table-bordered table-dark"
+                       style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Adresse</th>
+                        <th>Ville</th>
+                        <th>Pays</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($location_list as $location)
+                        <tr id="{{'row_'.$location['id']}}">
+                            <td>{{ $location['name'] }}</td>
+                            <td>{{ $location['address'] }}</td>
+                            <td>{{ $location['city'] .' ('. $location['postcode'].')' }}</td>
+                            <td>{{ $location['country'] }}</td>
+                            <td>
+                                <button onclick="onUpdateModal('{{ $location['id'] }}','{{ $location['name'] }}',
+                                        '{{ $location['address'] }}','{{ $location['city'] }}','{{ $location['postcode'] }}',
+                                        '{{ $location['country'] }}','{{ $location['latitude'] }}','{{$location['longitude']}}')"
+                                        class="fa fa-edit" data-toggle="modal"
+                                        data-target="#formModal"></button>
+                                <button onclick="onDelete({{ $location['id'] }})" class="fa fa-trash ml-3"></button>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="form">
+        <div class="modal-dialog modal-dialog-centered" role="form">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitle">Modal title</h5>
+                    <h5 class="modal-title" id="modalTitle">Modifier un emplacement</h5>
                     <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form>
-                    {{csrf_field()}}
-                    <input type="hidden" id="formId" name="id" value="">
+                <div class="modal-body">
+                    <form>
+                        {{csrf_field()}}
+                        <input type="hidden" id="formId" name="id" value="">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label for="update_location_name">{{ trans('location.location_name') }} :</label>
+                                        <input type="text" name="update_location_name" id="update_location_name"
+                                               value="" minlength="1" maxlength="30" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label for="update_location_address">{{ trans('location.location_address') }} :</label>
+                                        <input type="text" name="update_location_address" id="update_location_input"
+                                               value=""
+                                               minlength="1"
+                                               maxlength="100"
+                                               class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="formLocationName">{{trans('location.location_name')}} :</label>
-                            <input type="text" name="formLocationName" id="formLocationName"
-                                   value=""
-                                   minlength="1"
-                                   maxlength="30"
-                                   class="form-control">
+                        <input type="hidden" id="map_latitude_update" value="">
+                        <input type="hidden" id="map_longitude_update" value="">
+                        <input type="hidden" id="map_address_update" value="">
+                        <input type="hidden" id="map_city_update" value="">
+                        <input type="hidden" id="map_postcode_update" value="">
+                        <input type="hidden" id="map_country_update" value="">
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                            <button type="button" class="btn btn-primary" id="modalSubmit" onclick="onSubmit('update')">Save changes
+                            </button>
                         </div>
-                        <div class="form-group">
-                            <label for="formLocationAddress">{{trans('location.location_address')}} :</label>
-                            <input type="text" name="formLocationAddress" id="formLocationAddress"
-                                   value=""
-                                   minlength="1"
-                                   maxlength="100"
-                                   class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="formLocationCity">{{trans('city.city_name')}} :</label>
-                            <select type="text" name="formLocationCity" id="formLocationCity" class="form-control"
-                                    required>
-                                @foreach ($city_list as $city)
-                                    <option value="{{$city['id']}}">{{$city['country']['name'].' - '.$city['name']}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                        <button type="button" class="btn btn-primary" id="modalSubmit" onclick="onSubmit()">Save changes
-                        </button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-
 @endsection
+
 @section('script')
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initMap" async defer></script>
+    <script>
+        function initMap() {
+            let options = {
+                componentRestrictions: {country: "FR"},
+                types: ['address']
+            };
+
+            // CREATION AUTOCOMPLETE
+            let input = document.getElementById('new_location_input');
+            let autocomplete = new google.maps.places.Autocomplete(input, options);
+            autocomplete.addListener('place_changed', function() {
+                let place = autocomplete.getPlace();
+                document.getElementById('map_latitude').value = place.geometry.location.lat();
+                document.getElementById('map_longitude').value = place.geometry.location.lng();
+                document.getElementById('map_address').value = place.name;
+                document.getElementById('map_city').value = place.address_components[2].long_name;
+                document.getElementById('map_postcode').value = place.address_components[6].long_name;
+                document.getElementById('map_country').value = place.address_components[5].long_name;
+            });
+
+            // UPDATE AUTOCOMPLETE
+            let update_input = document.getElementById('update_location_input');
+            let update_autocomplete = new google.maps.places.Autocomplete(update_input, options);
+            update_autocomplete.addListener('place_changed', function() {
+                let place = update_autocomplete.getPlace();
+                document.getElementById('map_latitude_update').value = place.geometry.location.lat();
+                document.getElementById('map_longitude_update').value = place.geometry.location.lng();
+                document.getElementById('map_address_update').value = place.name;
+                document.getElementById('map_city_update').value = place.address_components[2].long_name;
+                document.getElementById('map_postcode_update').value = place.address_components[6].long_name;
+                document.getElementById('map_country_update').value = place.address_components[5].long_name;
+            });
+        }
+    </script>
+
     <script type="text/javascript">
         $(document).ready(function () {
             $('#all_locations').DataTable();
         });
 
-        function onCreateModal() {
-            document.getElementById('modalTitle').innerText = 'Ajouter un emplacement';
-            document.getElementById('modalSubmit').innerText = 'Ajouter';
-            document.getElementById('formId').value = '';
-            document.getElementById('formLocationName').value = '';
-            document.getElementById('formLocationAddress').value = '';
-            document.getElementById('formLocationCity').value = '';
-        }
-
-        function onUpdateModal(id, name, address, city_id) {
-            document.getElementById('modalTitle').innerText = 'Modifier un emplacement';
-            document.getElementById('modalSubmit').innerText = 'Modifier';
+        function onUpdateModal(id, name, address, city, postcode, country, latitude, longitude) {
             document.getElementById('formId').value = id;
-            document.getElementById('formLocationName').value = name;
-            document.getElementById('formLocationAddress').value = address;
-            document.getElementById('formLocationCity').value = city_id;
+            document.getElementById('update_location_name').value = name;
+            document.getElementById('update_location_input').value = address + ', ' + city + ', ' + country;
+            document.getElementById('map_latitude_update').value = latitude;
+            document.getElementById('map_longitude_update').value = longitude;
+            document.getElementById('map_address_update').value = address;
+            document.getElementById('map_city_update').value = city;
+            document.getElementById('map_postcode_update').value = postcode;
+            document.getElementById('map_country_update').value = country;
         }
 
-        function onSubmit() {
-            const id = document.getElementById('formId').value;
-            const name = document.getElementById('formLocationName').value;
-            const address = document.getElementById('formLocationAddress').value;
-            const city_id = document.getElementById('formLocationCity').value;
+        let id, name, address, city, postcode, country, lat, lon;
+        function onSubmit(value) {
+            if(value === 'create') {
+                id = 0;
+                name = document.getElementById('new_location_name_input').value;
+                address = document.getElementById('map_address').value;
+                city = document.getElementById('map_city').value;
+                postcode = document.getElementById('map_postcode').value;
+                country = document.getElementById('map_country').value;
+                lat = document.getElementById('map_latitude').value;
+                lon = document.getElementById('map_longitude').value;
+            } else if (value === 'update') {
+                id = document.getElementById('formId').value;
+                name = document.getElementById('update_location_name').value;
+                address = document.getElementById('map_address_update').value;
+                city = document.getElementById('map_city_update').value;
+                postcode = document.getElementById('map_postcode_update').value;
+                country = document.getElementById('map_country_update').value;
+                lat = document.getElementById('map_latitude_update').value;
+                lon = document.getElementById('map_longitude_update').value;
+            }
 
             if (!isNaN(id)) {
                 $.ajax({
-                    url: '{{route('location_submit')}}',
+                    url: '{{ route('location_submit') }}',
                     method: "post",
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    data: {'id': id, 'name': name, 'address': address, 'city_id': city_id},
+                    data: {'id': id, 'name': name,
+                        'address': address, 'city': city, 'postcode': postcode, 'country': country,
+                        'lat': lat, 'lon': lon },
                     success: function (data) {
                         const dataJ = JSON.parse(data);
                         if (dataJ.response === "success") {
@@ -147,12 +250,14 @@
                                 let tbody = document.getElementsByTagName('tbody')[0];
                                 tbody.innerHTML =
                                     '<tr id="row_' + dataJ.id + '">' +
-                                    '<td>' + dataJ.name + '</td>' +
-                                    '<td>' + dataJ.address + '</td>' +
-                                    '<td>' + dataJ.city + '</td>' +
-                                    '<td>' + dataJ.country + '</td>' +
+                                    '<td>' + dataJ.name       + '</td>' +
+                                    '<td>' + dataJ.address    + '</td>' +
+                                    '<td>' + dataJ.city +' (' + dataJ.postcode + ')'      + '</td>' +
+                                    '<td>' + dataJ.country    + '</td>' +
                                     '<td>' +
-                                    '<button onclick="onUpdateModal(' + dataJ.id + ',' + dataJ.name + ',' + dataJ.address + ',' + dataJ.city_id + ')" class="fa fa-edit" data-toggle="modal" data-target="#formModal"></button>' +
+                                    '<button onclick="onUpdateModal(' + dataJ.id + ',' + dataJ.name + ',' + dataJ.address
+                                    + ',' + dataJ.city + ',' + dataJ.postcode + ',' + dataJ.country + ',' + dataJ.latitude + dataJ.longitude + ')"' +
+                                    'class="fa fa-edit" data-toggle="modal" data-target="#formModal"></button>' +
                                     '<button onclick="onDelete(' + dataJ.id + ')" class="fa fa-trash ml-3"></button>' +
                                     '</td>' +
                                     '</tr>' + tbody.innerHTML;
@@ -174,8 +279,8 @@
                             alert("Une erreur est survenue, veuillez raffraichir la page");
                         }
                     },
-                    error: function () {
-                        alert("Une erreur est survenue, veuillez raffraichir la page");
+                    error: function (error) {
+                        alert(error.responseText);
                     }
                 })
             }

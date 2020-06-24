@@ -1,31 +1,24 @@
 @extends('corporate.layout_corporate')
-@section('style')
-    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css"
-          rel="stylesheet">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-@endsection
+
 @section('title')
     {{ trans('warehouse_update.title') }}
 @endsection
 
-
 @section('content')
     <div class="row">
         <div class="col-12 col-md-6">
-        @if(Session::has('success'))
-            <div class="alert-success mb-3">{{ Session::get('success') }}</div>
-        @endif
+            @if(Session::has('success'))
+                <div class="alert-success mb-3">{{ Session::get('success') }}</div>
+            @endif
 
-        @if(Session::has('error'))
-            <div class="alert-danger mb-3">
-                {{ trans('warehouse_update.update_warehouse_error') }}
-                @foreach(Session::get('error') as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </div>
-        @endif
+            @if(Session::has('error'))
+                <div class="alert-danger mb-3">
+                    {{ trans('warehouse_update.update_warehouse_error') }}
+                    @foreach(Session::get('error') as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </div>
+            @endif
         </div>
     </div>
     <div class="row">
@@ -38,30 +31,22 @@
 
                         <div class="form-group">
                             <label for="name">{{ trans('warehouse_creation.name') }}</label>
-                            <input type="text" name="name" id="name" value="{{$warehouse['name']}}"
+                            <input type="text" name="name" id="name" value="{{ $warehouse['name'] }}"
                                    class="form-control"
                                    maxlength="30">
                         </div>
 
-
                         <div class="form-group">
-                            <label for="address">{{ trans('warehouse_creation.address') }}</label>
-                            <input type="text" name="address" id="address" value="{{$warehouse['address']}}"
-                                   class="form-control"
-                            maxlength="30">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="city">{{ trans('warehouse_creation.city') }}</label>
+                            <label for="city">{{ trans('warehouse.select_existing_location') }}<b>*</b></label>
                             <div class="input-group mb-3">
-                                <select class="custom-select" name="city" id="city">
-                                    @foreach($cities as $city)
-                                        <option {{$city['id'] == $warehouse['city_id']?'selected':''}}
-                                                value={{ $city['id'] }}>{{ $city['name'] }}
-                                            - {{ $city['postcode'] }}</option>
+                                <select class="custom-select" name="location_id" id="location_id">
+                                    @foreach($locations as $location)
+                                        <option {{ $location['id'] == $warehouse['location_id'] ? 'selected' : '' }}
+                                                value={{ $location['id'] }}>{{ $location['name'] }} - {{ $location['address'] }} {{ $location['postcode'] }} {{ $location['city'] }}</option>
                                     @endforeach
                                 </select>
                             </div>
+                            <p><b>*</b>: <i>{{ trans('warehouse.select_existing_location_tooltip') }}</i></p>
                         </div>
 
                         <div class="form-group">
@@ -73,13 +58,4 @@
             </div>
         </div>
     </div>
-
-@endsection
-
-@section('script')
-    <!--
-    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
-    -->
 @endsection

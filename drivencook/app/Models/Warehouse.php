@@ -9,12 +9,17 @@ class Warehouse extends Model
     protected $table = 'warehouse';
 
     protected $fillable = [
-        'name', 'address', 'city_id'
+        'name', 'address', 'city_id', 'location_id'
     ];
 
     public function city()
     {
         return $this->belongsTo(City::class, 'city_id');
+    }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class, 'location_id');
     }
 
     public function stock()

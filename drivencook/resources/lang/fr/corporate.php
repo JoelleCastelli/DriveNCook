@@ -28,6 +28,8 @@ return [
     /**********/
     'my_account'=>'Mon compte',
 
+    // Admin
+    'admin_page' => 'Administration',
     // Warehouses
     'warehouses' => 'Entrepôts',
     'add_warehouse' => 'Ajouter un entrepôt',

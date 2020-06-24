@@ -7,9 +7,13 @@ return [
     'address' => 'Address',
     'submit' => 'Add',
 
-    'empty_fields' => 'All fields must be completed',
-    'name_error' => 'Name invalid format',
+    // Errors
+    'enter_name' => 'Enter a warehouse name',
+    'empty_fields' => 'All fields must be completed (and do not add more!)',
+    'name_error' => 'Warehouse name should not be more than 30 characters',
     'city_error' => 'City invalid format',
+    'existing_location' => 'This address is already associated to the following location: ":location_name"',
+    'existing_location_name' => 'A location with the warehouse name already exists in the database',
     'address_error' => 'Address invalid format',
     'duplicate_entry_error' => 'Warehouse already in database',
 

@@ -7,9 +7,13 @@ return [
     'address' => 'Adresse',
     'submit' => 'Ajouter',
 
-    'empty_fields' => 'Tous les champs doivent être remplis',
-    'name_error' => 'Nom : format invalide',
+    // Errors
+    'enter_name' => 'Ajoutez un nom à l\'entrepôt',
+    'empty_fields' => 'Tous les champs doivent être remplis (et n\'en ajoutez pas plus !)',
+    'name_error' => 'Le nom de l\'entrepôt ne doit pas dépasser 30 caractères',
     'city_error' => 'Ville : format invalide',
+    'existing_location' => 'Cette adresse est déjà utilisée par l\'emplacement suivant : ":location_name"',
+    'existing_location_name' => 'Il existe déjà un emplacement au nom de l\'entrepôt dans la base de données',
     'address_error' => 'Adresse : format invalide',
     'duplicate_entry_error' => 'Cet entrepôt est déjà dans la base de données',
 

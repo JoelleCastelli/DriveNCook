@@ -11,10 +11,16 @@
                     <h2>{{ trans('warehouse.details_section') }}</h2>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><b>{{ trans('warehouse.name') }} : </b>{{ $warehouse['name'] }}</li>
-                    <li class="list-group-item"><b>{{ trans('warehouse.address') }} : </b>{{ $warehouse['address'] }}</li>
-                    <li class="list-group-item"><b>{{ trans('warehouse.city') }} : </b>{{ empty($warehouse['city'])?
-                                        trans('warehouse.unknown'):$warehouse['city']['name'] }}</li>
+                    <li class="list-group-item">
+                        <b>{{ trans('warehouse.name') }} : </b>{{ $warehouse['name'] }}
+                    </li>
+                    <li class="list-group-item">
+                        <b>{{ trans('warehouse.address') }} : </b>
+                        {{ empty($warehouse['location'])? trans('warehouse.unknown') : $warehouse['location']['address'] }}
+                    </li>
+                    <li class="list-group-item">
+                        <b>{{ trans('warehouse.city') }} : </b>
+                        {{ empty($warehouse['location'])? trans('warehouse.unknown') : $warehouse['location']['city'].' ('.$warehouse['location']['postcode'].')' }}</li>
                 </ul>
             </div>
         </div>
@@ -103,6 +109,5 @@
             $('#dishes').DataTable();
             $('#orders').DataTable();
         });
-
     </script>
 @endsection

@@ -25,7 +25,6 @@ use Stripe\Stripe;
 class StockController extends Controller
 {
     use UserTools;
-    use EnumValue;
 
     public function __construct()
     {

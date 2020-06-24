@@ -15,6 +15,12 @@ return [
     'submit' => 'Valider',
     'details_section' => 'Information de l\'entrepôt',
     'unknown' => 'Inconnu',
+    'or' => 'ou',
+
+    'add_new_location' => 'Ajoutez un nouvel emplacement :',
+    'new_location_name_tooltip' => 'Le nouvel emplacement aura le même nom que celui de l\'entrepôt',
+    'select_existing_location' => 'Choisissez un emplacement existant :',
+    'select_existing_location_tooltip' => 'Les emplacements déjà associés à des entrepôts ne sont pas affichés',
 
     // Errors and success
     'empty_fields' => 'Tous les champs doivent être remplis',
