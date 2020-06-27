@@ -4,8 +4,10 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\EventInvited;
 use App\Models\Sale;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Traits\UserTools;
 
@@ -19,13 +21,23 @@ class AccountController extends Controller
         $client = User::whereKey($clientId)
             ->first();
 
-        $sales = Sale::where('user_client', $clientId)
+        // Client events for the next 7 days
+        $events = EventInvited::where([
+            ['event_invited.user_id', $clientId],
+            ['date_start', '>=', Carbon::now()->toDateString()],
+            ['date_start', '<=', Carbon::now()->addDays(7)->toDateString()]
+        ])->join('event', 'event.id', 'event_invited.event_id')
+            ->select('event_invited.user_id as current_id', 'event.user_id as owner_id', 'event.*', 'event_invited.*')
+            ->orderBy('date_start')
             ->get();
-        $nbSales = count($sales);
+
+        if(!empty($events)) {
+            $events = $events->toArray();
+        }
 
         return view('client.client_dashboard')
             ->with('client', $client)
-            ->with('nbSales', $nbSales);
+            ->with('events', $events);
     }
 
     public function registration()
