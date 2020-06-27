@@ -12,7 +12,7 @@ return [
 
     'actions' => 'Actions',
 
-    'loyalty_point' => 'Vos points de fidélité',
+    'loyalty_point' => 'points',
     'sales' => 'Achats',
     'show_details' => 'Détails'
 ];
