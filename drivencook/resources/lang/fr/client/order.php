@@ -14,6 +14,7 @@ return [
     'quantity_to_order' => 'Quantité à commander',
     'quantity_ordered' => 'Quantité commandée',
     'unit_price' => 'Prix unitaire',
+    'line_price' => 'Prix',
 
     'order_btn' => 'Commander',
     'free' => 'GRATUIT',
@@ -24,4 +25,8 @@ return [
     'location_address' => 'Adresse',
     'brand' => 'Marque',
     'model' => 'Modèle',
+
+    'discount_amount' => 'Remise',
+    'select_menu_no_discount' => 'Vous pouvez choisir une remise...',
+    'dishes' => 'Commande',
 ];

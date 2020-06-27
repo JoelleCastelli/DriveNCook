@@ -14,6 +14,7 @@ return [
     'quantity_to_order' => 'Quantity to order',
     'quantity_ordered' => 'Quantity ordered',
     'unit_price' => 'Unit price',
+    'line_price' => 'Price',
 
     'order_btn' => 'Order',
     'free' => 'FREE',
@@ -24,4 +25,8 @@ return [
     'location_address' => 'Address',
     'brand' => 'Brand',
     'model' => 'Model',
+
+    'discount_amount' => 'Discount',
+    'select_menu_no_discount' => 'You can choose a discount...',
+    'dishes' => 'Order',
 ];
