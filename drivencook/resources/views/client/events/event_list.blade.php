@@ -9,7 +9,7 @@
     <div class="col-12 col-xl-8 card mt-5 bg-dark text-light" id="event-list">
         <div class="card-header">
             <h2>
-                {{trans('event.event_list')}}
+                {{trans('client/event.event_list')}}
             </h2>
         </div>
         <div class="card-body">
@@ -19,11 +19,11 @@
                     <thead>
                     <tr>
                         <th>Type</th>
-                        <th>{{trans('event.title')}}</th>
-                        <th>{{trans('event.description')}}</th>
-                        <th>{{trans('event.city')}}</th>
-                        <th>{{trans('event.start')}}</th>
-                        <th>{{trans('event.end')}}</th>
+                        <th>{{trans('client/event.title')}}</th>
+                        <th>{{trans('client/event.description')}}</th>
+                        <th>{{trans('client/event.city')}}</th>
+                        <th>{{trans('client/event.start')}}</th>
+                        <th>{{trans('client/event.end')}}</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -31,7 +31,7 @@
 
                     @foreach($event_list as $event)
                         <tr id="{{'row_'.$event['id']}}">
-                            <td>{{trans('corporate.'.$event['type'])}}</td>
+                            <td>{{trans($GLOBALS['EVENT_TYPE'][$event['type']])}}</td>
                             <td>{{$event['title']}}</td>
                             <td>{{strlen($event['description']) > 100 ? substr($event['description'], 0, 100) . '...' : $event['description']}}</td>
                             <td>{{empty($event['location']['city'])? trans('franchisee.not_specified_f') : $event['location']['city']}}</td>
@@ -51,7 +51,7 @@
     <div class="col-12 col-xl-8 card mt-5 bg-dark text-light" id="event-list">
         <div class="card-header">
             <h2>
-                {{trans('event.calendar')}}
+                {{trans('client/event.calendar')}}
             </h2>
         </div>
         <div class="card-body">

@@ -22,4 +22,9 @@ return [
         'Carte bancaire' => 'client/sale.credit_card',
         'Liquide' => 'client/sale.cash',
     ],
+    $GLOBALS['EVENT_TYPE'] = [
+        'public' => 'client/event.public',
+        'private' => 'client/event.private',
+        'news' => 'corporate.news',
+    ],
 ];
