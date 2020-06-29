@@ -35,9 +35,19 @@ class AccountController extends Controller
             $events = $events->toArray();
         }
 
+        $last_sale = Sale::where('user_client', $clientId)
+            ->with('user_franchised')
+            ->orderBy('date', 'desc')
+            ->first();
+
+        if(!empty($last_sale)) {
+            $last_sale = $last_sale->toArray();
+        }
+
         return view('client.client_dashboard')
             ->with('client', $client)
-            ->with('events', $events);
+            ->with('events', $events)
+            ->with('sale', $last_sale);
     }
 
     public function registration()
