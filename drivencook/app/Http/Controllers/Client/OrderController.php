@@ -16,6 +16,9 @@ use Illuminate\Http\Request;
 use App\Traits\UserTools;
 use App\Traits\TruckTools;
 use App\Traits\StockTools;
+use Stripe\Charge;
+use Stripe\Customer;
+use Stripe\Stripe;
 
 class OrderController extends Controller
 {
@@ -101,8 +104,7 @@ class OrderController extends Controller
 
             unset($array['truck_id']);
             unset($array['discount_id']);
-
-            foreach($array as $dishId => $quantity) {
+            foreach($array['order'] as $dishId => $quantity) {
                 $result = FranchiseeStock::where([
                     ['user_id', $truck['user']['id']],
                     ['dish_id', $dishId],
@@ -124,79 +126,41 @@ class OrderController extends Controller
 
     public function client_order_submit(Request $request)
     {
-        $parameters = $request->all();
+        $parameters = $request->toArray();
+        $order = $request->except(['truck_id', 'discount_id']);
         $errors_list = [];
 
-        if(!empty($parameters['order'])) {
+        if(!empty($parameters['order'])
+            && !empty($parameters['truck_id'])
+            && !empty($order['order'])) {
+
             $parameters['order'] = get_object_vars(json_decode($parameters['order']));
+            $order['order'] = get_object_vars(json_decode($order['order']));
 
-            if($this->check_order_array($parameters['order'])) {
-                $userId = $this->get_truck_with_franchisee_by_truck_id($parameters['order']['truck_id'])['user']['id'];
-
-                $sale = [
-                    'online_order' => true,
-                    'date' => Carbon::now()->toDateString(),
-                    'user_franchised' => $userId,
-                    'user_client' => $this->get_connected_user()['id'],
-                    'status' => 'pending'
-                ];
-
-                $saleId = Sale::insertGetId($sale);
-
-                $fidelityStep = '';
-                $discountId = $parameters['order']['discount_id'];
-                if($discountId !== '') {
-                    $fidelityStep = FidelityStep::where([
-                        ['id', $discountId],
-                        ['user_id', $userId]
-                    ])->first();
-                }
-
-                unset($parameters['order']['discount_id']);
-                unset($parameters['order']['truck_id']);
+            if($this->check_order_array($parameters)) {
+                $userId = $this->get_truck_with_franchisee_by_truck_id($parameters['truck_id'])['user']['id'];
 
                 $sum = 0;
-                foreach($parameters['order'] as $dishId => $quantity) {
-                    $unitPrice = $this->get_franchisee_stock($dishId, $userId)['unit_price'];
-                    $sold_dish = [
-                        'dish_id' => $dishId,
-                        'sale_id' => $saleId,
-                        'unit_price' => $unitPrice,
-                        'quantity' => $quantity,
-                    ];
-                    $sum += $unitPrice * $quantity;
-                    if($quantity > 0) {
-                        SoldDish::insert($sold_dish);
-                    }
+                $i = 0;
+                foreach($order['order'] as $dishId => $quantity) {
+                    $stock = $this->get_franchisee_stock($dishId, $userId);
 
-                    FranchiseeStock::where([
-                        ['user_id', $userId],
-                        ['dish_id', $dishId]
-                    ])->decrement('quantity', $quantity);
+                    $sum += $stock['unit_price'] * $quantity;
+
+                    $order['order']['dishes'][$i]['name'] = $stock['dish']['name'];
+                    $order['order']['dishes'][$i]['quantity'] = $quantity;
+                    $order['order']['dishes'][$i]['unit_price'] = $stock['unit_price'];
+
+                    $i++;
                 }
+                $order['order']['total'] = $sum;
 
-                $subPoint = 0;
-                if($fidelityStep !== '') {
-                    $subPoint = $fidelityStep->step;
-                }
-
-                $client = User::whereKey($this->get_connected_user()['id'])
-                    ->first();
-
-                /**
-                 * client points + 10% of total price as points - points used
-                 */
-                $loyaltyPoint = $sum * 0.1 - $subPoint;
-                $loyaltyPoint = $client->loyalty_point + (int)$loyaltyPoint;
-                if($loyaltyPoint < 0) {
-                    $loyaltyPoint = 0;
-                }
-
-                User::whereKey($this->get_connected_user()['id'])
-                    ->update(['loyalty_point' => (int)$loyaltyPoint]);
+                $order['order']['truck_id'] = $parameters['truck_id'];
+                $order['order']['discount_id'] = $parameters['discount_id'];
+                request()->session()->put('order', $order['order']);
 
                 $response_array = [
-                    'status' => 'success'
+                    'status' => 'success',
                 ];
             } else {
                 $errors_list[] = trans('client/order.error_in_post_data');
@@ -216,6 +180,119 @@ class OrderController extends Controller
         }
 
         echo json_encode($response_array);
+    }
+
+    public function client_order_charge()
+    {
+        $order = request()->session()->get('order', null);
+        if ($order == null) {
+            flash("Erreur, la commande a expiré, veuillez réessayer")->warning();
+            return redirect(route('truck_location_list'));
+        }
+
+        return view('client.order.client_order_payment')
+            ->with('order', $order);
+    }
+
+    public function client_order_validate()
+    {
+        $order = request()->session()->pull('order', null);
+        if ($order == null) {
+            flash("Erreur, la commande a expiré, veuillez réessayer")->warning();
+            return redirect(route('truck_location_list'));
+        }
+
+        unset($order['dishes']);
+        unset($order['total']);
+        $userId = $this->get_truck_with_franchisee_by_truck_id($order['truck_id'])['user']['id'];
+
+        $sale = [
+            'online_order' => true,
+            'date' => Carbon::now()->toDateString(),
+            'user_franchised' => $userId,
+            'user_client' => $this->get_connected_user()['id'],
+            'status' => 'pending',
+            'payment_method' => 'Carte bancaire'
+        ];
+
+        $saleId = Sale::insertGetId($sale);
+
+        $discountId = $order['discount_id'];
+        if($discountId !== '') {
+            $fidelityStep = FidelityStep::whereKey($discountId)
+                ->first();
+        }
+
+        unset($order['discount_id']);
+        unset($order['truck_id']);
+
+        $sum = 0;
+        foreach($order as $dishId => $quantity) {
+            $unitPrice = $this->get_franchisee_stock($dishId, $userId)['unit_price'];
+            $sold_dish = [
+                'dish_id' => $dishId,
+                'sale_id' => $saleId,
+                'unit_price' => $unitPrice,
+                'quantity' => $quantity
+            ];
+            $sum += $unitPrice * $quantity;
+            if($quantity > 0) {
+                SoldDish::insert($sold_dish);
+            }
+
+            FranchiseeStock::where([
+                ['user_id', $userId],
+                ['dish_id', $dishId]
+            ])->decrement('quantity', $quantity);
+        }
+
+        $subPoint = 0;
+        if(!empty($fidelityStep)) {
+            $subPoint = $fidelityStep->step;
+        }
+
+        $client = User::whereKey($this->get_connected_user()['id'])
+            ->first();
+
+        /**
+         * client points + 10% of total price as points - points used
+         */
+        $loyaltyPoint = $sum * 0.1 - $subPoint;
+        $loyaltyPoint = $client->loyalty_point + (int)$loyaltyPoint;
+        if($loyaltyPoint < 0) {
+            $loyaltyPoint = 0;
+        }
+
+        User::whereKey($this->get_connected_user()['id'])
+            ->update(['loyalty_point' => (int)$loyaltyPoint]);
+
+        flash('CREATED !
+                <a href="' . route('client_sale_display', ['id' => $saleId]) . '">HERE</a>.')
+            ->success();
+
+        return redirect(route('client_dashboard'));
+    }
+
+    public function charge(Request $request, $order_total_cents)
+    {
+        try {
+            Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+
+            $customer = Customer::create(array(
+                'email' => $request->stripeEmail,
+                'source' => $request->stripeToken
+            ));
+
+            $charge = Charge::create(array(
+                'customer' => $customer->id,
+                'amount' => $order_total_cents,
+                'currency' => 'eur'
+            ));
+
+            return $this->client_order_validate();
+        } catch (\Exception $ex) {
+            return $ex->getMessage();
+        }
     }
 
     public function client_sales_history()
