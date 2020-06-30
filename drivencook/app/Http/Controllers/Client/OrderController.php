@@ -153,6 +153,16 @@ class OrderController extends Controller
 
                     $i++;
                 }
+                if(!empty($parameters['discount_id'])) {
+                    $fidelityStep = FidelityStep::whereKey($parameters['discount_id'])
+                        ->first();
+
+                    $sum -= $fidelityStep->reduction;
+                    $sum = round($sum, 2);
+                    if($sum < 1) {
+                        $sum = 0;
+                    }
+                }
                 $order['order']['total'] = $sum;
 
                 $order['order']['truck_id'] = $parameters['truck_id'];
@@ -185,13 +195,20 @@ class OrderController extends Controller
     public function client_order_charge()
     {
         $order = request()->session()->get('order', null);
-        if ($order == null) {
+        if($order == null) {
             flash("Erreur, la commande a expiré, veuillez réessayer")->warning();
             return redirect(route('truck_location_list'));
         }
 
+        $discount = '';
+        if(!empty($order['discount_id'])) {
+            $discount = FidelityStep::whereKey($order['discount_id'])
+                ->first();
+        }
+
         return view('client.order.client_order_payment')
-            ->with('order', $order);
+            ->with('order', $order)
+            ->with('discount', $discount);
     }
 
     public function client_order_validate()

@@ -1,7 +1,7 @@
 @extends('client.layout_client')
 
 @section('title')
-    {{trans('client/order.summary_and_paiement')}}
+    {{trans('client/order.summary_and_payment')}}
 @endsection
 
 @section('content')
@@ -15,14 +15,15 @@
                     <ul class="list-group list-group-flush">
                         @foreach ($order['dishes'] as $dish_order)
                             <li class="list-group-item">
-                                {{ $dish_order['name'].' x '.$dish_order['quantity'].' ('.$dish_order['unit_price'].'€/unité) : ' }}
+                                {{ $dish_order['name'].' x '.$dish_order['quantity'].' ('.$dish_order['unit_price'].'€/u) : ' }}
                                 <b>{{ $dish_order['quantity']*$dish_order['unit_price'] }} €</b>
                             </li>
                         @endforeach
-
-                        <li class="list-group-item">
-                            <b>Total : {{$order['total']}} €</b>
-                        </li>
+                        @if(!empty($discount))
+                            <li class="list-group-item">
+                                {{ trans('client/order.discount_amount') }} : <b>- {{ $discount['reduction'] }} €</b>
+                            </li>
+                        @endif
                     </ul>
                 </div>
                 <div class="card-footer">
@@ -43,7 +44,7 @@
                             // Hide default stripe payment button
                             document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
                         </script>
-                        <button type="submit" class="btn btn-light_blue">{{ trans('client/order.pay') }}</button>
+                        <button type="submit" class="btn btn-light_blue">{{ trans('client/order.pay') }} <b>{{ $order['total'] }} €</b></button>
                     </form>
                 </div>
             </div>
