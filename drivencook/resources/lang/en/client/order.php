@@ -29,4 +29,11 @@ return [
     'discount_amount' => 'Discount',
     'select_menu_no_discount' => 'You can choose a discount...',
     'dishes' => 'Order',
+
+    // Charge page
+    'summary_and_payment' => 'Summary and payment',
+
+    'order_summary' => 'Your order',
+
+    'pay' => 'Pay',
 ];

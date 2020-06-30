@@ -29,4 +29,11 @@ return [
     'discount_amount' => 'Remise',
     'select_menu_no_discount' => 'Vous pouvez choisir une remise...',
     'dishes' => 'Commande',
+
+    // Charge page
+    'summary_and_payment' => 'Récapitulatif et paiement',
+
+    'order_summary' => 'Votre commande',
+
+    'pay' => 'Payer',
 ];
