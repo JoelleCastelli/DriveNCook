@@ -283,8 +283,10 @@ class OrderController extends Controller
         User::whereKey($this->get_connected_user()['id'])
             ->update(['loyalty_point' => (int)$loyaltyPoint]);
 
-        flash('CREATED !
-                <a href="' . route('client_sale_display', ['id' => $saleId]) . '">HERE</a>.')
+        flash(trans('client/order.created')
+                . ' <a href="' . route('client_sale_display', ['id' => $saleId]) . '">'
+                . trans('client/order.click_here')
+                . '</a>.')
             ->success();
 
         return redirect(route('client_dashboard'));
