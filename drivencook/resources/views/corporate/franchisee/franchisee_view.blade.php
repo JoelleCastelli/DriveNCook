@@ -84,7 +84,8 @@
                         </li>
                         <li class="list-group-item"><b>{{ trans('franchisee.truck_position') }}
                             </b>{{ empty($franchisee['truck']['location'])? trans('franchisee.not_specified_f') :
-                                $franchisee['truck']['location']['address'].' ('.$franchisee['truck']['location']['postcode'].')'}}
+                                $franchisee['truck']['location']['name'].' - '.$franchisee['truck']['location']['address']
+                                .' '.$franchisee['truck']['location']['postcode'].' '.$franchisee['truck']['location']['city'] }}
                         </li>
                     </ul>
                     <div class="card-footer d-flex justify-content-between">

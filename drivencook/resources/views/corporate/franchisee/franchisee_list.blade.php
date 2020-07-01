@@ -1,12 +1,8 @@
 @extends('corporate.layout_corporate')
-@section('style')
-    {{--    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet">--}}
-    {{--    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet">--}}
-@endsection
+
 @section('title')
     Liste des franchisés
 @endsection
-
 
 @section('content')
     <div class="card">
@@ -69,35 +65,35 @@
                     </tr>
                     </thead>
                     <tbody>
+                        @foreach($franchisees as $franchisee)
+                            <tr id="{{'row_'.$franchisee['id']}}">
+                                <td>{{$franchisee['lastname']}}</td>
+                                <td>{{$franchisee['firstname']}}</td>
+                                <td>{{$franchisee['telephone']}}</td>
+                                <td>{{$franchisee['email']}}</td>
+                                <td>{{empty($franchisee['pseudo'])?'Aucun': $franchisee['pseudo']['name']}}</td>
 
-                    @foreach($franchisees as $franchisee)
-                        <tr id="{{'row_'.$franchisee['id']}}">
-                            <td>{{$franchisee['lastname']}}</td>
-                            <td>{{$franchisee['firstname']}}</td>
-                            <td>{{$franchisee['telephone']}}</td>
-                            <td>{{$franchisee['email']}}</td>
-                            <td>{{empty($franchisee['pseudo'])?'Aucun': $franchisee['pseudo']['name']}}</td>
+                                <td>{{empty($franchisee['last_paid_invoice_fee'])?'Jamais'
+                                    :DateTime::createFromFormat('Y-m-d',$franchisee['last_paid_invoice_fee']['date_paid'])->format('d/m/Y')}}</td>
 
-                            <td>{{empty($franchisee['last_paid_invoice_fee'])?'Jamais'
-                                :DateTime::createFromFormat('Y-m-d',$franchisee['last_paid_invoice_fee']['date_paid'])->format('d/m/Y')}}</td>
+                                <td>{{ (empty($franchisee['truck'])?'Camion non attribué':
+                                    (empty($franchisee['truck']['location']) ? 'Pas d\'emplacement' :
+                                    $franchisee['truck']['location']['name'].' - '.$franchisee['truck']['location']['address']
+                                    .' '.$franchisee['truck']['location']['postcode'].' '.$franchisee['truck']['location']['city'])) }}</td>
 
-                            <td>{{(empty($franchisee['truck'])?'Camion non attribué':
-                                (empty($franchisee['truck']['location'])?'Pas d\'emplacement':
-                                $franchisee['truck']['location']['address'].' ('.$franchisee['truck']['location']['city']['postcode'].')'))}}</td>
-
-                            <td>{{ DateTime::createFromFormat('Y-m-d H:i:s',$franchisee['created_at'])->format('d/m/Y') }}</td>
-                            <td>
-                                <a href="{{route('franchisee_view',['id'=>$franchisee['id']])}}">
-                                    <button class="text-light fa fa-eye"></button>
-                                </a>
-                                <a class="ml-2" href="{{route('franchisee_update',['id'=>$franchisee['id']])}}">
-                                    <button class="text-light fa fa-edit"></button>
-                                </a>
-                                <button onclick="deleteFranchise({{$franchisee['id']}})"
-                                        class="text-light fa fa-trash ml-2"></button>
-                            </td>
-                        </tr>
-                    @endforeach
+                                <td>{{ DateTime::createFromFormat('Y-m-d H:i:s',$franchisee['created_at'])->format('d/m/Y') }}</td>
+                                <td>
+                                    <a href="{{route('franchisee_view',['id'=>$franchisee['id']])}}">
+                                        <button class="text-light fa fa-eye"></button>
+                                    </a>
+                                    <a class="ml-2" href="{{route('franchisee_update',['id'=>$franchisee['id']])}}">
+                                        <button class="text-light fa fa-edit"></button>
+                                    </a>
+                                    <button onclick="deleteFranchise({{$franchisee['id']}})"
+                                            class="text-light fa fa-trash ml-2"></button>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -106,10 +102,6 @@
 @endsection
 
 @section('script')
-    {{--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>--}}
-    {{--    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>--}}
-    {{--    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>--}}
-    {{--    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>--}}
     <script type="text/javascript">
 
         $(document).ready(function () {
