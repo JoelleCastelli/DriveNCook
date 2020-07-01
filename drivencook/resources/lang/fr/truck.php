@@ -36,6 +36,8 @@ return [
     'remove_truck' => 'Retirer le camion',
     'submit' => 'Ajouter',
     'update_submit' => 'Modifier',
+    'truck_update' => 'Modifier le camion',
+    'update_truck_success' => 'Les informations du camion ont été mises à jour',
 
     // Errors
     'brand_error' => 'Marque : format invalide',

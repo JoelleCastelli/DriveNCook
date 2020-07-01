@@ -36,6 +36,8 @@ return [
     'remove_truck' => 'Remove the truck',
     'submit' => 'Add',
     'update_submit' => 'Update',
+    'truck_update' => 'Truck update',
+    'update_truck_success' => 'Truck information have been updated',
 
     // Errors
     'brand_error' => 'Brand invalid format',

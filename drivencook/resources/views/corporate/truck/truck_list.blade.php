@@ -34,7 +34,7 @@
                                             <tr id="{{'row_'.$truck['id'] }}">
                                                 <td>{{ $truck['brand'] }}</td>
                                                 <td>{{ $truck['model'] }}</td>
-                                                <td>{{ $truck['functional']?'Oui':'Non'}}</td>
+                                                <td>{{ $truck['functional'] ? trans('truck.yes') : trans('truck.no')}}</td>
                                                 <td>{{ DateTime::createFromFormat('Y-m-d',$truck['purchase_date'])->format('d/m/Y') }}</td>
                                                 <td>{{ $truck['license_plate'] }}</td>
                                                 <td>{{ $truck['horsepower'].' CV'}}</td>
@@ -42,7 +42,8 @@
                                                 <td>{{ empty($truck['last_safety_inspection'])?
                                                     trans('truck.unknown') : $truck['last_safety_inspection']['truck_mileage'].' km'}}</td>
                                                 <td>{{ empty($truck['location'])?
-                                                    trans('truck.unknown') : $truck['location']['name'] }}</td>
+                                                    trans('truck.unknown') : $truck['location']['name'].' - '.$truck['location']['address']
+                                                     .' '.$truck['location']['postcode'].' '.$truck['location']['city']}}</td>
                                                 <td>{{ empty($truck['user'])?
                                                     trans('truck.available') :
                                                     trans('truck.unavailable', ['franchisee' => $truck['user']['firstname'].' '.$truck['user']['lastname']]) }}</td>

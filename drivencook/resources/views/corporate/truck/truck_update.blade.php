@@ -1,15 +1,8 @@
 @extends('corporate.layout_corporate')
-@section('style')
-    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css"
-          rel="stylesheet">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-@endsection
-@section('title')
-    Modifier un camion
-@endsection
 
+@section('title')
+    {{ trans('truck.truck_update') }}
+@endsection
 
 @section('content')
     <div class="row">
@@ -22,7 +15,7 @@
             <div class="alert-danger mb-3">
                 {{ trans('truck.new_truck_error') }}
                 @foreach(Session::get('error') as $error)
-                    <li>{{ $error }}</li>
+                    <li style="margin-left: 20px">{{ $error }}</li>
                 @endforeach
             </div>
         @endif
@@ -151,13 +144,13 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="location_name">{{ trans('truck.location_name') }}</label>
+                            <label for="location_id">{{ trans('truck.location_name') }}</label>
                             <div class="input-group mb-3">
-                                <select class="custom-select" name="location_name" id="location_name">
+                                <select class="custom-select" name="location_id" id="location_id">
                                     @foreach($locations as $location)
-                                        <option {{$location['id'] == $truck['location_id']?'selected':''}}
+                                        <option {{$location['id'] == $truck['location_id'] ? 'selected' : ''}}
                                                 value={{ $location['id'] }}>{{ $location['name'] }}
-                                            - {{ $location['address'] }}</option>
+                                            - {{ $location['address'].' '.$location['postcode'].' '.$location['city'] }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -186,11 +179,4 @@
             </div>
         </div>
     </div>
-
-@endsection
-
-@section('script')
-    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 @endsection
