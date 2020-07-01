@@ -114,9 +114,19 @@ class TruckController extends Controller
                 $errors_list[] = trans('truck.license_plate_error');
             }
 
+            if (Truck::where('license_plate', $license_plate)->first()) {
+                $error = true;
+                $errors_list[] = trans('truck.license_plate_duplicate');
+            }
+
             if (!preg_match('/^[A-Z0-9]{15}$/', $registration_document)) {
                 $error = true;
                 $errors_list[] = trans('truck.registration_document_error');
+            }
+
+            if (Truck::where('registration_document', $registration_document)->first()) {
+                $error = true;
+                $errors_list[] = trans('truck.registration_document_duplicate');
             }
 
             if (!preg_match('/^[A-Z0-9]{20}$/', $insurance_number)) {
@@ -134,9 +144,19 @@ class TruckController extends Controller
                 $errors_list[] = trans('truck.chassis_number_error');
             }
 
+            if (Truck::where('chassis_number', $chassis_number)->first()) {
+                $error = true;
+                $errors_list[] = trans('truck.chassis_number_duplicate');
+            }
+
             if (!preg_match('/^[0-9]{20}$/', $engine_number)) {
                 $error = true;
                 $errors_list[] = trans('truck.engine_number_error');
+            }
+
+            if (Truck::where('engine_number', $engine_number)->first()) {
+                $error = true;
+                $errors_list[] = trans('truck.engine_number_duplicate');
             }
 
             if ($horsepower < 1) {
@@ -237,7 +257,6 @@ class TruckController extends Controller
         $errors_list = [];
 
         $fuel_type_options = $this->get_enum_column_values('truck', 'fuel_type');
-        var_dump($parameters);
 
         if (count($parameters) == 18) {
             $id = $parameters["id"];
@@ -289,9 +308,25 @@ class TruckController extends Controller
                 $errors_list[] = trans('truck_update.license_plate_error');
             }
 
+            $current_plate = Truck::where('id', $id)->first()->license_plate;
+            if ($current_plate != $license_plate) {
+                if (Truck::where('license_plate', $license_plate)->first()) {
+                    $error = true;
+                    $errors_list[] = trans('truck.license_plate_duplicate');
+                }
+            }
+
             if (!preg_match('/^[A-Z0-9]{15}$/', $registration_document)) {
                 $error = true;
                 $errors_list[] = trans('truck_update.registration_document_error');
+            }
+
+            $current_registration_document = Truck::where('id', $id)->first()->registration_document;
+            if ($current_registration_document != $registration_document) {
+                if (Truck::where('registration_document', $registration_document)->first()) {
+                    $error = true;
+                    $errors_list[] = trans('truck.registration_document_duplicate');
+                }
             }
 
             if (!preg_match('/^[A-Z0-9]{20}$/', $insurance_number)) {
@@ -309,9 +344,25 @@ class TruckController extends Controller
                 $errors_list[] = trans('truck_update.chassis_number_error');
             }
 
+            $current_chassis_number = Truck::where('id', $id)->first()->chassis_number;
+            if ($current_chassis_number != $chassis_number) {
+                if (Truck::where('chassis_number', $chassis_number)->first()) {
+                    $error = true;
+                    $errors_list[] = trans('truck.chassis_number_duplicate');
+                }
+            }
+
             if (!preg_match('/^[0-9]{20}$/', $engine_number)) {
                 $error = true;
                 $errors_list[] = trans('truck_update.engine_number_error');
+            }
+
+            $current_engine_number = Truck::where('id', $id)->first()->engine_number;
+            if ($current_engine_number != $engine_number) {
+                if (Truck::where('engine_number', $engine_number)->first()) {
+                    $error = true;
+                    $errors_list[] = trans('truck.engine_number_duplicate');
+                }
             }
 
             if ($horsepower < 1) {

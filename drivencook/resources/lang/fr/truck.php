@@ -63,6 +63,10 @@ return [
     'franchisee_must_be_validated' => 'L\'utilisateur doit être un franchisé "confirmé" pour avoir un camion.',
     'truck_assigned' => 'Le camion a été assigné',
     'incorrect_id' => 'Erreur, l\'ID est incorrect',
+    'license_plate_duplicate' => 'Cette plaque d\'immatriculation est déjà dans la base de données',
+    'registration_document_duplicate' => 'Cette carte grise est déjà dans la base de données',
+    'engine_number_duplicate' => 'Ce numéro de moteur est déjà dans la base de données',
+    'chassis_number_duplicate' => 'Ce numéro de châssis est déjà dans la base de données',
 
     'new_truck_success' => 'Nouveau camion ajouté',
     'new_truck_error' => 'Erreur lors de l\'ajout du camion',
