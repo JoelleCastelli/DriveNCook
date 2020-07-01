@@ -37,7 +37,7 @@ class OrderController extends Controller
             ->with('location')
             ->get();
 
-        if(!empty($trucks)) {
+        if (!empty($trucks)) {
             $trucks = $trucks->toArray();
         }
 
@@ -53,7 +53,7 @@ class OrderController extends Controller
             ->with('location')
             ->first();
 
-        if(!empty($truck)) {
+        if (!empty($truck)) {
             $truck = $truck->toArray();
         }
 
@@ -66,13 +66,13 @@ class OrderController extends Controller
 
         $fidelity_step = '';
 
-        if(!empty($stocks) && !empty($stocks[0])) {
+        if (!empty($stocks) && !empty($stocks[0])) {
             $stocks = $stocks->toArray();
 
             $fidelity_step = FidelityStep::orderBy('reduction')
                 ->get();
 
-            if(!empty($fidelity_step)) {
+            if (!empty($fidelity_step)) {
                 $fidelity_step = $fidelity_step->toArray();
             }
         }
@@ -80,7 +80,7 @@ class OrderController extends Controller
         $client = User::whereKey($this->get_connected_user())
             ->first();
 
-        if(!empty($client)) {
+        if (!empty($client)) {
             $client = $client->toArray();
         }
 
@@ -93,27 +93,27 @@ class OrderController extends Controller
 
     public function check_order_array($array): bool
     {
-        if($array['truck_id']) {
+        if ($array['truck_id']) {
             $truck = Truck::whereKey($array['truck_id'])
                 ->with('user')
                 ->first();
 
-            if(!empty($truck)) {
+            if (!empty($truck)) {
                 $truck = $truck->toArray();
             }
 
             unset($array['truck_id']);
             unset($array['discount_id']);
-            foreach($array['order'] as $dishId => $quantity) {
+            foreach ($array['order'] as $dishId => $quantity) {
                 $result = FranchiseeStock::where([
                     ['user_id', $truck['user']['id']],
                     ['dish_id', $dishId],
                     ['menu', true]
                 ])->get();
 
-                if(!(count($result) > 0)) {
+                if (!(count($result) > 0)) {
                     return false;
-                } else if($quantity > $result[0]['quantity']) {
+                } else if ($quantity > $result[0]['quantity']) {
                     return false;
                 }
             }
@@ -130,19 +130,19 @@ class OrderController extends Controller
         $order = $request->except(['truck_id', 'discount_id']);
         $errors_list = [];
 
-        if(!empty($parameters['order'])
+        if (!empty($parameters['order'])
             && !empty($parameters['truck_id'])
             && !empty($order['order'])) {
 
             $parameters['order'] = get_object_vars(json_decode($parameters['order']));
             $order['order'] = get_object_vars(json_decode($order['order']));
 
-            if($this->check_order_array($parameters)) {
+            if ($this->check_order_array($parameters)) {
                 $userId = $this->get_truck_with_franchisee_by_truck_id($parameters['truck_id'])['user']['id'];
 
                 $sum = 0;
                 $i = 0;
-                foreach($order['order'] as $dishId => $quantity) {
+                foreach ($order['order'] as $dishId => $quantity) {
                     $stock = $this->get_franchisee_stock($dishId, $userId);
 
                     $sum += $stock['unit_price'] * $quantity;
@@ -153,13 +153,13 @@ class OrderController extends Controller
 
                     $i++;
                 }
-                if(!empty($parameters['discount_id'])) {
+                if (!empty($parameters['discount_id'])) {
                     $fidelityStep = FidelityStep::whereKey($parameters['discount_id'])
                         ->first();
 
                     $sum -= $fidelityStep->reduction;
                     $sum = round($sum, 2);
-                    if($sum < 1) {
+                    if ($sum < 1) {
                         $sum = 0;
                     }
                 }
@@ -195,13 +195,13 @@ class OrderController extends Controller
     public function client_order_charge()
     {
         $order = request()->session()->get('order', null);
-        if($order == null) {
-            flash("Erreur, la commande a expiré, veuillez réessayer")->warning();
+        if ($order == null) {
+            flash(trans('client/order.command_expired'))->warning();
             return redirect(route('truck_location_list'));
         }
 
         $discount = '';
-        if(!empty($order['discount_id'])) {
+        if (!empty($order['discount_id'])) {
             $discount = FidelityStep::whereKey($order['discount_id'])
                 ->first();
         }
@@ -215,7 +215,7 @@ class OrderController extends Controller
     {
         $order = request()->session()->pull('order', null);
         if ($order == null) {
-            flash("Erreur, la commande a expiré, veuillez réessayer")->warning();
+            flash(trans('client/order.command_expired'))->warning();
             return redirect(route('truck_location_list'));
         }
 
@@ -235,7 +235,7 @@ class OrderController extends Controller
         $saleId = Sale::insertGetId($sale);
 
         $discountId = $order['discount_id'];
-        if($discountId !== '') {
+        if ($discountId !== '') {
             $fidelityStep = FidelityStep::whereKey($discountId)
                 ->first();
         }
@@ -244,7 +244,7 @@ class OrderController extends Controller
         unset($order['truck_id']);
 
         $sum = 0;
-        foreach($order as $dishId => $quantity) {
+        foreach ($order as $dishId => $quantity) {
             $unitPrice = $this->get_franchisee_stock($dishId, $userId)['unit_price'];
             $sold_dish = [
                 'dish_id' => $dishId,
@@ -253,7 +253,7 @@ class OrderController extends Controller
                 'quantity' => $quantity
             ];
             $sum += $unitPrice * $quantity;
-            if($quantity > 0) {
+            if ($quantity > 0) {
                 SoldDish::insert($sold_dish);
             }
 
@@ -264,7 +264,7 @@ class OrderController extends Controller
         }
 
         $subPoint = 0;
-        if(!empty($fidelityStep)) {
+        if (!empty($fidelityStep)) {
             $subPoint = $fidelityStep->step;
         }
 
@@ -276,7 +276,7 @@ class OrderController extends Controller
          */
         $loyaltyPoint = $sum * 0.1 - $subPoint;
         $loyaltyPoint = $client->loyalty_point + (int)$loyaltyPoint;
-        if($loyaltyPoint < 0) {
+        if ($loyaltyPoint < 0) {
             $loyaltyPoint = 0;
         }
 
@@ -284,9 +284,9 @@ class OrderController extends Controller
             ->update(['loyalty_point' => (int)$loyaltyPoint]);
 
         flash(trans('client/order.created')
-                . ' <a href="' . route('client_sale_display', ['id' => $saleId]) . '">'
-                . trans('client/order.click_here')
-                . '</a>.')
+            . ' <a href="' . route('client_sale_display', ['id' => $saleId]) . '">'
+            . trans('client/order.click_here')
+            . '</a>.')
             ->success();
 
         return redirect(route('client_dashboard'));
@@ -321,14 +321,14 @@ class OrderController extends Controller
             ->orderBy('date', 'dsc')
             ->get();
 
-        if(!empty($sales)) {
+        if (!empty($sales)) {
             $sales = $sales->toArray();
         }
 
         $i = 0;
-        foreach($sales as $sale) {
+        foreach ($sales as $sale) {
             $sum = 0;
-            foreach($sale['sold_dishes'] as $sold_dish) {
+            foreach ($sale['sold_dishes'] as $sold_dish) {
                 $sum += $sold_dish['unit_price'] * $sold_dish['quantity'];
             }
             $sales[$i++]['total_price'] = $sum;
@@ -345,12 +345,12 @@ class OrderController extends Controller
             ->with('user_franchised')
             ->first();
 
-        if(!empty($sale)) {
+        if (!empty($sale)) {
             $sale = $sale->toArray();
         }
 
         $sum = 0;
-        foreach($sale['sold_dishes'] as $sold_dish) {
+        foreach ($sale['sold_dishes'] as $sold_dish) {
             $sum += $sold_dish['unit_price'] * $sold_dish['quantity'];
         }
         $sale['total_price'] = $sum;

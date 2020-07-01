@@ -14,5 +14,9 @@ return [
 
     'loyalty_point' => 'points',
     'sales' => 'Purchases',
-    'show_details' => 'Details'
+    'show_details' => 'Details',
+    'events_for_next_7_days' => 'Events for next 7 days',
+    'last_order_truck' => 'Last order\'s truck',
+    'ask_delete' => 'Do you really want to delete your account ?'
+
 ];

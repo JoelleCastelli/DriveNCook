@@ -1,6 +1,6 @@
 @extends('client.layout_client')
 @section('title')
-    {{trans('client/event.event')}} : {{strtoupper($event['title'])}}
+    {{trans('event.event')}} : {{strtoupper($event['title'])}}
 @endsection
 
 @section('content')
@@ -9,17 +9,17 @@
         <div class="col-12 col-lg-6 mb-5">
             <div class="card">
                 <div class="card-header">
-                    <h2>{{trans('client/event.event_info')}}</h2>
+                    <h2>{{trans('event.event_info')}}</h2>
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item"><b>{{trans('event.event_type')}}
                             : </b>{{trans('event.event_'.$event['type'])}}</li>
                     <li class="list-group-item">
-                        <b>{{trans('client/event.start')}} : </b>
+                        <b>{{trans('event.start')}} : </b>
                         {{DateTime::createFromFormat('Y-m-d',$event['date_start'])->format('d/m/Y')}}
                     </li>
                     <li class="list-group-item">
-                        <b>{{trans('client/event.end')}} : </b>
+                        <b>{{trans('event.end')}} : </b>
                         {{DateTime::createFromFormat('Y-m-d',$event['date_end'])->format('d/m/Y')}}
                     </li>
                     @if (!empty($event['location']))
@@ -27,7 +27,7 @@
                             - {{$event['location']['address'].' - '.$event['location']['city'].' ('.$event['location']['postcode'].')'}}
                         </li>
                     @endif
-                    <li class="list-group-item text-justify"><b>{{trans('client/event.description')}} : </b><br>
+                    <li class="list-group-item text-justify"><b>{{trans('event.description')}} : </b><br>
                         {{$event['description']}}
                     </li>
                     @if (!empty($event['location']))

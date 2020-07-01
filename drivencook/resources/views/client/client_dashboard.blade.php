@@ -24,12 +24,12 @@
                             <thead>
                             <tr>
                                 <th></th>
-                                <th>Type</th>
-                                <th>{{ trans('client/event.title') }}</th>
-                                <th>{{ trans('client/event.description') }}</th>
-                                <th>{{ trans('client/event.city') }}</th>
-                                <th>{{ trans('client/event.start') }}</th>
-                                <th>{{ trans('client/event.end') }}</th>
+                                <th>{{trans('event.event_type')}}</th>
+                                <th>{{ trans('event.title') }}</th>
+                                <th>{{ trans('event.description') }}</th>
+                                <th>{{ trans('event.city') }}</th>
+                                <th>{{ trans('event.start') }}</th>
+                                <th>{{ trans('event.end') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -37,11 +37,12 @@
                             @foreach($events as $event)
                                 <tr id="{{ 'row_'.$event['id'] }}">
                                     <td>
-                                        <a href="{{ route('client.event_view',['event_id'=>$event['id']]) }}" style="color: inherit">
+                                        <a href="{{ route('client.event_view',['event_id'=>$event['id']]) }}"
+                                           style="color: inherit">
                                             <button class="fa fa-eye"></button>
                                         </a>
                                     </td>
-                                    <td>{{ trans($GLOBALS['EVENT_TYPE'][$event['type']]) }}</td>
+                                    <td>{{ trans('event.event_'.$event['type']) }}</td>
                                     <td>{{ $event['title'] }}</td>
                                     <td>{{ strlen($event['description']) > 100 ? substr($event['description'], 0, 100) . '...' : $event['description'] }}</td>
                                     <td>{{ empty($event['location']['city'])? trans('franchisee.not_specified_f') : $event['location']['city'] }}</td>
@@ -81,30 +82,31 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        @if(!empty($sale['user_franchised'])
-                                         && !empty($sale['user_franchised']['truck']['location']['address'])
-                                         && !empty($sale['user_franchised']['truck']['location']['name'])
-                                         && !empty($sale['user_franchised']['truck']['location']['postcode'])
-                                         && !empty($sale['user_franchised']['truck']['location']['city'])
-                                         && !empty($sale['user_franchised']['truck']['location']['country']))
-                                            <tr>
-                                                <td>
-                                                    <a href="{{ route('client_order', ['id'=>$sale['user_franchised']['truck']['id']]) }}" style="color: inherit">
-                                                        <i class="fa fa-eye"></i>
-                                                    </a>
-                                                </td>
-                                                <td>{{ $sale['user_franchised']['pseudo']['name'] }}</td>
-                                                <td>{{ $sale['user_franchised']['firstname'] . '  ' . $sale['user_franchised']['lastname'] }}</td>
-                                                <td>{{ $sale['user_franchised']['truck']['location']['name'] }}</td>
-                                                <td>{{ $sale['user_franchised']['truck']['location']['address'] . ' - '
+                                    @if(!empty($sale['user_franchised'])
+                                     && !empty($sale['user_franchised']['truck']['location']['address'])
+                                     && !empty($sale['user_franchised']['truck']['location']['name'])
+                                     && !empty($sale['user_franchised']['truck']['location']['postcode'])
+                                     && !empty($sale['user_franchised']['truck']['location']['city'])
+                                     && !empty($sale['user_franchised']['truck']['location']['country']))
+                                        <tr>
+                                            <td>
+                                                <a href="{{ route('client_order', ['id'=>$sale['user_franchised']['truck']['id']]) }}"
+                                                   style="color: inherit">
+                                                    <i class="fa fa-eye"></i>
+                                                </a>
+                                            </td>
+                                            <td>{{ $sale['user_franchised']['pseudo']['name'] }}</td>
+                                            <td>{{ $sale['user_franchised']['firstname'] . '  ' . $sale['user_franchised']['lastname'] }}</td>
+                                            <td>{{ $sale['user_franchised']['truck']['location']['name'] }}</td>
+                                            <td>{{ $sale['user_franchised']['truck']['location']['address'] . ' - '
                                                 . $sale['user_franchised']['truck']['location']['postcode'] . ' - '
                                                 . $sale['user_franchised']['truck']['location']['city'] . ' - '
                                                 . $sale['user_franchised']['truck']['location']['country'] }}
-                                                </td>
-                                                <td>{{ $sale['user_franchised']['truck']['brand'] }}</td>
-                                                <td>{{ $sale['user_franchised']['truck']['model'] }}</td>
-                                            </tr>
-                                        @endif
+                                            </td>
+                                            <td>{{ $sale['user_franchised']['truck']['brand'] }}</td>
+                                            <td>{{ $sale['user_franchised']['truck']['model'] }}</td>
+                                        </tr>
+                                    @endif
                                     </tbody>
                                 </table>
                             </div>

@@ -44,5 +44,7 @@ return [
     'already_validated' => 'Votre compte a déjà été complété, vous pouvez vous connecter !',
     'franchisee_confirmation_success' => 'Vous êtes prêt.e, connectez-vous dès maintenant !',
 
-
+    'forgot_password' => 'Mot de pass oublié',
+    'enter_email' => 'Entrez votre e-mail',
+    'send_reset_password' => 'Envoyer le mail de récupération de mot de passe',
 ];

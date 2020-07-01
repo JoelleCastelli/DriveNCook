@@ -114,7 +114,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('client.event_list')}}">
-                        <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp;&nbsp;{{trans('client/global.event_list')}}
+                        <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp;&nbsp;{{trans('event.event_list')}}
                     </a>
                 </li>
                 @break

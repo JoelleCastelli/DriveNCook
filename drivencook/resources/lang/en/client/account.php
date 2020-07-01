@@ -20,4 +20,9 @@ return [
 
     'update_submit' => 'Update account',
     'password_submit' => 'Update password',
+    'set_name' => 'Enter lastname',
+    'set_firstname' => 'Enter firstname',
+    'set_email' => 'Enter email',
+    'set_telephone' => 'Enter phone number',
+
 ];

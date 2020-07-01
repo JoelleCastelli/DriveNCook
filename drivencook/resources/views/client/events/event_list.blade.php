@@ -9,7 +9,7 @@
     <div class="col-12 col-xl-8 card mt-5 bg-dark text-light" id="event-list">
         <div class="card-header">
             <h2>
-                {{trans('client/event.event_list')}}
+                {{trans('event.event_list')}}
             </h2>
         </div>
         <div class="card-body">
@@ -51,7 +51,7 @@
     <div class="col-12 col-xl-8 card mt-5 bg-dark text-light" id="event-list">
         <div class="card-header">
             <h2>
-                {{trans('client/event.calendar')}}
+                {{trans('event.calendar')}}
             </h2>
         </div>
         <div class="card-body">
