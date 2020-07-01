@@ -196,7 +196,7 @@ class OrderController extends Controller
     {
         $order = request()->session()->get('order', null);
         if($order == null) {
-            flash("Erreur, la commande a expiré, veuillez réessayer")->warning();
+            flash(trans('client/order.order_expired'))->warning();
             return redirect(route('truck_location_list'));
         }
 
@@ -215,7 +215,7 @@ class OrderController extends Controller
     {
         $order = request()->session()->pull('order', null);
         if ($order == null) {
-            flash("Erreur, la commande a expiré, veuillez réessayer")->warning();
+            flash(trans('client/order.order_expired'))->warning();
             return redirect(route('truck_location_list'));
         }
 
@@ -294,23 +294,27 @@ class OrderController extends Controller
 
     public function charge(Request $request, $order_total_cents)
     {
-        try {
-            Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+        if($order_total_cents != 0) {
+            try {
+                Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
-            $customer = Customer::create(array(
-                'email' => $request->stripeEmail,
-                'source' => $request->stripeToken
-            ));
+                $customer = Customer::create(array(
+                    'email' => $request->stripeEmail,
+                    'source' => $request->stripeToken
+                ));
 
-            $charge = Charge::create(array(
-                'customer' => $customer->id,
-                'amount' => $order_total_cents,
-                'currency' => 'eur'
-            ));
+                $charge = Charge::create(array(
+                    'customer' => $customer->id,
+                    'amount' => $order_total_cents,
+                    'currency' => 'eur'
+                ));
 
+                return $this->client_order_validate();
+            } catch (\Exception $ex) {
+                return $ex->getMessage();
+            }
+        } else {
             return $this->client_order_validate();
-        } catch (\Exception $ex) {
-            return $ex->getMessage();
         }
     }
 
