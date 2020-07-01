@@ -153,7 +153,10 @@ return [
     'update_sell_price' => 'Modifier le prix de vente',
     'quantity_sent' => 'Quantité envoyée',
     'back_to_stock_warehouse_management' => 'Retour vers stocks & commandes entrepôts',
-
+    'stock_order_status_created' => 'Créée',
+    'stock_order_status_in_progress' => 'En cours de traitement',
+    'stock_order_status_sent' => 'Expédiée',
+    'stock_order_status_received' => 'Terminée',
 
     // Invoices
     'invoices' => 'Factures',

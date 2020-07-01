@@ -67,7 +67,7 @@
                                         }
                                         echo $total . ' €'
                                         ?></td>
-                                    <td>{{$order['status']}}</td>
+                                    <td>{{ trans('franchisee.stock_order_status_'.strtolower($order['status'])) }}</td>
                                     <td>
                                         <a href="{{route('franchise.stock_order_view',['order_id'=>$order['id']])}}">
                                             <i class="text-light fa fa-eye"></i>

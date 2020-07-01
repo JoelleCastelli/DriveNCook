@@ -153,6 +153,10 @@ return [
     'update_sell_price' => 'Update sell price',
     'quantity_sent' => 'Quantity sent',
     'back_to_stock_warehouse_management' => 'Back to stock & warehouse\'s orders',
+    'stock_order_status_created' => 'Created',
+    'stock_order_status_in_progress' => 'In progress',
+    'stock_order_status_sent' => 'Shipped',
+    'stock_order_status_received' => 'Done',
 
 
     // Invoices
