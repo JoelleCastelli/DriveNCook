@@ -9,10 +9,12 @@ return [
     'delete_account' => 'Supprimer votre compte',
     'order' => 'Commander',
     'history' => 'Historique',
+    'event_list' => 'Evénement',
+
+    'events_for_next_7_days' => 'Vos événements pour les 7 prochains jours',
+    'last_order_truck' => 'Le camion de votre dernière commande',
 
     'actions' => 'Actions',
 
-    'loyalty_point' => 'points',
-    'sales' => 'Achats',
-    'show_details' => 'Détails'
+    'loyalty_point' => 'points de fidélité',
 ];

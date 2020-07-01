@@ -9,10 +9,11 @@ return [
     'delete_account' => 'Delete your account',
     'order' => 'Order',
     'history' => 'History',
+    'event_list' => 'Events',
 
     'actions' => 'Actions',
 
-    'loyalty_point' => 'points',
+    'loyalty_point' => 'loyalty points',
     'sales' => 'Purchases',
     'show_details' => 'Details'
 ];
