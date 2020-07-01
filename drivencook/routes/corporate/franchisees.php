@@ -94,3 +94,23 @@ Route::get('/corporate/franchisee_sales_stats/{id}', [
     'as' => 'franchisee_sales_stats',
     'uses' => 'Corporate\FranchiseeController@franchisee_sales_stats'
 ]);
+
+Route::post('/corporate/franchisee_view/update_stock', [
+    'as' => 'corporate.stock_update_submit',
+    'uses' => 'Corporate\FranchiseeController@update_franchisee_stock'
+]);
+
+Route::post('/corporate/franchisee_view/update_stock_order', [
+    'as' => 'corporate.stock_order_update_submit',
+    'uses' => 'Corporate\FranchiseeController@update_franchisee_stock_order'
+]);
+
+Route::delete('/corporate/franchisee_view/remove_stock/{user_id}/{dish_id}', [
+    'as' => 'corporate.remove_franchisee_stock',
+    'uses' => 'Corporate\FranchiseeController@remove_franchisee_stock'
+]);
+
+Route::delete('/corporate/franchisee_view/remove_purchase_order/{purchase_order_id}', [
+    'as' => 'corporate.remove_franchisee_purchase_order',
+    'uses' => 'Corporate\FranchiseeController@remove_franchisee_stock_order'
+]);

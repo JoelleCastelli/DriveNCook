@@ -222,7 +222,6 @@
             document.getElementById('formPrice').value = unit_price;
         }
 
-
         function onUpdateSubmit() {
             const dish_id = document.getElementById('formId').value;
             const unit_price = document.getElementById('formPrice').value;

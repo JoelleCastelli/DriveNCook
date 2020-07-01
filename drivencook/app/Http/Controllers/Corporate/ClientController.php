@@ -42,8 +42,6 @@ class ClientController extends Controller
     public function update_client($client_id)
     {
         $client = User::find($client_id)->toArray();
-//        var_dump($client);
-//        die;
         return view('corporate.client.client_update')
             ->with('client', $client);
     }
@@ -66,7 +64,6 @@ class ClientController extends Controller
             'telephone' => request('telephone'),
             'email' => request('email'),
         ]);
-        //TODO la colonne telephone ne se met pas à jour
 
         flash('Utilisateur modifié')->success();
         return redirect()->route('client_update', ['id' => request('id')]);
