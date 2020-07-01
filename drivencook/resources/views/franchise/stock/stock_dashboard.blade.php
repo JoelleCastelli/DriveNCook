@@ -70,7 +70,7 @@
                                     <td>{{$order['status']}}</td>
                                     <td>
                                         <a href="{{route('franchise.stock_order_view',['order_id'=>$order['id']])}}">
-                                            <i class="fa fa-eye"></i>
+                                            <i class="text-light fa fa-eye"></i>
                                         </a>
                                         @if ($order['status'] == "created")
                                             <button class="fa fa-ban ml-3" onclick="cancelOrder({{$order['id']}})">

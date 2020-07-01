@@ -52,7 +52,7 @@ class StockController extends Controller
     public function stock_order()
     {
         $warehouses_list = [];
-        $warehouses = Warehouse::with('city')
+        $warehouses = Warehouse::with('location')
             ->with('available_dishes')
             ->get()->toArray();
 
@@ -69,17 +69,15 @@ class StockController extends Controller
     public function stock_order_warehouse($warehouse_id)
     {
         $warehouse = Warehouse::whereKey($warehouse_id)
-            ->with('city')
+            ->with('location')
             ->with('stock')
             ->first();
         if ($warehouse == null) {
             abort(404);
         }
         $warehouse = $warehouse->toArray();
-//        var_dump($warehouse);die;
         return view('franchise.stock.stock_order_form')
             ->with('warehouse', $warehouse);
-        //json
     }
 
     public function stock_order_submit()
