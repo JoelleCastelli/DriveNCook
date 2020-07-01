@@ -32,6 +32,7 @@ return [
     'done' => 'Done',
 
     'franchisee_details_section' => 'Franchisee data',
+    'franchisee' => 'Franchisee',
     'franchisee_email' => 'Email',
     'franchisee_phone' => 'Phone',
 

@@ -36,4 +36,8 @@ return [
     'order_summary' => 'Your order',
 
     'pay' => 'Pay',
+
+    'order_expired' => 'Error, order expired, please retry',
+    'created' => 'Order created!',
+    'click_here' => 'You can review here...',
 ];
