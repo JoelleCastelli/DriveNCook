@@ -77,7 +77,7 @@ return [
     'truck_general_state' => 'État général :',
     'truck_last_safety_inspection' => 'Dernier contrôle technique :',
     'truck_position' => 'Position :',
-    'truck_breakdown_history'=>'Historique des pannes',
+    'truck_breakdown_history' => 'Historique des pannes',
     'truck_safety_inspection_history' => 'Historique des contrôles techniques',
     'add_breakdown' => 'Ajouter une panne',
     'add_safety_inspection' => 'Ajouter un contrôle technique',
@@ -142,6 +142,8 @@ return [
     'warehouse_no_stock' => 'Aucun entrepôt n\'a actuellement de stock disponible à la vente.',
     'warehouse_location' => 'Adresse de l\'entrepôt',
     'update_sell_price' => 'Modifier le prix de vente',
+    'quantity_sent' => 'Quantité envoyée',
+    'back_to_stock_warehouse_management' => 'Retour vers stocks & commandes entrepôts',
 
 
     // Invoices
@@ -211,5 +213,18 @@ return [
     'since_creation' => 'Depuis la création',
     'date_end' => 'Date de fin :',
     'date_start' => 'Date de début :',
+
+    'sell_count_30_days' => 'Nombre de vente les 30 derniers jours',
+    'real_time_revenues_monthly' => 'Revenus ce mois ci',
+
+    'cost' => 'Coût',
+    'status' => 'Statut',
+    'quantity' => 'Quantité',
+    'sell_price' => 'Prix de vente',
+    'menu_available' => 'Disponibilité',
+    'available' => 'Disponible',
+    'unavailable' => 'Non disponible',
+    'sell_price_updated' => 'Prix de vente mis à jour',
+    'menu_available_updated' => 'Disponibilité mis à jour',
 
 ];
