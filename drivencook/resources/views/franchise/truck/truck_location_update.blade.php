@@ -15,7 +15,7 @@
                         <div class="form-group">
                             <label for="location_id">{{ trans('truck.location_name') }}</label>
                             <div class="input-group mb-3">
-                                <select class="custom-select" name="location_id" id="location_id">
+                                <select class="custom-select selectsearch" name="location_id" id="location_id">
                                     <option value="">{{trans('franchisee.not_assigned')}}</option>
                                     @foreach($location_list as $location)
                                         <option {{$location['id'] == $truck['location_id']?'selected':''}}
@@ -70,4 +70,9 @@
 @endsection
 
 @section('script')
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.selectsearch').SumoSelect({search: true});
+        });
+    </script>
 @endsection
