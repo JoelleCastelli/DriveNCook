@@ -167,11 +167,14 @@ class AccountController extends Controller
             'birthdate' => ['required', 'date'],
             'email' => ['required', 'string', 'email:rfc', 'max:100'],
             'telephone' => ['nullable', 'regex:/^(0|\+[1-9]{2}\s?)[1-9]([-. ]?\d{2}){4}$/u'],
+            'opt_in' => ['required', 'boolean'],
         ]);
 
         User::whereKey($this->get_connected_user()['id'])
             ->update(request()->except('_token'));
+
         flash(trans('client/account.update_successful'))->success();
+
         return back();
     }
 
