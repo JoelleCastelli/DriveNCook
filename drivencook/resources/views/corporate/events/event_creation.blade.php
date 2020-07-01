@@ -21,7 +21,7 @@
         @endif
         <div class="card">
             @if (empty($type))
-                <div class="card-header">{{trans('corporate.choose_event_type')}}</div>
+                <div class="card-header">{{trans('event.choose_event_type')}}</div>
                 <div class="card-body">
                     <form id="select_event_type" method="post" action="{{route('corporate.event_creation_type')}}">
                         {{csrf_field()}}
@@ -29,10 +29,11 @@
                             <label>
                                 <select name="type" id="type" class="form-control"
                                         onChange="document.getElementById('select_event_type').submit()">
-                                    <option value="choisir" selected disabled>{{trans('corporate.choose')}}</option>
-                                    <option value="private">{{trans('corporate.event_private')}}</option>
-                                    <option value="public">{{trans('corporate.event_public')}}</option>
-                                    <option value="news">{{trans('corporate.event_news')}}</option>
+                                    <option value="choisir" selected
+                                            disabled>{{trans('event.choose_event_type')}}</option>
+                                    <option value="private">{{trans('event.event_private')}}</option>
+                                    <option value="public">{{trans('event.event_public')}}</option>
+                                    <option value="news">{{trans('event.event_news')}}</option>
                                 </select>
                             </label>
                         </div>
@@ -40,7 +41,7 @@
                 </div>
             @else
                 <div class="card-header">
-                    <h2>{{trans('corporate.event_type').' : '.trans('corporate.event_'.$type)}}</h2>
+                    <h2>{{trans('event.event_type').' : '.trans('event.event_'.$type)}}</h2>
                 </div>
                 <div class="card-body">
                     <form method="post" action="{{route('corporate.event_creation_submit')}}">
@@ -48,7 +49,7 @@
                         <input type="hidden" name="type" id="type" value="{{$type}}">
                         <div class="form-group">
                             <label for="title">
-                                {{trans('corporate.title')}}
+                                {{trans('event.title')}}
                             </label>
                             <input type="text" class="form-control" name="title" id="title" maxlength="100" required>
                             @if ($errors->has('title'))
@@ -60,7 +61,7 @@
                         </div>
                         @if ($type == 'private')
                             <div class="form-group">
-                                <label for="invited">Invite</label><br>
+                                <label for="invited">{{trans('event.invite_users')}}</label><br>
                                 <select name="invited[]" id="invited" class="form-control selectsearch" multiple>
                                     @foreach($user_list as $user)
                                         <option value="{{$user['id']}}">{{$user['firstname'].' '.$user['lastname'].' ('.$user['email'].')'}}</option>
@@ -71,10 +72,9 @@
 
                         <div class="form-group">
                             <label for="date_start">
-                                {{trans('corporate.start')}}
+                                {{trans('event.start')}}
                             </label>
-                            <input type="date" name="date_start" id="date_start" class="form-control"
-                                   min="{{date('Y-m-d')}}" required>
+                            <input type="date" name="date_start" id="date_start" class="form-control" required>
                             @if ($errors->has('date_start'))
                                 <span class="badge-danger">
                                     {{$errors->first('date_start')}}
@@ -84,10 +84,9 @@
                         </div>
                         <div class="form-group">
                             <label for="date_end">
-                                {{trans('corporate.end')}}
+                                {{trans('event.end')}}
                             </label>
-                            <input type="date" name="date_end" id="date_end" class="form-control"
-                                   min="{{date('Y-m-d')}}" required>
+                            <input type="date" name="date_end" id="date_end" class="form-control" required>
                             @if ($errors->has('date_end'))
                                 <span class="badge-danger">
                                     {{$errors->first('date_end')}}
@@ -96,9 +95,9 @@
 
                         </div>
                         <div class="form-group">
-                            <label for="location_id">{{trans('truck.location')}}</label><br>
+                            <label for="location_id">{{trans('event.location')}}</label><br>
                             <select name="location_id" id="location_id" class="form-control selectsearch">
-                                <option value="" selected disabled>{{trans('corporate.select_address')}}</option>
+                                <option value="" selected disabled>{{trans('event.select_address')}}</option>
                                 @foreach($location_list as $location)
                                     <option value="{{$location['id']}}">
                                         {{$location['address'].' - '.$location['city'].' ('.$location['name'].')'}}
@@ -107,7 +106,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="description">Description</label>
+                            <label for="description">{{trans('event.description')}}</label>
                             <textarea id="description" name="description" class="form-control" required></textarea>
                             @if ($errors->has('description'))
                                 <span class="badge-danger">
@@ -117,7 +116,7 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">{{trans('corporate.add_event')}}</button>
+                            <button type="submit" class="btn btn-primary">{{trans('event.add_event')}}</button>
                         </div>
                     </form>
                 </div>

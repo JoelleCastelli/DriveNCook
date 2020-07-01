@@ -77,7 +77,7 @@ return [
     'truck_general_state' => 'General state:',
     'truck_last_safety_inspection' => 'Latest safety inspection:',
     'truck_position' => 'Position:',
-    'truck_breakdown_history'=>'Breakdowns history',
+    'truck_breakdown_history' => 'Breakdowns history',
     'truck_safety_inspection_history' => 'Safety inspections history',
     'add_breakdown' => 'Add a breakdown',
     'add_safety_inspection' => 'Add a safety inspection',
@@ -142,6 +142,8 @@ return [
     'warehouse_no_stock' => 'No warehouse currently has stock available for sale.',
     'warehouse_location' => 'Warehouse location',
     'update_sell_price' => 'Update sell price',
+    'quantity_sent' => 'Quantity sent',
+    'back_to_stock_warehouse_management' => 'Back to stock & warehouse\'s orders',
 
 
     // Invoices
@@ -211,5 +213,18 @@ return [
     'since_creation' => 'Since creation',
     'date_end' => 'Date end:',
     'date_start' => 'Date start:',
+
+    'sell_count_30_days' => 'Nombre de vente les 30 derniers jours',
+    'real_time_revenues_monthly' => 'Revenus ce mois ci',
+
+    'cost' => 'Cost',
+    'status' => 'Status',
+    'quantity' => 'Quantity',
+    'sell_price' => 'Sell price',
+    'menu_available' => 'Availability',
+    'available' => 'Available',
+    'unavailable' => 'Unavailable',
+    'sell_price_updated' => 'Sell price updated',
+    'menu_available_updated' => 'Availability updated',
 
 ];

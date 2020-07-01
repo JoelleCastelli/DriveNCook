@@ -598,15 +598,15 @@
                           action="{{ route('forgot_password') }}">
                         {{ csrf_field() }}
                         <div class="form-group">
-                            <label for="email">{{ trans('enter_email')}}</label>
+                            <label for="email">{{ trans('auth.enter_email')}}</label>
                             <input type="email" name="email" class="form-control" id="email"
-                                   placeholder="{{ trans('enter_email') }}"
+                                   placeholder="{{ trans('auth.enter_email') }}"
                                    value="{{ old('email') }}" required>
                         </div>
                         <div class="modal-footer">
                             <div class="form-group">
                                 <button type="submit"
-                                        class="btn btn-primary">{{ trans('send_reset_password') }}</button>
+                                        class="btn btn-primary">{{ trans('auth.send_reset_password') }}</button>
                             </div>
                         </div>
                     </form>

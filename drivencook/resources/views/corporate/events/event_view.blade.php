@@ -1,6 +1,6 @@
 @extends('corporate.layout_corporate')
 @section('title')
-    {{trans('corporate.event')}} : {{strtoupper($event['title'])}}
+    {{trans('event.event')}} : {{strtoupper($event['title'])}}
 @endsection
 
 @section('content')
@@ -9,24 +9,24 @@
         <div class="col-12 col-lg-6 mb-5">
             <div class="card">
                 <div class="card-header">
-                    <h2>{{trans('corporate.event_info')}}</h2>
+                    <h2>{{trans('event.event_info')}}</h2>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><b>Type : </b>{{trans('corporate.'.$event['type'])}}</li>
+                    <li class="list-group-item"><b>Type : </b>{{trans('event.event_'.$event['type'])}}</li>
                     <li class="list-group-item">
-                        <b>{{trans('corporate.start')}} : </b>
+                        <b>{{trans('event.start')}} : </b>
                         {{DateTime::createFromFormat('Y-m-d',$event['date_start'])->format('d/m/Y')}}
                     </li>
                     <li class="list-group-item">
-                        <b>{{trans('corporate.end')}} : </b>
+                        <b>{{trans('event.end')}} : </b>
                         {{DateTime::createFromFormat('Y-m-d',$event['date_end'])->format('d/m/Y')}}
                     </li>
                     @if (!empty($event['location']))
-                        <li class="list-group-item"><b>{{trans('truck.location')}} : {{$event['location']['name']}}</b>
+                        <li class="list-group-item"><b>{{trans('event.location')}} : {{$event['location']['name']}}</b>
                             - {{$event['location']['address'].' - '.$event['location']['city'].' ('.$event['location']['postcode'].')'}}
                         </li>
                     @endif
-                    <li class="list-group-item text-justify"><b>{{trans('corporate.description')}} : </b><br>
+                    <li class="list-group-item text-justify"><b>{{trans('event.description')}} : </b><br>
                         {{$event['description']}}
                     </li>
                     @if (!empty($event['location']))
@@ -45,7 +45,7 @@
                 </ul>
                 <div class="card-footer">
                     <a href="{{route('corporate.event_update',['event_id'=>$event['id']])}}">
-                        <button class="btn btn-light_blue">{{trans('corporate.update')}}</button>
+                        <button class="btn btn-light_blue">{{trans('event.update')}}</button>
                     </a>
                 </div>
             </div>
@@ -54,7 +54,7 @@
             <div class="col-12 col-lg-6 mb-5">
                 <div class="card">
                     <div class="card-header">
-                        <h2>{{trans('corporate.invited')}}</h2>
+                        <h2>{{trans('event.invited')}}</h2>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -95,7 +95,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button class="btn btn-light_blue" data-toggle="modal" data-target="#inviteModal">Add</button>
+                        <button class="btn btn-light_blue" data-toggle="modal" data-target="#inviteModal">{{trans('event.invite_user')}}</button>
                     </div>
                 </div>
             </div>
@@ -105,7 +105,7 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">{{trans('corporate.invite_user')}}</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">{{trans('event.invite_user')}}</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>

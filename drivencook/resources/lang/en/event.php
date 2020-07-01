@@ -1,0 +1,30 @@
+<?php
+return [
+    'add_event' => 'Add event',
+    'back_event_list' => 'Back to event list',
+    'calendar' => 'Event calendar',
+    'choose_event_type' => 'Choose event type',
+    'city' => 'Event city',
+    'description' => 'Event description',
+    'end' => 'Event date end',
+    'event' => 'Event',
+    'event_info' => 'Event informations',
+    'event_list' => 'Event list',
+    'event_news' => 'News',
+    'event_private' => 'Private event',
+    'event_public' => 'Public event',
+    'event_type' => 'Event type',
+    'event_update' => 'Update event',
+    'event_update_success_message' => 'Event updated successfully',
+    'invite_user' => 'Invite user',
+    'invite_users' => 'Invite users',
+    'invited' => 'Invited users',
+    'location' => 'Event location',
+    'no-address' => 'No address',
+    'select_address' => 'Choose address',
+    'start' => 'Event date start',
+    'title' => 'Title',
+    'update' => 'Update',
+];
+
+
