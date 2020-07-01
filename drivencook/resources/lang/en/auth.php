@@ -43,4 +43,8 @@ return [
     'no_franchisee_found' => 'This email address does not correspond to a Franchisee account',
     'already_validated' => 'Your account has already been completed, you can log in!',
     'franchisee_confirmation_success' => 'You are ready to go, log in now!',
+
+    'forgot_password' => 'Forgot password',
+    'enter_email' => 'Enter your mail',
+    'send_reset_password' => 'Send password reset mail',
 ];

@@ -226,13 +226,11 @@
 
                     let discountId = $('#discountSelection').find(':checked').attr('id');
 
-                    order['truck_id'] = window.location.href.split('/').slice(-1)[0];
                     if(discountId !== undefined) {
                         discountId = discountId.substring(discountId.lastIndexOf('_') + 1);
                     } else {
                         discountId = '';
                     }
-                    order['discount_id'] = discountId;
 
                     order = JSON.stringify(order);
 
@@ -244,11 +242,13 @@
                         },
                         data: {
                             'order': order,
+                            'discount_id': discountId,
+                            'truck_id': window.location.href.split('/').slice(-1)[0]
                         },
                         dataType: 'json',
                         success: function (data) {
                             if (data['status'] === 'success') {
-
+                                window.location.replace('{{ route('client_order_charge') }}');
                             } else {
                                 let str = '';
 

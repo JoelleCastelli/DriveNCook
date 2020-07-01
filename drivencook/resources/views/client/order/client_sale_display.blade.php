@@ -21,11 +21,15 @@
                     <li class="list-group-item"><b>{{ trans('client/sale.online_order') }} : </b>{{ $sale['online_order'] == true ?
                                                             trans('client/sale.is_order') :
                                                             trans('client/sale.is_sale') }}</li>
-                    <li class="list-group-item"><b>{{ trans('client/sale.status') }} : </b>{{ trans($GLOBALS['SALE_STATUS'][$sale['status']]) }}</li>
+                    <li class="list-group-item"><b>{{ trans('client/sale.status') }}
+                            : </b>{{ trans($GLOBALS['SALE_STATUS'][$sale['status']]) }}</li>
                     <li class="list-group-item"><b>{{ trans('client/sale.payment_method') }} : </b>{{ $sale['payment_method'] == null ?
                                                             trans('client/sale.not_paid') :
-                                                            trans($GLOBALS['SALE_PAYMENT_METHOD'][$sale['payment_method']]) }}</li>
-                    <li class="list-group-item"><b>{{ trans('client/sale.total_price') }} : </b>{{ $sale['total_price'] }} €</li>
+                                                            trans($GLOBALS['SALE_PAYMENT_METHOD'][$sale['payment_method']]) }}
+                    </li>
+                    <li class="list-group-item"><b>{{ trans('client/sale.total_price') }}
+                            : </b>{{ $sale['total_price'] }} €
+                    </li>
                 </ul>
             </div>
         </div>
@@ -35,12 +39,14 @@
                     <h2>{{ trans('client/sale.franchisee_details_section') }}</h2>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><b>{{ trans('client/sale.franchisee') }} : </b>{{ '[' .
+                    <li class="list-group-item"><b>{{ trans('franchisee.franchise') }} : </b>{{ '[' .
                                                             $sale['user_franchised']['pseudo']['name'] . '] ' .
                                                             $sale['user_franchised']['firstname'] . ' ' .
                                                             $sale['user_franchised']['lastname'] }}</li>
-                    <li class="list-group-item"><b>{{ trans('client/sale.franchisee_email') }} : </b>{{ $sale['user_franchised']['email'] }}</li>
-                    <li class="list-group-item"><b>{{ trans('client/sale.franchisee_phone') }} : </b>{{ $sale['user_franchised']['telephone'] }}</li>
+                    <li class="list-group-item"><b>{{ trans('client/sale.franchisee_email') }}
+                            : </b>{{ $sale['user_franchised']['email'] }}</li>
+                    <li class="list-group-item"><b>{{ trans('client/sale.franchisee_phone') }}
+                            : </b>{{ $sale['user_franchised']['telephone'] }}</li>
                 </ul>
             </div>
         </div>

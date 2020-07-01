@@ -214,7 +214,7 @@ class StockController extends Controller
         if ($order['status'] != 'created') {
             return 'can\'t cancel order anymore';
         }
-        PurchasedDish::where('purchase_order_id')->delete();
+        PurchasedDish::where('purchase_order_id', $order_id)->delete();
         PurchaseOrder::whereKey($order_id)->delete();
         return $order_id;
     }

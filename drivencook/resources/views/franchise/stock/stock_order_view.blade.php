@@ -16,8 +16,8 @@
                     <li class="list-group-item"><b>{{trans('franchisee.order_status')}}
                             : </b>{{$order['warehouse']['name']}}</li>
                     <li class="list-group-item"><b>{{trans('franchisee.warehouse_location')}} : </b>
-                        {{$order['warehouse']['address'].' - '.$order['warehouse']['city']['name'].
-                        ' ('.$order['warehouse']['city']['postcode'].')'}}
+                        {{$order['warehouse']['location']['address'].' - '.$order['warehouse']['location']['city'].
+                        ' ('.$order['warehouse']['location']['postcode'].')'}}
                     </li>
                     <li class="list-group-item"><b>{{trans('franchisee.total')}} : </b>
                         <?php

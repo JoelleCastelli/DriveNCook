@@ -20,4 +20,9 @@ return [
 
     'update_submit' => 'Mettre à jour le compte',
     'password_submit' => 'Mettre à jour le mot de passe',
+    'set_name' => 'Entre votre nom',
+    'set_firstname' => 'Entre votre prénom',
+    'set_email' => 'Entre votre email',
+    'set_telephone' => 'Entre votre téléphone',
+
 ];

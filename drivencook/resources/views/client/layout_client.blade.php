@@ -44,6 +44,11 @@
 
     <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
         <div class="navbar-nav ml-auto">
+            @if(!empty($client['loyalty_point']))
+            <li class="nav-item ml-4">
+                <span class="navbar-brand">{{ $client['loyalty_point'] . ' ' . trans('client/global.loyalty_point') }}</span>
+            </li>
+            @endif
             <li class="nav-item dropdown ml-4">
                 <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button">
                     <img src="{{ asset('img/'.App::getLocale().'_icon.png') }}"
@@ -109,7 +114,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('client.event_list')}}">
-                        <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp;&nbsp;{{trans('client.events')}}
+                        <i class="fa fa-calendar-alt"></i>&nbsp;&nbsp;&nbsp;{{trans('event.event_list')}}
                     </a>
                 </li>
                 @break

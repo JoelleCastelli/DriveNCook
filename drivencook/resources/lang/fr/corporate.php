@@ -74,12 +74,5 @@ return [
     // Back
     'back_dashboard' => 'Retour au tableau de bord',
 
-
-    'event_list' => 'Liste des événements',
-    'title' => 'Titre',
-    'description' => 'Description',
-    'city' => 'Ville',
-    'start' => 'Début',
-    'end' => 'Fin',
-    'add_event' => 'Ajouter un événement',
+    'event_creation' => 'Créer un évenement'
 ];

@@ -83,7 +83,7 @@
 
                             <td>{{(empty($franchisee['truck'])?'Camion non attribué':
                                 (empty($franchisee['truck']['location'])?'Pas d\'emplacement':
-                                $franchisee['truck']['location']['address'].' ('.$franchisee['truck']['location']['city']['postcode'].')'))}}</td>
+                                $franchisee['truck']['location']['address'].' ('.$franchisee['truck']['location']['postcode'].')'))}}</td>
 
                             <td>{{ DateTime::createFromFormat('Y-m-d H:i:s',$franchisee['created_at'])->format('d/m/Y') }}</td>
                             <td>
