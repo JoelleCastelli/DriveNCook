@@ -67,6 +67,7 @@ return [
     // Events
     'events' => 'Evènements',
     // Countries & cities
+    'locations' => 'Emplacements',
     'countries_cities' => 'Pays et villes',
     'trucks_locations' => 'Emplacements de camions',
     'back_countries_list' => 'Retour à la liste des pays',

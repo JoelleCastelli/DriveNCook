@@ -68,6 +68,7 @@ return [
     // Events
     'events' => 'Events',
     // Countries & cities
+    'locations' => 'Locations',
     'countries_cities' => 'Countries & cities',
     'trucks_locations' => 'Trucks locations',
     'back_countries_list' => 'Back to countries list',
