@@ -15,7 +15,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    {{ trans('client/global.events_for_next_7_days') }}
+                    <h2>{{ trans('client/global.events_for_next_7_days') }}</h2>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -61,7 +61,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    {{ trans('client/global.last_order_truck') }}
+                    <h2>{{ trans('client/global.last_order_truck') }}</h2>
                 </div>
                 <div class="card-body">
                     <div class="row">
