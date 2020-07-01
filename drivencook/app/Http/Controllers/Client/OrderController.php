@@ -28,9 +28,9 @@ class OrderController extends Controller
 
     public function truck_location_list()
     {
-        $clientId = $this->get_connected_user()['id'];
-        $client = User::whereKey($clientId)
-            ->first();
+//        $clientId = $this->get_connected_user()['id'];
+//        $client = User::whereKey($clientId)
+//            ->first();
 
         $trucks = Truck::where('functional', true)
             ->with('user')
@@ -42,8 +42,8 @@ class OrderController extends Controller
         }
 
         return view('client.order.truck_location_list')
-            ->with('trucks', $trucks)
-            ->with('client', $client);
+            ->with('trucks', $trucks);
+//            ->with('client', $client);
     }
 
     public function client_order($truck_id)
