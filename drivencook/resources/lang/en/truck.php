@@ -36,6 +36,8 @@ return [
     'remove_truck' => 'Remove the truck',
     'submit' => 'Add',
     'update_submit' => 'Update',
+    'truck_update' => 'Truck update',
+    'update_truck_success' => 'Truck information have been updated',
 
     // Errors
     'brand_error' => 'Brand invalid format',
@@ -63,6 +65,10 @@ return [
     'franchisee_must_be_validated' => 'The user must be a "confirmed" franchisee to have a truck.',
     'truck_assigned' => 'The truck has been assigned',
     'incorrect_id' => 'Error, ID is incorrect',
+    'license_plate_duplicate' => 'This license plate is already in the database',
+    'registration_document_duplicate' => 'This registration document is already in the database',
+    'engine_number_duplicate' => 'This engine number is already in the database',
+    'chassis_number_duplicate' => 'This chassis number is already in the database',
 
     'new_truck_success' => 'New truck added',
     'new_truck_error' => 'Error adding new truck',
