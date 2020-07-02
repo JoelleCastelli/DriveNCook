@@ -449,7 +449,7 @@ class FranchiseeController extends Controller
 
     public function stream_franchisee_invoice($id)
     {
-        return $this->stream_franchisee_invoice_pdf($id);
+        return $this->stream_invoice_pdf($id);
     }
 
     public function update_franchisee_stock()

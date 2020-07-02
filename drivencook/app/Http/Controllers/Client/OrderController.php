@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Middleware\AuthClient;
 use App\Models\FranchiseeStock;
 use App\Models\FidelityStep;
+use App\Models\Invoice;
 use App\Models\Sale;
 use App\Models\SoldDish;
 use App\Models\Truck;
@@ -282,6 +283,19 @@ class OrderController extends Controller
 
         User::whereKey($this->get_connected_user()['id'])
             ->update(['loyalty_point' => (int)$loyaltyPoint]);
+
+        // invoice creation
+        $invoice = ['amount' => $sum,
+            'date_emitted' => date("Y-m-d"),
+            'monthly_fee' => 0,
+            'initial_fee' => 0,
+            'franchisee_order' => 0,
+            'client_order' => 1,
+            'user_id' => $client['id'],
+            'sale_id' => $saleId];
+        $invoice = Invoice::create($invoice)->toArray();
+        $reference = $this->create_invoice_reference('CL', $client['id'], $invoice['id']);
+        $this->save_invoice_pdf($invoice['id'], $reference);
 
         flash(trans('client/order.created')
             . ' <a href="' . route('client_sale_display', ['id' => $saleId]) . '">'

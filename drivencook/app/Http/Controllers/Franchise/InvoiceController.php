@@ -22,6 +22,6 @@ class InvoiceController extends Controller
     }
 
     public function stream_invoice_pdf($id) {
-        return $this->stream_franchisee_invoice_pdf($id);
+        return $this->stream_invoice_pdf($id);
     }
 }

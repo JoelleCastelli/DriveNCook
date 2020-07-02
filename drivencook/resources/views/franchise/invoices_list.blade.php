@@ -67,7 +67,7 @@
                                                 {{ trans('franchisee.invoice_monthly_fee') }}
                                             @elseif ($invoice['initial_fee'] == 1)
                                                 {{ trans('franchisee.invoice_initial_fee') }}
-                                            @else
+                                            @elseif ($invoice['franchisee_order'] == 1)
                                                 {{ trans('franchisee.invoice_restock') }}
                                             @endif</td>
                                         <td>{{ trans('franchisee.invoice_status_'.$invoice['status']) }}</td>

@@ -17,28 +17,18 @@
                                style="width: 100%">
                             <thead>
                                 <tr>
+                                    <th>{{ trans('franchisee.invoice_emission_date') }}</th>
+                                    <th>{{ trans('franchisee.invoice_payment_date') }}</th>
                                     <th>{{ trans('franchisee.invoice_amount') }}</th>
                                     <th>{{ trans('franchisee.invoice_status') }}</th>
                                     <th>{{ trans('franchisee.invoice_reference') }}</th>
                                     <th>{{ trans('franchisee.invoice_type') }}</th>
-                                    <th>{{ trans('franchisee.invoice_emission_date') }}</th>
-                                    <th>{{ trans('franchisee.invoice_payment_date') }}</th>
                                     <th>{{ trans('franchisee.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($franchisee['invoices'] as $license_fee)
                                     <tr>
-                                        <td>{{ number_format($license_fee['amount'], 2, ',', ' ').' €'}}</td>
-                                        <td>{{ trans('franchisee.invoice_status_'.$license_fee['status']) }}</td>
-                                        <td>{{ $license_fee['reference'] }}</td>
-                                        <td>@if ($license_fee['monthly_fee'] == 1)
-                                                {{ trans('franchisee.invoice_monthly_fee') }}
-                                            @elseif ($license_fee['initial_fee'] == 1)
-                                                {{ trans('franchisee.invoice_initial_fee') }}
-                                            @else
-                                                {{ trans('franchisee.invoice_restock') }}
-                                            @endif</td>
                                         <td>
                                             {{ DateTime::createFromFormat('Y-m-d',$license_fee['date_emitted'])->format('d/m/Y') }}
                                         </td>
@@ -46,6 +36,16 @@
                                             {{ !empty($license_fee['date_paid'])?
                                             DateTime::createFromFormat('Y-m-d', $license_fee['date_paid'])->format('d/m/Y') : trans('franchisee.invoice_pending') }}
                                         </td>
+                                        <td>{{ number_format($license_fee['amount'], 2, ',', ' ').' €'}}</td>
+                                        <td>{{ trans('franchisee.invoice_status_'.$license_fee['status']) }}</td>
+                                        <td>{{ $license_fee['reference'] }}</td>
+                                        <td>@if ($license_fee['monthly_fee'] == 1)
+                                                {{ trans('franchisee.invoice_monthly_fee') }}
+                                            @elseif ($license_fee['initial_fee'] == 1)
+                                                {{ trans('franchisee.invoice_initial_fee') }}
+                                            @elseif ($license_fee['franchisee_order'] == 1)
+                                                {{ trans('franchisee.invoice_restock') }}
+                                            @endif</td>
                                         <td>
                                             <a class="ml-2" href="{{ route('stream_franchisee_invoice',['id'=>$license_fee['id']]) }}" target="_blank">
                                                 <button class="text-light fa fa-file-pdf ml-3"></button>

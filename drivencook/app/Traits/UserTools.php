@@ -122,17 +122,26 @@ trait UserTools
             'user_id' => $franchisee_id];
         $invoice = Invoice::create($invoice);
         $reference = $this->create_invoice_reference('IF', $franchisee_id, $invoice['id']);
-        $this->save_franchisee_invoice_pdf($invoice['id'], $reference);
+        $this->save_invoice_pdf($invoice['id'], $reference);
     }
 
-    public function franchisee_invoice_pdf($id)
+    public function create_invoice_pdf($id)
     {
         $purchase_order = [];
         $invoice = Invoice::with('user')->where('id', $id)->first()->toArray();
         $pseudo = Pseudo::where('id', $invoice['user']['pseudo_id'])->first();
         if (!empty($pseudo))
             $pseudo->toArray();
-        if ($invoice['purchase_order_id']) {
+
+        if ($invoice['client_order'] == 1) {
+            $sale = Sale::with('sold_dishes')
+                ->where('id', $invoice['sale_id'])
+                ->first()->toArray();
+
+            return $pdf = PDF::loadView('client_invoice', ['invoice' => $invoice,
+                'pseudo' => $pseudo,
+                'sale' => $sale]);
+        } else if ($invoice['franchisee_order'] == 1) {
             $purchase_order = PurchaseOrder::with('purchased_dishes')
                 ->where('id', $invoice['purchase_order_id'])
                 ->first()->toArray();
@@ -142,22 +151,24 @@ trait UserTools
             'pseudo' => $pseudo,
             'purchase_order' => $purchase_order]);
     }
-
-    public function stream_franchisee_invoice_pdf($id)
+    
+    public function stream_invoice_pdf($id)
     {
-        $pdf = $this->franchisee_invoice_pdf($id);
+        $pdf = $this->create_invoice_pdf($id);
         return $pdf->stream();
     }
 
-    public function save_franchisee_invoice_pdf($id, $reference)
+    public function save_invoice_pdf($id, $reference)
     {
-        $pdf = $this->franchisee_invoice_pdf($id);
+        $pdf = $this->create_invoice_pdf($id);
         if (strpos($reference, 'IF') !== FALSE) {
             $path = resource_path('invoices/franchisee_initial_fee/');
         } elseif (strpos($reference, 'MF') !== FALSE) {
             $path = resource_path('invoices/franchisee_monthly_fee/');
         } else if (strpos($reference, 'RS') !== FALSE) {
             $path = resource_path('invoices/franchisee_restock/');
+        } else if (strpos($reference, 'CL') !== FALSE) {
+            $path = resource_path('invoices/client_order/');
         }
 
         return $pdf->save($path . '/' . $reference . '.pdf');
