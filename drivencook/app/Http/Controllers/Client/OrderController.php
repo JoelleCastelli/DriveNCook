@@ -392,6 +392,8 @@ class OrderController extends Controller
                 $sold_dishes = SoldDish::where('sale_id', $id)
                     ->get();
 
+                Invoice::where('sale_id', $id)->delete();
+
                 if (!empty($sold_dishes)) {
                     foreach ($sold_dishes as $sold_dish) {
                         FranchiseeStock::where([

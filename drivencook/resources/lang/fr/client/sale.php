@@ -36,4 +36,7 @@ return [
     'franchisee_phone' => 'Téléphone',
 
     'cancel_order' => 'Annuler la commande',
+    'delete_confirm' => 'Voulez-vous vraiment annuler cette commande ?',
+    'ajax_error' => 'Une erreur est survenue, veuillez rafraîchir la page',
+    'delete_success' => 'La commande a été annulée.',
 ];

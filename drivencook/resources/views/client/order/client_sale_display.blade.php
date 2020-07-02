@@ -107,7 +107,7 @@
                 let url = window.location.href;
                 let orderId = url.substring(url.lastIndexOf('/') + 1);
 
-                if (confirm(Lang.get('dish.delete_confirm'))) {
+                if (confirm(Lang.get('client/sale.delete_confirm'))) {
                     if (!isNaN(parseInt(orderId))) {
                         let url_delete = '{{ route('client_order_cancel', ['id'=>':id']) }}';
                         url_delete = url_delete.replace(':id', orderId);
@@ -129,11 +129,11 @@
                                             str += '\n' + data['errorList'][i];
                                         }
                                     }
-                                    alert(Lang.get('order.delete_error') + str);
+                                    alert(Lang.get('client/sale.ajax_error') + str);
                                 }
                             },
                             error: function () {
-                                alert(Lang.get('order.delete_error'));
+                                alert(Lang.get('client/sale.ajax_error'));
                             }
                         })
                     }

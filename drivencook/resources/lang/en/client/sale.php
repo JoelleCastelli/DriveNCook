@@ -36,4 +36,7 @@ return [
     'franchisee_phone' => 'Phone',
 
     'cancel_order' => 'Cancel order',
+    'delete_confirm' => 'Are you sure you want to cancel this order?',
+    'ajax_error' => 'An error has occurred, please refresh the page',
+    'delete_success' => 'The order has been cancelled',
 ];
