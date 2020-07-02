@@ -149,4 +149,27 @@ class ClientController extends Controller
         }
     }
 
+    public function send_newsletter_unique()
+    {
+        request()->validate([
+            'user_id' => ['required', 'integer'],
+            'news_message' => ['nullable', 'string', 'max:255']
+        ]);
+        $param = request()->except('_token');
+
+        $user = User::whereKey($param['user_id'])
+            ->with('event_invited_30')
+            ->withCount('client_orders')->first();
+
+        if (empty($user)) {
+            abort((404));
+        }
+        $user = $user->toArray();
+
+        $this->sendNewsLetter($user, $param['news_message']);
+        flash(trans('corporate.newsletter_sent'))->success();
+        return back();
+
+    }
+
 }
