@@ -15,101 +15,58 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h2>{{ trans('client/global.events_for_next_7_days') }}</h2>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover table-striped table-bordered table-dark"
-                               style="width: 100%">
-                            <thead>
-                            <tr>
-                                <th></th>
-                                <th>Type</th>
-                                <th>{{ trans('client/event.title') }}</th>
-                                <th>{{ trans('client/event.description') }}</th>
-                                <th>{{ trans('client/event.city') }}</th>
-                                <th>{{ trans('client/event.start') }}</th>
-                                <th>{{ trans('client/event.end') }}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            @foreach($events as $event)
-                                <tr id="{{ 'row_'.$event['id'] }}">
-                                    <td>
-                                        <a href="{{ route('client.event_view',['event_id'=>$event['id']]) }}" style="color: inherit">
-                                            <button class="fa fa-eye"></button>
-                                        </a>
-                                    </td>
-                                    <td>{{ trans($GLOBALS['EVENT_TYPE'][$event['type']]) }}</td>
-                                    <td>{{ $event['title'] }}</td>
-                                    <td>{{ strlen($event['description']) > 100 ? substr($event['description'], 0, 100) . '...' : $event['description'] }}</td>
-                                    <td>{{ empty($event['location']['city'])? trans('franchisee.not_specified_f') : $event['location']['city'] }}</td>
-                                    <td>{{ $event['date_start'] }}</td>
-                                    <td>{{ $event['date_end'] }}</td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
                     <h2>{{ trans('client/global.last_order_truck') }}</h2>
                 </div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="table-responsive">
-                                <table class="table table-hover table-striped table-bordered table-dark"
-                                       style="width: 100%">
-                                    <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>{{ trans('client/order.pseudo') }}</th>
-                                        <th>{{ trans('client/order.franchisee') }}</th>
-                                        <th>{{ trans('client/order.location_name') }}</th>
-                                        <th>{{ trans('client/order.location_address') }}</th>
-                                        <th>{{ trans('client/order.brand') }}</th>
-                                        <th>{{ trans('client/order.model') }}</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if(!empty($sale['user_franchised'])
-                                         && !empty($sale['user_franchised']['truck']['location']['address'])
-                                         && !empty($sale['user_franchised']['truck']['location']['name'])
-                                         && !empty($sale['user_franchised']['truck']['location']['postcode'])
-                                         && !empty($sale['user_franchised']['truck']['location']['city'])
-                                         && !empty($sale['user_franchised']['truck']['location']['country']))
-                                            <tr>
-                                                <td>
-                                                    <a href="{{ route('client_order', ['id'=>$sale['user_franchised']['truck']['id']]) }}" style="color: inherit">
-                                                        <i class="fa fa-eye"></i>
-                                                    </a>
-                                                </td>
-                                                <td>{{ $sale['user_franchised']['pseudo']['name'] }}</td>
-                                                <td>{{ $sale['user_franchised']['firstname'] . '  ' . $sale['user_franchised']['lastname'] }}</td>
-                                                <td>{{ $sale['user_franchised']['truck']['location']['name'] }}</td>
-                                                <td>{{ $sale['user_franchised']['truck']['location']['address'] . ' - '
-                                                . $sale['user_franchised']['truck']['location']['postcode'] . ' - '
-                                                . $sale['user_franchised']['truck']['location']['city'] . ' - '
-                                                . $sale['user_franchised']['truck']['location']['country'] }}
-                                                </td>
-                                                <td>{{ $sale['user_franchised']['truck']['brand'] }}</td>
-                                                <td>{{ $sale['user_franchised']['truck']['model'] }}</td>
-                                            </tr>
-                                        @endif
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                    @if(!empty($sale['user_franchised'])
+                     && !empty($sale['user_franchised']['truck']['location']['address']))
+
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><b>{{ trans('client/sale.franchisee') }} : </b>
+                                {{ '[' . $sale['user_franchised']['pseudo']['name'] . '] '
+                                       . $sale['user_franchised']['firstname'] . ' '
+                                       . $sale['user_franchised']['lastname'] }}
+                            </li>
+                            <li class="list-group-item"><b>{{ trans('client/sale.franchisee_email') }} : </b>
+                                {{ $sale['user_franchised']['email'] }}
+                            </li>
+                            <li class="list-group-item"><b>{{ trans('client/sale.franchisee_phone') }} : </b>
+                                {{ $sale['user_franchised']['telephone'] }}
+                            </li>
+                            <li class="list-group-item"><b>{{ trans('client/global.franchisee_location') }} : </b>
+                                @if(!empty($sale['user_franchised']['truck']['location']['name'])
+                                 && !empty($sale['user_franchised']['truck']['location']['postcode'])
+                                 && !empty($sale['user_franchised']['truck']['location']['city']))
+
+                                    {{ $sale['user_franchised']['truck']['location']['name'] }}
+                                    <iframe
+                                            width="100%"
+                                            height="450"
+                                            frameborder="0" style="border:0"
+                                            src="https://www.google.com/maps/embed/v1/place?key={{
+                                                    env('GOOGLE_MAPS_API_KEY')}}&q={{ $sale['user_franchised']['truck']['location']['address'] . ' '
+                                                                                    . $sale['user_franchised']['truck']['location']['city'] . ' '
+                                                                                    . $sale['user_franchised']['truck']['location']['postcode']}}"
+                                            allowfullscreen>
+                                    </iframe>
+                                @else
+                                    {{ trans('franchisee.unknown') }}
+                                @endif
+                            </li>
+                        </ul>
+                    @else
+                        {{ $neverOrder = true }}
+                    @endif
+                </div>
+                <div class="card-footer">
+                    @if(!empty($sale['user_franchised']['truck']['id']))
+                        <a href="{{ route('client_order', ['id' => $sale['user_franchised']['truck']['id']]) }}"
+                           class="btn btn-light_blue">
+                            {{ trans('client/global.order_again') }}
+                        </a>
+                    @else
+                        <span class="btn btn-danger">{{ trans('client/global.no_truck_set') }}</span>
+                    @endif
                 </div>
             </div>
         </div>
