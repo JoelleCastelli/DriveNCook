@@ -11,6 +11,8 @@ return [
     'history' => 'History',
     'event_list' => 'Events',
 
+    'never_ordered' => 'You have never ordered, start now by clicking on the button below!',
+
     'events_for_next_7_days' => 'Your events for the next 7 days',
     'franchisee_location' => 'Location',
     'last_order_truck' => 'The truck of your last order',

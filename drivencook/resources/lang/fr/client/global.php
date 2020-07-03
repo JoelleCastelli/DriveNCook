@@ -11,6 +11,8 @@ return [
     'history' => 'Historique',
     'event_list' => 'Evénement',
 
+    'never_ordered' => 'Vous n\'avez jamais commandé, commencez dès maintenant en cliquant sur le bouton ci-dessous !',
+
     'events_for_next_7_days' => 'Vos événements pour les 7 prochains jours',
     'franchisee_location' => 'Emplacement',
     'last_order_truck' => 'Le camion de votre dernière commande',
