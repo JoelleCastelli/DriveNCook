@@ -39,4 +39,6 @@ return [
     'delete_confirm' => 'Are you sure you want to cancel this order?',
     'ajax_error' => 'An error has occurred, please refresh the page',
     'delete_success' => 'The order has been cancelled',
+
+    'see_invoice' => 'See the invoice:',
 ];

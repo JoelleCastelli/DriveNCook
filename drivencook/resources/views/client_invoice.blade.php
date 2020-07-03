@@ -1,8 +1,7 @@
 <!doctype html>
 <html lang="fr">
 
-yo
-    {{--<head>
+    <head>
         <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
         <title>Drive'N'Cook - Facture</title>
         <meta charset="UTF-8">
@@ -81,9 +80,9 @@ yo
             <div id="franchisee">
 
                 <div id="franchisee-title">
-                    <span id="franchisee_name">{{ $invoice['user']['firstname'] }} {{ $invoice['user']['lastname'] }}</span><br>
-                    Pseudonyme : {{ $pseudo ? $pseudo['name'] : 'aucun' }}<br>
-                    ID franchisé : {{ $invoice['user']['id'] }}
+                    <span id="franchisee_name">{{ $client['firstname'].' '.$client['lastname'] }}</span><br>
+                    ID client : {{ $client['id'] }}<br>
+                    Camion de la vente : {{ $pseudo ? $pseudo['name'] : $invoice['user']['firstname'].' '.$invoice['user']['lastname'] }}<br>
                 </div>
 
                 <table id="invoice_info">
@@ -128,12 +127,12 @@ yo
                         <td class="nb">{{ number_format($invoice['amount'], 2, ',', ' ') }} €</td>
                     </tr>
                 @else
-                    @foreach ($purchase_order['purchased_dishes'] as $purchased_dish)
+                    @foreach ($sale['sold_dishes'] as $sold_dish)
                         <tr class="item-row">
-                            <td>{{ $purchased_dish['dish']['name'] }}</td>
-                            <td class="nb">{{ number_format($purchased_dish['unit_price'], 2, ',', ' ') }} €</td>
-                            <td class="nb">{{ $purchased_dish['quantity'] }}</td>
-                            <td class="nb">{{ number_format($purchased_dish['unit_price'] * $purchased_dish['quantity'], 2, ',', ' ') }} €</td>
+                            <td>{{ $sold_dish['dish']['name'] }}</td>
+                            <td class="nb">{{ number_format($sold_dish['unit_price'], 2, ',', ' ') }} €</td>
+                            <td class="nb">{{ $sold_dish['quantity'] }}</td>
+                            <td class="nb">{{ number_format($sold_dish['unit_price'] * $sold_dish['quantity'], 2, ',', ' ') }} €</td>
                         </tr>
                     @endforeach
                 @endif
@@ -147,15 +146,11 @@ yo
             </table>
 
             <div id="terms">
-                <h5>Conditions et modalités de paiement</h5>
-                <div>Le paiement est dû dans les 15 jours suivant la date d'émission de la facture.<br><br>
-                    Caisse d'Epargne <br>
-                    IBAN : FR12 1234 5678<br>
-                    BIC : ABCDFRPXXXX</div>
+                <h5>Merci de votre visite !</h5>
             </div>
 
         </div>
 
-    </body>--}}
+    </body>
 
     </html>

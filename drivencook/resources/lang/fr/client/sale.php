@@ -39,4 +39,7 @@ return [
     'delete_confirm' => 'Voulez-vous vraiment annuler cette commande ?',
     'ajax_error' => 'Une erreur est survenue, veuillez rafraîchir la page',
     'delete_success' => 'La commande a été annulée.',
+
+    'see_invoice' => 'Voir la facture :',
+
 ];

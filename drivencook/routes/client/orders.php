@@ -39,6 +39,11 @@ Route::group(['middleware' => AuthClient::class], function() {
         'uses' => 'Client\OrderController@client_sales_history'
     ]);
 
+    Route::get('/client/sale_invoice/{invoice_id}', [
+        'as' => 'stream_client_invoice_pdf',
+        'uses' => 'Client\OrderController@stream_client_invoice_pdf'
+    ]);
+
     Route::get('/client/sale_display/{sale_id}', [
         'as' => 'client_sale_display',
         'uses' => 'Client\OrderController@client_sale_display'

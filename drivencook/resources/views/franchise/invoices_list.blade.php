@@ -72,7 +72,7 @@
                                             @endif</td>
                                         <td>{{ trans('franchisee.invoice_status_'.$invoice['status']) }}</td>
                                         <td class="text-center">
-                                            <a class="ml-2" href="{{ route('franchise.stream_invoice_pdf',['id'=>$invoice['id']]) }}" target="_blank">
+                                            <a class="ml-2" href="{{ route('franchise.stream_franchisee_invoice_pdf',['id'=>$invoice['id']]) }}" target="_blank">
                                                 <button class="text-light fa fa-file-pdf ml-3"></button>
                                             </a>
                                         </td>

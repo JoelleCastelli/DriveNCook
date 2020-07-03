@@ -17,7 +17,7 @@
                     <h2>{{ trans('client/sale.sale_details_section') }}</h2>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><b>{{ trans('client/sale.date') }} : </b>{{ $sale['date'] }}</li>
+                    <li class="list-group-item"><b>{{ trans('client/sale.date') }} : </b>{{ DateTime::createFromFormat('Y-m-d', $sale['date'])->format('d/m/Y') }}</li>
                     <li class="list-group-item"><b>{{ trans('client/sale.online_order') }} : </b>{{ $sale['online_order'] == true ?
                                                             trans('client/sale.is_order') :
                                                             trans('client/sale.is_sale') }}</li>
@@ -30,6 +30,10 @@
                     <li class="list-group-item"><b>{{ trans('client/sale.total_price') }}
                             : </b>{{ $sale['total_price'] }} €
                     </li>
+                    <li class="list-group-item"><b> {{ trans('client/sale.see_invoice') }}
+                            <a class="ml-2" href="{{ route('stream_client_invoice_pdf',['id' => $invoice['id']]) }}" target="_blank">
+                            <button class="text-dark fa fa-file-pdf ml-3"></button>
+                            </a></b></li>
                 </ul>
             </div>
         </div>
@@ -73,17 +77,17 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($sale['sold_dishes'] as $soldDish)
-                                <tr>
-                                    <td>{{ $soldDish['dish']['name'] }}</td>
-                                    <td>{{ trans($GLOBALS['DISH_TYPE'][$soldDish['dish']['category']]) }}</td>
-                                    <td>{{ $soldDish['dish']['description'] }}</td>
-                                    <td>{{ trans('dish.diet_'.strtolower($soldDish['dish']['diet'])) }}</td>
-                                    <td>{{ $soldDish['quantity'] }}</td>
-                                    <td>{{ $soldDish['unit_price'] }} €</td>
-                                    <td>{{ $soldDish['unit_price'] * $soldDish['quantity'] }} €</td>
-                                </tr>
-                            @endforeach
+                                @foreach($sale['sold_dishes'] as $soldDish)
+                                    <tr>
+                                        <td>{{ $soldDish['dish']['name'] }}</td>
+                                        <td>{{ trans($GLOBALS['DISH_TYPE'][$soldDish['dish']['category']]) }}</td>
+                                        <td>{{ $soldDish['dish']['description'] }}</td>
+                                        <td>{{ trans('dish.diet_'.strtolower($soldDish['dish']['diet'])) }}</td>
+                                        <td>{{ $soldDish['quantity'] }}</td>
+                                        <td>{{ $soldDish['unit_price'] }} €</td>
+                                        <td>{{ $soldDish['unit_price'] * $soldDish['quantity'] }} €</td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -140,6 +144,5 @@
                 }
             })
         });
-
     </script>
 @endsection
