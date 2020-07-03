@@ -33,7 +33,11 @@
                                 {{ $sale['user_franchised']['email'] }}
                             </li>
                             <li class="list-group-item"><b>{{ trans('client/sale.franchisee_phone') }} : </b>
-                                {{ $sale['user_franchised']['telephone'] }}
+                                @if(!empty($sale['user_franchised']['telephone']))
+                                    {{ $sale['user_franchised']['telephone'] }}
+                                @else
+                                    {{ trans('franchisee.unknown') }}
+                                @endif
                             </li>
                             <li class="list-group-item"><b>{{ trans('client/global.franchisee_location') }} : </b>
                                 @if(!empty($sale['user_franchised']['truck']['location']['name'])
