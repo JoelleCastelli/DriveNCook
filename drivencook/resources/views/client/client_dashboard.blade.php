@@ -18,8 +18,7 @@
                     <h2>{{ trans('client/global.last_order_truck') }}</h2>
                 </div>
                 <div class="card-body">
-                    @if(!empty($sale['user_franchised'])
-                     && !empty($sale['user_franchised']['truck']['location']['address']))
+                    @if(empty($sale['user_franchised']))
 
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item"><b>{{ trans('client/sale.franchisee') }} : </b>
@@ -35,6 +34,7 @@
                             </li>
                             <li class="list-group-item"><b>{{ trans('client/global.franchisee_location') }} : </b>
                                 @if(!empty($sale['user_franchised']['truck']['location']['name'])
+                                 && !empty($sale['user_franchised']['truck']['location']['address'])
                                  && !empty($sale['user_franchised']['truck']['location']['postcode'])
                                  && !empty($sale['user_franchised']['truck']['location']['city']))
 
@@ -55,17 +55,27 @@
                             </li>
                         </ul>
                     @else
-                        {{ $neverOrder = true }}
+                        @php
+                          $neverOrdered = true
+                        @endphp
+                        {{ trans('client/global.never_ordered') }}
                     @endif
                 </div>
                 <div class="card-footer">
-                    @if(!empty($sale['user_franchised']['truck']['id']))
-                        <a href="{{ route('client_order', ['id' => $sale['user_franchised']['truck']['id']]) }}"
-                           class="btn btn-light_blue">
-                            {{ trans('client/global.order_again') }}
-                        </a>
+                    @if(!$neverOrdered)
+                        @if(!empty($sale['user_franchised']['truck']['id']))
+                            <a href="{{ route('client_order', ['id' => $sale['user_franchised']['truck']['id']]) }}"
+                               class="btn btn-light_blue">
+                                {{ trans('client/global.order_again') }}
+                            </a>
+                        @else
+                            <span class="btn btn-danger">{{ trans('client/global.no_truck_set') }}</span>
+                        @endif
                     @else
-                        <span class="btn btn-danger">{{ trans('client/global.no_truck_set') }}</span>
+                        <a href="{{ route('truck_location_list') }}"
+                           class="btn btn-light_blue">
+                            {{ trans('client/global.order') }}
+                        </a>
                     @endif
                 </div>
             </div>
