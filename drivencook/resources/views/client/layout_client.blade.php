@@ -46,7 +46,11 @@
         <div class="navbar-nav ml-auto">
             @if(!empty($client['loyalty_point']))
             <li class="nav-item ml-4">
-                <span class="navbar-brand">{{ $client['loyalty_point'] . ' ' . trans('client/global.loyalty_point') }}</span>
+                <a class="nav-link" href="#"
+                   data-toggle="modal" data-target="#loyaltyPointModal"
+                   style="margin: 0; padding: 0">
+                    <span class="navbar-brand">{{ $client['loyalty_point'] . ' ' . trans('client/global.loyalty_point') }}</span>
+                </a>
             </li>
             @endif
             <li class="nav-item dropdown ml-4">
@@ -187,6 +191,25 @@
         </div>
     </div>
 </div>
+
+@if(!empty($client['loyalty_point']))
+    <!-- MODAL FIDELITY POINT -->
+    <div class="modal fade" id="loyaltyPointModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle"></h5>
+                    <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
 
 @if(auth()->guest())
     <!-- MODAL CLIENT LOGIN -->
