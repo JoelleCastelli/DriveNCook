@@ -3,8 +3,9 @@
 
 namespace App\Traits;
 
-
 use App\Models\FidelityStep;
+use App\Models\User;
+use Session;
 
 trait LoyaltyTools
 {
@@ -18,5 +19,18 @@ trait LoyaltyTools
         }
 
         return $fidelityStep;
+    }
+
+    public function put_loyalty_point_in_session($userId) {
+
+        $user = User::whereKey($userId)
+            ->first();
+
+        $loyaltyPoint = 0;
+        if(!empty($user)) {
+            $loyaltyPoint = $user->loyalty_point;
+        }
+
+        Session::put('loyalty_point', $loyaltyPoint);
     }
 }
