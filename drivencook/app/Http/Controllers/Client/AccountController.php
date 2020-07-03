@@ -21,20 +21,6 @@ class AccountController extends Controller
         $client = User::whereKey($clientId)
             ->first();
 
-        // Client events for the next 7 days
-        $events = EventInvited::where([
-            ['event_invited.user_id', $clientId],
-            ['date_start', '>=', Carbon::now()->toDateString()],
-            ['date_start', '<=', Carbon::now()->addDays(7)->toDateString()]
-        ])->join('event', 'event.id', 'event_invited.event_id')
-            ->select('event_invited.user_id as current_id', 'event.user_id as owner_id', 'event.*', 'event_invited.*')
-            ->orderBy('date_start')
-            ->get();
-
-        if(!empty($events)) {
-            $events = $events->toArray();
-        }
-
         $last_sale = Sale::where('user_client', $clientId)
             ->with('user_franchised')
             ->orderBy('date', 'desc')
@@ -46,7 +32,6 @@ class AccountController extends Controller
 
         return view('client.client_dashboard')
             ->with('client', $client)
-            ->with('events', $events)
             ->with('sale', $last_sale);
     }
 
