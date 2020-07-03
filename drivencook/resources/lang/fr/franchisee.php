@@ -176,6 +176,9 @@ return [
     'invoice_status_cancelled' => 'Annulée',
     'invoice_total' => 'Total facturé (hors frais initiaux)',
     'invoice_next_payment' => 'Prochaine redevance périodique :',
+    'update_invoice_status' => 'Modifier le statut de la facture',
+    'select_invoice_status' => 'Sélectionnez un statut :',
+    'invoice_status_updated' => 'Le statut de la facture a été mis à jour',
 
 
     // Obligations

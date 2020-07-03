@@ -270,8 +270,23 @@ class FranchiseeController extends Controller
             ->with('invoices')
             ->first()->toArray();
 
+        $invoices_status = $this->get_enum_column_values('invoice', 'status');
+
         return view('corporate.franchisee.franchisee_invoices_list')
-            ->with('franchisee', $franchisee);
+            ->with('franchisee', $franchisee)
+            ->with('invoices_status', $invoices_status);
+    }
+
+    public function franchisee_invoice_status_update() {
+        request()->validate([
+            'invoice_id' => ['required', 'integer'],
+            'invoice_status' => ['required', 'string']
+        ]);
+        Invoice::where([
+            ['id', request('invoice_id')]
+        ])->update(['status' => request('invoice_status')]);
+
+        return json_encode(array('response' => 'success'));
     }
 
     public function franchisee_sales_stats($id)

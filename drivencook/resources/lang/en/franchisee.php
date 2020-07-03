@@ -177,6 +177,9 @@ return [
     'invoice_status_cancelled' => 'Cancelled',
     'invoice_total' => 'Total invoiced (excluding initial fee)',
     'invoice_next_payment' => 'Next periodic fee:',
+    'update_invoice_status' => 'Update invoice status',
+    'select_invoice_status' => 'Select a status:',
+    'invoice_status_updated' => 'The invoice status has been updated',
 
 
     // Obligations
