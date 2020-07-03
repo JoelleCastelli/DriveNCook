@@ -12,6 +12,7 @@ return [
     'event_list' => 'Evénement',
 
     'events_for_next_7_days' => 'Vos événements pour les 7 prochains jours',
+    'franchisee_location' => 'Emplacement',
     'last_order_truck' => 'Le camion de votre dernière commande',
 
     'actions' => 'Actions',
