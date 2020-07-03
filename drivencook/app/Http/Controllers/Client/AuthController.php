@@ -6,10 +6,13 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\AuthClient;
+use App\Traits\LoyaltyTools;
 
 
 class AuthController extends Controller
 {
+    use LoyaltyTools;
+
     public function loginForm()
     {
         return view('client.client_login');
@@ -37,6 +40,7 @@ class AuthController extends Controller
             ]);
 
         if ($result) {
+            $this->put_loyalty_point_in_session(auth()->user()->id);
             return back();
         }
 

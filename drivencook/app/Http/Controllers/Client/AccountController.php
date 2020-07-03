@@ -7,12 +7,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Sale;
 use App\Models\SoldDish;
 use App\Models\User;
+use App\Traits\LoyaltyTools;
 use Illuminate\Http\Request;
 use App\Traits\UserTools;
 
 class AccountController extends Controller
 {
     use UserTools;
+    use LoyaltyTools;
 
     public function dashboard()
     {
