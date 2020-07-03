@@ -10,6 +10,7 @@ use App\Models\Sale;
 use App\Models\SoldDish;
 use App\Models\Truck;
 use App\Models\User;
+use App\Traits\LoyaltyTools;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Traits\UserTools;
@@ -24,6 +25,7 @@ class OrderController extends Controller
     use UserTools;
     use TruckTools;
     use StockTools;
+    use LoyaltyTools;
 
     public function truck_location_list()
     {
@@ -207,6 +209,7 @@ class OrderController extends Controller
 
     public function client_order_validate()
     {
+        $clientId = $this->get_connected_user()['id'];
         $order = request()->session()->pull('order', null);
         if ($order == null) {
             flash(trans('client/order.order_expired'))->warning();
@@ -221,7 +224,7 @@ class OrderController extends Controller
             'online_order' => true,
             'date' => Carbon::now()->toDateString(),
             'user_franchised' => $userId,
-            'user_client' => $this->get_connected_user()['id'],
+            'user_client' => $clientId,
             'status' => 'pending',
             'payment_method' => 'Carte bancaire'
         ];
@@ -262,7 +265,7 @@ class OrderController extends Controller
             $subPoint = $fidelityStep->step;
         }
 
-        $client = User::whereKey($this->get_connected_user()['id'])
+        $client = User::whereKey($clientId)
             ->first();
 
         /**
@@ -274,8 +277,10 @@ class OrderController extends Controller
             $loyaltyPoint = 0;
         }
 
-        User::whereKey($this->get_connected_user()['id'])
+        User::whereKey($clientId)
             ->update(['loyalty_point' => (int)$loyaltyPoint]);
+
+        $this->put_loyalty_point_in_session($clientId);
 
         flash(trans('client/order.created')
                 . ' <a href="' . route('client_sale_display', ['id' => $saleId]) . '">'
@@ -372,37 +377,39 @@ class OrderController extends Controller
                 ['user_client', $this->get_connected_user()['id']],
             ])->first();
 
-            if (!empty($sale)) {
-                $sold_dishes = SoldDish::where('sale_id', $id)
-                    ->get();
+            if($sale->status == 'pending') {
+                if (!empty($sale)) {
+                    $sold_dishes = SoldDish::where('sale_id', $id)
+                        ->get();
 
-                if (!empty($sold_dishes)) {
-                    foreach ($sold_dishes as $sold_dish) {
-                        FranchiseeStock::where([
-                            ['user_id', $sale->user_franchised],
-                            ['dish_id', $sold_dish->dish_id]
-                        ])->increment('quantity', $sold_dish->quantity);
+                    if (!empty($sold_dishes)) {
+                        foreach ($sold_dishes as $sold_dish) {
+                            FranchiseeStock::where([
+                                ['user_id', $sale->user_franchised],
+                                ['dish_id', $sold_dish->dish_id]
+                            ])->increment('quantity', $sold_dish->quantity);
 
-                        SoldDish::where([
-                            ['dish_id', $sold_dish->dish_id],
-                            ['sale_id', $sale->id]
-                        ])->delete();
+                            SoldDish::where([
+                                ['dish_id', $sold_dish->dish_id],
+                                ['sale_id', $sale->id]
+                            ])->delete();
+                        }
                     }
+
+                    Sale::whereKey($sale->id)
+                        ->delete();
+
+                    $response_array = [
+                        'status' => 'success'
+                    ];
+                } else {
+                    $errors_list[] = trans('client/order.sale_and_client_do_not_match');
+
+                    $response_array = [
+                        'status' => 'error',
+                        'errorList' => $errors_list
+                    ];
                 }
-
-                Sale::whereKey($sale->id)
-                    ->delete();
-
-                $response_array = [
-                    'status' => 'success'
-                ];
-            } else {
-                $errors_list[] = trans('client/order.sale_and_client_do_not_match');
-
-                $response_array = [
-                    'status' => 'error',
-                    'errorList' => $errors_list
-                ];
             }
         }
 
