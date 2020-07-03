@@ -29,4 +29,7 @@ return [
 
     'set_new_password' => 'Entrez votre nouveau mot de passe',
     'set_password_confirm' => 'Confirmez votre nouveau mot de passe',
+
+    // Flash
+    'update_successful' => 'Compte mis à jour !'
 ];

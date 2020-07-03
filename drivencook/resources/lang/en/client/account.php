@@ -27,4 +27,7 @@ return [
 
     'set_new_password' => 'Set new password',
     'set_password_confirm' => 'Set password confirmation',
+
+    // Flash
+    'update_successful' => 'Account updated!'
 ];
