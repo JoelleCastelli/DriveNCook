@@ -21,7 +21,7 @@ class InvoiceController extends Controller
         return view('franchise.invoices_list')->with('invoices', $invoices)->with('current_obligation', $current_obligation);
     }
 
-    public function stream_invoice_pdf($id) {
+    public function stream_franchisee_invoice_pdf($id) {
         return $this->stream_invoice_pdf($id);
     }
 }

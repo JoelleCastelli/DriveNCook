@@ -138,9 +138,12 @@ trait UserTools
                 ->where('id', $invoice['sale_id'])
                 ->first()->toArray();
 
+            $client = User::where('id', $sale['user_client'])->first()->toArray();
+
             return $pdf = PDF::loadView('client_invoice', ['invoice' => $invoice,
-                'pseudo' => $pseudo,
-                'sale' => $sale]);
+                                                            'pseudo' => $pseudo,
+                                                            'client' => $client,
+                                                            'sale' => $sale]);
         } else if ($invoice['franchisee_order'] == 1) {
             $purchase_order = PurchaseOrder::with('purchased_dishes')
                 ->where('id', $invoice['purchase_order_id'])

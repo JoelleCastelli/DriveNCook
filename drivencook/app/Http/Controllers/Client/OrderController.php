@@ -363,6 +363,11 @@ class OrderController extends Controller
             $sale = $sale->toArray();
         }
 
+        $invoice = Invoice::with('user')->where('sale_id', $sale['id'])->first();
+        if (!empty($invoice)) {
+            $invoice = $invoice->toArray();
+        }
+
         $sum = 0;
         foreach ($sale['sold_dishes'] as $sold_dish) {
             $sum += $sold_dish['unit_price'] * $sold_dish['quantity'];
@@ -370,7 +375,12 @@ class OrderController extends Controller
         $sale['total_price'] = $sum;
 
         return view('client.order.client_sale_display')
-            ->with('sale', $sale);
+            ->with('sale', $sale)
+            ->with('invoice', $invoice);
+    }
+
+    public function stream_client_invoice_pdf($id) {
+        return $this->stream_invoice_pdf($id);
     }
 
     public function client_order_cancel($id)

@@ -184,7 +184,7 @@ class StockController extends Controller
         $this->save_invoice_pdf($invoice['id'], $reference);
 
         flash('Commande créée !
-                <a href="' . route('franchise.stream_invoice_pdf', ['id' => $invoice['id']]) . '">Consultez la facture au format PDF</a>
+                <a href="' . route('franchise.stream_franchisee_invoice_pdf', ['id' => $invoice['id']]) . '">Consultez la facture au format PDF</a>
                 ou retrouvez-la dans la rubrique <a href="' . route('franchise.invoices_list') . '">Factures</a>.')
             ->success();
 
