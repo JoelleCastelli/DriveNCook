@@ -18,7 +18,10 @@
                     <h2>{{ trans('client/global.last_order_truck') }}</h2>
                 </div>
                 <div class="card-body">
-                    @if(empty($sale['user_franchised']))
+                    @php
+                        $neverOrdered = false
+                    @endphp
+                    @if(!empty($sale['user_franchised']))
 
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item"><b>{{ trans('client/sale.franchisee') }} : </b>
