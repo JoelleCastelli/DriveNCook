@@ -4,10 +4,9 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Models\EventInvited;
 use App\Models\Sale;
+use App\Models\SoldDish;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Traits\UserTools;
 
@@ -177,7 +176,18 @@ class AccountController extends Controller
 
     public function delete_account()
     {
-        Sale::where("user_client", $this->get_connected_user()['id'])->delete();
+        //Sale::where("user_client", $this->get_connected_user()['id'])->delete();
+        $sales = Sale::where("user_client", $this->get_connected_user()['id'])->get();
+        if(!empty($sales)) {
+            $sales = $sales->toArray();
+            foreach($sales as $sale) {
+                SoldDish::where('sale_id', $sale['id'])->delete();
+                Sale::whereKey($sale['id'])->delete();
+            }
+        }
+
         $this->delete_user($this->get_connected_user()['id']);
+
+        return redirect(route('client_logout'));
     }
 }
