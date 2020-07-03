@@ -11,9 +11,12 @@ return [
     'history' => 'History',
     'event_list' => 'Events',
 
+    'events_for_next_7_days' => 'Your events for the next 7 days',
+    'last_order_truck' => 'The truck of your last order',
+
     'actions' => 'Actions',
 
+    'order_again' => 'Order again',
+
     'loyalty_point' => 'loyalty points',
-    'sales' => 'Purchases',
-    'show_details' => 'Details'
 ];

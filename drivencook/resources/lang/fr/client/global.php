@@ -16,5 +16,7 @@ return [
 
     'actions' => 'Actions',
 
+    'order_again' => 'Commander à nouveau',
+
     'loyalty_point' => 'points de fidélité',
 ];
