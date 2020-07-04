@@ -52,7 +52,7 @@ class StockController extends Controller
     public function stock_order()
     {
         $warehouses_list = [];
-        $warehouses = Warehouse::with('city')
+        $warehouses = Warehouse::with('location')
             ->with('available_dishes')
             ->get()->toArray();
 
@@ -69,17 +69,15 @@ class StockController extends Controller
     public function stock_order_warehouse($warehouse_id)
     {
         $warehouse = Warehouse::whereKey($warehouse_id)
-            ->with('city')
+            ->with('location')
             ->with('stock')
             ->first();
         if ($warehouse == null) {
             abort(404);
         }
         $warehouse = $warehouse->toArray();
-//        var_dump($warehouse);die;
         return view('franchise.stock.stock_order_form')
             ->with('warehouse', $warehouse);
-        //json
     }
 
     public function stock_order_submit()
@@ -178,14 +176,15 @@ class StockController extends Controller
             'date_emitted' => date("Y-m-d"),
             'monthly_fee' => 0,
             'initial_fee' => 0,
+            'franchisee_order' => 1,
             'user_id' => $this->get_connected_user()['id'],
             'purchase_order_id' => $order_id];
         $invoice = Invoice::create($invoice)->toArray();
         $reference = $this->create_invoice_reference('RS', $this->get_connected_user()['id'], $invoice['id']);
-        $this->save_franchisee_invoice_pdf($invoice['id'], $reference);
+        $this->save_invoice_pdf($invoice['id'], $reference);
 
         flash('Commande créée !
-                <a href="' . route('franchise.stream_invoice_pdf', ['id' => $invoice['id']]) . '">Consultez la facture au format PDF</a>
+                <a href="' . route('franchise.stream_franchisee_invoice_pdf', ['id' => $invoice['id']]) . '">Consultez la facture au format PDF</a>
                 ou retrouvez-la dans la rubrique <a href="' . route('franchise.invoices_list') . '">Factures</a>.')
             ->success();
 

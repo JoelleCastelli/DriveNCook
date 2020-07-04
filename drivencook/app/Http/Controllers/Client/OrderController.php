@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\FranchiseeStock;
 use App\Models\FidelityStep;
+use App\Models\Invoice;
 use App\Models\Sale;
 use App\Models\SoldDish;
 use App\Models\Truck;
@@ -280,7 +281,18 @@ class OrderController extends Controller
         User::whereKey($clientId)
             ->update(['loyalty_point' => (int)$loyaltyPoint]);
 
-        $this->put_loyalty_point_in_session($clientId);
+        // invoice creation
+        $invoice = ['amount' => $sum,
+            'date_emitted' => date("Y-m-d"),
+            'monthly_fee' => 0,
+            'initial_fee' => 0,
+            'franchisee_order' => 0,
+            'client_order' => 1,
+            'user_id' => $client['id'],
+            'sale_id' => $saleId];
+        $invoice = Invoice::create($invoice)->toArray();
+        $reference = $this->create_invoice_reference('CL', $client['id'], $invoice['id']);
+        $this->save_invoice_pdf($invoice['id'], $reference);
 
         flash(trans('client/order.created')
             . ' <a href="' . route('client_sale_display', ['id' => $saleId]) . '">'
@@ -352,6 +364,11 @@ class OrderController extends Controller
             $sale = $sale->toArray();
         }
 
+        $invoice = Invoice::with('user')->where('sale_id', $sale['id'])->first();
+        if (!empty($invoice)) {
+            $invoice = $invoice->toArray();
+        }
+
         $sum = 0;
         foreach ($sale['sold_dishes'] as $sold_dish) {
             $sum += $sold_dish['unit_price'] * $sold_dish['quantity'];
@@ -359,7 +376,12 @@ class OrderController extends Controller
         $sale['total_price'] = $sum;
 
         return view('client.order.client_sale_display')
-            ->with('sale', $sale);
+            ->with('sale', $sale)
+            ->with('invoice', $invoice);
+    }
+
+    public function stream_client_invoice_pdf($id) {
+        return $this->stream_invoice_pdf($id);
     }
 
     public function client_order_cancel($id)
@@ -382,12 +404,14 @@ class OrderController extends Controller
                     $sold_dishes = SoldDish::where('sale_id', $id)
                         ->get();
 
-                    if (!empty($sold_dishes)) {
-                        foreach ($sold_dishes as $sold_dish) {
-                            FranchiseeStock::where([
-                                ['user_id', $sale->user_franchised],
-                                ['dish_id', $sold_dish->dish_id]
-                            ])->increment('quantity', $sold_dish->quantity);
+                Invoice::where('sale_id', $id)->delete();
+
+                if (!empty($sold_dishes)) {
+                    foreach ($sold_dishes as $sold_dish) {
+                        FranchiseeStock::where([
+                            ['user_id', $sale->user_franchised],
+                            ['dish_id', $sold_dish->dish_id]
+                        ])->increment('quantity', $sold_dish->quantity);
 
                             SoldDish::where([
                                 ['dish_id', $sold_dish->dish_id],

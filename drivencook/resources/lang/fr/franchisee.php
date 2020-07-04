@@ -27,21 +27,26 @@ return [
     'update' => 'Mettre à jour',
     'not_set' => 'Non défini',
     'create_account' => 'Créer un compte',
+    'never' => 'Jamais',
+    'none' => 'Aucun',
+    'see_details' => 'Consulter les détails',
+    'total_franchisees' => 'Nombre de franchisés :',
+    'franchisees_list' => 'Liste des franchisés',
 
 
     // Franchisee info
     'franchisee_info' => 'Informations du franchisé',
-    'name' => 'Nom :',
-    'firstname' => 'Prénom :',
-    'email' => 'Adresse e-mail :',
-    'phone' => 'Téléphone :',
-    'birthdate' => 'Date de naissance :',
-    'account_status' => 'Statut :',
+    'name' => 'Nom',
+    'firstname' => 'Prénom',
+    'email' => 'Adresse e-mail',
+    'phone' => 'Téléphone',
+    'birthdate' => 'Date de naissance',
+    'account_status' => 'Statut',
     'account_active' => 'Actif',
     'account_inactive' => 'Inactif',
-    'driving_licence' => 'Permis de conduire :',
-    'social_security' => 'Sécurité sociale :',
-    'registered_on' => 'Inscrite.e depuis le :',
+    'driving_licence' => 'Permis de conduire',
+    'social_security' => 'Sécurité sociale',
+    'registered_on' => 'Date d\'inscription',
     'enter_driving_licence' => 'Entrez le numéro de permis de conduire',
     'enter_email' => 'Entrez l\'adresse e-mail',
     'enter_password' => 'Entrez le mot de passe',
@@ -62,6 +67,10 @@ return [
     'unknown_pseudo' => 'Pseudo inconnu',
     'pseudo' => 'Pseudonyme',
     'no_pseudo_available' => 'Aucun pseudonyme disponible, contactez l\'équipe Drive\'N\'Cook',
+    'latest_monthly_payment' => 'Dernier paiement mensuel',
+    'delete_confirm' => 'Voulez-vous vraiment supprimer ce franchisé ? Toutes les données associées seront supprimées.',
+    'delete_success' => 'Franchisé supprimé',
+    'delete_error' => 'Une erreur est survenue lors de la suppression, veuillez rafraîchir la page.',
 
 
     // Truck
@@ -144,7 +153,10 @@ return [
     'update_sell_price' => 'Modifier le prix de vente',
     'quantity_sent' => 'Quantité envoyée',
     'back_to_stock_warehouse_management' => 'Retour vers stocks & commandes entrepôts',
-
+    'stock_order_status_created' => 'Créée',
+    'stock_order_status_in_progress' => 'En cours de traitement',
+    'stock_order_status_sent' => 'Expédiée',
+    'stock_order_status_received' => 'Terminée',
 
     // Invoices
     'invoices' => 'Factures',
@@ -163,6 +175,10 @@ return [
     'invoice_status_paid' => 'Payée',
     'invoice_status_cancelled' => 'Annulée',
     'invoice_total' => 'Total facturé (hors frais initiaux)',
+    'invoice_next_payment' => 'Prochaine redevance périodique :',
+    'update_invoice_status' => 'Modifier le statut de la facture',
+    'select_invoice_status' => 'Sélectionnez un statut :',
+    'invoice_status_updated' => 'Le statut de la facture a été mis à jour',
 
 
     // Obligations

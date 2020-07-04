@@ -90,6 +90,11 @@ Route::get('/corporate/franchisee_invoices_list/{id}', [
     'uses' => 'Corporate\FranchiseeController@franchisee_invoices_list'
 ]);
 
+Route::post('/corporate/franchisee_invoice_status_update', [
+    'as' => 'franchisee_invoice_status_update',
+    'uses' => 'Corporate\FranchiseeController@franchisee_invoice_status_update'
+]);
+
 Route::get('/corporate/franchisee_sales_stats/{id}', [
     'as' => 'franchisee_sales_stats',
     'uses' => 'Corporate\FranchiseeController@franchisee_sales_stats'

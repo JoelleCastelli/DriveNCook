@@ -12,15 +12,15 @@
                 <div class="card">
                     <div class="card-header">
                         <h2>{{Lang::get('franchisee.step',['step_number'=>'1'])}}
-                            : {{trans('franchisee.choose_warehouse')}} :</h2>
+                            - {{trans('franchisee.choose_warehouse')}} :</h2>
                     </div>
                     <div class="card-body">
                         @if(!empty($warehouse_list))
                             <select id="warehouse_select" class="form-control">
                                 <option value="choisir" selected disabled>{{trans('franchisee.choose')}}</option>
-                                @foreach($warehouse_list as $warehouse) {{--//prévoir si nul--}}
+                                @foreach($warehouse_list as $warehouse)
                                 <option value="{{$warehouse['id']}}">
-                                    {{$warehouse['name'].' - '.$warehouse['city']['name'].' ('.$warehouse['city']['postcode'].')'}}
+                                    {{ $warehouse['name'].' - '.$warehouse['location']['address'].' '.$warehouse['location']['postcode'].' '.$warehouse['location']['city'] }}
                                 </option>
                                 @endforeach
                             </select>
@@ -38,9 +38,9 @@
                 <div class="card">
                     <div class="card-header">
                         <h2>{{Lang::get('franchisee.step',['step_number'=>'2'])}}
-                            : {{trans('franchisee.choose_plates')}} :</h2>
-                        <h3>
-                            {{trans('franchisee.warehouse')}} {{$warehouse['name'].' - '.$warehouse['city']['name'].' ('.$warehouse['city']['postcode'].')'}}</h3>
+                            - {{trans('franchisee.choose_plates')}} :</h2>
+                        <h4>
+                            {{trans('franchisee.warehouse')}} {{ $warehouse['name'].' - '.$warehouse['location']['address'].' '.$warehouse['location']['postcode'].' '.$warehouse['location']['city'] }}</h4>
                     </div>
                     <div class="card-body">
                         <form method="post" action="{{route('franchise.stock_order_submit')}}">
@@ -51,7 +51,7 @@
                                 @if($product['quantity'] > 0)
                                     <div class="form-group">
                                         <label for="{{'product_'.$product['dish_id']}}">{{$product['dish']['name'].' '.$product['warehouse_price'].'€/u'}}
-                                            , Disponible : {{$product['quantity']}}</label>
+                                            , Stock : {{$product['quantity']}}</label>
                                         <input class="form-control" type="number"
                                                id="{{'product_'.$product['dish_id']}}"
                                                name="{{'product_'.$product['dish_id']}}"
@@ -89,7 +89,6 @@
         $('#warehouse_select').on('change', function (e) {
             var link = "{{route('franchise.stock_order_select_warehouse',['warehouse_id'=>':id'])}}";
             link = link.replace(":id", $('#warehouse_select').val());
-            console.log(link);
             location.href = link;
         })
     </script>

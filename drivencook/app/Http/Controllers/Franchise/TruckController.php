@@ -44,7 +44,7 @@ class TruckController extends Controller
 
     private function get_locations_list()
     {
-        return Location::with('city')->get()->toArray();
+        return Location::get()->toArray();
     }
 
     public function update_location()

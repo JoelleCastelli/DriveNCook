@@ -6,6 +6,6 @@ Route::get('/franchise/invoices', [
 ]);
 
 Route::get('/franchise/invoice/{id}', [
-    'as' => 'franchise.stream_invoice_pdf',
-    'uses' => 'Franchise\InvoiceController@stream_invoice_pdf'
+    'as' => 'franchise.stream_franchisee_invoice_pdf',
+    'uses' => 'Franchise\InvoiceController@stream_franchisee_invoice_pdf'
 ]);

@@ -27,21 +27,26 @@ return [
     'update' => 'Update',
     'create_account' => 'Create an account',
     'not_set' => 'Not set',
+    'never' => 'Never',
+    'none' => 'None',
+    'see_details' => 'See details',
+    'total_franchisees' => 'Number of franchisees:',
+    'franchisees_list' => 'Franchisees list',
 
 
     // Franchisee info
     'franchisee_info' => 'Franchisee information',
-    'name' => 'Name:',
-    'firstname' => 'Firstname:',
-    'email' => 'Email address:',
-    'phone' => 'Phone:',
-    'birthdate' => 'Birthdate:',
-    'account_status' => 'Status:',
+    'name' => 'Name',
+    'firstname' => 'Firstname',
+    'email' => 'Email address',
+    'phone' => 'Phone',
+    'birthdate' => 'Birthdate',
+    'account_status' => 'Status',
     'account_active' => 'Active',
     'account_inactive' => 'Inactive',
-    'driving_licence' => 'Driving licence:',
-    'social_security' => 'Social security:',
-    'registered_on' => 'Registered on:',
+    'driving_licence' => 'Driving licence',
+    'social_security' => 'Social security',
+    'registered_on' => 'Registration date',
     'enter_driving_licence' => 'Enter a driving licence number',
     'enter_email' => 'Enter email address',
     'enter_password' => 'Enter password',
@@ -62,6 +67,10 @@ return [
     'unknown_pseudo' => 'Unknown pseudo',
     'pseudo' => 'Pseudonyme',
     'no_pseudo_available' => 'No pseudonym available, contact the Drive\'N\'Cook team',
+    'latest_monthly_payment' => 'Latest monthly payment',
+    'delete_confirm' => 'Are you sure you want to delete this franchisee? All associated data will be deleted.',
+    'delete_success' => 'Franchisee deleted',
+    'delete_error' => 'An error occurred while deleting, please refresh the page.',
 
 
     // Truck
@@ -144,6 +153,10 @@ return [
     'update_sell_price' => 'Update sell price',
     'quantity_sent' => 'Quantity sent',
     'back_to_stock_warehouse_management' => 'Back to stock & warehouse\'s orders',
+    'stock_order_status_created' => 'Created',
+    'stock_order_status_in_progress' => 'In progress',
+    'stock_order_status_sent' => 'Shipped',
+    'stock_order_status_received' => 'Done',
 
 
     // Invoices
@@ -163,6 +176,10 @@ return [
     'invoice_status_paid' => 'Paid',
     'invoice_status_cancelled' => 'Cancelled',
     'invoice_total' => 'Total invoiced (excluding initial fee)',
+    'invoice_next_payment' => 'Next periodic fee:',
+    'update_invoice_status' => 'Update invoice status',
+    'select_invoice_status' => 'Select a status:',
+    'invoice_status_updated' => 'The invoice status has been updated',
 
 
     // Obligations

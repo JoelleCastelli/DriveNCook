@@ -67,12 +67,12 @@
                                                 {{ trans('franchisee.invoice_monthly_fee') }}
                                             @elseif ($invoice['initial_fee'] == 1)
                                                 {{ trans('franchisee.invoice_initial_fee') }}
-                                            @else
+                                            @elseif ($invoice['franchisee_order'] == 1)
                                                 {{ trans('franchisee.invoice_restock') }}
                                             @endif</td>
                                         <td>{{ trans('franchisee.invoice_status_'.$invoice['status']) }}</td>
                                         <td class="text-center">
-                                            <a class="ml-2" href="{{ route('franchise.stream_invoice_pdf',['id'=>$invoice['id']]) }}" target="_blank">
+                                            <a class="ml-2" href="{{ route('franchise.stream_franchisee_invoice_pdf',['id'=>$invoice['id']]) }}" target="_blank">
                                                 <button class="text-light fa fa-file-pdf ml-3"></button>
                                             </a>
                                         </td>

@@ -27,28 +27,27 @@
                        style="width: 100%">
                     <thead>
                     <tr>
-                        <th>{{ trans('administrator/global.actions') }}</th>
                         <th>{{ trans('administrator/user.name') }}</th>
                         <th>{{ trans('administrator/user.firstname') }}</th>
                         <th>{{ trans('administrator/user.phone') }}</th>
                         <th>{{ trans('administrator/user.email') }}</th>
                         <th>{{ trans('administrator/user.created_at') }}</th>
+                        <th>{{ trans('administrator/global.actions') }}</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($users as $user)
                         @if($user['id'] != auth()->user()->id)
                             <tr id="{{ 'row_'.$user['id'] }}">
-                                <td>
-                                    <button onclick="deleteUser({{ $user['id'] }})"
-                                            class="text-light fa fa-trash ml-2"></button>
-
-                                </td>
                                 <td>{{ $user['lastname'] }}</td>
                                 <td>{{ $user['firstname'] }}</td>
                                 <td>{{ $user['telephone'] }}</td>
                                 <td>{{ $user['email'] }}</td>
-                                <td>{{ $user['created_at'] }}</td>
+                                <td>{{ DateTime::createFromFormat('Y-m-d H:i:s', $user['created_at'])->format('d/m/Y') }}</td>
+                                <td>
+                                    <button onclick="deleteUser({{ $user['id'] }})"
+                                            class="text-light fa fa-trash ml-2"></button>
+                                </td>
                             </tr>
                         @endif
                     @endforeach

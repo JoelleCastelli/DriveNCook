@@ -26,7 +26,7 @@ class TruckController extends Controller
     public function truck_creation()
     {
         $fuels = $this->get_enum_column_values('truck', 'fuel_type');
-        $locations = Location::select('name', 'address')->get();
+        $locations = Location::select('id', 'name', 'address', 'city', 'postcode')->get();
         if (!empty($locations)) {
             $locations = $locations->toArray();
         }
@@ -61,7 +61,7 @@ class TruckController extends Controller
             !empty($parameters["purchase_date"]) && !empty($parameters["license_plate"]) && !empty($parameters["registration_document"]) &&
             !empty($parameters["insurance_number"]) && !empty($parameters["fuel_type"]) && !empty($parameters["chassis_number"]) &&
             !empty($parameters["engine_number"]) && !empty($parameters["horsepower"]) && !empty($parameters["weight_empty"]) &&
-            !empty($parameters["payload"]) && !empty($parameters["general_state"]) && !empty($parameters["location_name"]) &&
+            !empty($parameters["payload"]) && !empty($parameters["general_state"]) && !empty($parameters["location_id"]) &&
             !empty($parameters["location_date_start"])
         ) {
             $brand = strtoupper($parameters["brand"]);
@@ -78,8 +78,7 @@ class TruckController extends Controller
             $weight_empty = $parameters["weight_empty"];
             $payload = $parameters["payload"];
             $general_state = $parameters["general_state"];
-            $location_name = $parameters["location_name"];
-            $location_id = -1;
+            $location_id = $parameters["location_id"];
             $location_date_start = $parameters["location_date_start"];
 
             if (strlen($brand) < 1 || strlen($brand) > 30) {
@@ -114,9 +113,19 @@ class TruckController extends Controller
                 $errors_list[] = trans('truck.license_plate_error');
             }
 
+            if (Truck::where('license_plate', $license_plate)->first()) {
+                $error = true;
+                $errors_list[] = trans('truck.license_plate_duplicate');
+            }
+
             if (!preg_match('/^[A-Z0-9]{15}$/', $registration_document)) {
                 $error = true;
                 $errors_list[] = trans('truck.registration_document_error');
+            }
+
+            if (Truck::where('registration_document', $registration_document)->first()) {
+                $error = true;
+                $errors_list[] = trans('truck.registration_document_duplicate');
             }
 
             if (!preg_match('/^[A-Z0-9]{20}$/', $insurance_number)) {
@@ -134,9 +143,19 @@ class TruckController extends Controller
                 $errors_list[] = trans('truck.chassis_number_error');
             }
 
+            if (Truck::where('chassis_number', $chassis_number)->first()) {
+                $error = true;
+                $errors_list[] = trans('truck.chassis_number_duplicate');
+            }
+
             if (!preg_match('/^[0-9]{20}$/', $engine_number)) {
                 $error = true;
                 $errors_list[] = trans('truck.engine_number_error');
+            }
+
+            if (Truck::where('engine_number', $engine_number)->first()) {
+                $error = true;
+                $errors_list[] = trans('truck.engine_number_duplicate');
             }
 
             if ($horsepower < 1) {
@@ -159,15 +178,9 @@ class TruckController extends Controller
                 $errors_list[] = trans('truck.general_state_error');
             }
 
-            if (!preg_match('/^[A-Za-z -_]+$/', $location_name)) {
+            if (!ctype_digit($location_id)) {
                 $error = true;
                 $errors_list[] = trans('truck.location_name_error');
-            } else {
-                $location_id = $this->get_location_id_by_name($location_name);
-                if (empty($location_id)) {
-                    $error = true;
-                    $errors_list[] = trans('truck.location_name_error');
-                }
             }
 
             $location_date_start_split = explode('-', $location_date_start);
@@ -208,7 +221,7 @@ class TruckController extends Controller
             }
         } else {
             $errors_list[] = trans('truck.empty_fields');
-            return redirect()->back()->with('error', $errors_list);
+            return redirect()->back()->withInput()->with('error', $errors_list);
         }
     }
 
@@ -237,7 +250,6 @@ class TruckController extends Controller
         $errors_list = [];
 
         $fuel_type_options = $this->get_enum_column_values('truck', 'fuel_type');
-        var_dump($parameters);
 
         if (count($parameters) == 18) {
             $id = $parameters["id"];
@@ -255,7 +267,7 @@ class TruckController extends Controller
             $weight_empty = $parameters["weight_empty"];
             $payload = $parameters["payload"];
             $general_state = $parameters["general_state"];
-            $location_id = $parameters["location_name"];
+            $location_id = $parameters["location_id"];
             $location_date_start = $parameters["location_date_start"];
             $location_date_end = $parameters["location_date_end"];
 
@@ -289,9 +301,25 @@ class TruckController extends Controller
                 $errors_list[] = trans('truck_update.license_plate_error');
             }
 
+            $current_plate = Truck::where('id', $id)->first()->license_plate;
+            if ($current_plate != $license_plate) {
+                if (Truck::where('license_plate', $license_plate)->first()) {
+                    $error = true;
+                    $errors_list[] = trans('truck.license_plate_duplicate');
+                }
+            }
+
             if (!preg_match('/^[A-Z0-9]{15}$/', $registration_document)) {
                 $error = true;
                 $errors_list[] = trans('truck_update.registration_document_error');
+            }
+
+            $current_registration_document = Truck::where('id', $id)->first()->registration_document;
+            if ($current_registration_document != $registration_document) {
+                if (Truck::where('registration_document', $registration_document)->first()) {
+                    $error = true;
+                    $errors_list[] = trans('truck.registration_document_duplicate');
+                }
             }
 
             if (!preg_match('/^[A-Z0-9]{20}$/', $insurance_number)) {
@@ -309,9 +337,25 @@ class TruckController extends Controller
                 $errors_list[] = trans('truck_update.chassis_number_error');
             }
 
+            $current_chassis_number = Truck::where('id', $id)->first()->chassis_number;
+            if ($current_chassis_number != $chassis_number) {
+                if (Truck::where('chassis_number', $chassis_number)->first()) {
+                    $error = true;
+                    $errors_list[] = trans('truck.chassis_number_duplicate');
+                }
+            }
+
             if (!preg_match('/^[0-9]{20}$/', $engine_number)) {
                 $error = true;
                 $errors_list[] = trans('truck_update.engine_number_error');
+            }
+
+            $current_engine_number = Truck::where('id', $id)->first()->engine_number;
+            if ($current_engine_number != $engine_number) {
+                if (Truck::where('engine_number', $engine_number)->first()) {
+                    $error = true;
+                    $errors_list[] = trans('truck.engine_number_duplicate');
+                }
             }
 
             if ($horsepower < 1) {
@@ -384,7 +428,7 @@ class TruckController extends Controller
             'location_date_start' => $location_date_start, 'location_date_end' => $location_date_end
         ];
         Truck::find($id)->update($truck);
-        return redirect()->route('truck_update', ['id' => $id])->with('success', trans('truck_update.update_truck_success'));
+        return redirect()->route('truck_update', ['id' => $id])->with('success', trans('truck.update_truck_success'));
     }
 
     public function truck_list()

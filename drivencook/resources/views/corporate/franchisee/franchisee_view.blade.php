@@ -12,26 +12,26 @@
                     <h2>{{ trans('franchisee.franchisee_info') }}</h2>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><b>{{ trans('franchisee.name') }}</b> {{ $franchisee['lastname'] }}</li>
-                    <li class="list-group-item"><b>{{ trans('franchisee.firstname') }}</b> {{ $franchisee['firstname'] }}</li>
-                    <li class="list-group-item"><b>{{ trans('franchisee.email') }}</b> {{ $franchisee['email'] }}</li>
-                    <li class="list-group-item"><b>{{ trans('franchisee.phone') }}</b>
+                    <li class="list-group-item"><b>{{ trans('franchisee.name') }}:</b> {{ $franchisee['lastname'] }}</li>
+                    <li class="list-group-item"><b>{{ trans('franchisee.firstname') }}:</b> {{ $franchisee['firstname'] }}</li>
+                    <li class="list-group-item"><b>{{ trans('franchisee.email') }}:</b> {{ $franchisee['email'] }}</li>
+                    <li class="list-group-item"><b>{{ trans('franchisee.phone') }}:</b>
                         {{ empty($franchisee['telephone']) ? trans('franchisee.not_specified_m') : $franchisee['telephone'] }}
                     </li>
-                    <li class="list-group-item"><b>{{ trans('franchisee.birthdate') }}</b>
+                    <li class="list-group-item"><b>{{ trans('franchisee.birthdate') }}:</b>
                         {{ empty($franchisee['birthdate']) ? trans('franchisee.not_specified_f') :
                                     DateTime::createFromFormat('Y-m-d',$franchisee['birthdate'])->format('d/m/Y') }}
                     </li>
-                    <li class="list-group-item"><b>{{ trans('franchisee.account_status') }}</b>
+                    <li class="list-group-item"><b>{{ trans('franchisee.account_status') }}:</b>
                         {{ empty($franchisee['pseudo_id']) ? trans('franchisee.account_inactive') : trans('franchisee.account_active').' ('.$franchisee['pseudo']['name'].')' }}
                     </li>
-                    <li class="list-group-item"><b>{{ trans('franchisee.driving_licence') }}</b>
+                    <li class="list-group-item"><b>{{ trans('franchisee.driving_licence') }}:</b>
                         {{ empty($franchisee['driving_licence']) ? trans('franchisee.not_specified_m') : $franchisee['driving_licence'] }}
                     </li>
-                    <li class="list-group-item"><b>{{ trans('franchisee.social_security') }}</b>
+                    <li class="list-group-item"><b>{{ trans('franchisee.social_security') }}:</b>
                         {{ empty($franchisee['social_security']) ? trans('franchisee.not_specified_f') : $franchisee['social_security'] }}
                     </li>
-                    <li class="list-group-item"><b>{{ trans('franchisee.registered_on') }}</b>
+                    <li class="list-group-item"><b>{{ trans('franchisee.registered_on') }}:</b>
                         {{ DateTime::createFromFormat('Y-m-d H:i:s', $franchisee['created_at'])->format('d/m/Y') }}
                     </li>
                 </ul>
@@ -84,7 +84,8 @@
                         </li>
                         <li class="list-group-item"><b>{{ trans('franchisee.truck_position') }}
                             </b>{{ empty($franchisee['truck']['location'])? trans('franchisee.not_specified_f') :
-                                $franchisee['truck']['location']['address'].' ('.$franchisee['truck']['location']['postcode'].')'}}
+                                $franchisee['truck']['location']['name'].' - '.$franchisee['truck']['location']['address']
+                                .' '.$franchisee['truck']['location']['postcode'].' '.$franchisee['truck']['location']['city'] }}
                         </li>
                     </ul>
                     <div class="card-footer d-flex justify-content-between">

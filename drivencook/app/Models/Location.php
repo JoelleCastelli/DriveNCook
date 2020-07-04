@@ -15,7 +15,7 @@ class Location extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'address', 'city_id', 'latitude', 'longitude', 'city', 'postcode', 'country'
+        'name', 'address', 'latitude', 'longitude', 'city', 'postcode', 'country'
     ];
 
     /**
@@ -24,9 +24,4 @@ class Location extends Model
      * @return BelongsTo
      * @var array
      */
-
-    public function city()
-    {
-        return $this->belongsTo(City::class, 'city_id')->with('country');
-    }
 }

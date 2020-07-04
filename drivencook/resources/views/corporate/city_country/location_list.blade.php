@@ -1,7 +1,7 @@
 @extends('corporate.layout_corporate')
 
 @section('title')
-    Gestion des emplacements camions
+    {{ trans('locations.locations_management') }}
 @endsection
 
 @section('style')
@@ -27,20 +27,20 @@
         <div class="col-12 col-md-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
-                    <h2>Ajouter une nouvelle adresse</h2>
+                    <h2>{{ trans('locations.add_location') }}</h2>
                 </div>
                 <div class="card-body">
                     <form>
-                        {{csrf_field()}}
+                        {{ csrf_field() }}
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
-                                    <input id="new_location_name_input" class="form-control" type="text" placeholder="Enter a name" required>
+                                    <input id="new_location_name_input" class="form-control" type="text" placeholder="{{ trans('locations.enter_name') }}" required>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <input id="new_location_input" class="form-control" type="text" placeholder="Enter an address" required>
+                                    <input id="new_location_input" class="form-control" type="text" placeholder="{{ trans('locations.enter_address') }}" required>
                                 </div>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                         <input type="hidden" id="map_city" value="">
                         <input type="hidden" id="map_postcode" value="">
                         <input type="hidden" id="map_country" value="">
-                        <button type="button" class="btn btn-primary" id="modalSubmit" onclick="onSubmit('create')">Ajouter</button>
+                        <button type="button" class="btn btn-primary" id="modalSubmit" onclick="onSubmit('create')">{{ trans('locations.add') }}</button>
                     </form>
                 </div>
             </div>
@@ -62,7 +62,7 @@
 
     <div class="card mt-5" id="locations-list">
         <div class="card-header d-flex justify-content-between">
-            <h2>Liste des emplacements camions</h2>
+            <h2>{{ trans('locations.locations_list') }}</h2>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -70,10 +70,10 @@
                        style="width: 100%">
                     <thead>
                     <tr>
-                        <th>Nom</th>
-                        <th>Adresse</th>
-                        <th>Ville</th>
-                        <th>Pays</th>
+                        <th>{{ trans('locations.name') }}</th>
+                        <th>{{ trans('locations.address') }}</th>
+                        <th>{{ trans('locations.city') }}</th>
+                        <th>{{ trans('locations.country') }}</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -104,7 +104,7 @@
         <div class="modal-dialog modal-dialog-centered" role="form">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitle">Modifier un emplacement</h5>
+                    <h5 class="modal-title" id="modalTitle">{{ trans('locations.update_location') }}</h5>
                     <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -117,7 +117,7 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <div class="form-group">
-                                        <label for="update_location_name">{{ trans('location.location_name') }} :</label>
+                                        <label for="update_location_name">{{ trans('locations.name') }} :</label>
                                         <input type="text" name="update_location_name" id="update_location_name"
                                                value="" minlength="1" maxlength="30" class="form-control" required>
                                     </div>
@@ -126,12 +126,9 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <div class="form-group">
-                                        <label for="update_location_address">{{ trans('location.location_address') }} :</label>
+                                        <label for="update_location_address">{{ trans('locations.address') }} :</label>
                                         <input type="text" name="update_location_address" id="update_location_input"
-                                               value=""
-                                               minlength="1"
-                                               maxlength="100"
-                                               class="form-control" required>
+                                               value="" minlength="1" maxlength="100" class="form-control" required>
                                     </div>
                                 </div>
                             </div>
@@ -145,8 +142,8 @@
                         <input type="hidden" id="map_country_update" value="">
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                            <button type="button" class="btn btn-primary" id="modalSubmit" onclick="onSubmit('update')">Save changes
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('locations.cancel') }}</button>
+                            <button type="button" class="btn btn-primary" id="modalSubmit" onclick="onSubmit('update')">{{ trans('locations.save_changes') }}
                             </button>
                         </div>
                     </form>
@@ -246,7 +243,7 @@
                         const dataJ = JSON.parse(data);
                         if (dataJ.response === "success") {
                             if (dataJ.isNew === true) {
-                                alert('Emplacement ajouté');
+                                alert(Lang.get('locations.location_created'));
                                 let tbody = document.getElementsByTagName('tbody')[0];
                                 tbody.innerHTML =
                                     '<tr id="row_' + dataJ.id + '">' +
@@ -262,7 +259,7 @@
                                     '</td>' +
                                     '</tr>' + tbody.innerHTML;
                             } else {
-                                alert('Emplacement modifié');
+                                alert(Lang.get('locations.location_updated'));
                                 let row = document.getElementById('row_' + dataJ.id);
                                 let nameTd = row.getElementsByTagName('td')[0];
                                 let addressTd = row.getElementsByTagName('td')[1];
@@ -273,10 +270,9 @@
                                 cityTd.innerText = dataJ.city;
                                 countryTd.innerText = dataJ.country;
                             }
-                            // $('#all_countries').DataTable().draw();
                             document.getElementById('closeModal').click();
                         } else {
-                            alert("Une erreur est survenue, veuillez raffraichir la page");
+                            alert(Lang.get('locations.ajax_error'));
                         }
                     },
                     error: function (error) {
@@ -287,7 +283,7 @@
         }
 
         function onDelete(id) {
-            if (confirm("Voulez vous vraiment supprimer cet emplacement ?")) {
+            if (confirm(Lang.get('locations.delete_confirm'))) {
                 if (!isNaN(id)) {
                     let urlB = '{{route('location_delete',['id'=>':id'])}}';
                     urlB = urlB.replace(':id', id);
@@ -299,22 +295,19 @@
                         },
                         success: function (data) {
                             if (data == id) {
-                                alert("Emplacement supprimé");
+                                alert(Lang.get('locations.delete_success'));
                                 let row = document.getElementById('row_' + id);
                                 row.remove();
                             } else {
-                                alert("Une erreur est survenue lors de la suppression, veuillez raffraichir la page");
+                                alert(Lang.get('locations.ajax_error'));
                             }
                         },
                         error: function () {
-                            alert("Une erreur est survenue lors de la suppression, veuillez raffraichir la page");
+                            alert(Lang.get('locations.useful_location'));
                         }
                     })
-
                 }
             }
         }
-
-
     </script>
 @endsection
