@@ -12,6 +12,7 @@ class Kernel extends ConsoleKernel
 {
     use UserTools;
     use NewslettersTools;
+
     /**
      * The Artisan commands provided by your application.
      *
@@ -24,16 +25,17 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param \Illuminate\Console\Scheduling\Schedule $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
     {
         $current_obligation = $this->get_current_obligation();
-         $schedule->command('invoices:generate_monthly')
-                  ->monthlyOn($current_obligation['billing_day'], '10:00');
+        $schedule->command('invoices:generate_monthly')
+            ->monthlyOn($current_obligation['billing_day'], '10:00');
 
-        $schedule->job($this->sendNewsLettersAllClients())->monthlyOn(1, '10:00');
+        $schedule->command('newsletter:send_monthly')
+            ->monthlyOn(1, '10:00');
     }
 
     /**
@@ -43,7 +45,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }
