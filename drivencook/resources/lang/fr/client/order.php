@@ -37,6 +37,7 @@ return [
 
     'pay' => 'Payer',
     'truck_payment' => 'Commander',
+    'order_payment' => 'Paiement de votre commande',
 
     'order_expired' => 'Erreur, la commande a expiré, veuillez réessayer',
     'created' => 'Commande créée !',
