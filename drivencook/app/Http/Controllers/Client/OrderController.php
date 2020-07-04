@@ -154,12 +154,15 @@ class OrderController extends Controller
                     $fidelityStep = FidelityStep::whereKey($parameters['discount_id'])
                         ->first();
 
+                    $order['order']['discount_amount'] = $fidelityStep->reduction;
+
                     $sum -= $fidelityStep->reduction;
                     $sum = round($sum, 2);
                     if ($sum < 1) {
                         $sum = 0;
                     }
                 }
+
                 $order['order']['total'] = $sum;
 
                 $order['order']['truck_id'] = $parameters['truck_id'];
@@ -238,6 +241,12 @@ class OrderController extends Controller
                 ->first();
         }
 
+        if(isset($order['discount_amount'])) {
+            Sale::whereKey($saleId)
+                ->update(['discount_amount' => $order['discount_amount']]);
+
+            unset($order['discount_amount']);
+        }
         unset($order['discount_id']);
         unset($order['truck_id']);
 
@@ -273,13 +282,19 @@ class OrderController extends Controller
          * client points + 10% of total price as points - points used
          */
         $loyaltyPoint = $sum * 0.1 - $subPoint;
-        $loyaltyPoint = $client->loyalty_point + (int)$loyaltyPoint;
+        $toReturn = ceil($loyaltyPoint);
+        $loyaltyPoint = $client->loyalty_point + $toReturn;
         if ($loyaltyPoint < 0) {
             $loyaltyPoint = 0;
         }
 
         User::whereKey($clientId)
             ->update(['loyalty_point' => (int)$loyaltyPoint]);
+
+        Sale::whereKey($saleId)
+            ->update(['points_to_return' => $toReturn]);
+
+        $this->put_loyalty_point_in_session($clientId);
 
         // invoice creation
         $invoice = ['amount' => $sum,
@@ -419,6 +434,11 @@ class OrderController extends Controller
                             ])->delete();
                         }
                     }
+
+                    User::whereKey($sale->user_client)
+                        ->decrement('loyalty_point', $sale->points_to_return);
+
+                    $this->put_loyalty_point_in_session($sale->user_client);
 
                     Sale::whereKey($sale->id)
                         ->delete();
