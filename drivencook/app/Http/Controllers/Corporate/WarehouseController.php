@@ -150,18 +150,14 @@ class WarehouseController extends Controller
         }
     }
 
-    public function warehouse_update($id)
+    public function warehouse_update($warehouse_id)
     {
-        $warehouse = Warehouse::find($id);
+        $warehouse = Warehouse::find($warehouse_id);
         if (empty($warehouse))
             return view('corporate.warehouse.warehouse_list');
         $warehouse = $warehouse->toArray();
 
-        $warehouses_locations = [];
-        $warehouses = Warehouse::all()->toArray();
-        foreach ($warehouses as $warehouse) {
-            $warehouses_locations[] = $warehouse['location_id'];
-        }
+        $warehouses_locations = Warehouse::where('id', '!=', $warehouse['id'])->pluck(('location_id'))->toArray();
 
         $locations = Location::whereNotIn('id', $warehouses_locations)->get();
         if (!empty($locations)) {
