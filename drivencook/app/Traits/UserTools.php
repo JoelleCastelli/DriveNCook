@@ -468,13 +468,12 @@ trait UserTools
         }
 
         if ($type == 'sales' || $type == 'turnover') {
-            $stepSize = $type == 'sales' ? 1 : 50;
             $chart->options([
                 'tooltip' => ['show' => true],
                 'scales' => [
                     'yAxes' => [
                         [
-                            'ticks' => ['beginAtZero' => true, 'stepSize' => $stepSize],
+                            'ticks' => ['beginAtZero' => true],
                             'position' => 'left',
                         ],
                     ],
