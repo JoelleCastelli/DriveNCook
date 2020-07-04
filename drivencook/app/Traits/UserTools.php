@@ -437,11 +437,39 @@ trait UserTools
         return $sales;
     }
 
-    public function generate_chart($franchisee_id, $type){
-        // Get current month data
-        $monthly_sales_turnover_by_day = $this->get_monthly_sales_turnover_by_day($franchisee_id, null, null);
-        $sales_by_payment_methods = $this->get_monthly_sales_by_payment_methods($franchisee_id, null, null);
-        $sales_by_origin = $this->get_monthly_sales_by_origin($franchisee_id, null, null);
+    public function generate_chart($franchisees_ids, $type){
+
+        // Get current month data & initialize data structure with first ID of array
+        $monthly_sales_turnover_by_day = $this->get_monthly_sales_turnover_by_day($franchisees_ids[0], null, null);
+        $monthly_sales_by_payment_methods = $this->get_monthly_sales_by_payment_methods($franchisees_ids[0], null, null);
+        $monthly_sales_by_origin = $this->get_monthly_sales_by_origin($franchisees_ids[0], null, null);
+
+        // If there's just one ID: no need to go through the loop
+        if (count($franchisees_ids) > 1) {
+            foreach ($franchisees_ids as $franchisee_id) {
+                if ($franchisee_id != $franchisees_ids[0]) {
+
+                    // Increase sales and turnover by day data
+                    $franchisee_monthly_sales_turnover_by_day = $this->get_monthly_sales_turnover_by_day($franchisee_id, null, null);
+                    for($i = 0 ; $i <= count($franchisee_monthly_sales_turnover_by_day['sales']) - 1; $i++) {
+                        $monthly_sales_turnover_by_day['sales'][$i] += $franchisee_monthly_sales_turnover_by_day['sales'][$i];
+                        $monthly_sales_turnover_by_day['turnover'][$i] += $franchisee_monthly_sales_turnover_by_day['turnover'][$i];
+                    }
+
+                    // Increase sales by payment methods data
+                    $franchisee_sales_by_payment_methods = $this->get_monthly_sales_by_payment_methods($franchisee_id, null, null);
+                    for($j = 0 ; $j <= count($franchisee_sales_by_payment_methods['nb_sales']) - 1; $j++) {
+                        $monthly_sales_by_payment_methods['nb_sales'][$j] += $franchisee_sales_by_payment_methods['nb_sales'][$j];
+                    }
+
+                    // Increase sales by origin data
+                    $franchisee_sales_by_origin = $this->get_monthly_sales_by_origin($franchisee_id, null, null);
+                    for($y = 0 ; $y <= count($franchisee_sales_by_origin['nb_sales']) - 1; $y++) {
+                        $monthly_sales_by_origin['nb_sales'][$y] += $franchisee_sales_by_origin['nb_sales'][$y];
+                    }
+                }
+            }
+        }
 
         $chart = new FranchiseeStatsChart;
 
@@ -456,14 +484,14 @@ trait UserTools
                 ->color('#00d1ce')
                 ->fill(false);
         } else if ($type == 'payment_methods') {
-            $chart->labels($sales_by_payment_methods['methods']);
+            $chart->labels($monthly_sales_by_payment_methods['methods']);
             $chart->displayAxes(false);
-            $chart->dataset(trans('franchisee.payment_methods_breakdown'), 'pie', $sales_by_payment_methods['nb_sales'])
+            $chart->dataset(trans('franchisee.payment_methods_breakdown'), 'pie', $monthly_sales_by_payment_methods['nb_sales'])
                 ->backgroundColor(['#6408c7', '#00d1ce']);
         } else if ($type == 'origin') {
-            $chart->labels($sales_by_origin['origins']);
+            $chart->labels($monthly_sales_by_origin['origins']);
             $chart->displayAxes(false);
-            $chart->dataset(trans('franchisee.payment_methods_breakdown'), 'pie', $sales_by_origin['nb_sales'])
+            $chart->dataset(trans('franchisee.payment_methods_breakdown'), 'pie', $monthly_sales_by_origin['nb_sales'])
                 ->backgroundColor(['#6408c7', '#00d1ce']);
         }
 

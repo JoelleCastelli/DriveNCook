@@ -17,7 +17,8 @@
         "mariuzzo/laravel-js-localization": "^1.6",
         "stevegrunwell/lost-in-translation": "^1.0",
         "stripe/stripe-php": "^7.36",
-        "yajra/laravel-datatables": "1.5"
+        "yajra/laravel-datatables": "1.5",
+      "ext-calendar": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",

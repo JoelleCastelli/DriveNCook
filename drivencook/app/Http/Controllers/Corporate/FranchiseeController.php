@@ -300,15 +300,15 @@ class FranchiseeController extends Controller
         $history = $this->get_franchisee_history($id);
         $current_obligation = $this->get_current_obligation();
         $invoicing_period = $this->get_invoicing_period($current_obligation, "d/m/Y");
-        $sales_chart = $this->generate_chart($franchisee['id'], 'sales');
-        $turnover_chart = $this->generate_chart($franchisee['id'], 'turnover');
 
+        $sales_chart = $this->generate_chart([$franchisee['id']], 'sales');
+        $turnover_chart = $this->generate_chart([$franchisee['id']], 'turnover');
         if($revenues['sales_count'] == 0) {
             $payment_methods_chart = '';
             $origins_chart = '';
         } else {
-            $payment_methods_chart = $this->generate_chart($franchisee['id'], 'payment_methods');
-            $origins_chart = $this->generate_chart($franchisee['id'], 'origin');
+            $payment_methods_chart = $this->generate_chart([$franchisee['id']], 'payment_methods');
+            $origins_chart = $this->generate_chart([$franchisee['id']], 'origin');
         }
 
         return view('corporate.franchisee.franchisee_sales_stats')
@@ -316,6 +316,36 @@ class FranchiseeController extends Controller
             ->with('revenues', $revenues)
             ->with('invoicing_period', $invoicing_period)
             ->with('history', $history)
+            ->with('sales_chart', $sales_chart)
+            ->with('payment_methods_chart', $payment_methods_chart)
+            ->with('origins_chart', $origins_chart)
+            ->with('turnover_chart', $turnover_chart);
+    }
+
+    public function all_franchisees_sales_stats()
+    {
+
+        // Get all id of franchisees with at least one sale
+        $franchisees = User::where('role', 'Franchisé')->with('sales')->get();
+        $franchisees_ids = [];
+        foreach ($franchisees as $user) {
+            if($user->sales->count() != 0) {
+                $franchisees_ids[] = $user->id;
+            }
+        }
+
+        $revenues = $this->get_franchisees_current_month_sale_revenues();
+        $current_obligation = $this->get_current_obligation();
+        $invoicing_period = $this->get_invoicing_period($current_obligation, "d/m/Y");
+
+        $sales_chart = $this->generate_chart($franchisees_ids, 'sales');
+        $turnover_chart = $this->generate_chart($franchisees_ids, 'turnover');
+        $payment_methods_chart = $this->generate_chart($franchisees_ids, 'payment_methods');
+        $origins_chart = $this->generate_chart($franchisees_ids, 'origin');
+
+        return view('corporate.global_sales_stats')
+            ->with('revenues', $revenues)
+            ->with('invoicing_period', $invoicing_period)
             ->with('sales_chart', $sales_chart)
             ->with('payment_methods_chart', $payment_methods_chart)
             ->with('origins_chart', $origins_chart)

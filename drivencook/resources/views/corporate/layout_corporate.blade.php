@@ -108,7 +108,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light2" href="#">
+                        <a class="nav-link text-light2" href="{{ route('corporate_statistics') }}">
                             <i class="fa fa-chart-line"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.income_stats') }}
                         </a>
                     </li>
@@ -204,6 +204,8 @@
                     </li>
                 @break
 
+                @case(route('corporate.update_account'))
+                @case(route('corporate_statistics'))
                 @case(route('location_list'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{ route('corporate_dashboard') }}">
@@ -240,14 +242,6 @@
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{ route('dish_creation') }}">
                             <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.add_product') }}
-                        </a>
-                    </li>
-                @break
-
-                @case(route('corporate.update_account'))
-                    <li class="nav-item">
-                        <a class="nav-link text-light2" href="{{ route('corporate_dashboard') }}">
-                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_dashboard') }}
                         </a>
                     </li>
                 @break

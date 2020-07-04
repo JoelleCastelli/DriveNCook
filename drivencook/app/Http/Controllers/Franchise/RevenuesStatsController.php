@@ -17,14 +17,14 @@ class RevenuesStatsController extends Controller
         $invoicing_period = $this->get_invoicing_period($current_obligation, "d/m/Y");
         $history = $this->get_franchisee_history($franchisee['id']);
 
-        $sales_chart = $this->generate_chart($franchisee['id'], 'sales');
-        $turnover_chart = $this->generate_chart($franchisee['id'], 'turnover');
+        $sales_chart = $this->generate_chart([$franchisee['id']], 'sales');
+        $turnover_chart = $this->generate_chart([$franchisee['id']], 'turnover');
         if($current_month_sales['sales_count'] == 0) {
             $payment_methods_chart = '';
             $origins_chart = '';
         } else {
-            $payment_methods_chart = $this->generate_chart($franchisee['id'], 'payment_methods');
-            $origins_chart = $this->generate_chart($franchisee['id'], 'origin');
+            $payment_methods_chart = $this->generate_chart([$franchisee['id']], 'payment_methods');
+            $origins_chart = $this->generate_chart([$franchisee['id']], 'origin');
         }
 
         return view('franchise.revenues_stats')->with('revenues', $current_month_sales)
