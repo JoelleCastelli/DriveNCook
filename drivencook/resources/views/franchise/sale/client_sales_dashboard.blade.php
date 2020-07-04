@@ -19,7 +19,7 @@
                                         <th>{{ trans('client/sale.date') }}</th>
                                         <th>{{ trans('client/sale.status') }}</th>
                                         <th>{{ trans('franchisee.sales_client') }}</th>
-                                        <th>{{ trans('franchisee.sales_product count') }}</th>
+                                        <th>{{ trans('franchisee.sales_product_count') }}</th>
                                         <th>{{ trans('client/sale.total_price') }}</th>
                                         <th>Actions</th>
                                     </tr>

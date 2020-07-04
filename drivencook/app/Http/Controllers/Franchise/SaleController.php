@@ -72,7 +72,7 @@ class SaleController extends Controller
         ]);
         Sale::whereKey(request('sale_id'))->update(['status' => request('status')]);
 
-        flash(trans('franchisee.order_status_updated'));
+        flash(trans('franchisee.order_status_updated'))->success();
 
         return back();
     }
