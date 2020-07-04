@@ -7,12 +7,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Sale;
 use App\Models\FranchiseeStock;
 use App\Models\User;
+use App\Traits\NewslettersTools;
 use App\Traits\UserTools;
 use Carbon\Carbon;
 
 class ClientController extends Controller
 {
     use UserTools;
+    use NewslettersTools;
 
     public function __construct()
     {
@@ -42,8 +44,6 @@ class ClientController extends Controller
     public function update_client($client_id)
     {
         $client = User::find($client_id)->toArray();
-//        var_dump($client);
-//        die;
         return view('corporate.client.client_update')
             ->with('client', $client);
     }
@@ -66,7 +66,6 @@ class ClientController extends Controller
             'telephone' => request('telephone'),
             'email' => request('email'),
         ]);
-        //TODO la colonne telephone ne se met pas à jour
 
         flash('Utilisateur modifié')->success();
         return redirect()->route('client_update', ['id' => request('id')]);
@@ -121,6 +120,56 @@ class ClientController extends Controller
 //        }
         //TODO client sales
         return array();
+    }
+
+    public function send_newsletter()
+    {
+        request()->validate([
+            'type' => ['required'],
+            'loyalty_point' => ['nullable', 'integer', 'min:0'],
+            'news_message' => ['nullable', 'string', 'max:255']
+        ]);
+        $param = request()->except('_token');
+        if (empty($param['news_message'])) {
+            $param['news_message'] = '';
+        }
+        switch ($param['type']) {
+            case 'all':
+                return $this->sendNewsLettersAllClients($param['news_message']);
+                break;
+            case 'new':
+                return $this->sendNewsLettersNewClients($param['news_message']);
+                break;
+            case 'loyalty':
+                return $this->sendNewsLettersFidelityStepClients($param['news_message'], $param['loyalty_point']);
+                break;
+            default:
+                flash(trans('corporate.newsletter_type_error'))->success();
+                return back();
+        }
+    }
+
+    public function send_newsletter_unique()
+    {
+        request()->validate([
+            'user_id' => ['required', 'integer'],
+            'news_message' => ['nullable', 'string', 'max:255']
+        ]);
+        $param = request()->except('_token');
+
+        $user = User::whereKey($param['user_id'])
+            ->with('event_invited_30')
+            ->withCount('client_orders')->first();
+
+        if (empty($user)) {
+            abort((404));
+        }
+        $user = $user->toArray();
+
+        $this->sendNewsLetter($user, $param['news_message']);
+        flash(trans('corporate.newsletter_sent'))->success();
+        return back();
+
     }
 
 }

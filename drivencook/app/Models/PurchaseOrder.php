@@ -19,10 +19,11 @@ class PurchaseOrder extends \Illuminate\Database\Eloquent\Model
     {
         return $this->belongsTo(User::class, 'user_id')->with('pseudo');
     }
+
     public function warehouse()
     {
 //        return $this->belongsTo(Warehouse::class, 'warehouse_id')->with('city');
-        return $this->belongsTo(Warehouse::class, 'warehouse_id');
+        return $this->belongsTo(Warehouse::class, 'warehouse_id')->with('location');
     }
 
 }

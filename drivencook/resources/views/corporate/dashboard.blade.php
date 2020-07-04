@@ -50,9 +50,9 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div class="card text-light2">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item bg-danger">{{ trans('dashboard_corporate.nb_clients') }} undefined</li>
+                            <li class="list-group-item bg-danger">{{ trans('dashboard_corporate.nb_clients') }} {{$nbUsers}}</li>
                             <li class="list-group-item bg-danger align-content-arround">
-                                <a href="#" class="row text-light2">
+                                <a href="{{route('client_list')}}" target="_blank" class="row text-light2">
                                     <div class="col-10">
                                         {{ trans('dashboard_corporate.see_details') }}
                                     </div>

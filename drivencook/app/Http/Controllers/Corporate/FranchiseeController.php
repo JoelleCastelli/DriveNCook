@@ -248,18 +248,23 @@ class FranchiseeController extends Controller
             ->with('history', $history);
     }
 
-    public function franchisee_stock_orders($id) {
+    public function franchisee_stock_orders($id)
+    {
         $franchisee = User::whereId($id)
             ->with('pseudo')
             ->with('stocks')
             ->with('purchase_order')
             ->first()->toArray();
 
+        $order_status = $this->get_enum_column_values('purchase_order', 'status');
+
         return view('corporate.franchisee.franchisee_stocks_orders')
+            ->with('order_status', $order_status)
             ->with('franchisee', $franchisee);
     }
 
-    public function franchisee_invoices_list($id) {
+    public function franchisee_invoices_list($id)
+    {
         $franchisee = User::whereId($id)
             ->with('pseudo')
             ->with('invoices')
@@ -269,7 +274,8 @@ class FranchiseeController extends Controller
             ->with('franchisee', $franchisee);
     }
 
-    public function franchisee_sales_stats($id) {
+    public function franchisee_sales_stats($id)
+    {
         $franchisee = User::whereId($id)
             ->with('pseudo')
             ->with('sales')
@@ -301,7 +307,7 @@ class FranchiseeController extends Controller
         $franchisee_obligations = FranchiseObligation::all()->sortByDesc('id')->toArray();
         foreach ($franchisee_obligations as &$franchisee_obligation) {
             $manager = User::where('id', $franchisee_obligation['user_id'])->first()->toArray();
-            $franchisee_obligation['manager'] = $manager['firstname'].' '.$manager['lastname'].' ('.$manager['email'].')';
+            $franchisee_obligation['manager'] = $manager['firstname'] . ' ' . $manager['lastname'] . ' (' . $manager['email'] . ')';
         }
 
         return view('corporate.franchisee.franchisee_obligations_update')
@@ -322,7 +328,7 @@ class FranchiseeController extends Controller
             $billing_day = trim($parameters['billing_day']);
 
             $current_obligation = $this->get_current_obligation();
-            if($entrance_fee == $current_obligation['entrance_fee'] &&
+            if ($entrance_fee == $current_obligation['entrance_fee'] &&
                 $revenue_percentage == $current_obligation['revenue_percentage'] &&
                 $warehouse_percentage == $current_obligation['warehouse_percentage'] &&
                 $billing_day == $current_obligation['billing_day']) {
@@ -444,6 +450,60 @@ class FranchiseeController extends Controller
     public function stream_franchisee_invoice($id)
     {
         return $this->stream_franchisee_invoice_pdf($id);
+    }
+
+    public function update_franchisee_stock()
+    {
+        request()->validate([
+            'user_id' => ['required', 'integer'],
+            'dish_id' => ['required', 'integer'],
+            'unit_price' => ['required', 'numeric'],
+            'quantity' => ['required', 'integer']
+        ]);
+
+        FranchiseeStock::where([
+            ['user_id', request('user_id')],
+            ['dish_id', request('dish_id')]
+        ])->update(request()->except(['user_id', 'dish_id']));
+
+        return json_encode(array('response' => 'success'));
+    }
+
+    public function remove_franchisee_stock($user_id, $dish_id)
+    {
+        if (!ctype_digit($user_id) || !ctype_digit($dish_id)) {
+            return json_encode(array('response' => 'error'));
+        }
+        $stock = FranchiseeStock::where([
+            ['user_id', $user_id],
+            ['dish_id', $dish_id],
+        ])->delete();
+
+        return $dish_id;
+    }
+
+    public function update_franchisee_stock_order()
+    {
+        request()->validate([
+            'id' => ['required', 'integer'],
+            'status' => ['required', 'string']
+        ]);
+
+        PurchaseOrder::whereKey(request('id'))->update(['status' => request('status')]);
+
+        return json_encode(array('response' => 'success'));
+
+    }
+
+    public function remove_franchisee_stock_order($purchase_order_id)
+    {
+        if (!ctype_digit($purchase_order_id)) {
+            return json_encode(array('response' => 'error'));
+        }
+        PurchasedDish::where('purchase_order_id', $purchase_order_id)->delete();
+        PurchaseOrder::whereKey($purchase_order_id)->delete();
+
+        return $purchase_order_id;
     }
 
 }

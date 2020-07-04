@@ -222,7 +222,6 @@
             document.getElementById('formPrice').value = unit_price;
         }
 
-
         function onUpdateSubmit() {
             const dish_id = document.getElementById('formId').value;
             const unit_price = document.getElementById('formPrice').value;
@@ -240,8 +239,11 @@
                             document.getElementById('closeModal').click();
                             alert('{{trans('franchisee.sell_price_updated')}}');
                             let row = document.getElementById('row_stock_' + dish_id);
+                            let dishName = row.getElementsByTagName('td')[0].innerText;
                             let priceTd = row.getElementsByTagName('td')[2];
-                            priceTd.innerText = unit_price + ' €';
+                            priceTd.innerHTML = unit_price + ' €';
+                            priceTd.innerHTML += '<button class="fa fa-edit" onclick="onUpdateModal(' + dish_id + ',\'' + dishName + '\',' + unit_price + ')" ' +
+                                'data-toggle="modal" data-target="#formModal"> </button>';
 
                         } else {
                             alert("{{trans('franchisee.ajax_error')}}\n" + dataJ.message);

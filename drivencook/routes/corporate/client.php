@@ -29,6 +29,16 @@ Route::get('/corporate/client/create/', [
     'uses' => 'Corporate\ClientController@add_client'
 ]);
 
+Route::post('/corporate/client/newsletters/', [
+    'as' => 'send_client_newsletters',
+    'uses' => 'Corporate\ClientController@send_newsletter'
+]);
+
+Route::post('/corporate/client/newsletters/user', [
+    'as' => 'send_client_newsletters_unique',
+    'uses' => 'Corporate\ClientController@send_newsletter_unique'
+]);
+
 Route::post('/corporate/client/create/', [
     'as' => 'client_create_submit',
     'uses' => 'Corporate\ClientController@add_client_submit'

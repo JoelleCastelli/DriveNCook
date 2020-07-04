@@ -5,6 +5,7 @@ namespace App\Traits;
 
 
 use App\Models\Event;
+use App\Models\FidelityStep;
 use App\Models\User;
 use DateTime;
 use Illuminate\Support\Facades\Mail;
@@ -57,4 +58,23 @@ trait EmailTools
         });
     }
 
+    public function sendNewsLetter($user, string $newsMessage)
+    {
+        $fidelity_step = FidelityStep::where('step', '<=', $user['loyalty_point'])->orderBy('step', 'desc')->first();
+        $fidelity = null;
+        if (!empty($fidelity_step)) {
+            $fidelity = $fidelity_step->reduction;
+        }
+
+        $to_name = $user['firstname'] . ' ' . $user['lastname'];
+        $to_email = $user['email'];
+        $data = array('user' => $user, 'fidelity' => $fidelity, 'newsMessage' => $newsMessage);
+
+        Mail::send('mails.news_letter', $data, function ($message) use ($to_name, $to_email) {
+            $message->to($to_email, $to_name)
+                ->subject('Drivencook newsletter');
+            $message->from('noreply@drivencook.fr');
+        });
+
+    }
 }

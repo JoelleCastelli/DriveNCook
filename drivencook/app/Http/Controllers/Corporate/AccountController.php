@@ -22,11 +22,13 @@ class AccountController extends Controller
     public function dashboard()
     {
         $franchisees = User::where('role', 'Franchisé')->count();
+        $nbUsers = User::where('role', 'Client')->count();
         $warehouses = Warehouse::count();
         $revenues = App::call('App\Http\Controllers\Corporate\FranchiseeController@get_franchisees_current_month_sale_revenues');
 
         return view('corporate.dashboard')
             ->with('nbfranchisees', $franchisees)
+            ->with('nbUsers', $nbUsers)
             ->with('nbWarehouses', $warehouses)
             ->with('revenues', $revenues);
     }

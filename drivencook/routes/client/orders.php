@@ -24,6 +24,16 @@ Route::group(['middleware' => AuthClient::class], function() {
         'uses' => 'Client\OrderController@client_orders'
     ]);
 
+    Route::get('/client/client_order_charge', [
+        'as' => 'client_order_charge',
+        'uses' => 'Client\OrderController@client_order_charge'
+    ]);
+
+    Route::post('/client/new_order_charge/{order_total_cents}', [
+        'as' => 'client_new_order_charge',
+        'uses' => 'Client\OrderController@charge'
+    ]);
+
     Route::get('/client/sales_history', [
         'as' => 'client_sales_history',
         'uses' => 'Client\OrderController@client_sales_history'
