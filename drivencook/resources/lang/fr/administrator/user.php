@@ -13,4 +13,8 @@ return [
     'phone' => 'Téléphone',
     'email' => 'E-mail',
     'created_at' => 'Date de création',
+
+    'delete_confirm' => 'Voulez-vous vraiment supprimer cet administrateur ? Toutes les données associées seront supprimées',
+    'ajax_error' => 'Une erreur est survenue, veuillez rafraîchir la page',
+    'delete_success' => 'L\'administrateur a été supprimé',
 ];

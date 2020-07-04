@@ -66,7 +66,7 @@
         });
 
         function deleteUser(id) {
-            if (confirm("Voulez-vous vraiment supprimer cet administrateur ? Toutes les données associées seront supprimées")) {
+            if (confirm(Lang.get('administrator/user.delete_confirm'))) {
                 if (!isNaN(id)) {
                     let urlB = '{{ route('admin_delete', ['id'=>':id']) }}';
                     urlB = urlB.replace(':id', id);
@@ -78,14 +78,14 @@
                         },
                         success: function (data) {
                             if (data == id) {
-                                alert("Administrateur supprimé");
+                                alert(Lang.get('administrator/user.delete_success'));
                                 $('#allusers').DataTable().row('#row_' + id).remove().draw();
                             } else {
-                                alert("Une erreur est survenue lors de la suppression, veuillez rafraîchir la page");
+                                alert(Lang.get('administrator/user.ajax_error'));
                             }
                         },
                         error: function () {
-                            alert("Une erreur est survenue lors de la suppression, veuillez rafraîchir la page");
+                            alert(Lang.get('administrator/user.ajax_error'));
                         }
                     })
                 }
