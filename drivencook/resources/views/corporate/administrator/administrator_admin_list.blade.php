@@ -26,18 +26,17 @@
                 <table id="allusers" class="table table-hover table-striped table-bordered table-dark"
                        style="width: 100%">
                     <thead>
-                    <tr>
-                        <th>{{ trans('administrator/user.name') }}</th>
-                        <th>{{ trans('administrator/user.firstname') }}</th>
-                        <th>{{ trans('administrator/user.phone') }}</th>
-                        <th>{{ trans('administrator/user.email') }}</th>
-                        <th>{{ trans('administrator/user.created_at') }}</th>
-                        <th>{{ trans('administrator/global.actions') }}</th>
-                    </tr>
+                        <tr>
+                            <th>{{ trans('administrator/user.name') }}</th>
+                            <th>{{ trans('administrator/user.firstname') }}</th>
+                            <th>{{ trans('administrator/user.phone') }}</th>
+                            <th>{{ trans('administrator/user.email') }}</th>
+                            <th>{{ trans('administrator/user.created_at') }}</th>
+                            <th>{{ trans('administrator/global.actions') }}</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    @foreach($users as $user)
-                        @if($user['id'] != auth()->user()->id)
+                        @foreach($users as $user)
                             <tr id="{{ 'row_'.$user['id'] }}">
                                 <td>{{ $user['lastname'] }}</td>
                                 <td>{{ $user['firstname'] }}</td>
@@ -45,12 +44,13 @@
                                 <td>{{ $user['email'] }}</td>
                                 <td>{{ DateTime::createFromFormat('Y-m-d H:i:s', $user['created_at'])->format('d/m/Y') }}</td>
                                 <td>
-                                    <button onclick="deleteUser({{ $user['id'] }})"
-                                            class="text-light fa fa-trash ml-2"></button>
+                                    @if($user['id'] != auth()->user()->id)
+                                        <button onclick="deleteUser({{ $user['id'] }})"
+                                                class="text-light fa fa-trash ml-2"></button>
+                                    @endif
                                 </td>
                             </tr>
-                        @endif
-                    @endforeach
+                        @endforeach
                     </tbody>
                 </table>
             </div>
