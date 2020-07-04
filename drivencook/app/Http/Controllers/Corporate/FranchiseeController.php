@@ -302,8 +302,14 @@ class FranchiseeController extends Controller
         $invoicing_period = $this->get_invoicing_period($current_obligation, "d/m/Y");
         $sales_chart = $this->generate_chart($franchisee['id'], 'sales');
         $turnover_chart = $this->generate_chart($franchisee['id'], 'turnover');
-        $payment_methods_chart = $this->generate_chart($franchisee['id'], 'payment_methods');
-        $origins_chart = $this->generate_chart($franchisee['id'], 'origin');
+
+        if($revenues['sales_count'] == 0) {
+            $payment_methods_chart = '';
+            $origins_chart = '';
+        } else {
+            $payment_methods_chart = $this->generate_chart($franchisee['id'], 'payment_methods');
+            $origins_chart = $this->generate_chart($franchisee['id'], 'origin');
+        }
 
         return view('corporate.franchisee.franchisee_sales_stats')
             ->with('franchisee', $franchisee)
