@@ -233,7 +233,6 @@
                 @break
 
                 @case(route('dish_list'))
-                @case(route('dish_creation'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{ route('corporate_dashboard') }}">
                             <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_dashboard') }}
@@ -244,6 +243,15 @@
                             <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.add_product') }}
                         </a>
                     </li>
+                @break
+
+
+                @case(route('dish_creation'))
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{ route('dish_list') }}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_products_list') }}
+                    </a>
+                </li>
                 @break
 
                 @case(route('admin_list'))
