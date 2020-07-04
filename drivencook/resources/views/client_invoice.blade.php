@@ -137,10 +137,22 @@
                     @endforeach
                 @endif
 
+                @if($invoice['discount_amount'])
+                    <tr>
+                        <td colspan="2" class="blank"></td>
+                        <td colspan="1" class="total-line ttc">Sous-total</td>
+                        <td class="total-value ttc nb">{{ number_format($invoice['amount'], 2, ',', ' ') }} €</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="blank"></td>
+                        <td colspan="1" class="total-line ttc">Réduction</td>
+                        <td class="total-value ttc nb">{{ number_format($invoice['discount_amount'], 2, ',', ' ') }} €</td>
+                    </tr>
+                @endif
                 <tr>
                     <td colspan="2" class="blank"></td>
                     <td colspan="1" class="total-line ttc">Total</td>
-                    <td class="total-value ttc nb">{{ number_format($invoice['amount'], 2, ',', ' ') }} €</td>
+                    <td class="total-value ttc nb">{{ number_format($invoice['amount'] - $invoice['discount_amount'], 2, ',', ' ') }} €</td>
                 </tr>
 
             </table>
