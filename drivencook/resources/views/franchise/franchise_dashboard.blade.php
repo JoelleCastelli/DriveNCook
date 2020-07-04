@@ -67,7 +67,7 @@
                                 {{ number_format($revenues['sales_total'], 2, ',', ' ')}} €
                             </li>
                             <li class="list-group-item bg-success align-content-arround">
-                                <a href="{{route('franchise.or')}}" target="_blank" class="row text-light2">
+                                <a href="{{route('franchise.revenues_stats')}}" target="_blank" class="row text-light2">
                                     <div class="col-10">
                                         {{trans('franchisee.view_details')}}
                                     </div>
