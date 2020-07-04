@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Corporate;
 
 use App\Http\Controllers\Controller;
 use App\Models\Dish;
+use App\Models\Invoice;
 use App\Models\Location;
 use App\Models\PurchasedDish;
 use App\Models\PurchaseOrder;
@@ -51,7 +52,7 @@ class WarehouseController extends Controller
         }
 
         if (count($parameters) == 9) {
-            $warehouse_name = strtoupper($parameters["warehouse_name"]);
+            $warehouse_name = $parameters["warehouse_name"];
             $existing_location_id = $parameters["existing_location_id"];
             $new_address['full_name'] = $parameters["new_address_full"];
             $new_address['latitude'] = $parameters["new_address_lat"];
@@ -240,13 +241,20 @@ class WarehouseController extends Controller
             ->with('warehouse', $warehouse);
     }
 
-    public function warehouse_delete($id)
+    public function warehouse_delete($warehouse_id)
     {
-        if (!ctype_digit($id)) {
+        if (!ctype_digit($warehouse_id)) {
             return 'error';
         }
-        Warehouse::find($id)->delete();
-        return $id;
+
+        WarehousStock::where('warehouse_id', $warehouse_id)->delete();
+        $purchase_orders = PurchaseOrder::where('warehouse_id', $warehouse_id);
+        PurchasedDish::whereIn('purchase_order_id', $purchase_orders->pluck('id'))->delete();
+        Invoice::whereIn('purchase_order_id', $purchase_orders->pluck('id'))->delete();
+        $purchase_orders->delete();
+
+        Warehouse::find($warehouse_id)->delete();
+        return $warehouse_id;
     }
 
     public function warehouse_dishes($id)

@@ -37,7 +37,7 @@
                                                     <button class="fa fa-edit ml-2 text-light"></button>
                                                 </a>
 
-                                                <button onclick="deleteWarehouse({{ $warehouse['id'] }})"
+                                                <button onclick="delete_warehouse({{ $warehouse['id'] }})"
                                                         class="fa fa-trash ml-2"></button>
                                             </td>
                                         </tr>
@@ -60,8 +60,8 @@
             $('#allwarehouses').DataTable();
         });
 
-        function deleteWarehouse(id) {
-            if (confirm(Lang.get('warehouse_list.ask_delete_warehouse'))) {
+        function delete_warehouse(id) {
+            if (confirm(Lang.get('warehouse_list.delete_confirm'))) {
                 if (!isNaN(id)) {
                     let urlB = '{{route('warehouse_delete',['id'=>':id'])}}';
                     urlB = urlB.replace(':id', id);
@@ -74,13 +74,13 @@
                         success: function (data) {
                             if (data == id) {
                                 $('#allwarehouses').DataTable().row('#row_' + id).remove().draw();
-                                alert(Lang.get('warehouse_list.warehouse_deleted_success'));
+                                alert(Lang.get('warehouse_list.delete_success'));
                             } else {
-                                alert(Lang.get('warehouse_list.warehouse_deleted_error'));
+                                alert(Lang.get('warehouse_list.ajax_error'));
                             }
                         },
                         error: function () {
-                            alert(Lang.get('warehouse_list.warehouse_deleted_error'));
+                            alert(Lang.get('warehouse_list.ajax_error'));
                         }
                     })
                 }
