@@ -1,6 +1,6 @@
 @extends('corporate.layout_corporate')
 @section('title')
-    {{ trans('administrator/user.title') }}
+    {{ trans('admin.title') }}
 @endsection
 @section('content')
     <div class="card mb-5">
@@ -9,7 +9,7 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div class="card text-light2">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item bg-info">{{ trans('administrator/user.users_nb') }} : {{ count($users) }}</li>
+                            <li class="list-group-item bg-info">{{ trans('admin.users_nb') }} : {{ count($users) }}</li>
                         </ul>
                     </div>
                 </div>
@@ -19,7 +19,7 @@
 
     <div class="card" id="client_list">
         <div class="card-header">
-            <h2>{{ trans('administrator/user.users_section') }}</h2>
+            <h2>{{ trans('admin.users_section') }}</h2>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -27,11 +27,11 @@
                        style="width: 100%">
                     <thead>
                         <tr>
-                            <th>{{ trans('administrator/user.name') }}</th>
-                            <th>{{ trans('administrator/user.firstname') }}</th>
-                            <th>{{ trans('administrator/user.phone') }}</th>
-                            <th>{{ trans('administrator/user.email') }}</th>
-                            <th>{{ trans('administrator/user.created_at') }}</th>
+                            <th>{{ trans('admin.name') }}</th>
+                            <th>{{ trans('admin.firstname') }}</th>
+                            <th>{{ trans('admin.phone') }}</th>
+                            <th>{{ trans('admin.email') }}</th>
+                            <th>{{ trans('admin.created_at') }}</th>
                             <th>{{ trans('administrator/global.actions') }}</th>
                         </tr>
                     </thead>

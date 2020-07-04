@@ -78,30 +78,35 @@ class AdministratorController extends Controller
 
             if (strlen($lastname) < 2 || strlen($lastname) > 30) {
                 $error = true;
-                $errors_list[] = trans('administrator/creation.lastname_error');
+                $errors_list[] = trans('admin.lastname_error');
             }
 
             if (strlen($firstname) < 2 || strlen($firstname) > 30) {
                 $error = true;
-                $errors_list[] = trans('administrator/creation.firstname_error');
+                $errors_list[] = trans('admin.firstname_error');
             }
 
             if (!preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/', $email)
                 || strlen($email) > 100) {
                 $error = true;
-                $errors_list[] = trans('administrator/creation.email_format_error');
+                $errors_list[] = trans('admin.email_format_error');
             }
 
             if (!$error) {
                 $result = $this->get_admin_by_email($email);
                 if ($result != null) {
                     $error = true;
-                    $errors_list[] = trans('administrator/creation.duplicate_entry_error');
+                    $errors_list[] = trans('admin.duplicate_entry_error');
                 }
             }
 
             if ($error) {
-                return back()->withInput()->withErrors(['admin_creation' => $errors_list]);
+                $str = '';
+                foreach($errors_list as $error) {
+                    $str .= $error . '<br>';
+                }
+                flash($str)->error();
+                return redirect()->back();
             } else {
                 $token='';
                 try {
@@ -123,11 +128,11 @@ class AdministratorController extends Controller
                 $this->sendNewAccountMail($email, $token);
 
                 return back()->withInput()->withErrors(
-                    ['admin_creation_success' => trans('administrator/creation.new_admin_success')]
+                    ['admin_creation_success' => trans('admin.new_admin_success')]
                 );
             }
         } else {
-            $errors_list[] = trans('administrator/creation.empty_fields');
+            $errors_list[] = trans('admin.empty_fields');
             $str = '';
             foreach($errors_list as $error) {
                 $str .= $error . '<br>';

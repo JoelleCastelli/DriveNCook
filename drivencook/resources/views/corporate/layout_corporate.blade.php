@@ -254,7 +254,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{ route('admin_creation') }}">
-                            <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{{ trans('administrator/user.add_admin') }}
+                            <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{{ trans('admin.add_admin') }}
                         </a>
                     </li>
                 @break
@@ -262,7 +262,7 @@
                 @case(route('admin_creation'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{ route('admin_list') }}">
-                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('administrator/creation.back_admin_list') }}
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('admin.back_admin_list') }}
                         </a>
                     </li>
                 @break
