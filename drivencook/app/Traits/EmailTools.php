@@ -25,6 +25,18 @@ trait EmailTools
         });
     }
 
+    public function sendInvoiceMail($user, $invoice)
+    {
+        $to_name = $user['firstname'] . ' ' . $user['lastname'];
+        $to_email = $user['email'];
+        $data = array('user' => $user, 'invoice' => $invoice);
+        Mail::send('mails.invoice', $data, function ($message) use ($to_name, $to_email) {
+            $message->to($to_email, $to_name)
+                ->subject('Drivencook invoice');
+            $message->from('noreply@drivencook.fr');
+        });
+    }
+
     public function sendNewAccountMail($user_mail, $token)
     {
         $user = User::where("email", $user_mail)->first()->toArray();
