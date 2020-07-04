@@ -44,9 +44,13 @@
 
     <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
         <div class="navbar-nav ml-auto">
-            @if(!empty($client['loyalty_point']))
+            @if(!empty(Session::get('loyalty_point')))
             <li class="nav-item ml-4">
-                <span class="navbar-brand">{{ $client['loyalty_point'] . ' ' . trans('client/global.loyalty_point') }}</span>
+                <a class="nav-link" href="#"
+                   data-toggle="modal" data-target="#loyaltyPointModal"
+                   style="margin: 0; padding: 0">
+                    <span class="navbar-brand">{{ Session::get('loyalty_point') . ' ' . trans('client/global.loyalty_point') }}</span>
+                </a>
             </li>
             @endif
             <li class="nav-item dropdown ml-4">
@@ -187,6 +191,44 @@
         </div>
     </div>
 </div>
+@php
+    $fidelitySteps = \App\Models\FidelityStep::orderBy('step')->get();
+@endphp
+@if(!empty($fidelitySteps))
+    <!-- MODAL FIDELITY POINT -->
+    <div class="modal fade" id="loyaltyPointModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">{{ trans('client/global.loyalty_array') }}</h5>
+                    <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover table-striped table-bordered"
+                           style="width: 100%">
+                        <thead>
+                            <tr>
+                                <th>{{ trans('client/global.step') }}</th>
+                                <th>{{ trans('client/global.reduction') }}</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach($fidelitySteps as $fidelityStep)
+                                <tr>
+                                    <td>{{ $fidelityStep->step }}</td>
+                                    <td>{{ $fidelityStep->reduction }} €</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
 
 @if(auth()->guest())
     <!-- MODAL CLIENT LOGIN -->

@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Models\FranchiseObligation;
+use App\Traits\NewslettersTools;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Traits\UserTools;
@@ -10,6 +11,7 @@ use App\Traits\UserTools;
 class Kernel extends ConsoleKernel
 {
     use UserTools;
+    use NewslettersTools;
     /**
      * The Artisan commands provided by your application.
      *
@@ -30,6 +32,8 @@ class Kernel extends ConsoleKernel
         $current_obligation = $this->get_current_obligation();
          $schedule->command('invoices:generate_monthly')
                   ->monthlyOn($current_obligation['billing_day'], '10:00');
+
+        $schedule->job($this->sendNewsLettersAllClients())->monthlyOn(1, '10:00');
     }
 
     /**

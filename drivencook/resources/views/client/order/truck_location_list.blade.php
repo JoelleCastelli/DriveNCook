@@ -21,7 +21,7 @@
                                        style="width: 100%">
                                     <thead>
                                     <tr>
-                                        <th>{{ trans('client/global.actions') }}</th>
+                                        <th></th>
                                         <th>{{ trans('client/order.pseudo') }}</th>
                                         <th>{{ trans('client/order.franchisee') }}</th>
                                         <th>{{ trans('client/order.location_name') }}</th>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Auth\Authenticatable as BasicAuthenticatable;
@@ -19,7 +20,8 @@ class User extends Model implements Authenticatable
      */
 
     protected $fillable = [
-        'lastname', 'firstname', 'birthdate', 'telephone', 'pseudo_id', 'email', 'role', 'driving_licence', 'social_security', 'password', 'password_token'
+        'lastname', 'firstname', 'birthdate', 'telephone', 'pseudo_id', 'email', 'role', 'driving_licence',
+        'social_security', 'password', 'password_token', 'loyalty_point', 'opt_in'
     ];
 
     /**
@@ -72,5 +74,21 @@ class User extends Model implements Authenticatable
     public function sales()
     {
         return $this->hasMany(Sale::class, 'user_franchised')->with('sold_dishes');
+    }
+
+    public function client_orders()
+    {
+        return $this->hasMany(Sale::class, 'user_client')->with('sold_dishes');
+    }
+
+    public function event_invited()
+    {
+        return $this->hasMany(EventInvited::class, 'user_id')->with('event');
+    }
+
+    public function event_invited_30()
+    {
+        return $this->hasMany(EventInvited::class, 'user_id')
+            ->with('event_30');
     }
 }

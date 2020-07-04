@@ -32,6 +32,7 @@ return [
     'done' => 'Terminée',
 
     'franchisee_details_section' => 'Information du franchisé',
+    'franchisee' => 'Franchisé',
     'franchisee_email' => 'E-mail',
     'franchisee_phone' => 'Téléphone',
 

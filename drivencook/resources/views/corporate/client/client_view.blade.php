@@ -31,6 +31,10 @@
                     <a href="{{route('client_update',['id'=>$client['id']])}}">
                         <button class="btn btn-light_blue">Modifier</button>
                     </a>
+                    <button class="btn btn-primary ml-2" data-toggle="modal" data-target="#newsLetterModal">
+                        <i class="fa fa-envelope mr-2"></i> {{trans('corporate.send_newsletter')}}
+                    </button>
+
                 </div>
             </div>
         </div>
@@ -91,6 +95,38 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="newsLetterModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="form">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">{{trans('corporate.send_newsletter')}}</h5>
+                    <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{route('send_client_newsletters_unique')}}" method="post" class="p-2">
+
+                    {{csrf_field()}}
+
+                    <input type="hidden" id="user_id" name="user_id" value="{{$client['id']}}">
+
+                    <div class="form-group">
+                        <label for="news_message">{{trans('corporate.newsletter_optional_message')}}</label>
+                        <textarea class="form-control" name="news_message" id="news_message" maxlength="255"></textarea>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-primary" id="modalSubmit">{{trans('corporate.send')}}
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('script')

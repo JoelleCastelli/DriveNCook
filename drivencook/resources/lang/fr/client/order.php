@@ -39,5 +39,9 @@ return [
     'click_here' => 'Cliquez ici',
     'command_expired' => 'Erreur, la commande a expiré, veuillez réessayer',
 
+    'pay' => 'Payer',
 
+    'order_expired' => 'Erreur, la commande a expiré, veuillez réessayer',
+    'created' => 'Commande créée !',
+    'click_here' => 'Vous pouvez la consulter ici...',
 ];

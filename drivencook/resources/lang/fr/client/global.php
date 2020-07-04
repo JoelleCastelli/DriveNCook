@@ -9,13 +9,17 @@ return [
     'delete_account' => 'Supprimer votre compte',
     'order' => 'Commander',
     'history' => 'Historique',
+    'event_list' => 'Evénement',
+
+    'never_ordered' => 'Vous n\'avez jamais commandé, commencez dès maintenant en cliquant sur le bouton ci-dessous !',
+
+    'events_for_next_7_days' => 'Vos événements pour les 7 prochains jours',
+    'franchisee_location' => 'Emplacement',
+    'last_order_truck' => 'Le camion de votre dernière commande',
 
     'actions' => 'Actions',
 
-    'loyalty_point' => 'points',
-    'sales' => 'Achats',
-    'show_details' => 'Détails',
-    'events_for_next_7_days' => 'Evenements les 7 prochains jours',
-    'last_order_truck' => 'Camion de la dernière commande',
-    'ask_delete'=>'Voulez vous vraiment supprimer votre compte ?'
+    'order_again' => 'Commander à nouveau',
+
+    'loyalty_point' => 'points de fidélité',
 ];
