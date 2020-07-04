@@ -106,7 +106,7 @@
 
         $(document).ready(function () {
             let table = $('#allfranchisees').DataTable({searchPanes: true});
-            table.searchPanes.container().prependTo(table.table().container());
+            //table.searchPanes.container().prependTo(table.table().container());
         });
 
         function deleteFranchise(id) {
