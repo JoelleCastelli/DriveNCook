@@ -18,11 +18,12 @@
                     <h2>{{ trans('warehouse_order.order_details_section') }}</h2>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><b>{{ trans('warehouse_order.date') }} : </b>{{ $order['date'] }}</li>
+
+                    <li class="list-group-item"><b>{{ trans('warehouse_order.date') }} : </b>{{ DateTime::createFromFormat("Y-m-d", $order['date'])->format('d/m/Y') }}</li>
                     <li class="list-group-item"><b>{{ trans('warehouse_order.status') }} : </b>
                         <p style="display: inline" id="orderStatus">{{ trans($GLOBALS['PURCHASE_ORDER_STATUS'][$order['status']]) }}</p>
                     </li>
-                    <li class="list-group-item"><b>{{ trans('warehouse_order.global_price') }} : </b>{{ $orderPrice }}</li>
+                    <li class="list-group-item"><b>{{ trans('warehouse_order.global_price') }} : </b>{{ $orderPrice }} €</li>
                 </ul>
             </div>
         </div>
@@ -59,7 +60,7 @@
                                 <th>{{ trans('warehouse_order.quantity_to_send') }}</th>
                                 <th>{{ trans('warehouse_order.unit_price') }}</th>
                                 <th>{{ trans('warehouse_order.total_dish_price') }}</th>
-                                <th>{{ trans('corporate.actions') }}</th>
+                                <th>Actions</th>
                             </tr>
                             </thead>
                             <tbody>

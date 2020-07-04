@@ -233,7 +233,16 @@ class WarehouseController extends Controller
             }
         }
 
+        $out_of_stock = false;
+        foreach($warehouse['stock'] as $dish) {
+            if ($dish['quantity'] <= 5) {
+                $out_of_stock = true;
+                break;
+            }
+        }
+
         return view('corporate.warehouse.warehouse_view')
+            ->with('out_of_stock', $out_of_stock)
             ->with('warehouse', $warehouse);
     }
 
