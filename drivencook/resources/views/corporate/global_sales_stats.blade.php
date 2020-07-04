@@ -54,7 +54,7 @@
                                 {{ trans('franchisee.sales') }}
                             </div>
                             <div class="row d-flex justify-content-center">
-                                {{--<h1>{{ $history['sales_count'] }}</h1>--}}
+                                <h1>{{ $history['sales_count'] }}</h1>
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-md-4">
@@ -62,7 +62,7 @@
                                 {{ trans('franchisee.turnover') }}
                             </div>
                             <div class="row d-flex justify-content-center">
-                                {{--<h1>{{ number_format($history['sales_total'], 2, ',', ' ') }} €</h1>--}}
+                                <h1>{{ number_format($history['sales_total'], 2, ',', ' ') }} €</h1>
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-md-5">
@@ -70,7 +70,7 @@
                                 {{ trans('franchisee.invoice_total') }}
                             </div>
                             <div class="row d-flex justify-content-center">
-                                {{--<h1>{{ number_format($history['total_invoices'], 2, ',', ' ') }} €</h1>--}}
+                                <h1>{{ number_format($history['total_invoices'], 2, ',', ' ') }} €</h1>
                             </div>
                         </div>
                     </div>

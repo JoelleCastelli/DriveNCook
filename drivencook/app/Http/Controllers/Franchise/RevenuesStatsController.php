@@ -15,7 +15,7 @@ class RevenuesStatsController extends Controller
         $current_obligation = $this->get_current_obligation();
         $current_month_sales = $this->get_franchise_current_month_sale_revenues($franchisee['id']);
         $invoicing_period = $this->get_invoicing_period($current_obligation, "d/m/Y");
-        $history = $this->get_franchisee_history($franchisee['id']);
+        $history = $this->get_franchisee_history([$franchisee['id']]);
 
         $sales_chart = $this->generate_chart([$franchisee['id']], 'sales');
         $turnover_chart = $this->generate_chart([$franchisee['id']], 'turnover');

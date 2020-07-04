@@ -237,46 +237,43 @@ trait UserTools
         );
     }
 
-    public function get_franchisee_history($franchisee_id)
+    public function get_franchisee_history($franchisees_ids)
     {
+        $history['sales_total'] = 0;
+        $history['sales_count'] = 0;
+        $history['total_invoices'] = 0;
 
-        // Definition of min and max dates
-        $user = $this->get_franchisee_by_id($franchisee_id);
-        $creation_date = DateTime::createFromFormat("Y-m-d H:i:s", $user['created_at'])->format('Y-m-d');
-        $today = date("Y-m-d");
+        foreach ($franchisees_ids as $franchisee_id) {
 
-        // Total of invoices
-        $invoices = Invoice::where('user_id', $franchisee_id)->get()->toArray();
-        $total_invoices = 0;
-        foreach ($invoices as $invoice) {
-            if (substr($invoice['reference'], 0, 3) != "IF-") // removing initial fee from total
-                $total_invoices += $invoice['amount'];
-        }
+            // Definition of min and max dates
+            $user = $this->get_franchisee_by_id($franchisee_id);
+            $creation_date = DateTime::createFromFormat("Y-m-d H:i:s", $user['created_at'])->format('Y-m-d');
+            $today = date("Y-m-d");
 
-        // Total of cashed money and number of sales
-        $sales = $this->get_franchisee_sales($franchisee_id, $creation_date, $today);
-
-        // If no sale, return invoices but 0 sales & total
-        if (empty($sales)) {
-            return ["sales_total" => 0,
-                "sales_count" => 0,
-                "creation_date" => $creation_date,
-                "total_invoices" => $total_invoices
-            ];
-        }
-
-        $sales_total = 0;
-        foreach ($sales as $sale) {
-            foreach ($sale['sold_dishes'] as $sold_dish) {
-                $sales_total += $sold_dish['quantity'] * $sold_dish['unit_price'];
+            // Total of invoices
+            $invoices = Invoice::where('user_id', $franchisee_id)->get()->toArray();
+            foreach ($invoices as $invoice) {
+                // counting only stock orders and monthly fee (no initial fee or client invoices)
+                if ($invoice['franchisee_order'] == 1 || $invoice['monthly_fee'] == 1 ) {
+                    $history['total_invoices'] += $invoice['amount'];
+                }
             }
+
+            // Total of cashed money and number of sales
+            $sales = $this->get_franchisee_sales($franchisee_id, $creation_date, $today);
+            if (!empty($sales)) {
+                foreach ($sales as $sale) {
+                    foreach ($sale['sold_dishes'] as $sold_dish) {
+                        $history['sales_total'] += $sold_dish['quantity'] * $sold_dish['unit_price'];
+                    }
+                }
+            }
+
+            $history['creation_date'] = $creation_date;
+            $history['sales_count'] += count($sales);
         }
 
-        return ["sales_total" => $sales_total,
-            "sales_count" => count($sales),
-            "creation_date" => $creation_date,
-            "total_invoices" => $total_invoices
-        ];
+        return $history;
     }
 
     public function franchisee_sales_history_pdf(Request $request)
