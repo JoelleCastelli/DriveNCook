@@ -1,6 +1,7 @@
 @extends('corporate.layout_corporate')
 @section('title')
-    {{ ucfirst($franchisee['firstname']).' '.strtoupper($franchisee['lastname']).' ('.$franchisee['pseudo']['name'].')' }}
+    @php $pseudo = isset($franchisee['pseudo']['name']) ? " (".$franchisee['pseudo']['name'].")" : "" @endphp
+    {{ ucfirst($franchisee['firstname']).' '.strtoupper($franchisee['lastname']).$pseudo }}
     - {{ trans('franchisee.sales_stats') }}
 @endsection
 
