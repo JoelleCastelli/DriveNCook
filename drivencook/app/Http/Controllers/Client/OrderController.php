@@ -13,10 +13,12 @@ use App\Models\Truck;
 use App\Models\User;
 use App\Traits\LoyaltyTools;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use App\Traits\UserTools;
 use App\Traits\TruckTools;
 use App\Traits\StockTools;
+use Session;
 use Stripe\Charge;
 use Stripe\Customer;
 use Stripe\Stripe;
@@ -224,13 +226,20 @@ class OrderController extends Controller
         unset($order['total']);
         $userId = $this->get_truck_with_franchisee_by_truck_id($order['truck_id'])['user']['id'];
 
+        $paymentMethod = Session::pull('payment_method');
+        if($paymentMethod == 'cash') {
+            $paymentMethod = 'Liquide';
+        } else {
+            $paymentMethod = 'Carte bancaire';
+        }
+
         $sale = [
             'online_order' => true,
             'date' => Carbon::now()->toDateString(),
             'user_franchised' => $userId,
             'user_client' => $clientId,
             'status' => 'pending',
-            'payment_method' => 'Carte bancaire'
+            'payment_method' => $paymentMethod
         ];
 
         $saleId = Sale::insertGetId($sale);
@@ -318,9 +327,10 @@ class OrderController extends Controller
         return redirect(route('client_dashboard'));
     }
 
-    public function charge(Request $request, $order_total_cents)
+    public function charge(Request $request, $order_total_cents, $type = '31uV6UZKmoN57tchyQBgfHNZ0pZz1XHYVv7vFdlzyn9jYeO9JbcQ9xKjeZqNfHJe85vqj')
     {
-        if($order_total_cents != 0) {
+        Session::put('payment_method', $type);
+        if($order_total_cents != 0 && $type == '31uV6UZKmoN57tchyQBgfHNZ0pZz1XHYVv7vFdlzyn9jYeO9JbcQ9xKjeZqNfHJe85vqj') {
             try {
                 Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
@@ -336,7 +346,7 @@ class OrderController extends Controller
                 ));
 
                 return $this->client_order_validate();
-            } catch (\Exception $ex) {
+            } catch (Exception $ex) {
                 return $ex->getMessage();
             }
         } else {

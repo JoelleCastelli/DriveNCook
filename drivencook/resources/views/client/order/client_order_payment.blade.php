@@ -27,6 +27,17 @@
                     </ul>
                 </div>
                 <div class="card-footer">
+                    <select class="custom-select" id="paymentSelection">
+                        <option selected>{{ trans('client/sale.credit_card') }}</option>
+                        <option value="cash">{{ trans('client/sale.cash') }}</option>
+                    </select>
+                    <br>
+                    <br>
+                    <form id="paymentForm"
+                          action="{{ route('client_new_order_charge', ['total' => $order['total'] * 100, 'type' => 'cash']) }}"
+                          method="POST">
+                        {{ csrf_field() }}
+                    </form>
                     <form action="{{ route('client_new_order_charge', ['total' => $order['total'] * 100]) }}" method="POST">
                         {{ csrf_field() }}
                         @if($order['total'] != 0)
@@ -34,7 +45,7 @@
                                     data-key="{{ env('STRIPE_PUB_KEY') }}"
                                     data-amount="{{ $order['total'] * 100 }}"
                                     data-name="DriveNCook.fr"
-                                    data-description="Paiement de votre commande"
+                                    data-description="{{ trans('client/order.order_payment') }}"
                                     data-image="{{ asset('img/logo_transparent.png') }}"
                                     data-locale="auto"
                                     data-currency="eur"
@@ -46,10 +57,30 @@
                                 document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
                             </script>
                         @endif
-                        <button type="submit" class="btn btn-light_blue">{{ trans('client/order.pay') }} <b>{{ $order['total'] }} €</b></button>
+                        <button type="submit"
+                                class="btn btn-light_blue"
+                                id="proceedPayment"
+                                style="width: 100%">
+                            {{ trans('client/order.pay') }} <b>{{ $order['total'] }} €</b>
+                        </button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+@endsection
+
+@section('script')
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#proceedPayment').on('click', function (e) {
+                console.log('coucou1');
+                if($('#paymentSelection').val() === 'cash') {
+                    console.log('coucou2');
+                    e.preventDefault();
+                    $('#paymentForm').submit();
+                }
+            })
+        });
+    </script>
 @endsection
