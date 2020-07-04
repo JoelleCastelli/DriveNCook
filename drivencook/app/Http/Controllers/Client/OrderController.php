@@ -4,13 +4,13 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Http\Middleware\AuthClient;
 use App\Models\FranchiseeStock;
 use App\Models\FidelityStep;
 use App\Models\Sale;
 use App\Models\SoldDish;
 use App\Models\Truck;
 use App\Models\User;
+use App\Traits\LoyaltyTools;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Traits\UserTools;
@@ -25,13 +25,10 @@ class OrderController extends Controller
     use UserTools;
     use TruckTools;
     use StockTools;
+    use LoyaltyTools;
 
     public function truck_location_list()
     {
-//        $clientId = $this->get_connected_user()['id'];
-//        $client = User::whereKey($clientId)
-//            ->first();
-
         $trucks = Truck::where('functional', true)
             ->with('user')
             ->with('location')
@@ -43,7 +40,6 @@ class OrderController extends Controller
 
         return view('client.order.truck_location_list')
             ->with('trucks', $trucks);
-//            ->with('client', $client);
     }
 
     public function client_order($truck_id)
@@ -195,8 +191,8 @@ class OrderController extends Controller
     public function client_order_charge()
     {
         $order = request()->session()->get('order', null);
-        if ($order == null) {
-            flash(trans('client/order.command_expired'))->warning();
+        if($order == null) {
+            flash(trans('client/order.order_expired'))->warning();
             return redirect(route('truck_location_list'));
         }
 
@@ -213,9 +209,10 @@ class OrderController extends Controller
 
     public function client_order_validate()
     {
+        $clientId = $this->get_connected_user()['id'];
         $order = request()->session()->pull('order', null);
         if ($order == null) {
-            flash(trans('client/order.command_expired'))->warning();
+            flash(trans('client/order.order_expired'))->warning();
             return redirect(route('truck_location_list'));
         }
 
@@ -227,7 +224,7 @@ class OrderController extends Controller
             'online_order' => true,
             'date' => Carbon::now()->toDateString(),
             'user_franchised' => $userId,
-            'user_client' => $this->get_connected_user()['id'],
+            'user_client' => $clientId,
             'status' => 'pending',
             'payment_method' => 'Carte bancaire'
         ];
@@ -268,7 +265,7 @@ class OrderController extends Controller
             $subPoint = $fidelityStep->step;
         }
 
-        $client = User::whereKey($this->get_connected_user()['id'])
+        $client = User::whereKey($clientId)
             ->first();
 
         /**
@@ -280,8 +277,10 @@ class OrderController extends Controller
             $loyaltyPoint = 0;
         }
 
-        User::whereKey($this->get_connected_user()['id'])
+        User::whereKey($clientId)
             ->update(['loyalty_point' => (int)$loyaltyPoint]);
+
+        $this->put_loyalty_point_in_session($clientId);
 
         flash(trans('client/order.created')
             . ' <a href="' . route('client_sale_display', ['id' => $saleId]) . '">'
@@ -294,23 +293,27 @@ class OrderController extends Controller
 
     public function charge(Request $request, $order_total_cents)
     {
-        try {
-            Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+        if($order_total_cents != 0) {
+            try {
+                Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
-            $customer = Customer::create(array(
-                'email' => $request->stripeEmail,
-                'source' => $request->stripeToken
-            ));
+                $customer = Customer::create(array(
+                    'email' => $request->stripeEmail,
+                    'source' => $request->stripeToken
+                ));
 
-            $charge = Charge::create(array(
-                'customer' => $customer->id,
-                'amount' => $order_total_cents,
-                'currency' => 'eur'
-            ));
+                $charge = Charge::create(array(
+                    'customer' => $customer->id,
+                    'amount' => $order_total_cents,
+                    'currency' => 'eur'
+                ));
 
+                return $this->client_order_validate();
+            } catch (\Exception $ex) {
+                return $ex->getMessage();
+            }
+        } else {
             return $this->client_order_validate();
-        } catch (\Exception $ex) {
-            return $ex->getMessage();
         }
     }
 
@@ -374,37 +377,39 @@ class OrderController extends Controller
                 ['user_client', $this->get_connected_user()['id']],
             ])->first();
 
-            if (!empty($sale)) {
-                $sold_dishes = SoldDish::where('sale_id', $id)
-                    ->get();
+            if($sale->status == 'pending') {
+                if (!empty($sale)) {
+                    $sold_dishes = SoldDish::where('sale_id', $id)
+                        ->get();
 
-                if (!empty($sold_dishes)) {
-                    foreach ($sold_dishes as $sold_dish) {
-                        FranchiseeStock::where([
-                            ['user_id', $sale->user_franchised],
-                            ['dish_id', $sold_dish->dish_id]
-                        ])->increment('quantity', $sold_dish->quantity);
+                    if (!empty($sold_dishes)) {
+                        foreach ($sold_dishes as $sold_dish) {
+                            FranchiseeStock::where([
+                                ['user_id', $sale->user_franchised],
+                                ['dish_id', $sold_dish->dish_id]
+                            ])->increment('quantity', $sold_dish->quantity);
 
-                        SoldDish::where([
-                            ['dish_id', $sold_dish->dish_id],
-                            ['sale_id', $sale->id]
-                        ])->delete();
+                            SoldDish::where([
+                                ['dish_id', $sold_dish->dish_id],
+                                ['sale_id', $sale->id]
+                            ])->delete();
+                        }
                     }
+
+                    Sale::whereKey($sale->id)
+                        ->delete();
+
+                    $response_array = [
+                        'status' => 'success'
+                    ];
+                } else {
+                    $errors_list[] = trans('client/order.sale_and_client_do_not_match');
+
+                    $response_array = [
+                        'status' => 'error',
+                        'errorList' => $errors_list
+                    ];
                 }
-
-                Sale::whereKey($sale->id)
-                    ->delete();
-
-                $response_array = [
-                    'status' => 'success'
-                ];
-            } else {
-                $errors_list[] = trans('client/order.sale_and_client_do_not_match');
-
-                $response_array = [
-                    'status' => 'error',
-                    'errorList' => $errors_list
-                ];
             }
         }
 

@@ -81,6 +81,23 @@
                             @endif
                         </div>
 
+                        <br>
+                        <div class="form-group custom-control custom-checkbox">
+                            <input type="hidden" name="opt_in" value="0">
+                            <input type="checkbox"
+                                   name="opt_in"
+                                   class="custom-control-input"
+                                   id="opt_in"
+                                   value="1"
+                                   @if($client['opt_in'] == true)
+                                       checked
+                                   @endif
+                                    >
+                            <label class="custom-control-label"
+                                   for="opt_in">{{ trans('client/account.opt_in_message') }}</label>
+                        </div>
+                        <br>
+
                         <div class="form-group">
                             <button type="submit"
                                     class="btn btn-info">{{ trans('client/account.update_submit') }}</button>
@@ -89,7 +106,6 @@
                 </div>
             </div>
         </div>
-
         <div class="col-12 col-sm-10 col-md-6">
             <div class="card">
                 <div class="card-header">

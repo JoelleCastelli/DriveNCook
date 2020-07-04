@@ -53,7 +53,7 @@
                             <thead>
                                 <tr>
                                     @if(!auth()->guest())
-                                        <th>{{ trans('dish.actions') }}</th>
+                                        <th></th>
                                         <th>{{ trans('client/order.quantity_to_order') }}</th>
                                     @endif
                                     <th>{{ trans('dish.name') }}</th>

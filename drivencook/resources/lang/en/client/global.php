@@ -9,14 +9,17 @@ return [
     'delete_account' => 'Delete your account',
     'order' => 'Order',
     'history' => 'History',
+    'event_list' => 'Events',
+
+    'never_ordered' => 'You have never ordered, start now by clicking on the button below!',
+
+    'events_for_next_7_days' => 'Your events for the next 7 days',
+    'franchisee_location' => 'Location',
+    'last_order_truck' => 'The truck of your last order',
 
     'actions' => 'Actions',
 
-    'loyalty_point' => 'points',
-    'sales' => 'Purchases',
-    'show_details' => 'Details',
-    'events_for_next_7_days' => 'Events for next 7 days',
-    'last_order_truck' => 'Last order\'s truck',
-    'ask_delete' => 'Do you really want to delete your account ?'
+    'order_again' => 'Order again',
 
+    'loyalty_point' => 'loyalty points',
 ];

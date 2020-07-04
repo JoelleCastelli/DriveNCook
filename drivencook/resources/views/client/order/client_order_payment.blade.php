@@ -29,21 +29,23 @@
                 <div class="card-footer">
                     <form action="{{ route('client_new_order_charge', ['total' => $order['total'] * 100]) }}" method="POST">
                         {{ csrf_field() }}
-                        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                                data-key="{{ env('STRIPE_PUB_KEY') }}"
-                                data-amount="{{ $order['total'] * 100 }}"
-                                data-name="DriveNCook.fr"
-                                data-description="Paiement de votre commande"
-                                data-image="{{ asset('img/logo_transparent.png') }}"
-                                data-locale="auto"
-                                data-currency="eur"
-                                data-zip-code="false"
-                                data-email="{{ app('App\Http\Controllers\Franchise\StockController')->get_connected_user()['email'] }}">
-                        </script>
-                        <script>
-                            // Hide default stripe payment button
-                            document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
-                        </script>
+                        @if($order['total'] != 0)
+                            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                    data-key="{{ env('STRIPE_PUB_KEY') }}"
+                                    data-amount="{{ $order['total'] * 100 }}"
+                                    data-name="DriveNCook.fr"
+                                    data-description="Paiement de votre commande"
+                                    data-image="{{ asset('img/logo_transparent.png') }}"
+                                    data-locale="auto"
+                                    data-currency="eur"
+                                    data-zip-code="false"
+                                    data-email="{{ app('App\Http\Controllers\Franchise\StockController')->get_connected_user()['email'] }}">
+                            </script>
+                            <script>
+                                // Hide default stripe payment button
+                                document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
+                            </script>
+                        @endif
                         <button type="submit" class="btn btn-light_blue">{{ trans('client/order.pay') }} <b>{{ $order['total'] }} €</b></button>
                     </form>
                 </div>

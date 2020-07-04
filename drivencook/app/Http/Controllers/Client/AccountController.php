@@ -4,36 +4,23 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Models\EventInvited;
 use App\Models\Sale;
+use App\Models\SoldDish;
 use App\Models\User;
-use Carbon\Carbon;
+use App\Traits\LoyaltyTools;
 use Illuminate\Http\Request;
 use App\Traits\UserTools;
 
 class AccountController extends Controller
 {
     use UserTools;
+    use LoyaltyTools;
 
     public function dashboard()
     {
         $clientId = $this->get_connected_user()['id'];
         $client = User::whereKey($clientId)
             ->first();
-
-        // Client events for the next 7 days
-        $events = EventInvited::where([
-            ['event_invited.user_id', $clientId],
-            ['date_start', '>=', Carbon::now()->toDateString()],
-            ['date_start', '<=', Carbon::now()->addDays(7)->toDateString()]
-        ])->join('event', 'event.id', 'event_invited.event_id')
-            ->select('event_invited.user_id as current_id', 'event.user_id as owner_id', 'event.*', 'event_invited.*')
-            ->orderBy('date_start')
-            ->get();
-
-        if(!empty($events)) {
-            $events = $events->toArray();
-        }
 
         $last_sale = Sale::where('user_client', $clientId)
             ->with('user_franchised')
@@ -46,7 +33,6 @@ class AccountController extends Controller
 
         return view('client.client_dashboard')
             ->with('client', $client)
-            ->with('events', $events)
             ->with('sale', $last_sale);
     }
 
@@ -167,11 +153,14 @@ class AccountController extends Controller
             'birthdate' => ['required', 'date'],
             'email' => ['required', 'string', 'email:rfc', 'max:100'],
             'telephone' => ['nullable', 'regex:/^(0|\+[1-9]{2}\s?)[1-9]([-. ]?\d{2}){4}$/u'],
+            'opt_in' => ['required', 'boolean'],
         ]);
 
         User::whereKey($this->get_connected_user()['id'])
             ->update(request()->except('_token'));
+
         flash(trans('client/account.update_successful'))->success();
+
         return back();
     }
 
@@ -189,7 +178,18 @@ class AccountController extends Controller
 
     public function delete_account()
     {
-        Sale::where("user_client", $this->get_connected_user()['id'])->delete();
+        //Sale::where("user_client", $this->get_connected_user()['id'])->delete();
+        $sales = Sale::where("user_client", $this->get_connected_user()['id'])->get();
+        if(!empty($sales)) {
+            $sales = $sales->toArray();
+            foreach($sales as $sale) {
+                SoldDish::where('sale_id', $sale['id'])->delete();
+                Sale::whereKey($sale['id'])->delete();
+            }
+        }
+
         $this->delete_user($this->get_connected_user()['id']);
+
+        return redirect(route('client_logout'));
     }
 }
