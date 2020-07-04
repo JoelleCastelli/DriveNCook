@@ -65,7 +65,8 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            $('#allEvents').DataTable();
+            let table = $('#allEvents').DataTable({searchPanes: true});
+            table.searchPanes.container().prependTo(table.table().container());
         });
 
     </script>

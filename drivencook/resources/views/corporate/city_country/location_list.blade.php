@@ -192,7 +192,8 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#all_locations').DataTable();
+            let table = $('#all_locations').DataTable({searchPanes: true});
+            table.searchPanes.container().prependTo(table.table().container());
         });
 
         function onUpdateModal(id, name, address, city, postcode, country, latitude, longitude) {

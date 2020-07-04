@@ -30,6 +30,7 @@ require_once('franchise/stock.php');
 require_once('franchise/invoice.php');
 require_once('franchise/event.php');
 require_once('franchise/revenues_stats.php');
+require_once('franchise/client_sales.php');
 
 Route::get('/', function () {
     return view('home');

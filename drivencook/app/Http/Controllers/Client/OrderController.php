@@ -11,6 +11,7 @@ use App\Models\Sale;
 use App\Models\SoldDish;
 use App\Models\Truck;
 use App\Models\User;
+use App\Traits\EmailTools;
 use App\Traits\LoyaltyTools;
 use Carbon\Carbon;
 use Exception;
@@ -29,6 +30,7 @@ class OrderController extends Controller
     use TruckTools;
     use StockTools;
     use LoyaltyTools;
+    use EmailTools;
 
     public function truck_location_list()
     {
@@ -197,7 +199,7 @@ class OrderController extends Controller
     public function client_order_charge()
     {
         $order = request()->session()->get('order', null);
-        if($order == null) {
+        if ($order == null) {
             flash(trans('client/order.order_expired'))->warning();
             return redirect(route('truck_location_list'));
         }
@@ -317,7 +319,8 @@ class OrderController extends Controller
         $invoice = Invoice::create($invoice)->toArray();
         $reference = $this->create_invoice_reference('CL', $client['id'], $invoice['id']);
         $this->save_invoice_pdf($invoice['id'], $reference);
-
+        $invoice['reference'] = $reference;
+        $this->sendInvoiceMail($client, $invoice);
         flash(trans('client/order.created')
             . ' <a href="' . route('client_sale_display', ['id' => $saleId]) . '">'
             . trans('client/order.click_here')
@@ -358,7 +361,7 @@ class OrderController extends Controller
     {
         $sales = Sale::where('user_client', $this->get_connected_user()['id'])
             ->with('sold_dishes')
-            ->orderBy('date', 'dsc')
+            ->orderBy('date', 'desc')
             ->get();
 
         if (!empty($sales)) {
@@ -405,7 +408,8 @@ class OrderController extends Controller
             ->with('invoice', $invoice);
     }
 
-    public function stream_client_invoice_pdf($id) {
+    public function stream_client_invoice_pdf($id)
+    {
         return $this->stream_invoice_pdf($id);
     }
 
@@ -424,19 +428,19 @@ class OrderController extends Controller
                 ['user_client', $this->get_connected_user()['id']],
             ])->first();
 
-            if($sale->status == 'pending') {
+            if ($sale->status == 'pending') {
                 if (!empty($sale)) {
                     $sold_dishes = SoldDish::where('sale_id', $id)
                         ->get();
 
-                Invoice::where('sale_id', $id)->delete();
+                    Invoice::where('sale_id', $id)->delete();
 
-                if (!empty($sold_dishes)) {
-                    foreach ($sold_dishes as $sold_dish) {
-                        FranchiseeStock::where([
-                            ['user_id', $sale->user_franchised],
-                            ['dish_id', $sold_dish->dish_id]
-                        ])->increment('quantity', $sold_dish->quantity);
+                    if (!empty($sold_dishes)) {
+                        foreach ($sold_dishes as $sold_dish) {
+                            FranchiseeStock::where([
+                                ['user_id', $sale->user_franchised],
+                                ['dish_id', $sold_dish->dish_id]
+                            ])->increment('quantity', $sold_dish->quantity);
 
                             SoldDish::where([
                                 ['dish_id', $sold_dish->dish_id],

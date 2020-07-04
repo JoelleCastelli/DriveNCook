@@ -45,9 +45,10 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div class="card text-light2">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item bg-info">{{trans('franchisee.sell_count_30_days')}} : #TODO</li>
+                            <li class="list-group-item bg-info">{{trans('franchisee.sell_count_30_days')}}
+                                : {{$revenues['sales_count']}}</li>
                             <li class="list-group-item bg-info align-content-arround">
-                                <a href="#" target="_blank" class="row text-light2">
+                                <a href="{{route('franchise.client_sales')}}" target="_blank" class="row text-light2">
                                     <div class="col-10">
                                         {{trans('franchisee.view_details')}}
                                     </div>
@@ -63,10 +64,10 @@
                     <div class="card text-light2">
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item bg-success">{{trans('franchisee.real_time_revenues_monthly')}} :
-                                #TODO €
+                                {{ number_format($revenues['sales_total'], 2, ',', ' ')}} €
                             </li>
                             <li class="list-group-item bg-success align-content-arround">
-                                <a href="#" target="_blank" class="row text-light2">
+                                <a href="{{route('franchise.revenues_stats')}}" target="_blank" class="row text-light2">
                                     <div class="col-10">
                                         {{trans('franchisee.view_details')}}
                                     </div>
