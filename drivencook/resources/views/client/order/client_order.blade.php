@@ -212,7 +212,8 @@
         });
 
         $(document).ready(function () {
-            $('#allDishes').DataTable();
+            let table = $('#allDishes').DataTable({searchPanes: true});
+            table.searchPanes.container().prependTo(table.table().container());
 
             $('.orderBtn').on('click', function () {
                 let table = $('.orderDish');

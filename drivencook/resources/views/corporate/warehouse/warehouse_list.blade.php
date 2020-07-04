@@ -12,7 +12,8 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="table-responsive">
-                                <table id="allwarehouses" class="table table-hover table-striped table-bordered table-dark"
+                                <table id="allwarehouses"
+                                       class="table table-hover table-striped table-bordered table-dark"
                                        style="width: 100%">
                                     <thead>
                                     <tr>
@@ -57,7 +58,8 @@
 @section('script')
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#allwarehouses').DataTable();
+            let table = $('#allwarehouses').DataTable({searchPanes: true});
+            table.searchPanes.container().prependTo(table.table().container());
         });
 
         function deleteWarehouse(id) {

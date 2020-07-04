@@ -9,7 +9,8 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div class="card text-light2">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item bg-info">{{ trans('administrator/user.users_nb') }} : {{ count($users) }}</li>
+                            <li class="list-group-item bg-info">{{ trans('administrator/user.users_nb') }}
+                                : {{ count($users) }}</li>
                         </ul>
                     </div>
                 </div>
@@ -62,7 +63,8 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            $('#allusers').DataTable();
+            let table = $('#allusers').DataTable({searchPanes: true});
+            table.searchPanes.container().prependTo(table.table().container());
         });
 
         function deleteUser(id) {

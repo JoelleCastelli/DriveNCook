@@ -75,7 +75,8 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            $('#all_dishes').DataTable();
+            let table = $('#all_dishes').DataTable({searchPane: true});
+            table.searchPanes.container().prependTo(table.table().container());
         });
 
         function deleteDish(id) {

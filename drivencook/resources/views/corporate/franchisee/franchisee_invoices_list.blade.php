@@ -16,47 +16,50 @@
                         <table id="invoices" class="table table-hover table-striped table-bordered table-dark"
                                style="width: 100%">
                             <thead>
-                                <tr>
-                                    <th>{{ trans('franchisee.invoice_emission_date') }}</th>
-                                    <th>{{ trans('franchisee.invoice_payment_date') }}</th>
-                                    <th>{{ trans('franchisee.invoice_amount') }}</th>
-                                    <th>{{ trans('franchisee.invoice_status') }}</th>
-                                    <th>{{ trans('franchisee.invoice_reference') }}</th>
-                                    <th>{{ trans('franchisee.invoice_type') }}</th>
-                                    <th>{{ trans('franchisee.actions') }}</th>
-                                </tr>
+                            <tr>
+                                <th>{{ trans('franchisee.invoice_emission_date') }}</th>
+                                <th>{{ trans('franchisee.invoice_payment_date') }}</th>
+                                <th>{{ trans('franchisee.invoice_amount') }}</th>
+                                <th>{{ trans('franchisee.invoice_status') }}</th>
+                                <th>{{ trans('franchisee.invoice_reference') }}</th>
+                                <th>{{ trans('franchisee.invoice_type') }}</th>
+                                <th>{{ trans('franchisee.actions') }}</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach($franchisee['invoices'] as $invoice)
-                                    <tr id="row_invoice_{{ $invoice['id'] }}">
-                                        <td>
-                                            {{ DateTime::createFromFormat('Y-m-d',$invoice['date_emitted'])->format('d/m/Y') }}
-                                        </td>
-                                        <td>
-                                            {{ !empty($invoice['date_paid'])?
-                                            DateTime::createFromFormat('Y-m-d', $invoice['date_paid'])->format('d/m/Y') : trans('franchisee.invoice_pending') }}
-                                        </td>
-                                        <td>{{ number_format($invoice['amount'], 2, ',', ' ').' €'}}</td>
-                                        <td>{{ trans('franchisee.invoice_status_'.$invoice['status']) }}</td>
-                                        <td>{{ $invoice['reference'] }}</td>
-                                        <td>@if ($invoice['monthly_fee'] == 1)
-                                                {{ trans('franchisee.invoice_monthly_fee') }}
-                                            @elseif ($invoice['initial_fee'] == 1)
-                                                {{ trans('franchisee.invoice_initial_fee') }}
-                                            @elseif ($invoice['franchisee_order'] == 1)
-                                                {{ trans('franchisee.invoice_restock') }}
-                                            @endif</td>
-                                        <td>
-                                            <a class="ml-2 pdf_icon" href="{{ route('stream_franchisee_invoice',['id'=>$invoice['id']]) }}" target="_blank">
-                                                <button class="text-light fa fa-file-pdf ml-2"></button>
-                                            </a>
+                            @foreach($franchisee['invoices'] as $invoice)
+                                <tr id="row_invoice_{{ $invoice['id'] }}">
+                                    <td>
+                                        {{ DateTime::createFromFormat('Y-m-d',$invoice['date_emitted'])->format('d/m/Y') }}
+                                    </td>
+                                    <td>
+                                        {{ !empty($invoice['date_paid'])?
+                                        DateTime::createFromFormat('Y-m-d', $invoice['date_paid'])->format('d/m/Y') : trans('franchisee.invoice_pending') }}
+                                    </td>
+                                    <td>{{ number_format($invoice['amount'], 2, ',', ' ').' €'}}</td>
+                                    <td>{{ trans('franchisee.invoice_status_'.$invoice['status']) }}</td>
+                                    <td>{{ $invoice['reference'] }}</td>
+                                    <td>@if ($invoice['monthly_fee'] == 1)
+                                            {{ trans('franchisee.invoice_monthly_fee') }}
+                                        @elseif ($invoice['initial_fee'] == 1)
+                                            {{ trans('franchisee.invoice_initial_fee') }}
+                                        @elseif ($invoice['franchisee_order'] == 1)
+                                            {{ trans('franchisee.invoice_restock') }}
+                                        @endif</td>
+                                    <td>
+                                        <a class="ml-2 pdf_icon"
+                                           href="{{ route('stream_franchisee_invoice',['id'=>$invoice['id']]) }}"
+                                           target="_blank">
+                                            <button class="text-light fa fa-file-pdf ml-2"></button>
+                                        </a>
 
-                                            <a class="ml-2 update_icon" onclick="on_edit_invoice({{ $invoice['id'] }})" data-toggle="modal" data-target="#invoice_modal">
-                                                <button class="fa fa-edit ml-2"></button>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                        <a class="ml-2 update_icon" onclick="on_edit_invoice({{ $invoice['id'] }})"
+                                           data-toggle="modal" data-target="#invoice_modal">
+                                            <button class="fa fa-edit ml-2"></button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -91,8 +94,10 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('franchisee.cancel') }}</button>
-                        <button type="button" class="btn btn-primary" id="modalSubmit" onclick="on_submit()">{{ trans('franchisee.update') }}</button>
+                        <button type="button" class="btn btn-secondary"
+                                data-dismiss="modal">{{ trans('franchisee.cancel') }}</button>
+                        <button type="button" class="btn btn-primary" id="modalSubmit"
+                                onclick="on_submit()">{{ trans('franchisee.update') }}</button>
                     </div>
                 </form>
             </div>
@@ -147,7 +152,8 @@
         }
 
         $(document).ready(function () {
-            $('#invoices').DataTable();
+            let table = $('#invoices').DataTable({searchPanes: true});
+            table.searchPanes.container().prependTo(table.table().container());
         });
     </script>
 @endsection

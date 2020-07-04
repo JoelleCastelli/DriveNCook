@@ -71,7 +71,8 @@
 @section('script')
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#allTrucks').DataTable();
+            let table = $('#allTrucks').DataTable({searchPanes: true});
+            table.searchPanes.container().prependTo(table.table().container());
         });
     </script>
 @endsection

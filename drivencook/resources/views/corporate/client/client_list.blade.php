@@ -160,7 +160,8 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            $('#allclients').DataTable();
+            let table = $('#allclients').DataTable({searchPanes: true});
+            table.searchPanes.container().prependTo(table.table().container());
         });
 
         function hideLoyaltyField() {
