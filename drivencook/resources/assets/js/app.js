@@ -9,6 +9,8 @@ require('bootstrap/dist/js/bootstrap.min.js');
 require('@fortawesome/fontawesome-free/js/all.js');
 // require('datatables.net/js/jquery.dataTables.min.js');
 require('datatables.net-bs4/js/dataTables.bootstrap4.min.js');
+require('datatables.net-searchpanes-bs4/js/searchPanes.bootstrap4.min.js');
+require('datatables.net-select-bs4/js/select.bootstrap4.min.js');
 
 
 require('./fullcalendar.min.js');

@@ -81,7 +81,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light2" href="#">
+                    <a class="nav-link text-light2" href="{{route('franchise.client_sales')}}">
                         <i class="fa fa-shopping-basket"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.client_orders')}}
                     </a>
                 </li>
@@ -132,6 +132,7 @@
                 @case(route('franchise.invoices_list'))
                 @case(route('franchise.revenues_stats'))
                 @case(route('franchise.event_list'))
+                @case(route('franchise.client_sales'))
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('franchise.dashboard')}}">
                         <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('corporate.back_dashboard')}}
@@ -167,6 +168,13 @@
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('franchise.stock_dashboard')}}">
                         <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_stock_warehouse_management')}}
+                    </a>
+                </li>
+            @endif
+            @if (strpos(url()->current(), route('franchise.view_client_sale',['sale_id'=>''])) !== false)
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{route('franchise.client_sales')}}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('franchisee.back_to_client_sales')}}
                     </a>
                 </li>
             @endif
