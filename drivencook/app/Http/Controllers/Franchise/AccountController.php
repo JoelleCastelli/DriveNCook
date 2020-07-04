@@ -34,8 +34,11 @@ class AccountController extends Controller
         $user = User::with('pseudo')->whereKey($this->get_connected_user()['id'])->first()->toArray();
 //        dd($user);
 //        var_dump($user);die;
+
+        $current_month_sales = $this->get_franchise_current_month_sale_revenues($user['id']);
         return view('franchise.franchise_dashboard')
             ->with('truck', $truckLocation)
+            ->with('revenues', $current_month_sales)
             ->with('franchise', $user);
     }
 
