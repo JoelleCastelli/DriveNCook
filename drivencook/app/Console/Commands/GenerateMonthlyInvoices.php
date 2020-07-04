@@ -6,12 +6,15 @@ use App\Models\FranchiseObligation;
 use App\Models\Invoice;
 use App\Models\User;
 use App\Http\Controllers\Corporate\FranchiseeController;
+use App\Traits\EmailTools;
 use App\Traits\UserTools;
 use Illuminate\Console\Command;
 
 class GenerateMonthlyInvoices extends Command
 {
     use UserTools;
+    use EmailTools;
+
     /**
      * The name and signature of the console command.
      *
@@ -45,9 +48,9 @@ class GenerateMonthlyInvoices extends Command
     {
         $franchisees = User::where('role', 'Franchisé')->get()->toArray();
         $current_obligation = $this->get_current_obligation();
-        foreach($franchisees as $franchisee) {
+        foreach ($franchisees as $franchisee) {
             $data = app('App\Http\Controllers\Corporate\FranchiseeController')->get_franchise_current_month_sale_revenues($franchisee['id']);
-            if ($data['sales_total'] > 0){
+            if ($data['sales_total'] > 0) {
                 $invoice_total = $data['sales_total'] * $current_obligation['revenue_percentage'] / 100;
                 $invoice = ['amount' => $invoice_total,
                     'date_emitted' => date("Y-m-d"),
@@ -57,6 +60,8 @@ class GenerateMonthlyInvoices extends Command
                 $invoice = Invoice::create($invoice)->toArray();
                 $reference = $this->create_invoice_reference('MF', $franchisee['id'], $invoice['id']);
                 $this->save_invoice_pdf($invoice['id'], $reference);
+                $invoice['reference'] = $reference;
+                $this->sendInvoiceMail($franchisee, $invoice);
             }
         }
     }

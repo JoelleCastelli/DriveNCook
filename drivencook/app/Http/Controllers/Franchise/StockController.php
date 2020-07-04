@@ -11,8 +11,10 @@ use App\Models\FranchiseObligation;
 use App\Models\Invoice;
 use App\Models\PurchasedDish;
 use App\Models\PurchaseOrder;
+use App\Models\User;
 use App\Models\Warehouse;
 use App\Models\WarehousStock;
+use App\Traits\EmailTools;
 use App\Traits\EnumValue;
 use App\Traits\UserTools;
 use Carbon\Carbon;
@@ -25,6 +27,7 @@ use Stripe\Stripe;
 class StockController extends Controller
 {
     use UserTools;
+    use EmailTools;
 
     public function __construct()
     {
@@ -182,6 +185,8 @@ class StockController extends Controller
         $invoice = Invoice::create($invoice)->toArray();
         $reference = $this->create_invoice_reference('RS', $this->get_connected_user()['id'], $invoice['id']);
         $this->save_invoice_pdf($invoice['id'], $reference);
+        $invoice['reference'] = $reference;
+        $this->sendInvoiceMail($this->get_connected_user(), $invoice);
 
         flash('Commande créée !
                 <a href="' . route('franchise.stream_franchisee_invoice_pdf', ['id' => $invoice['id']]) . '">Consultez la facture au format PDF</a>
