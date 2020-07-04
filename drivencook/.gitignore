@@ -11,3 +11,7 @@ npm-debug.log
 yarn-error.log
 .env
 /public/js/trad.js
+/resources/invoices/client_order/*.pdf
+/resources/invoices/franchisee_initial_fee/*.pdf
+/resources/invoices/franchisee_monthly_fee/*.pdf
+/resources/invoices/franchisee_restock/*.pdf
