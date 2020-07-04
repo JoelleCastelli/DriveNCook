@@ -126,10 +126,10 @@ class AdministratorController extends Controller
 
                 $user->update(['password_token' => $token]);
                 $this->sendNewAccountMail($email, $token);
+                
+                flash(trans('admin.new_admin_success'))->success();
+                return back();
 
-                return back()->withInput()->withErrors(
-                    ['admin_creation_success' => trans('admin.new_admin_success')]
-                );
             }
         } else {
             $errors_list[] = trans('admin.empty_fields');
