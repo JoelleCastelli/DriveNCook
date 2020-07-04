@@ -1,19 +1,8 @@
-@extends('client.layout_client')
+@extends('corporate.layout_corporate')
 @section('title')
-    {{ trans('administrator/creation.title') }}
+    {{ trans('admin.creation_title') }}
 @endsection
-@section('style')
-    <style>
-        .clientTitle {
-            color: #FFFFFF;
-        }
-        #submitBtn {
-            width: 100%;
-            min-height: 60px;
-            font-size: 25px;
-        }
-    </style>
-@stop
+
 @section('content')
     <div class="row">
         @if ($errors->has('admin_creation'))
@@ -32,25 +21,25 @@
                 <div class="card-body">
                     <form method="post" action="{{ route('admin_creation_submit') }}">
                         <div class="form-group">
-                            <label for="lastname">{{ trans('administrator/creation.lastname') }}</label>
+                            <label for="lastname">{{ trans('admin.name') }}</label>
                             <input type="text" name="lastname" id="lastname"
-                                   placeholder="{{ trans('administrator/creation.set_lastname') }}"
+                                   placeholder="{{ trans('admin.set_lastname') }}"
                                    class="form-control"
                                    maxlength="30">
                         </div>
 
                         <div class="form-group">
-                            <label for="firstname">{{ trans('administrator/creation.firstname') }}</label>
+                            <label for="firstname">{{ trans('admin.firstname') }}</label>
                             <input type="text" name="firstname" id="firstname"
-                                   placeholder="{{ trans('administrator/creation.set_firstname') }}"
+                                   placeholder="{{ trans('admin.set_firstname') }}"
                                    class="form-control"
                                    maxlength="30">
                         </div>
 
                         <div class="form-group">
-                            <label for="email">{{ trans('administrator/creation.email') }}</label>
+                            <label for="email">{{ trans('admin.email') }}</label>
                             <input type="text" name="email" id="email"
-                                   placeholder="{{ trans('administrator/creation.set_email') }}"
+                                   placeholder="{{ trans('admin.set_email') }}"
                                    class="form-control"
                                    maxlength="100">
                         </div>
@@ -60,7 +49,7 @@
                         <div class="form-group">
                             <button type="submit"
                                     class="btn btn-info"
-                                    id="submitBtn">{{ trans('administrator/creation.submit') }}</button>
+                                    id="submitBtn">{{ trans('admin.submit') }}</button>
                         </div>
                     </form>
                 </div>

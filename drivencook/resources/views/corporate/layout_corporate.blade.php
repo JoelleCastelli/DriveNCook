@@ -108,7 +108,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light2" href="#">
+                        <a class="nav-link text-light2" href="{{ route('corporate_statistics') }}">
                             <i class="fa fa-chart-line"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.income_stats') }}
                         </a>
                     </li>
@@ -204,6 +204,8 @@
                     </li>
                 @break
 
+                @case(route('corporate.update_account'))
+                @case(route('corporate_statistics'))
                 @case(route('location_list'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{ route('corporate_dashboard') }}">
@@ -244,14 +246,6 @@
                     </li>
                 @break
 
-                @case(route('corporate.update_account'))
-                    <li class="nav-item">
-                        <a class="nav-link text-light2" href="{{ route('corporate_dashboard') }}">
-                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_dashboard') }}
-                        </a>
-                    </li>
-                @break
-
                 @case(route('admin_list'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{ route('corporate_dashboard') }}">
@@ -260,7 +254,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{ route('admin_creation') }}">
-                            <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{{ trans('administrator/user.add_admin') }}
+                            <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{{ trans('admin.add_admin') }}
                         </a>
                     </li>
                 @break
@@ -268,7 +262,7 @@
                 @case(route('admin_creation'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{ route('admin_list') }}">
-                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('administrator/creation.back_admin_list') }}
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('admin.back_admin_list') }}
                         </a>
                     </li>
                 @break

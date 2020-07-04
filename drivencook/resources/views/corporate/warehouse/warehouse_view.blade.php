@@ -25,42 +25,45 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12 col-lg-12 mb-5">
-            <div class="card">
-                <div class="card-header">
-                    <h2>{{ trans('warehouse.sold_out_products') }}</h2>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table id="dishes" class="table table-hover table-striped table-bordered table-dark"
-                               style="width: 100%">
-                            <thead>
-                            <tr>
-                                <th>{{ trans('warehouse.product') }}</th>
-                                <th>{{ trans('warehouse.product_category') }}</th>
-                                <th>{{ trans('warehouse.product_quantity') }}</th>
-                                <th>{{ trans('warehouse.product_price') }}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($warehouse['stock'] as $dish)
-                                @if ($dish['quantity'] <= 5)
-                                <tr>
-                                    <td>{{ $dish['dish']['name'] }}</td>
-                                    <td>{{ trans($GLOBALS['DISH_TYPE'][$dish['dish']['category']]) }}</td>
-                                    <td>{{ $dish['quantity'] }}</td>
-                                    <td>{{ $dish['warehouse_price'] }} €</td>
-                                </tr>
-                                @endif
-                            @endforeach
-                            </tbody>
-                        </table>
+
+    @if ($out_of_stock == true)
+        <div class="row">
+            <div class="col-12 col-lg-12 mb-5">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>{{ trans('warehouse.sold_out_products') }}</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="dishes" class="table table-hover table-striped table-bordered table-dark"
+                                   style="width: 100%">
+                                <thead>
+                                    <tr>
+                                        <th>{{ trans('warehouse.product') }}</th>
+                                        <th>{{ trans('warehouse.product_category') }}</th>
+                                        <th>{{ trans('warehouse.product_quantity') }}</th>
+                                        <th>{{ trans('warehouse.product_price') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($warehouse['stock'] as $dish)
+                                        @if ($dish['quantity'] <= 5)
+                                            <tr>
+                                                <td>{{ $dish['dish']['name'] }}</td>
+                                                <td>{{ trans($GLOBALS['DISH_TYPE'][$dish['dish']['category']]) }}</td>
+                                                <td>{{ $dish['quantity'] }}</td>
+                                                <td>{{ $dish['warehouse_price'] }} €</td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endif
     <div class="row">
         <div class="col-12 col-lg-12 mb-5">
             <div class="card">
