@@ -65,35 +65,35 @@
                     </tr>
                     </thead>
                     <tbody>
-                        @foreach($franchisees as $franchisee)
-                            <tr id="{{'row_'.$franchisee['id'] }}">
-                                <td>{{ $franchisee['lastname'] }}</td>
-                                <td>{{ $franchisee['firstname'] }}</td>
-                                <td>{{ $franchisee['telephone'] }}</td>
-                                <td>{{ $franchisee['email'] }}</td>
-                                <td>{{ empty($franchisee['pseudo']) ? trans('franchisee.none') : $franchisee['pseudo']['name'] }}</td>
+                    @foreach($franchisees as $franchisee)
+                        <tr id="{{'row_'.$franchisee['id'] }}">
+                            <td>{{ $franchisee['lastname'] }}</td>
+                            <td>{{ $franchisee['firstname'] }}</td>
+                            <td>{{ $franchisee['telephone'] }}</td>
+                            <td>{{ $franchisee['email'] }}</td>
+                            <td>{{ empty($franchisee['pseudo']) ? trans('franchisee.none') : $franchisee['pseudo']['name'] }}</td>
 
-                                <td>{{ empty($franchisee['last_paid_invoice_fee']) ? trans('franchisee.never')
+                            <td>{{ empty($franchisee['last_paid_invoice_fee']) ? trans('franchisee.never')
                                     :DateTime::createFromFormat('Y-m-d',$franchisee['last_paid_invoice_fee']['date_paid'])->format('d/m/Y') }}</td>
 
-                                <td>{{ (empty($franchisee['truck']) ? trans('franchisee.no_truck_assigned') :
+                            <td>{{ (empty($franchisee['truck']) ? trans('franchisee.no_truck_assigned') :
                                     (empty($franchisee['truck']['location']) ? trans('franchisee.not_specified_m') :
                                     $franchisee['truck']['location']['name'].' - '.$franchisee['truck']['location']['address']
                                     .' '.$franchisee['truck']['location']['postcode'].' '.$franchisee['truck']['location']['city'])) }}</td>
 
-                                <td>{{ DateTime::createFromFormat('Y-m-d H:i:s',$franchisee['created_at'])->format('d/m/Y') }}</td>
-                                <td>
-                                    <a href="{{route('franchisee_view',['id'=>$franchisee['id']])}}">
-                                        <button class="text-light fa fa-eye"></button>
-                                    </a>
-                                    <a class="ml-2" href="{{route('franchisee_update',['id'=>$franchisee['id']])}}">
-                                        <button class="text-light fa fa-edit"></button>
-                                    </a>
-                                    <button onclick="deleteFranchise({{ $franchisee['id'] }})"
-                                            class="text-light fa fa-trash ml-2"></button>
-                                </td>
-                            </tr>
-                        @endforeach
+                            <td>{{ DateTime::createFromFormat('Y-m-d H:i:s',$franchisee['created_at'])->format('d/m/Y') }}</td>
+                            <td>
+                                <a href="{{route('franchisee_view',['id'=>$franchisee['id']])}}">
+                                    <button class="text-light fa fa-eye"></button>
+                                </a>
+                                <a class="ml-2" href="{{route('franchisee_update',['id'=>$franchisee['id']])}}">
+                                    <button class="text-light fa fa-edit"></button>
+                                </a>
+                                <button onclick="deleteFranchise({{ $franchisee['id'] }})"
+                                        class="text-light fa fa-trash ml-2"></button>
+                            </td>
+                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>
@@ -105,7 +105,8 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            $('#allfranchisees').DataTable();
+            let table = $('#allfranchisees').DataTable({searchPanes: true});
+            table.searchPanes.container().prependTo(table.table().container());
         });
 
         function deleteFranchise(id) {

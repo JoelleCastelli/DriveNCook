@@ -32,7 +32,8 @@
                                     <td id="rowQuantity{{ $dish['dish_id'] }}">{{ $dish['quantity'] }}</td>
                                     <td id="rowWarehousePrice{{ $dish['dish_id'] }}">{{ $dish['warehouse_price'] }}</td>
                                     <td>
-                                        <i class="fa fa-edit" onclick="editDish({{ $dish['dish_id'] }})" data-toggle="modal" data-target="#dishModal"></i>
+                                        <i class="fa fa-edit" onclick="editDish({{ $dish['dish_id'] }})"
+                                           data-toggle="modal" data-target="#dishModal"></i>
                                         <i class="fa fa-trash ml-3" onclick="deleteDish({{ $dish['dish_id'] }})"></i>
                                     </td>
                                 </tr>
@@ -44,7 +45,8 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="dishModal" tabindex="-1" role="dialog" aria-labelledby="dishModalLabel" aria-hidden="true">
+    <div class="modal fade" id="dishModal" tabindex="-1" role="dialog" aria-labelledby="dishModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -58,24 +60,30 @@
                         <div class="form-group">
                             <input type="hidden" id="dishId">
                             <ul class="list-group list-group-flush">
-                                <b>{{ trans('warehouse.product_category') }} : </b><li class="list-group-item" id="dishCategory"></li>
+                                <b>{{ trans('warehouse.product_category') }} : </b>
+                                <li class="list-group-item" id="dishCategory"></li>
                             </ul>
-                            <label for="dishQuantity" class="col-form-label"><b>{{ trans('warehouse.product_quantity') }}</b></label>
+                            <label for="dishQuantity"
+                                   class="col-form-label"><b>{{ trans('warehouse.product_quantity') }}</b></label>
                             <input type="number" class="form-control" id="dishQuantity">
-                            <label for="dishWarehousePrice" class="col-form-label"><b>{{ trans('warehouse.product_price') }}</b></label>
+                            <label for="dishWarehousePrice"
+                                   class="col-form-label"><b>{{ trans('warehouse.product_price') }}</b></label>
                             <input type="number" class="form-control" id="dishWarehousePrice">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('warehouse.cancel') }}</button>
-                    <button type="button" class="btn btn-primary" id="updateDish">{{ trans('warehouse.update') }}</button>
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">{{ trans('warehouse.cancel') }}</button>
+                    <button type="button" class="btn btn-primary"
+                            id="updateDish">{{ trans('warehouse.update') }}</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="addDishModal" tabindex="-1" role="dialog" aria-labelledby="addDishModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addDishModal" tabindex="-1" role="dialog" aria-labelledby="addDishModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -87,25 +95,31 @@
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <label for="addDishName" class="col-form-label">{{ trans('warehouse_dishes.dish_name') }}</label>
+                            <label for="addDishName"
+                                   class="col-form-label">{{ trans('warehouse_dishes.dish_name') }}</label>
                             <input type="text" class="form-control" id="addDishName" maxlength="30">
-                            <label for="addDishCategory" class="col-form-label">{{ trans('warehouse_dishes.dish_category') }}</label>
+                            <label for="addDishCategory"
+                                   class="col-form-label">{{ trans('warehouse_dishes.dish_category') }}</label>
                             <select class="custom-select" id="addDishCategory">
                                 <option value="" selected>{{ trans('warehouse_dishes.select_menu_off') }}</option>
                                 @foreach($categories as $category)
                                     <option value={{ $category }}>{{ trans($GLOBALS['DISH_TYPE'][$category]) }}</option>
                                 @endforeach
                             </select>
-                            <label for="addDishQuantity" class="col-form-label">{{ trans('warehouse_dishes.dish_quantity') }}</label>
+                            <label for="addDishQuantity"
+                                   class="col-form-label">{{ trans('warehouse_dishes.dish_quantity') }}</label>
                             <input type="number" class="form-control" id="addDishQuantity">
-                            <label for="addDishWarehousePrice" class="col-form-label">{{ trans('warehouse_dishes.dish_warehouse_price') }}</label>
+                            <label for="addDishWarehousePrice"
+                                   class="col-form-label">{{ trans('warehouse_dishes.dish_warehouse_price') }}</label>
                             <input type="number" class="form-control" id="addDishWarehousePrice">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('warehouse_dishes.dish_close') }}</button>
-                    <button type="button" class="btn btn-primary" id="addDish">{{ trans('warehouse_dishes.dish_create') }}</button>
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">{{ trans('warehouse_dishes.dish_close') }}</button>
+                    <button type="button" class="btn btn-primary"
+                            id="addDish">{{ trans('warehouse_dishes.dish_create') }}</button>
                 </div>
             </div>
         </div>
@@ -115,7 +129,8 @@
 @section('script')
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#dishes').DataTable();
+            let table = $('#dishes').DataTable({searchPanes: true});
+            table.searchPanes.container().prependTo(table.table().container());
 
             $('#updateDish').click(function () {
                 let formData = new FormData();
@@ -145,7 +160,7 @@
                             $('#dishModal').modal('hide');
                         } else {
                             let str = '';
-                            for(let i = 0; i < data['errorList'].length; i++) {
+                            for (let i = 0; i < data['errorList'].length; i++) {
                                 str += '\n' + data['errorList'][i];
                             }
                             alert(Lang.get('warehouse_dishes.update_dish_stock_error') + str);
@@ -198,7 +213,7 @@
                             $('#addDishModal').modal('hide');
                         } else {
                             let str = '';
-                            for(let i = 0; i < data['errorList'].length; i++) {
+                            for (let i = 0; i < data['errorList'].length; i++) {
                                 str += '\n' + data['errorList'][i];
                             }
                             alert(Lang.get('warehouse_dishes.create_dish_stock_error') + str);

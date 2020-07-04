@@ -151,7 +151,6 @@
 @section('script')
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#client_orders').DataTable();
             $('#invitedUsers').DataTable();
         });
 

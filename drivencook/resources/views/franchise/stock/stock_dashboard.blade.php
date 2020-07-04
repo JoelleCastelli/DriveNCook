@@ -183,12 +183,11 @@
 @section('script')
     <script type="text/javascript">
         $(document).ready(function () {
-            var table = $('#purchase_orders').DataTable({
-                searchPanes: true
-            });
+            let table = $('#purchase_orders').DataTable({searchPanes: true});
             table.searchPanes.container().prependTo(table.table().container());
 
-            $('#stocks').DataTable();
+            let table2 = $('#stocks').DataTable({searchPanes: true});
+            table2.searchPanes.container().prependTo(table.table().container());
         });
 
         function cancelOrder(id) {
