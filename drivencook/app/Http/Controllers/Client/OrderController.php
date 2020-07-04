@@ -13,6 +13,7 @@ use App\Models\Truck;
 use App\Models\User;
 use App\Traits\EmailTools;
 use App\Traits\LoyaltyTools;
+use App\Traits\SaleTools;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -22,6 +23,7 @@ use App\Traits\StockTools;
 use Session;
 use Stripe\Charge;
 use Stripe\Customer;
+use Stripe\Refund;
 use Stripe\Stripe;
 
 class OrderController extends Controller
@@ -31,6 +33,7 @@ class OrderController extends Controller
     use StockTools;
     use LoyaltyTools;
     use EmailTools;
+    use SaleTools;
 
     public function truck_location_list()
     {
@@ -229,6 +232,7 @@ class OrderController extends Controller
         $userId = $this->get_truck_with_franchisee_by_truck_id($order['truck_id'])['user']['id'];
 
         $paymentMethod = Session::pull('payment_method');
+        $paymentId = Session::pull('charge_id');
         if($paymentMethod == 'cash') {
             $paymentMethod = 'Liquide';
         } else {
@@ -241,7 +245,8 @@ class OrderController extends Controller
             'user_franchised' => $userId,
             'user_client' => $clientId,
             'status' => 'pending',
-            'payment_method' => $paymentMethod
+            'payment_method' => $paymentMethod,
+            'payment_id' => $paymentId
         ];
 
         $saleId = Sale::insertGetId($sale);
@@ -321,6 +326,7 @@ class OrderController extends Controller
         $this->save_invoice_pdf($invoice['id'], $reference);
         $invoice['reference'] = $reference;
         $this->sendInvoiceMail($client, $invoice);
+
         flash(trans('client/order.created')
             . ' <a href="' . route('client_sale_display', ['id' => $saleId]) . '">'
             . trans('client/order.click_here')
@@ -348,12 +354,31 @@ class OrderController extends Controller
                     'currency' => 'eur'
                 ));
 
+                Session::put('charge_id', $charge->id);
+
                 return $this->client_order_validate();
             } catch (Exception $ex) {
                 return $ex->getMessage();
             }
         } else {
             return $this->client_order_validate();
+        }
+    }
+
+    public function refund($sale_id)
+    {
+        $sale = Sale::whereKey($sale_id)
+            ->first();
+        try {
+            Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+
+            Refund::create([
+                'charge' => $sale->payment_id,
+                'reason' => 'requested_by_customer'
+            ]);
+            return $this->client_order_cancel($sale_id);
+        } catch (Exception $ex) {
+            return $ex->getMessage();
         }
     }
 

@@ -51,6 +51,6 @@ Route::group(['middleware' => AuthClient::class], function() {
 
     Route::delete('/client/order_cancel/{id}', [
         'as' => 'client_order_cancel',
-        'uses' => 'Client\OrderController@client_order_cancel'
+        'uses' => 'Client\OrderController@refund'
     ]);
 });
