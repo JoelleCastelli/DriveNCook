@@ -183,7 +183,11 @@
 @section('script')
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#purchase_orders').DataTable();
+            var table = $('#purchase_orders').DataTable({
+                searchPanes: true
+            });
+            table.searchPanes.container().prependTo(table.table().container());
+
             $('#stocks').DataTable();
         });
 

@@ -336,7 +336,7 @@ class OrderController extends Controller
     {
         $sales = Sale::where('user_client', $this->get_connected_user()['id'])
             ->with('sold_dishes')
-            ->orderBy('date', 'dsc')
+            ->orderBy('date', 'desc')
             ->get();
 
         if (!empty($sales)) {
