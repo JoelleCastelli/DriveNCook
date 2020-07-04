@@ -32,9 +32,10 @@ require_once('franchise/event.php');
 require_once('franchise/revenues_stats.php');
 require_once('franchise/client_sales.php');
 
-Route::get('/', function () {
-    return view('home');
-})->name('homepage');
+Route::get('/', [
+    'as' => 'homepage',
+    'uses' => 'HomeController@homepage'
+]);
 
 Route::get('/about', function () {
     return view('about');
