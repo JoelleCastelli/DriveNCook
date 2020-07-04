@@ -157,6 +157,8 @@
                 sum += parseFloat(linePrice.toFixed(2));
             }
 
+            let tmpSum = sum;
+
             let discount = $('#discountSelection');
             if(discount !== '' && sum > 0) {
                 sum -= discount.val();
@@ -171,6 +173,8 @@
             } else {
                 $('#orderBtnId').text('');
             }
+
+            return tmpSum;
         }
 
         $(document).on('click', '.delToOrderBtn', function () {
@@ -208,7 +212,13 @@
         });
 
         $(document).on('change', '#discountSelection', function () {
-            updateTotalOrderPrice();
+            let total = updateTotalOrderPrice();
+
+            console.log(parseInt($(this).val()));
+            console.log(total);
+            if(parseInt($(this).val()) > total) {
+                alert(Lang.get('client/order.alert_discount_more_than_total'))
+            }
         });
 
         $(document).ready(function () {

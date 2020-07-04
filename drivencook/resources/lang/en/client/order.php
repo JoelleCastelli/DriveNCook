@@ -30,6 +30,8 @@ return [
     'select_menu_no_discount' => 'You can choose a discount...',
     'dishes' => 'Order',
 
+    'alert_discount_more_than_total' => 'Please note that the amount of the discount exceeds that of the order!',
+
     // Charge page
     'summary_and_payment' => 'Summary and payment',
 
