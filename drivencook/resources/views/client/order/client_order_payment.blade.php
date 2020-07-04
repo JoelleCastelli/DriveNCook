@@ -63,6 +63,7 @@
                                 style="width: 100%">
                             {{ trans('client/order.pay') }} <b>{{ $order['total'] }} €</b>
                         </button>
+                        <input type="hidden" value="<b>{{ $order['total'] }} €</b>" id="orderTotal">
                     </form>
                 </div>
             </div>
@@ -72,11 +73,16 @@
 
 @section('script')
     <script type="text/javascript">
+        $(document).on('change', function () {
+            if($('#paymentSelection').val() === 'cash') {
+                $('#proceedPayment').html(Lang.get('client/order.truck_payment'));
+            } else {
+                $('#proceedPayment').html(Lang.get('client/order.pay') + ' ' + $('#orderTotal').val());
+            }
+        });
         $(document).ready(function () {
             $('#proceedPayment').on('click', function (e) {
-                console.log('coucou1');
                 if($('#paymentSelection').val() === 'cash') {
-                    console.log('coucou2');
                     e.preventDefault();
                     $('#paymentForm').submit();
                 }
