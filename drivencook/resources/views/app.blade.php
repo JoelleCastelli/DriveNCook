@@ -17,12 +17,12 @@
             background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url({{asset('img/food_truck.jpg')}});
             /* Set a specific height */
             /*min-height: 860px;*/
-                    @if(url()->current() == route('homepage') || url()->current() == route('about'))
-                      height: 860px;
-                    @else
-                      min-height: 860px;
-                    @endif
-/* Create the parallax scrolling effect */
+            @if(url()->current() == route('homepage') || url()->current() == route('about'))
+   height: 860px;
+            @else
+   min-height: 860px;
+        @endif
+   /* Create the parallax scrolling effect */
             background-attachment: fixed;
             background-position: center;
             background-repeat: no-repeat;
@@ -51,8 +51,9 @@
                     <i class="fa fa-home"></i> {{ trans('homepage.home') }}
                 </a>
             </li>
-            <li class="nav-item {{ url()->current() == route('homepage')?"":"" }}">
-                <a class="nav-link" href="{{route('truck_location_list')}}">
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-toggle="modal"
+                   data-target="#map_modal">
                     <i class="fa fa-map-marker-alt"></i> {{ trans('homepage.find_truck') }}
                 </a>
             </li>
@@ -615,8 +616,58 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="map_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-body d-flex justify-content-center">
+                <div id="map_view" style="width: 100%; height:600px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript" src="/js/app.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_API_KEY')}}">google.maps.event.addDomListener(window, 'load', initMap);</script>
+<script type="text/javascript">
+    var locations = [
+            @foreach($trucks as $truck)
+            @if(!empty($truck['user']))
+        ['{{$truck['location']['name']}}', '{{$truck['location']['latitude']}}', '{{$truck['location']['longitude']}}', '{{route('client_order',['truck_id'=>$truck['id']])}}', '{{$truck['user']['pseudo']['name']}}'],
+        @endif
+        @endforeach
+    ];
+
+    var map = new google.maps.Map(document.getElementById('map_view'), {
+        zoom: 10,
+        center: new google.maps.LatLng(48.856978, 2.342782),
+        // mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    var infowindow = new google.maps.InfoWindow();
+
+    var marker, i;
+
+    for (i = 0; i < locations.length; i++) {
+        marker = new google.maps.Marker({
+            position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+            map: map,
+        });
+
+        google.maps.event.addListener(marker, 'click', (function (marker, i) {
+            return function () {
+                let content = locations[i][0] + '<br><br><a href="' + locations[i][3] + '" target="_blank">' + locations[i][4] + '</a>';
+                console.log(content);
+                infowindow.setContent(content);
+                infowindow.open(map, marker);
+            }
+        })(marker, i));
+
+        // google.maps.event.addListener(marker, 'click', function() {
+        //     window.location.href = this.url;
+        // });
+    }
+
+</script>
 
 <!-- SCRIPTS -->
 @if($errors->has('client_login') || $errors->has('client_registration_success')

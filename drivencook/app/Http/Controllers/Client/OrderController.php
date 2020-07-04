@@ -13,13 +13,17 @@ use App\Models\Truck;
 use App\Models\User;
 use App\Traits\EmailTools;
 use App\Traits\LoyaltyTools;
+use App\Traits\SaleTools;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use App\Traits\UserTools;
 use App\Traits\TruckTools;
 use App\Traits\StockTools;
+use Session;
 use Stripe\Charge;
 use Stripe\Customer;
+use Stripe\Refund;
 use Stripe\Stripe;
 
 class OrderController extends Controller
@@ -29,6 +33,7 @@ class OrderController extends Controller
     use StockTools;
     use LoyaltyTools;
     use EmailTools;
+    use SaleTools;
 
     public function truck_location_list()
     {
@@ -156,12 +161,15 @@ class OrderController extends Controller
                     $fidelityStep = FidelityStep::whereKey($parameters['discount_id'])
                         ->first();
 
+                    $order['order']['discount_amount'] = $fidelityStep->reduction;
+
                     $sum -= $fidelityStep->reduction;
                     $sum = round($sum, 2);
                     if ($sum < 1) {
                         $sum = 0;
                     }
                 }
+
                 $order['order']['total'] = $sum;
 
                 $order['order']['truck_id'] = $parameters['truck_id'];
@@ -223,13 +231,22 @@ class OrderController extends Controller
         unset($order['total']);
         $userId = $this->get_truck_with_franchisee_by_truck_id($order['truck_id'])['user']['id'];
 
+        $paymentMethod = Session::pull('payment_method');
+        $paymentId = Session::pull('charge_id');
+        if($paymentMethod == 'cash') {
+            $paymentMethod = 'Liquide';
+        } else {
+            $paymentMethod = 'Carte bancaire';
+        }
+
         $sale = [
             'online_order' => true,
             'date' => Carbon::now()->toDateString(),
             'user_franchised' => $userId,
             'user_client' => $clientId,
             'status' => 'pending',
-            'payment_method' => 'Carte bancaire'
+            'payment_method' => $paymentMethod,
+            'payment_id' => $paymentId
         ];
 
         $saleId = Sale::insertGetId($sale);
@@ -240,6 +257,12 @@ class OrderController extends Controller
                 ->first();
         }
 
+        if(isset($order['discount_amount'])) {
+            Sale::whereKey($saleId)
+                ->update(['discount_amount' => $order['discount_amount']]);
+
+            unset($order['discount_amount']);
+        }
         unset($order['discount_id']);
         unset($order['truck_id']);
 
@@ -275,13 +298,19 @@ class OrderController extends Controller
          * client points + 10% of total price as points - points used
          */
         $loyaltyPoint = $sum * 0.1 - $subPoint;
-        $loyaltyPoint = $client->loyalty_point + (int)$loyaltyPoint;
+        $toReturn = ceil($loyaltyPoint);
+        $loyaltyPoint = $client->loyalty_point + $toReturn;
         if ($loyaltyPoint < 0) {
             $loyaltyPoint = 0;
         }
 
         User::whereKey($clientId)
             ->update(['loyalty_point' => (int)$loyaltyPoint]);
+
+        Sale::whereKey($saleId)
+            ->update(['points_to_return' => $toReturn]);
+
+        $this->put_loyalty_point_in_session($clientId);
 
         // invoice creation
         $invoice = ['amount' => $sum,
@@ -297,6 +326,7 @@ class OrderController extends Controller
         $this->save_invoice_pdf($invoice['id'], $reference);
         $invoice['reference'] = $reference;
         $this->sendInvoiceMail($client, $invoice);
+
         flash(trans('client/order.created')
             . ' <a href="' . route('client_sale_display', ['id' => $saleId]) . '">'
             . trans('client/order.click_here')
@@ -306,9 +336,10 @@ class OrderController extends Controller
         return redirect(route('client_dashboard'));
     }
 
-    public function charge(Request $request, $order_total_cents)
+    public function charge(Request $request, $order_total_cents, $type = '31uV6UZKmoN57tchyQBgfHNZ0pZz1XHYVv7vFdlzyn9jYeO9JbcQ9xKjeZqNfHJe85vqj')
     {
-        if ($order_total_cents != 0) {
+        Session::put('payment_method', $type);
+        if($order_total_cents != 0 && $type == '31uV6UZKmoN57tchyQBgfHNZ0pZz1XHYVv7vFdlzyn9jYeO9JbcQ9xKjeZqNfHJe85vqj') {
             try {
                 Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
@@ -323,12 +354,31 @@ class OrderController extends Controller
                     'currency' => 'eur'
                 ));
 
+                Session::put('charge_id', $charge->id);
+
                 return $this->client_order_validate();
-            } catch (\Exception $ex) {
+            } catch (Exception $ex) {
                 return $ex->getMessage();
             }
         } else {
             return $this->client_order_validate();
+        }
+    }
+
+    public function refund($sale_id)
+    {
+        $sale = Sale::whereKey($sale_id)
+            ->first();
+        try {
+            Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+
+            Refund::create([
+                'charge' => $sale->payment_id,
+                'reason' => 'requested_by_customer'
+            ]);
+            return $this->client_order_cancel($sale_id);
+        } catch (Exception $ex) {
+            return $ex->getMessage();
         }
     }
 
@@ -423,6 +473,11 @@ class OrderController extends Controller
                             ])->delete();
                         }
                     }
+
+                    User::whereKey($sale->user_client)
+                        ->decrement('loyalty_point', $sale->points_to_return);
+
+                    $this->put_loyalty_point_in_session($sale->user_client);
 
                     Sale::whereKey($sale->id)
                         ->delete();

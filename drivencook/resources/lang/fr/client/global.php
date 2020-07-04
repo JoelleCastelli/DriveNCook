@@ -22,4 +22,7 @@ return [
     'order_again' => 'Commander à nouveau',
 
     'loyalty_point' => 'points de fidélité',
+    'loyalty_array' => 'Récompenses de fidélité',
+    'step' => 'Paliers de points',
+    'reduction' => 'Réductions',
 ];

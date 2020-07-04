@@ -34,12 +34,10 @@ return [
     'summary_and_payment' => 'Récapitulatif et paiement',
 
     'order_summary' => 'Votre commande',
-    'pay' => 'Payer',
-    'created' => 'Commande créé',
-    'click_here' => 'Cliquez ici',
-    'command_expired' => 'Erreur, la commande a expiré, veuillez réessayer',
 
     'pay' => 'Payer',
+    'truck_payment' => 'Commander',
+    'order_payment' => 'Paiement de votre commande',
 
     'order_expired' => 'Erreur, la commande a expiré, veuillez réessayer',
     'created' => 'Commande créée !',

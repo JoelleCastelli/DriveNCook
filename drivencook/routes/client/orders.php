@@ -29,7 +29,7 @@ Route::group(['middleware' => AuthClient::class], function() {
         'uses' => 'Client\OrderController@client_order_charge'
     ]);
 
-    Route::post('/client/new_order_charge/{order_total_cents}', [
+    Route::post('/client/new_order_charge/{order_total_cents}/{payment_type?}', [
         'as' => 'client_new_order_charge',
         'uses' => 'Client\OrderController@charge'
     ]);
@@ -51,6 +51,6 @@ Route::group(['middleware' => AuthClient::class], function() {
 
     Route::delete('/client/order_cancel/{id}', [
         'as' => 'client_order_cancel',
-        'uses' => 'Client\OrderController@client_order_cancel'
+        'uses' => 'Client\OrderController@refund'
     ]);
 });

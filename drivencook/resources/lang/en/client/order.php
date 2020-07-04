@@ -36,6 +36,8 @@ return [
     'order_summary' => 'Your order',
 
     'pay' => 'Pay',
+    'truck_payment' => 'Order',
+    'order_payment' => 'Payment of your order',
 
     'order_expired' => 'Error, order expired, please retry',
     'created' => 'Order created!',
