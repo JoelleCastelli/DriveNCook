@@ -22,4 +22,7 @@ return [
     'order_again' => 'Order again',
 
     'loyalty_point' => 'loyalty points',
+    'loyalty_array' => 'Loyalty awards',
+    'step' => 'Points steps',
+    'reduction' => 'Reductions',
 ];
