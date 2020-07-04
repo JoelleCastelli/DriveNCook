@@ -136,18 +136,20 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-4">
-                        <div class="col-6 col-md-6 col-lg-6">
-                            <div id="turnover_chart">
-                                {!! $payment_methods_chart->container() !!}
+                    @if ($revenues['sales_count'] != 0)
+                        <div class="row mt-4">
+                            <div class="col-6 col-md-6 col-lg-6">
+                                <div id="turnover_chart">
+                                    {!! $payment_methods_chart->container() !!}
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-6 col-lg-6">
+                                <div id="turnover_chart">
+                                    {!! $origins_chart->container() !!}
+                                </div>
                             </div>
                         </div>
-                        <div class="col-6 col-md-6 col-lg-6">
-                            <div id="turnover_chart">
-                                {!! $origins_chart->container() !!}
-                            </div>
-                        </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -221,6 +223,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
     {!! $sales_chart->script() !!}
     {!! $turnover_chart->script() !!}
-    {!! $payment_methods_chart->script() !!}
-    {!! $origins_chart->script() !!}
+    @if ($revenues['sales_count'] != 0)
+        {!! $payment_methods_chart->script() !!}
+        {!! $origins_chart->script() !!}
+    @endif
 @endsection

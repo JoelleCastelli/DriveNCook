@@ -188,7 +188,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
     {!! $sales_chart->script() !!}
     {!! $turnover_chart->script() !!}
-
     @if ($revenues['sales_count'] != 0)
         {!! $payment_methods_chart->script() !!}
         {!! $origins_chart->script() !!}
