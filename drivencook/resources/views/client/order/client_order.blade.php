@@ -169,7 +169,7 @@
 
             for(let i = 0; i < orders.length; i++) {
                 let id = orders[i].getAttribute('id').split('_').slice(-1)[0];
-                let linePrice = parseFloat($('#price' + id).text()) * parseInt($('#qty_' + id).val());
+                let linePrice = parseFloat($('#orderedLinePrice' + id).text());
 
                 sum += parseFloat(linePrice.toFixed(2));
             }
