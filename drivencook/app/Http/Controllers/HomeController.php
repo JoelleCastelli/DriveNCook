@@ -15,7 +15,10 @@ class HomeController extends Controller
 
     public function homepage()
     {
-        $trucks = Truck::with('user')->with('location')->where('user_id', "!=", null)->get()->toArray();
+        $trucks = Truck::with('user')->with('location')->where([
+            ['functional', true],
+            ['user_id', "!=", null]
+        ])->get()->toArray();
 
         return view('home')->with('trucks', $trucks);
     }
@@ -36,8 +39,6 @@ class HomeController extends Controller
         if (!empty($parameters['name'])
             && !empty($parameters['email'])
             && !empty($parameters['message'])) {
-
-            //$order['order'] = get_object_vars(json_decode($order['order']));
 
             $this->sendContactForm($parameters);
 
