@@ -4,7 +4,6 @@
 @endsection
 
 @section('content')
-
     <div class="row">
         <div class="col-12 col-lg-6 mb-5">
             <div class="card">
@@ -64,25 +63,33 @@
                                 @foreach($client_orders as $order)
                                     <tr>
                                         <td>
-                                            {{DateTime::createFromFormat('Y-m-d',$order['date'])->format('Y/m/d') }}
+                                            {{ DateTime::createFromFormat('Y-m-d',$order['date'])->format('d/m/Y') }}
                                         </td>
-                                        <td>{{ $order['online_order']?'Oui':'Non'}}</td>
+                                        <td>{{ $order['online_order']? trans('client/global.yes') : trans('client/global.no') }}</td>
                                         <td>{{ $order['payment_method'] }}</td>
-                                        <td>{{count($order['sold_dishes']) }}</td>
                                         <td>
                                             <?php
-                                            $total = 0;
+                                            $str = '';
                                             foreach ($order['sold_dishes'] as $sold_dish) {
-                                                $total += $sold_dish['quantity'] * $sold_dish['unit_price'];
+                                                $str .= $sold_dish['quantity'].' x '.$sold_dish['dish']['name']."<br>";
                                             }
-                                            echo $total . ' €';
+                                            echo $str;
                                             ?>
                                         </td>
                                         <td>
-                                            {{ $order['user_franchised']['pseudo']['name'] }}
+                                            <?php
+                                                $total = 0;
+                                                foreach ($order['sold_dishes'] as $sold_dish) {
+                                                    $total += $sold_dish['quantity'] * $sold_dish['unit_price'];
+                                                }
+                                                echo $total . ' €';
+                                            ?>
+                                        </td>
+                                        <td>
                                             <a href="{{route('franchisee_view',['id'=>$order['user_franchised']['id']]) }}">
-                                                <i class="fa fa-eye"></i>
+                                                <i class="fa text-light fa-eye"></i>
                                             </a>
+                                            {{ $order['user_franchised']['pseudo']['name'] }}
                                         </td>
                                         <td>
                                             <i class="fa fa-eye"></i>

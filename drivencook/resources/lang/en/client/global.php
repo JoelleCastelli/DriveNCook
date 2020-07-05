@@ -81,5 +81,7 @@ return [
     'update' => 'Update',
     'not_specified_m' => 'Not specified',
     'not_specified_f' => 'Not specified',
+    'yes' => 'Yes',
+    'no' => 'No',
 
 ];

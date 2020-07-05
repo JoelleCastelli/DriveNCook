@@ -81,5 +81,7 @@ return [
     'update' => 'Modifier',
     'not_specified_m' => 'Non renseigné',
     'not_specified_f' => 'Non renseignée',
+    'yes' => 'Oui',
+    'no' => 'Non',
 
 ];
