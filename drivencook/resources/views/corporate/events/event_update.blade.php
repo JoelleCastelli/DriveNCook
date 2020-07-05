@@ -58,7 +58,7 @@
                             <option value="">{{trans('event.no-address')}}</option>
                             @foreach($location_list as $location)
                                 <option value="{{$location['id']}}" {{$location['id'] == $event['location_id'] ? 'selected' : ''}}>
-                                    {{$location['address'].' - '.$location['city'].' ('.$location['name'].')'}}
+                                    {{$location['name'].' - '.$location['address'].' '.$location['postcode'].' '.$location['city']}}
                                 </option>
                             @endforeach
                         </select>
@@ -81,7 +81,7 @@
                     </div>
 
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary">{{trans('event.event_update')}}</button>
+                        <button type="submit" class="btn btn-light_blue">{{trans('event.event_update')}}</button>
                     </div>
                 </form>
             </div>

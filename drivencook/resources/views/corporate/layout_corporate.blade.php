@@ -261,7 +261,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{ route('corporate.event_creation') }}">
-                            <i class="fa fa-calendar-plus"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.add_event') }}
+                            <i class="fa fa-calendar-plus"></i>&nbsp;&nbsp;&nbsp;{{ trans('event.add_event') }}
                         </a>
                     </li>
                 @break
@@ -269,7 +269,7 @@
                 @case(route('corporate.event_creation'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{ route('corporate.event_list') }}">
-                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_event_list') }}
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('event.back_event_list') }}
                         </a>
                     </li>
                 @break
@@ -315,7 +315,7 @@
             @if (strpos(url()->current(), route('corporate.event_view', ['id'=>''])) !== false)
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{ route('corporate.event_list') }}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_event_list') }}
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('event.back_event_list') }}
                     </a>
                 </li>
             @endif
@@ -323,7 +323,7 @@
             @if (strpos(url()->current(), route('corporate.event_update', ['event_id'=>''])) !== false)
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{ route('corporate.event_list') }}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_event_list') }}
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('event.back_event_list') }}
                     </a>
                 </li>
             @endif
