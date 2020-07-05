@@ -1,0 +1,2 @@
+set pcname CERGY
+dhcp

@@ -1,0 +1,2 @@
+set pcname SRV_W
+dhcp
