@@ -1,10 +1,8 @@
 @extends('corporate.layout_corporate')
 @section('title')
-    {{trans('corporate.event_creation')}}
+    {{trans('event.event_creation')}}
 @endsection
-@section('style')
-    {{--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">--}}
-@endsection
+
 @section('content')
 
 
@@ -57,8 +55,8 @@
                                     {{$errors->first('title')}}
                                 </span>
                             @endif
-
                         </div>
+
                         @if ($type == 'private')
                             <div class="form-group">
                                 <label for="invited">{{trans('event.invite_users')}}</label><br>
@@ -80,8 +78,8 @@
                                     {{$errors->first('date_start')}}
                                 </span>
                             @endif
-
                         </div>
+
                         <div class="form-group">
                             <label for="date_end">
                                 {{trans('event.end')}}
@@ -92,8 +90,8 @@
                                     {{$errors->first('date_end')}}
                                 </span>
                             @endif
-
                         </div>
+
                         <div class="form-group">
                             <label for="location_id">{{trans('event.location')}}</label><br>
                             <select name="location_id" id="location_id" class="form-control selectsearch">
@@ -105,6 +103,7 @@
                                 @endforeach
                             </select>
                         </div>
+
                         <div class="form-group">
                             <label for="description">{{trans('event.description')}}</label>
                             <textarea id="description" name="description" class="form-control" required></textarea>
@@ -116,7 +115,7 @@
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">{{trans('event.add_event')}}</button>
+                            <button type="submit" class="btn btn-light_blue">{{trans('event.add_event')}}</button>
                         </div>
                     </form>
                 </div>

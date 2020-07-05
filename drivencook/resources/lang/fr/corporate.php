@@ -73,6 +73,4 @@ return [
     'back_countries_list' => 'Retour à la liste des pays',
     // Back
     'back_dashboard' => 'Retour au tableau de bord',
-
-    'event_creation' => 'Créer un évenement'
 ];

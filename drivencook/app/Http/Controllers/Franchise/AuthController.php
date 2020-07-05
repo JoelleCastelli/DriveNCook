@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Franchise;
 
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\AuthFranchise;
+use App\Models\Truck;
 use App\Models\User;
 use App\Traits\UserTools;
 use Illuminate\Support\Facades\App;
@@ -62,8 +63,11 @@ class AuthController extends Controller
             abort(404);
         }
 
+        $trucks = Truck::with('user')->with('location')->where('user_id', "!=", null)->get()->toArray();
+
         return view('app')
             ->with('email', $email)
+            ->with('trucks', $trucks)
             ->with('pseudos', $this->get_available_pseudo_list());
     }
 

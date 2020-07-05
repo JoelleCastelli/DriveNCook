@@ -43,7 +43,7 @@
                             // Hide default stripe payment button
                             document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
                         </script>
-                        <button type="submit" class="btn btn-light_blue">Paiement de la commande</button>
+                        <button type="submit" class="btn btn-light_blue">{{trans('franchisee.order_payment')}}</button>
                     </form>
                 </div>
             </div>

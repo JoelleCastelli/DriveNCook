@@ -38,13 +38,14 @@ Route::get('/', [
     'uses' => 'HomeController@homepage'
 ]);
 
-Route::get('/about', function () {
-    return view('about');
-})->name('about');
-
 Route::get('/news', [
     'as' => 'news',
     'uses' => 'HomeController@news'
+]);
+
+Route::get('/about', [
+    'as' => 'about',
+    'uses' => 'HomeController@about'
 ]);
 
 Route::get('/{language}', function ($language) {
@@ -65,4 +66,9 @@ Route::get('/reset_password/{token}', [
 Route::post('/reset_password/', [
     'as' => 'reset_password_submit',
     'uses' => 'Auth\ResetPasswordController@reset_password_submit'
+]);
+
+Route::post('/contact_form_submit/', [
+    'as' => 'contact_form_submit',
+    'uses' => 'HomeController@contact_form_submit'
 ]);

@@ -144,12 +144,13 @@ return [
     'order_history' => 'Order history',
     'order_info' => 'Order information',
     'order_summary' => 'Order summary',
+    'order_payment' => 'Payment of the order',
     'plate' => 'Product',
     'products_ordered' => 'Ordered products',
     'cancel_order_prompt' => 'Do you really want to cancel this order?',
     'choose_plates' => 'Select the dishes',
     'choose_warehouse' => 'Select a warehouse',
-    'client_orders' => 'Orders (client)',
+    'client_orders' => 'Clients orders',
     'different_plate_count' => 'Different dishes',
     'new_order' => 'New order',
     'summary_and_paiement' => 'Summary and payment',
@@ -247,8 +248,8 @@ return [
     'date_end' => 'Date end:',
     'date_start' => 'Date start:',
 
-    'sell_count_30_days' => 'Nombre de vente les 30 derniers jours',
-    'real_time_revenues_monthly' => 'Revenus ce mois ci',
+    'sell_count_30_days' => 'Number of sales in the last 30 days:',
+    'real_time_revenues_monthly' => 'Monthly revenues (from :start to :end):',
 
     'cost' => 'Cost',
     'status' => 'Status',
@@ -259,5 +260,16 @@ return [
     'unavailable' => 'Unavailable',
     'sell_price_updated' => 'Sell price updated',
     'menu_available_updated' => 'Availability updated',
+
+    'back_to_client_sales' => 'Back to clients orders',
+    'client_info' => 'Client information',
+    'order_status_updated' => 'The order status has been updated',
+    'order_warehouse' => 'Order warehouse',
+    'sale_details' => 'Order details',
+    'sale_view' => 'View the order',
+    'sales_client' => 'Client',
+    'sales_product' => 'Products',
+    'update_client_sale_status' => 'Update the order status',
+    'sales_product_count'=>'Number of ordered products'
 
 ];

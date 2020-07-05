@@ -5,7 +5,7 @@
 
 @section('content')
 
-    <div class="col-12 col-xl-8 card mt-5" id="event-list">
+    <div class="col-12 col-xl-12 card mt-5" id="event-list">
         <div class="card-body">
             <div class="table-responsive">
                 <table id="allEvents" class="table table-hover table-striped table-bordered table-dark"
@@ -18,7 +18,7 @@
                         <th>{{trans('event.city')}}</th>
                         <th>{{trans('event.start')}}</th>
                         <th>{{trans('event.end')}}</th>
-                        <th></th>
+                        <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -29,10 +29,10 @@
                             <td>{{$event['title']}}</td>
                             <td>{{strlen($event['description']) > 100 ? substr($event['description'], 0, 100) . '...' : $event['description']}}</td>
                             <td>{{empty($event['location']['city'])? trans('event.no-address') : $event['location']['city']}}</td>
-                            <td>{{$event['date_start']}}</td>
-                            <td>{{$event['date_end']}}</td>
+                            <td>{{ DateTime::createFromFormat('Y-m-d', $event['date_start'])->format('d/m/Y') }}</td>
+                            <td>{{ DateTime::createFromFormat('Y-m-d', $event['date_end'])->format('d/m/Y') }}</td>
                             <td><a href="{{route('franchise.event_view',['event_id'=>$event['id']])}}">
-                                    <button class="fa fa-eye"></button>
+                                    <button class="fa text-light fa-eye"></button>
                                 </a></td>
                         </tr>
                     @endforeach
@@ -42,7 +42,7 @@
         </div>
     </div>
 
-    <div class="col-12 col-xl-8 card mt-5" id="event-list">
+    <div class="col-12 col-xl-12 card mt-5" id="event-list">
         <div class="card-header">
             <h2>
                 {{trans('event.calendar')}}

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Truck;
 use App\Models\User;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 
@@ -19,8 +20,16 @@ class ResetPasswordController extends Controller
         if (empty($user)) {
             abort(404);
         }
+
+        $trucks = Truck::with('user')->with('location')->where([
+            ['functional', true],
+            ['user_id', "!=", null]
+        ])->get()->toArray();
+
+
         session()->put('email', $user->email);
-        return view('auth.reset_password')->with('email', $user->email);
+
+        return view('auth.reset_password')->with('email', $user->email)->with('trucks', $trucks);
     }
 
     public function reset_password_submit()
@@ -42,7 +51,7 @@ class ResetPasswordController extends Controller
             'password_token' => null
         ]);
         flash('Mot de passe modifié !')->success();
-        return redirect(route('homepage'));
+        return redirect()->route('homepage');
     }
 
 }
