@@ -63,7 +63,7 @@
 
         $(document).ready(function () {
             let table = $('#allusers').DataTable({searchPanes: true});
-            table.searchPanes.container().prependTo(table.table().container());
+            //table.searchPanes.container().prependTo(table.table().container());
         });
 
         function deleteUser(id) {
