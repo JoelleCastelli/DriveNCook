@@ -181,7 +181,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  text-light" href="{{ route('homepage') }}">
+                        <a class="nav-link text-light" href="#" data-toggle="modal"
+                           data-target="#map_modal">
                             <i class="fa fa-map-marker-alt"></i> {{ trans('homepage.find_truck') }}
                         </a>
                     </li>
@@ -198,7 +199,7 @@
                         <!--<a class="nav-link" href="mailto:contact@drivencook.fr">
                             <i class="fa fa-address-book"></i> {/{ trans('homepage.contact') }}
                         </a>-->
-                        <a class="nav-link" href="#"
+                        <a class="nav-link text-light" href="#"
                             data-toggle="modal" data-target="#contact_form_modal">
                             <i class="fa fa-address-book"></i> {{ trans('homepage.contact') }}
                         </a>
