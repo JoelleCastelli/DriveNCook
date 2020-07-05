@@ -67,7 +67,7 @@
         });
 
         function deleteUser(id) {
-            if (confirm(Lang.get('administrator/user.delete_confirm'))) {
+            if (confirm(Lang.get('admin.delete_confirm'))) {
                 if (!isNaN(id)) {
                     let urlB = '{{ route('admin_delete', ['id'=>':id']) }}';
                     urlB = urlB.replace(':id', id);
@@ -82,11 +82,11 @@
                                 alert(Lang.get('administrator/user.delete_success'));
                                 $('#allusers').DataTable().row('#row_' + id).remove().draw();
                             } else {
-                                alert(Lang.get('administrator/user.ajax_error'));
+                                alert(Lang.get('admin.ajax_error'));
                             }
                         },
                         error: function () {
-                            alert(Lang.get('administrator/user.ajax_error'));
+                            alert(Lang.get('admin.ajax_error'));
                         }
                     })
                 }
