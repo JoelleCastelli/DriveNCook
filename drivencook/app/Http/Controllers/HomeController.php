@@ -26,16 +26,19 @@ class HomeController extends Controller
     public function news()
     {
         $news_list = Event::where('type', 'news')->with('location')->orderByDesc('date_start')->get()->toArray();
-        $trucks = Truck::with('user')->with('location')->where('user_id', "!=", null)->get()->toArray();
-        
+        $trucks = Truck::with('user')->with('location')->where([
+            ['functional', true],
+            ['user_id', "!=", null]
+        ])->get()->toArray();
+
         return view('news')->with('news_list', $news_list)->with('trucks', $trucks);
     }
-    
+
     public function contact_form_submit(Request $request)
     {
         $parameters = $request->except(['_token']);
 
-        if(!empty($parameters['g-recaptcha-response'])) {
+        if (!empty($parameters['g-recaptcha-response'])) {
             $ip = $_SERVER['REMOTE_ADDR'];
             $g_recaptcha_response = $parameters['g-recaptcha-response'];
             $response = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='
@@ -80,7 +83,10 @@ class HomeController extends Controller
 
     public function about()
     {
-        $trucks = Truck::with('user')->with('location')->where('user_id', "!=", null)->get()->toArray();
+        $trucks = Truck::with('user')->with('location')->where([
+            ['functional', true],
+            ['user_id', "!=", null]
+        ])->get()->toArray();
 
         return view('about')->with('trucks', $trucks);
     }

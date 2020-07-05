@@ -36,6 +36,6 @@ class ForgotPasswordController extends Controller
         $this->sendResetPasswordMail($email, $token);
 
         flash('Un email vous a été envoyé');
-        return redirect(route('homepage'));
+        return redirect()->route('homepage');
     }
 }
