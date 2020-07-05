@@ -54,8 +54,7 @@ trait UserTools
 
     public function does_have_assigned_truck($user_id): bool
     {
-        $truck = Truck::with('location')
-            ->where('user_id', $user_id)
+        $truck = Truck::where('user_id', $user_id)
             ->count();
         return $truck == 1;
     }

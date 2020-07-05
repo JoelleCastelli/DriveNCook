@@ -78,7 +78,7 @@ class TruckController extends Controller
     public function add_breakdown()
     {
         if (!$this->check_truck_assignation())
-            return redirect(route('franchise.dashboard'));
+            return back();
 
         $breakdown_type = $this->get_enum_column_values('breakdown', 'type');
         $breakdown_status = $this->get_enum_column_values('breakdown', 'status');
@@ -93,7 +93,7 @@ class TruckController extends Controller
     public function update_breakdown($breakdown_id)
     {
         if (!$this->check_truck_assignation())
-            return redirect(route('franchise.dashboard'));
+            return back();
 
         $breakdown = Breakdown::find($breakdown_id);
         if ($breakdown == null) {
