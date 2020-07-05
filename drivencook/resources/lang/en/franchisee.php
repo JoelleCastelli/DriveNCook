@@ -263,6 +263,7 @@ return [
     'back_to_client_sales' => 'Back to clients orders',
     'client_info' => 'Client information',
     'order_status_updated' => 'The order status has been updated',
+    'order_warehouse' => 'Order warehouse',
     'sale_details' => 'Order details',
     'sale_view' => 'View the order',
     'sales_client' => 'Client',

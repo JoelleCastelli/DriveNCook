@@ -261,7 +261,8 @@ return [
 
     'back_to_client_sales' => 'Retour aux commandes clients',
     'client_info' => 'Informations sur le client',
-    'order_status_updated' => 'Le statut de la commande a été mis',
+    'order_status_updated' => 'Le statut de la commande a été mis à jour',
+    'order_warehouse' => 'Entrepôt de la commande',
     'sale_details' => 'Détails de la commande',
     'sale_view' => 'Voir la commande',
     'sales_client' => 'Client',
