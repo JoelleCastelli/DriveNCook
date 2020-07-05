@@ -150,6 +150,13 @@
                     </a>
                 </li>
             @endif
+            @if (strpos(url()->current(), route('franchise.truck_breakdown_update', ['id'=>''])) !== false)
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{route('franchise.truck_view')}}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{trans('corporate.back_to_truck')}}
+                    </a>
+                </li>
+            @endif
             @if (strpos(url()->current(), route('franchise.event_view', ['event_id'=>''])) !== false)
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{route('franchise.event_list')}}">

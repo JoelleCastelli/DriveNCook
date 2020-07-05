@@ -1,4 +1,4 @@
-@extends('franchise.franchise_dashboard')
+@extends('franchise.layout_franchise')
 @section('title')
     {{trans('franchisee.update_truck_position')}}
 @endsection

@@ -1,4 +1,4 @@
-@extends('franchise.franchise_dashboard')
+@extends('franchise.layout_franchise')
 
 @section('title')
     {{empty($safety_inspection)?trans('franchisee.add_safety_inspection') : trans('franchisee.update_safety_inspection')}}

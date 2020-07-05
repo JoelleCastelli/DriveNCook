@@ -94,7 +94,6 @@ class TruckController extends Controller
     {
         if (!$this->check_truck_assignation())
             return back();
-
         $breakdown = Breakdown::find($breakdown_id);
         if ($breakdown == null) {
             flash(trans('truck.breakdown_doesnt_exist'))->error();
