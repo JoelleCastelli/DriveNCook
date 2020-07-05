@@ -202,26 +202,14 @@
                 @case(route('corporate.update_account'))
                 @case(route('corporate_statistics'))
                 @case(route('location_list'))
-                    <li class="nav-item">
-                        <a class="nav-link text-light2" href="{{ route('corporate_dashboard') }}">
-                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_dashboard') }}
-                        </a>
-                    </li>
-                @break
-
                 @case(route('client_list'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{ route('corporate_dashboard') }}">
                             <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_dashboard') }}
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-light2" href="{{ route('client_create') }}">
-                            <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.add_client') }}
-                        </a>
-                    </li>
                 @break
-
+            
                 @case(route('dish_list'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{ route('corporate_dashboard') }}">
