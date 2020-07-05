@@ -68,9 +68,6 @@
                 </a>
             </li>
             <li class="nav-item">
-                <!--<a class="nav-link" href="mailto:contact@drivencook.fr">
-                    <i class="fa fa-address-book"></i> {/{ trans('homepage.contact') }}
-                </a>-->
                 <a class="nav-link" href="#"
                    data-toggle="modal" data-target="#contact_form_modal">
                     <i class="fa fa-address-book"></i> {{ trans('homepage.contact') }}
@@ -196,9 +193,6 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <!--<a class="nav-link" href="mailto:contact@drivencook.fr">
-                            <i class="fa fa-address-book"></i> {/{ trans('homepage.contact') }}
-                        </a>-->
                         <a class="nav-link text-light" href="#"
                             data-toggle="modal" data-target="#contact_form_modal">
                             <i class="fa fa-address-book"></i> {{ trans('homepage.contact') }}
@@ -646,13 +640,15 @@
                         <div class="col-md-6 mb-3">
                             <div class="md-form mb-0">
                                 <label for="name">{{ trans('homepage.name') }}</label>
-                                <input type="text" id="name" name="name" class="form-control" placeholder="{{ trans('homepage.your_name') }}">
+                                <input type="text" id="name" name="name" maxlength="50"
+                                       class="form-control" placeholder="{{ trans('homepage.your_name') }}">
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <div class="md-form mb-0">
-                                <label for="email">{{ trans('homepage.mail') }}</label>
-                                <input type="text" id="contact_email" name="email" class="form-control" placeholder="{{ trans('homepage.your_mail') }}">
+                                <label for="contact_email">{{ trans('homepage.mail') }}</label>
+                                <input type="text" id="contact_email" name="email" maxlength="200"
+                                       class="form-control" placeholder="{{ trans('homepage.your_mail') }}">
                             </div>
                         </div>
                     </div>
@@ -660,7 +656,10 @@
                         <div class="col-md-12 mb-4">
                             <div class="md-form">
                                 <label for="message">{{ trans('homepage.message') }}</label>
-                                <textarea type="text" id="message" name="message" rows="2" class="form-control md-textarea" placeholder="{{ trans('homepage.your_message') }}"></textarea>
+                                <textarea type="text" id="message" name="message"
+                                          rows="2" class="form-control md-textarea"
+                                          maxlength="10000"
+                                          placeholder="{{ trans('homepage.your_message') }}"></textarea>
                             </div>
                         </div>
                     </div>

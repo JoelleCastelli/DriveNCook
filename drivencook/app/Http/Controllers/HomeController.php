@@ -34,11 +34,13 @@ class HomeController extends Controller
     public function contact_form_submit(Request $request)
     {
         $parameters = $request->except(['_token']);
-        $errors_list = [];
 
         if (!empty($parameters['name'])
             && !empty($parameters['email'])
-            && !empty($parameters['message'])) {
+            && !empty($parameters['message'])
+            && strlen($parameters['name']) < 51
+            && strlen($parameters['email']) < 201
+            && strlen($parameters['message']) < 10001) {
 
             $this->sendContactForm($parameters);
 
@@ -46,11 +48,8 @@ class HomeController extends Controller
                 'status' => 'success',
             ];
         } else {
-            $errors_list[] = trans('client/order.missing_post_data');
-
             $response_array = [
                 'status' => 'error',
-                'errorList' => $errors_list
             ];
         }
 
