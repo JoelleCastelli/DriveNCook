@@ -4,12 +4,11 @@
     {{trans('franchisee.dashboard').' '.$franchise['firstname'].' '.$franchise['lastname']. ' ('.(empty($franchise['pseudo'])?trans('franchisee.unknown_pseudo'):$franchise['pseudo']['name']).')'}}
 @endsection
 
-
 @section('content')
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <div class="col-12 col-md-6 col-lg-3">
+                <div class="col-12 col-md-6 col-lg-4">
                     <div class="card text-light2">
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item bg-indigo">{{trans('franchisee.truck_location')}} :<br>
@@ -27,7 +26,6 @@
                                     }
                                 }
                                 ?>
-
                             </li>
                             <li class="list-group-item bg-indigo align-content-arround">
                                 <a href="{{route('franchise.truck_view')}}" target="_blank" class="row text-light2">
@@ -42,10 +40,10 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-12 col-md-6 col-lg-3">
+                <div class="col-12 col-md-6 col-lg-4">
                     <div class="card text-light2">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item bg-info">{{trans('franchisee.sell_count_30_days')}}
+                            <li class="list-group-item bg-info">{{ trans('franchisee.sell_count_30_days') }}
                                 : {{$revenues['sales_count']}}</li>
                             <li class="list-group-item bg-info align-content-arround">
                                 <a href="{{route('franchise.client_sales')}}" target="_blank" class="row text-light2">
@@ -60,10 +58,10 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-12 col-md-6 col-lg-3">
+                <div class="col-12 col-md-6 col-lg-4">
                     <div class="card text-light2">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item bg-success">{{trans('franchisee.real_time_revenues_monthly')}} :
+                            <li class="list-group-item bg-success">{{ trans('franchisee.real_time_revenues_monthly', ['start'=>$invoicing_period['period_start_date'], 'end' => $invoicing_period['period_end_date']]) }} :
                                 {{ number_format($revenues['sales_total'], 2, ',', ' ')}} €
                             </li>
                             <li class="list-group-item bg-success align-content-arround">

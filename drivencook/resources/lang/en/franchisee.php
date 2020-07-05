@@ -247,8 +247,8 @@ return [
     'date_end' => 'Date end:',
     'date_start' => 'Date start:',
 
-    'sell_count_30_days' => 'Nombre de vente les 30 derniers jours',
-    'real_time_revenues_monthly' => 'Revenus ce mois ci',
+    'sell_count_30_days' => 'Number of sales in the last 30 days:',
+    'real_time_revenues_monthly' => 'Monthly revenues (from :start to :end):',
 
     'cost' => 'Cost',
     'status' => 'Status',
