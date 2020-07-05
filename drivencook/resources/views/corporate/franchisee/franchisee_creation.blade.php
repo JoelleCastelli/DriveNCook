@@ -1,7 +1,7 @@
 @extends('corporate.layout_corporate')
 
 @section('title')
-    Création de franchisé
+    {{ trans('franchisee_creation.franchisee_creation') }}
 @endsection
 
 
@@ -14,10 +14,10 @@
 
         @if(Session::has('error'))
 
-            <div class="alert-danger">
+            <div style="padding-left: 10px" class="alert-danger">
                 {{ trans('franchisee_creation.new_franchisee_error') }}
                 @foreach(Session::get('error') as $error)
-                    <li>{{ $error }}</li>
+                    <li style="margin-left: 20px">{{ $error }}</li>
                 @endforeach
             </div>
         @endif

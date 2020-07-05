@@ -2,6 +2,7 @@
 
 return [
 
+    'franchisee_creation' => 'Create a new franchisee account',
     'lastname' => 'Name',
     'firstname' => 'Firstname',
     'email' => 'Email',
