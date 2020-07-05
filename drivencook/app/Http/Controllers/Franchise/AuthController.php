@@ -76,8 +76,8 @@ class AuthController extends Controller
         request()->validate([
             'email' => ['required', 'string', 'email:rfc', 'max:100'],
             'telephone' => ['nullable', 'regex:/^(0|\+[1-9]{2}\s?)[1-9]([-. ]?\d{2}){4}$/u'],
-            'driving_licence' => ['required', 'string', 'max:15'],
-            'social_security' => ['required', 'string', 'max:15'],
+            'driving_licence' => ['required', 'string','min:5', 'max:15'],
+            'social_security' => ['required', 'string','min:5', 'max:15'],
             'pseudo' => ['required', 'integer'],
             'password' => ['required', 'confirmed', 'min:6']
         ]);
