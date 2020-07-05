@@ -28,6 +28,9 @@ return [
     'title' => 'Title',
     'update' => 'Update',
 
+    'event_creation' => 'Create a new event',
+    'event_creation_success_message' => 'The event has been created',
+
     //Delete
     'delete_confirm' => 'Are you sure you want to delete this event? All associated data will be deleted.',
     'ajax_error' => 'An error has occurred, please refresh the page',
