@@ -82,26 +82,30 @@
                 </div>
                 <div class="card-body">
                     @if (empty($truck['user']))
-                        <form method="post" action="{{ route('set_franchisee_truck') }}">
-                            {{csrf_field()}}
-                            <input type="hidden" id="truckId" name="truckId" value="{{ $truck['id'] }}">
+                        @if (!empty($unassigned))
+                            <form method="post" action="{{ route('set_franchisee_truck') }}">
+                                {{csrf_field()}}
+                                <input type="hidden" id="truckId" name="truckId" value="{{ $truck['id'] }}">
 
-                            <div class="form-group">
-                                <label for="userId">{{ trans('truck.available_franchisees') }}</label>
-                                <select class="form-control" id="userId" name="userId">
-                                    @foreach($unassigned as $user)
-                                        <option value="{{ $user['id'] }}">
-                                            {{
-                                                 $user['firstname'] . ' '.
-                                                 $user['lastname'] . ' ('.
-                                                 $user['pseudo']['name'].')'
-                                             }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <button type="submit" class="btn btn-light_blue">{{ trans('truck.assign') }}</button>
-                        </form>
+                                <div class="form-group">
+                                    <label for="userId">{{ trans('truck.available_franchisees') }}</label>
+                                    <select class="form-control" id="userId" name="userId">
+                                        @foreach($unassigned as $user)
+                                            <option value="{{ $user['id'] }}">
+                                                {{
+                                                     $user['firstname'] . ' '.
+                                                     $user['lastname'] . ' ('.
+                                                     $user['pseudo']['name'].')'
+                                                 }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-light_blue">{{ trans('truck.assign') }}</button>
+                            </form>
+                        @else
+                            <p>{{ trans('truck.all_franchisees_unavailable') }}</p>
+                        @endif
                     @else
                         {{ trans('truck.assigned_to', ['franchisee' => $truck['user']['firstname'].' '.
                                                                         $truck['user']['lastname'].' ('.

@@ -31,6 +31,7 @@ return [
     'latest_safety_inspection' => 'Dernier contrôle technique ',
     'truck_deployment' => 'Attribution du camion',
     'available_franchisees' => 'Franchisés disponibles',
+    'all_franchisees_unavailable' => 'Tous les franchisés ont déjà un camion attribué',
     'assign' => 'Assigner',
     'assigned_to' => 'Assigné à :franchisee',
     'remove_truck' => 'Retirer le camion',
