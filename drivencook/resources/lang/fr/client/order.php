@@ -30,6 +30,8 @@ return [
     'select_menu_no_discount' => 'Vous pouvez choisir une remise...',
     'dishes' => 'Commande',
 
+    'alert_discount_more_than_total' => 'Attention le montant de la remise dépasse celui de la commande !',
+
     // Charge page
     'summary_and_payment' => 'Récapitulatif et paiement',
 
