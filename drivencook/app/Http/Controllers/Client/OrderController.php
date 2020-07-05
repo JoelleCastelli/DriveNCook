@@ -142,12 +142,12 @@ class OrderController extends Controller
             $order['order'] = get_object_vars(json_decode($order['order']));
 
             if ($this->check_order_array($parameters)) {
-                $userId = $this->get_truck_with_franchisee_by_truck_id($parameters['truck_id'])['user']['id'];
+                $user_id = $this->get_truck_with_franchisee_by_truck_id($parameters['truck_id'])['user']['id'];
 
                 $sum = 0;
                 $i = 0;
                 foreach ($order['order'] as $dishId => $quantity) {
-                    $stock = $this->get_franchisee_stock($dishId, $userId);
+                    $stock = $this->get_franchisee_stock($dishId, $user_id);
 
                     $sum += $stock['unit_price'] * $quantity;
 
@@ -229,36 +229,38 @@ class OrderController extends Controller
 
         unset($order['dishes']);
         unset($order['total']);
-        $userId = $this->get_truck_with_franchisee_by_truck_id($order['truck_id'])['user']['id'];
+        $user_id = $this->get_truck_with_franchisee_by_truck_id($order['truck_id'])['user']['id'];
 
-        $paymentMethod = Session::pull('payment_method');
-        $paymentId = Session::pull('charge_id');
-        if($paymentMethod == 'cash') {
-            $paymentMethod = 'Liquide';
+        $payment_method = Session::pull('payment_method');
+        $payment_id = Session::pull('charge_id');
+        if($payment_method == 'cash') {
+            $payment_method = 'Liquide';
         } else {
-            $paymentMethod = 'Carte bancaire';
+            $payment_method = 'Carte bancaire';
         }
 
         $sale = [
             'online_order' => true,
             'date' => Carbon::now()->toDateString(),
-            'user_franchised' => $userId,
+            'user_franchised' => $user_id,
             'user_client' => $clientId,
             'status' => 'pending',
-            'payment_method' => $paymentMethod,
-            'payment_id' => $paymentId
+            'payment_method' => $payment_method,
+            'payment_id' => $payment_id
         ];
 
-        $saleId = Sale::insertGetId($sale);
+        $sale_id = Sale::insertGetId($sale);
 
-        $discountId = $order['discount_id'];
-        if ($discountId !== '') {
-            $fidelityStep = FidelityStep::whereKey($discountId)
+        $discount_id = $order['discount_id'];
+        if ($discount_id !== '') {
+            $fidelityStep = FidelityStep::whereKey($discount_id)
                 ->first();
         }
 
+        $discount_amount = 0;
         if(isset($order['discount_amount'])) {
-            Sale::whereKey($saleId)
+            $discount_amount = $order['discount_amount'];
+            Sale::whereKey($sale_id)
                 ->update(['discount_amount' => $order['discount_amount']]);
 
             unset($order['discount_amount']);
@@ -268,20 +270,20 @@ class OrderController extends Controller
 
         $sum = 0;
         foreach ($order as $dishId => $quantity) {
-            $unitPrice = $this->get_franchisee_stock($dishId, $userId)['unit_price'];
+            $unit_price = $this->get_franchisee_stock($dishId, $user_id)['unit_price'];
             $sold_dish = [
                 'dish_id' => $dishId,
-                'sale_id' => $saleId,
-                'unit_price' => $unitPrice,
+                'sale_id' => $sale_id,
+                'unit_price' => $unit_price,
                 'quantity' => $quantity
             ];
-            $sum += $unitPrice * $quantity;
+            $sum += $unit_price * $quantity;
             if ($quantity > 0) {
                 SoldDish::insert($sold_dish);
             }
 
             FranchiseeStock::where([
-                ['user_id', $userId],
+                ['user_id', $user_id],
                 ['dish_id', $dishId]
             ])->decrement('quantity', $quantity);
         }
@@ -307,20 +309,21 @@ class OrderController extends Controller
         User::whereKey($clientId)
             ->update(['loyalty_point' => (int)$loyaltyPoint]);
 
-        Sale::whereKey($saleId)
+        Sale::whereKey($sale_id)
             ->update(['points_to_return' => $toReturn]);
 
         $this->put_loyalty_point_in_session($clientId);
 
         // invoice creation
         $invoice = ['amount' => $sum,
-            'date_emitted' => date("Y-m-d"),
-            'monthly_fee' => 0,
-            'initial_fee' => 0,
-            'franchisee_order' => 0,
-            'client_order' => 1,
-            'user_id' => $client['id'],
-            'sale_id' => $saleId];
+                    'discount_amount' => $discount_amount,
+                    'date_emitted' => date("Y-m-d"),
+                    'monthly_fee' => 0,
+                    'initial_fee' => 0,
+                    'franchisee_order' => 0,
+                    'client_order' => 1,
+                    'user_id' => $client['id'],
+                    'sale_id' => $sale_id];
         $invoice = Invoice::create($invoice)->toArray();
         $reference = $this->create_invoice_reference('CL', $client['id'], $invoice['id']);
         $this->save_invoice_pdf($invoice['id'], $reference);
@@ -328,7 +331,7 @@ class OrderController extends Controller
         $this->sendInvoiceMail($client, $invoice);
 
         flash(trans('client/order.created')
-            . ' <a href="' . route('client_sale_display', ['id' => $saleId]) . '">'
+            . ' <a href="' . route('client_sale_display', ['id' => $sale_id]) . '">'
             . trans('client/order.click_here')
             . '</a>.')
             ->success();

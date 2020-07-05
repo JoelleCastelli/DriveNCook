@@ -1,0 +1,2 @@
+INSERT INTO drivencook.warehouse_stock (warehouse_id, dish_id, quantity, warehouse_price, updated_at) VALUES (2, 1, 50, 10, null);
+INSERT INTO drivencook.warehouse_stock (warehouse_id, dish_id, quantity, warehouse_price, updated_at) VALUES (7, 42, 20, 50, null);
