@@ -75,7 +75,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             let table = $('#alltrucks').DataTable({searchPanes: true});
-            table.searchPanes.container().prependTo(table.table().container());
+            //table.searchPanes.container().prependTo(table.table().container());
         });
 
         function deleteTruck(id) {

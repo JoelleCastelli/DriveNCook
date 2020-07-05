@@ -9,7 +9,6 @@ use App\Models\EventInvited;
 use App\Models\Location;
 use App\Models\User;
 use App\Traits\EmailTools;
-use App\Traits\EnumValue;
 use App\Traits\UserTools;
 use MaddHatter\LaravelFullcalendar\Facades\Calendar;
 
@@ -17,7 +16,6 @@ class EventController extends Controller
 {
     use EmailTools;
 
-//    use EnumValue;
     use UserTools;
 
     public function __construct()
@@ -43,7 +41,6 @@ class EventController extends Controller
             );
         }
         $calendar_details = Calendar::addEvents($event_calendar);
-//        dd($event_list);
         return view('corporate.events.event_list')
             ->with('calendar_details', $calendar_details)
             ->with('event_list', $event_list);
@@ -98,7 +95,7 @@ class EventController extends Controller
         Event::whereKey(request('event_id'))->update($params);
 
         flash(trans('event.event_update_success_message'))->success();
-        return redirect()->route('corporate.event_list');
+        return redirect()->route('corporate.event_view', ['event_id' => request('event_id')]);
     }
 
     public function event_create()

@@ -6,7 +6,7 @@ return [
     'actions' => 'Actions',
     'action' => 'Action',
     'add' => 'Add',
-    'ajax_error' => 'An error has occurred, please refresh: ',
+    'ajax_error' => 'An error has occurred, please refresh the page',
     'cancel' => 'Cancel',
     'choose' => 'Choose',
     'continue' => 'Continue',
@@ -32,6 +32,7 @@ return [
     'see_details' => 'See details',
     'total_franchisees' => 'Number of franchisees:',
     'franchisees_list' => 'Franchisees list',
+    'availability' => 'Availability',
 
 
     // Franchisee info
@@ -65,7 +66,16 @@ return [
     'first_login' => 'First login',
     'update_account' => 'Update my account',
     'unknown_pseudo' => 'Unknown pseudo',
-    'pseudo' => 'Pseudonyme',
+    'pseudo' => 'Pseudonym',
+    'pseudo_list' => 'Pseudonyms list',
+    'pseudo_management' => 'Franchisees pseudonyms management',
+    'add_pseudo' => 'Add a new pseudonym',
+    'update_pseudo' => 'Update a pseudonym',
+    'unavailable_pseudo' => 'Unavailable: used by ',
+    'pseudo_created' => 'The new pseudonym has been created',
+    'pseudo_updated' => 'The pseudonym has been updated',
+    'confirm_pseudo_deletion' => 'Are you sure you want to delete this pseudonym?',
+    'pseudo_deleted' => 'The pseudonym has been deleted',
     'no_pseudo_available' => 'No pseudonym available, contact the Drive\'N\'Cook team',
     'latest_monthly_payment' => 'Latest monthly payment',
     'delete_confirm' => 'Are you sure you want to delete this franchisee? All associated data will be deleted.',
@@ -157,6 +167,12 @@ return [
     'stock_order_status_in_progress' => 'In progress',
     'stock_order_status_sent' => 'Shipped',
     'stock_order_status_received' => 'Done',
+    'stock_delete_confirm' => 'Are you sure you want to delete this stock line?',
+    'stock_delete_success' => 'The stock line has been deleted',
+    'stock_update_success' => 'The stock line has been updated',
+    'order_delete_confirm' => 'Are you sure you want to delete this stock order?',
+    'order_delete_success' => 'The stock order has been deleted',
+    'order_update_success' => 'The stock order has been updated',
 
 
     // Invoices

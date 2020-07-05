@@ -224,7 +224,7 @@ class FranchiseeController extends Controller
 
         $this->update_user_password(request('id'), request('password'));
 
-        flash('Mot de passe du franchisé modifié')->success();
+        flash(trans('franchisee_update.new_password_updated'))->success();
         return back();
     }
 

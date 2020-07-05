@@ -270,10 +270,14 @@ class WarehouseController extends Controller
         if (!empty($warehouse)) {
             $warehouse = $warehouse->toArray();
         }
+
         $categories = $this->get_enum_column_values('dish', 'category');
+        $warehouse_stock_dishes_id = WarehousStock::where('warehouse_id', $warehouse['id'])->get()->pluck('dish_id')->toArray();
+        $dishes = Dish::whereNotIn('id', $warehouse_stock_dishes_id)->get()->toArray();
 
         return view('corporate.warehouse.warehouse_dishes')
             ->with('warehouse', $warehouse)
+            ->with('dishes', $dishes)
             ->with('categories', $categories);
     }
 
@@ -383,36 +387,23 @@ class WarehouseController extends Controller
         $error = false;
         $errors_list = [];
 
-        if (
-            count($parameters) == 5 && !empty($parameters["warehouseId"]) &&
-            !empty($parameters["name"]) && !empty($parameters["category"]) &&
-            !empty($parameters["quantity"]) && !empty($parameters["warehousePrice"])
-        ) {
-            $name = $parameters["name"];
-            $category = $parameters["category"];
+        if (count($parameters) == 4 && !empty($parameters["warehouseId"]) && !empty($parameters["id"])
+            && !empty($parameters["quantity"]) && !empty($parameters["warehousePrice"])) {
+            $dish_id = $parameters["id"];
             $quantity = intval($parameters["quantity"]);
-            $warehousePrice = $parameters["warehousePrice"];
+            $warehouse_price = $parameters["warehousePrice"];
             $warehouseId = intval($parameters["warehouseId"]);
 
-            $dish = Dish::where([
-                ['name', $name],
-                ['category', $category]
-            ])->first();
+            $dish = Dish::where('id', $dish_id)->first();
             if(!empty($dish)) {
                 $dish = $dish->toArray();
-                $dishId = $dish['id'];
-
-                if (count($dish) < 1) {
-                    $error = true;
-                    $errors_list[] = trans('warehouse_stock.dish_not_exist_error');
-                }
 
                 if (!is_int($quantity)) {
                     $error = true;
                     $errors_list[] = trans('warehouse_stock.quantity_error');
                 }
 
-                if(!is_numeric($warehousePrice)) {
+                if(!is_numeric($warehouse_price)) {
                     $error = true;
                     $errors_list[] = trans('warehouse_stock.warehouse_price_error');
                 }
@@ -429,19 +420,18 @@ class WarehouseController extends Controller
                     ];
                 } else {
                     $stock = [
-                        'quantity' => $quantity, 'warehouse_price' => $warehousePrice,
-                        'warehouse_id' => $warehouseId, 'dish_id' => $dishId
+                        'quantity' => $quantity, 'warehouse_price' => $warehouse_price,
+                        'warehouse_id' => $warehouseId, 'dish_id' => $dish_id
                     ];
-                    //$lastId = Dish::insertGetId($stock);
 
                     WarehousStock::where([
                         ['warehouse_id', $warehouseId],
-                        ['dish_id', $dishId]
+                        ['dish_id', $dish_id]
                     ])->insert($stock);
 
                     $warehouseStock = WarehousStock::where([
                         ['warehouse_id', $warehouseId],
-                        ['dish_id', $dishId]
+                        ['dish_id', $dish_id]
                     ])->with('dish')->first();
                     if(!empty($warehouseStock)) {
                         $warehouseStock = $warehouseStock->toArray();
@@ -481,7 +471,6 @@ class WarehouseController extends Controller
 
     public function warehouse_stock_update_submit(Request $request)
     {
-        //TODO when all send update franchisee stock && when send update WH stock
         $parameters = $request->except(['_token']);
         $error = false;
         $errors_list = [];
@@ -493,15 +482,15 @@ class WarehouseController extends Controller
         ) {
             $dishId = intval($parameters["dishId"]);
             $quantity = intval($parameters["quantity"]);
-            $warehousePrice = $parameters["warehousePrice"];
-            $warehouseId = intval($parameters["warehouseId"]);
+            $warehouse_price = $parameters["warehousePrice"];
+            $warehouse_id = intval($parameters["warehouseId"]);
 
             if (!is_int($quantity)) {
                 $error = true;
                 $errors_list[] = trans('warehouse_stock.quantity_error');
             }
 
-            if(!is_numeric($warehousePrice)) {
+            if(!is_numeric($warehouse_price)) {
                 $error = true;
                 $errors_list[] = trans('warehouse_stock.warehouse_price_error');
             }
@@ -513,15 +502,15 @@ class WarehouseController extends Controller
                 ];
             } else {
                 $stock = [
-                    'quantity' => $quantity, 'warehouse_price' => $warehousePrice
+                    'quantity' => $quantity, 'warehouse_price' => $warehouse_price
                 ];
                 WarehousStock::where([
-                    ['warehouse_id', $warehouseId],
+                    ['warehouse_id', $warehouse_id],
                     ['dish_id', $dishId]
                 ])->update($stock);
 
                 $warehouseStock = WarehousStock::where([
-                    ['warehouse_id', $warehouseId],
+                    ['warehouse_id', $warehouse_id],
                     ['dish_id', $dishId]
                 ])->first();
                 if(!empty($warehouseStock)) {
@@ -544,17 +533,17 @@ class WarehouseController extends Controller
         echo json_encode($response_array);
     }
 
-    public function warehouse_stock_delete($dishId, $warehouseId)
+    public function warehouse_stock_delete($dish_id, $warehouse_id)
     {
-        if (!ctype_digit($dishId) || !ctype_digit($warehouseId)) {
+        if (!ctype_digit($dish_id) || !ctype_digit($warehouse_id)) {
             $response_array = [
                 'status' => 'error',
                 'error' => 'warehouse_stock.id_not_digit'
             ];
         } else {
             WarehousStock::where([
-                ['warehouse_id', $warehouseId],
-                ['dish_id', $dishId]
+                ['warehouse_id', $warehouse_id],
+                ['dish_id', $dish_id]
             ])->delete();
 
             $response_array = [

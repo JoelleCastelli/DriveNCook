@@ -28,4 +28,8 @@ return [
     'select_menu_off' => 'Choisissez...',
     'dish_create' => 'Ajouter',
     'dish_close' => 'Fermer',
+
+    'delete_confirm' => 'Voulez-vous vraiment supprimer cet produit du stock de l\'entrepôt ?',
+    'ajax_error' => 'Une erreur est survenue, veuillez rafraîchir la page',
+    'delete_success' => 'Le produit a été supprimé du stock de l\'entrepôt',
 ];

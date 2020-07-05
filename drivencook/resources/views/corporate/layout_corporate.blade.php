@@ -136,11 +136,6 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light2" href="#">
-                            <i class="fa fa-headset"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.tickets_gestion') }}
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link text-light2" href="{{ route('franchisee_obligation_update') }}">
                             <i class="fa fa-cogs"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.update_obligations') }}
                         </a>
@@ -207,33 +202,15 @@
                 @case(route('corporate.update_account'))
                 @case(route('corporate_statistics'))
                 @case(route('location_list'))
-                    <li class="nav-item">
-                        <a class="nav-link text-light2" href="{{ route('corporate_dashboard') }}">
-                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_dashboard') }}
-                        </a>
-                    </li>
-                @break
-
                 @case(route('client_list'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{ route('corporate_dashboard') }}">
                             <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_dashboard') }}
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-light2" href="{{ route('client_create') }}">
-                            <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.add_client') }}
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-light2" href="#">
-                            <i class="fa fa-credit-card"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.loyalty_gestion') }}
-                        </a>
-                    </li>
                 @break
 
                 @case(route('dish_list'))
-                @case(route('dish_creation'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{ route('corporate_dashboard') }}">
                             <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_dashboard') }}
@@ -244,6 +221,15 @@
                             <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.add_product') }}
                         </a>
                     </li>
+                @break
+
+
+                @case(route('dish_creation'))
+                <li class="nav-item">
+                    <a class="nav-link text-light2" href="{{ route('dish_list') }}">
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_products_list') }}
+                    </a>
+                </li>
                 @break
 
                 @case(route('admin_list'))
@@ -275,7 +261,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{ route('corporate.event_creation') }}">
-                            <i class="fa fa-calendar-plus"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.add_event') }}
+                            <i class="fa fa-calendar-plus"></i>&nbsp;&nbsp;&nbsp;{{ trans('event.add_event') }}
                         </a>
                     </li>
                 @break
@@ -283,7 +269,7 @@
                 @case(route('corporate.event_creation'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{ route('corporate.event_list') }}">
-                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_event_list') }}
+                            <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('event.back_event_list') }}
                         </a>
                     </li>
                 @break
@@ -329,7 +315,7 @@
             @if (strpos(url()->current(), route('corporate.event_view', ['id'=>''])) !== false)
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{ route('corporate.event_list') }}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_event_list') }}
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('event.back_event_list') }}
                     </a>
                 </li>
             @endif
@@ -337,7 +323,7 @@
             @if (strpos(url()->current(), route('corporate.event_update', ['event_id'=>''])) !== false)
                 <li class="nav-item">
                     <a class="nav-link text-light2" href="{{ route('corporate.event_list') }}">
-                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.back_event_list') }}
+                        <i class="fa fa-chevron-left"></i>&nbsp;&nbsp;&nbsp;{{ trans('event.back_event_list') }}
                     </a>
                 </li>
             @endif

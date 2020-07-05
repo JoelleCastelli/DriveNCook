@@ -205,7 +205,7 @@ class TruckController extends Controller
             }
 
             if ($error) {
-                return redirect()->back()->with('error', $errors_list);
+                return redirect()->back()->withInput()->with('error', $errors_list);
             } else {
                 $truck = [
                     'brand' => $brand, 'model' => $model, 'functional' => $functional,
@@ -416,7 +416,7 @@ class TruckController extends Controller
         }
 
         if ($error) {
-            return redirect()->back()->with('error', $errors_list);
+            return redirect()->back()->withInput()->with('error', $errors_list);
         }
         $truck = [
             'brand' => $brand, 'model' => $model, 'functional' => $functional,

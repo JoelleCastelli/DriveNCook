@@ -19,7 +19,7 @@ trait NewslettersTools
         foreach ($user_list as $user) {
             $this->sendNewsLetter($user, $message);
         }
-        flash(trans('corporate.newsletter_sent'))->success();
+        flash(trans('client/global.newsletter_sent'))->success();
         return redirect()->route('client_list');
     }
 
@@ -35,7 +35,7 @@ trait NewslettersTools
             $this->sendNewsLetter($user, $message);
         }
 
-        flash(trans('corporate.newsletter_sent'))->success();
+        flash(trans('client/global.newsletter_sent'))->success();
         return redirect()->route('client_list');
 
     }
@@ -55,7 +55,7 @@ trait NewslettersTools
             $this->sendNewsLetter($user, $message);
         }
 
-        flash(trans('corporate.newsletter_sent'))->success();
+        flash(trans('client/global.newsletter_sent'))->success();
         return redirect()->route('client_list');
 
     }

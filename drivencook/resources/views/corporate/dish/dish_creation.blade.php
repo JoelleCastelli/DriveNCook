@@ -1,7 +1,7 @@
 @extends('corporate.layout_corporate')
 
 @section('title')
-    Création de produit
+    {{ trans('dish.dish_creation') }}
 @endsection
 
 

@@ -3,6 +3,7 @@
 return [
 
     'catalogue' => 'Catalogue',
+    'dish_creation' => 'Product creation',
     'nb_products' => 'Number of products offered:',
     'see_details' => 'See details',
     'name' => 'Name',

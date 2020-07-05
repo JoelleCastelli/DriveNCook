@@ -31,6 +31,7 @@ return [
     'latest_safety_inspection' => 'Latest safety inspection',
     'truck_deployment' => 'Truck deployment',
     'available_franchisees' => 'Available franchisees',
+    'all_franchisees_unavailable' => 'All franchisees already have a truck assigned',
     'assign' => 'Assign',
     'assigned_to' => 'Assigned to :franchisee',
     'remove_truck' => 'Remove the truck',

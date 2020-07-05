@@ -59,7 +59,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             let table = $('#allwarehouses').DataTable({searchPanes: true});
-            table.searchPanes.container().prependTo(table.table().container());
+            /*table.searchPanes.container().prependTo(table.table().container());*/
         });
 
         function delete_warehouse(id) {

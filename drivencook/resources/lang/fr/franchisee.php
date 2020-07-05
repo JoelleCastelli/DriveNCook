@@ -6,7 +6,7 @@ return [
     'actions' => 'Actions',
     'action' => 'Action',
     'add' => 'Ajouter',
-    'ajax_error' => 'Une erreur est survenue, veuillez rafraîchir la page : ',
+    'ajax_error' => 'Une erreur est survenue, veuillez rafraîchir la page',
     'cancel' => 'Annuler',
     'choose' => 'Choisir',
     'continue' => 'Continuer',
@@ -32,6 +32,7 @@ return [
     'see_details' => 'Consulter les détails',
     'total_franchisees' => 'Nombre de franchisés :',
     'franchisees_list' => 'Liste des franchisés',
+    'availability' => 'Disponibilité',
 
 
     // Franchisee info
@@ -66,6 +67,15 @@ return [
     'update_account' => 'Modifier mon compte',
     'unknown_pseudo' => 'Pseudo inconnu',
     'pseudo' => 'Pseudonyme',
+    'pseudo_list' => 'Liste des pseudonymes',
+    'pseudo_management' => 'Gestion des pseudonymes de franchisés',
+    'add_pseudo' => 'Ajouter un nouveau pseudonyme',
+    'update_pseudo' => 'Modifier un pseudonyme',
+    'unavailable_pseudo' => 'Indisponible : utilisé par ',
+    'pseudo_created' => 'Le nouveau pseudonyme a été créé',
+    'pseudo_updated' => 'Le pseudonyme a été mis à jour',
+    'confirm_pseudo_deletion' => 'Voulez-vous vraiment supprimer ce pseudonyme ?',
+    'pseudo_deleted' => 'Le pseudonyme a été supprimé',
     'no_pseudo_available' => 'Aucun pseudonyme disponible, contactez l\'équipe Drive\'N\'Cook',
     'latest_monthly_payment' => 'Dernier paiement mensuel',
     'delete_confirm' => 'Voulez-vous vraiment supprimer ce franchisé ? Toutes les données associées seront supprimées.',
@@ -157,6 +167,12 @@ return [
     'stock_order_status_in_progress' => 'En cours de traitement',
     'stock_order_status_sent' => 'Expédiée',
     'stock_order_status_received' => 'Terminée',
+    'stock_delete_confirm' => 'Voulez-vous vraiment supprimer cette ligne de stock ?',
+    'stock_delete_success' => 'La ligne de stock a été supprimée',
+    'stock_update_success' => 'La ligne de stock a été mise à jour',
+    'order_delete_confirm' => 'Voulez-vous vraiment supprimer cette commande de stock ?',
+    'order_delete_success' => 'La commande de stock a été supprimée',
+    'order_update_success' => 'La commande de stock a été mise à jour',
 
     // Invoices
     'invoices' => 'Factures',
