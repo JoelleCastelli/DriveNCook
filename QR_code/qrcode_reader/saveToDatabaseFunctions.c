@@ -15,7 +15,7 @@ void registerFranchisee(char *franchiseeData, FILE *logFd) {
 
     dataInArray = checkFranchiseeData(franchiseeData, logFd);
 
-    sprintf(tmpReq, "INSERT INTO user(lastname, firstname, email) VALUES('%s', '%s', '%s')", dataInArray[0], dataInArray[1], dataInArray[2]);
+    sprintf(tmpReq, "INSERT INTO user(lastname, firstname, email, role) VALUES('%s', '%s', '%s', 'Franchisé')", dataInArray[0], dataInArray[1], dataInArray[2]);
 
     query(&conn, tmpReq, &res, logFd);
 
