@@ -149,7 +149,7 @@ return [
     'cancel_order_prompt' => 'Do you really want to cancel this order?',
     'choose_plates' => 'Select the dishes',
     'choose_warehouse' => 'Select a warehouse',
-    'client_orders' => 'Orders (client)',
+    'client_orders' => 'Clients orders',
     'different_plate_count' => 'Different dishes',
     'new_order' => 'New order',
     'summary_and_paiement' => 'Summary and payment',

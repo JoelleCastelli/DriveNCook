@@ -149,7 +149,7 @@ return [
     'cancel_order_prompt' => 'Voulez-vous vraiment annuler cette commande ?',
     'choose_plates' => 'Choisissez les plats',
     'choose_warehouse' => 'Choisissez un entrepôt',
-    'client_orders' => 'Commandes (clients)',
+    'client_orders' => 'Commandes clients',
     'different_plate_count' => 'Plats différents',
     'new_order' => 'Nouvelle commande',
     'summary_and_paiement' => 'Récapitulatif et paiement',
