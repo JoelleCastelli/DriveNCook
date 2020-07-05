@@ -25,4 +25,34 @@ return [
     'loyalty_array' => 'Loyalty awards',
     'step' => 'Points steps',
     'reduction' => 'Reductions',
+
+    'view_details' => 'View details',
+
+    'clients_management' => 'Clients management',
+    'nb_clients' => 'Number of clients:',
+    'clients_list' => 'Clients list',
+    'name' => 'Name',
+    'firstname' => 'Firstname',
+    'email' => 'Email address',
+    'phone' => 'Phone',
+    'registered_date' => 'Registration date',
+    'nb_sales' => 'Total number of sales:',
+    'month_nb_sales' => 'Number of sales over the last 30 days:',
+
+    'newsletter_target' => 'This newsletter will be sent to:',
+    'send_newsletter' => 'Send a newsletter',
+    'send_everybody' => 'All clients',
+    'send_new_users' => 'Clients who have never ordered',
+    'send_loyalty_points' => 'Clients with a minimum of loyalty points',
+    'minimum_loyalty_points' => 'Minimum of loyalty points:',
+    'optional_message' => 'Add an optional message:',
+    'newsletter_sent' => 'The newsletter has been sent',
+
+    'ajax_error' => 'An error has occurred, please refresh the page',
+    'delete_confirm' => 'Are you sure you want to delete this client? All associated data will be deleted.',
+    'delete_success' => 'The client has been deleted',
+
+    'send' => 'Send',
+    'cancel' => 'Cancel',
+
 ];

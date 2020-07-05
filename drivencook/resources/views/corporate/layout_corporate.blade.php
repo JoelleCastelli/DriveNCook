@@ -220,11 +220,6 @@
                             <i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.add_client') }}
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-light2" href="#">
-                            <i class="fa fa-credit-card"></i>&nbsp;&nbsp;&nbsp;{{ trans('corporate.loyalty_gestion') }}
-                        </a>
-                    </li>
                 @break
 
                 @case(route('dish_list'))
