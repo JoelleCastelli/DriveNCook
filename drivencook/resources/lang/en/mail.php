@@ -2,7 +2,7 @@
 
 return [
     'hello' => 'Hello',
-    'staff_signature' => 'The Drive \'N\' Cook team',
+    'staff_signature' => 'The Drive\'N\'Cook team',
 
     // New user
     'new_account' =>
