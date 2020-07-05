@@ -1,0 +1,2 @@
+INSERT INTO drivencook.purchased_dish (purchase_order_id, dish_id, quantity, unit_price, updated_at, quantity_sent) VALUES (37, 3, 13, 5, '2020-07-04 21:49:12', 5);
+INSERT INTO drivencook.purchased_dish (purchase_order_id, dish_id, quantity, unit_price, updated_at, quantity_sent) VALUES (41, 3, 13, 5, '2020-07-04 21:49:12', 5);
