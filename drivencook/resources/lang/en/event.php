@@ -32,6 +32,8 @@ return [
     'delete_confirm' => 'Are you sure you want to delete this event? All associated data will be deleted.',
     'ajax_error' => 'An error has occurred, please refresh the page',
     'delete_success' => 'The event has been deleted',
+    'uninvite_confirm' => 'Are you sure you want to remove this person from the event?',
+    'uninvite_success' => 'This person has been uninvited',
 ];
 
 

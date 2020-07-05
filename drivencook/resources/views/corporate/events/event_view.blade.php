@@ -1,6 +1,6 @@
 @extends('corporate.layout_corporate')
 @section('title')
-    {{trans('event.event')}} : {{strtoupper($event['title'])}}
+    {{trans('event.event')}} - {{strtoupper($event['title'])}}
 @endsection
 
 @section('content')
@@ -32,19 +32,16 @@
                     @if (!empty($event['location']))
                         <div class="card-footer">
                             <iframe
-                                    width="100%"
-                                    height="450"
-                                    frameborder="0" style="border:0"
-                                    src="https://www.google.com/maps/embed/v1/place?key={{env('GOOGLE_MAPS_API_KEY')}}&q={{$event['location']['address'].' '.$event['location']['city'].' '.$event['location']['postcode']}}"
-                                    {{--                                    src="https://www.google.com/maps/embed/v1/place?key={{env('GOOGLE_MAPS_API_KEY')}}&q=Space+Needle,Seattle+WA"--}}
-                                    allowfullscreen>
+                                width="100%" height="450" frameborder="0" style="border:0"
+                                src="https://www.google.com/maps/embed/v1/place?key={{env('GOOGLE_MAPS_API_KEY')}}&q={{$event['location']['address'].' '.$event['location']['city'].' '.$event['location']['postcode']}}"
+                                allowfullscreen>
                             </iframe>
                         </div>
                     @endif
 
                 </ul>
                 <div class="card-footer">
-                    <a href="{{route('corporate.event_update',['event_id'=>$event['id']])}}">
+                    <a href="{{ route('corporate.event_update',['event_id'=>$event['id']]) }}">
                         <button class="btn btn-light_blue">{{trans('event.update')}}</button>
                     </a>
                 </div>
@@ -145,7 +142,6 @@
             </div>
         @endif
     </div>
-
 @endsection
 
 @section('script')
@@ -155,7 +151,7 @@
         });
 
         function eventRemoveInviteUser(event_id, user_id) {
-            if (confirm("Voulez-vous vraiment retirer cet invité ?")) {
+            if (confirm(Lang.get('event.uninvite_confirm'))) {
                 if (!isNaN(event_id) && !isNaN(user_id)) {
                     let urlB = '{{route('corporate.event_remove_invite_user',['event_id' => ':event_id', 'user_id' => ':user_id'])}}';
                     urlB = urlB.replace(':event_id', event_id);
@@ -168,14 +164,14 @@
                         },
                         success: function (data) {
                             if (data == user_id) {
-                                alert("Invité retiré");
+                                alert(Lang.get('event.uninvite_success'));
                                 $('#invitedUsers').DataTable().row('#row_user' + user_id).remove().draw();
                             } else {
-                                alert("Une erreur est survenue lors de l'annulation, veuillez rafraîchir la page");
+                                alert(Lang.get('event.ajax_error'));
                             }
                         },
                         error: function () {
-                            alert("Une erreur est survenue lors de l'annulation, veuillez rafraîchir la page");
+                            alert(Lang.get('event.ajax_error'));
                         }
                     })
                 }
