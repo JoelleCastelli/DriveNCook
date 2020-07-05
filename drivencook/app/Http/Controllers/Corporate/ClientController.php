@@ -24,11 +24,13 @@ class ClientController extends Controller
     public function client_list()
     {
         $client_list = User::where('role', 'Client')->get()->toArray();
-        $sale_count = Sale::where("date", ">=", Carbon::today()->subDays(30))->count();
+        $month_sale_count = Sale::where("date", ">=", Carbon::today()->subDays(30))->count();
+        $total_sale_count = Sale::count();
 
         return view('corporate.client.client_list')
             ->with('client_list', $client_list)
-            ->with('sale_count', $sale_count);
+            ->with('total_sale_count', $total_sale_count)
+            ->with('month_sale_count', $month_sale_count);
     }
 
     public function add_client()
