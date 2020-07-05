@@ -31,6 +31,7 @@ return [
     'clients_management' => 'Gestion des clients',
     'nb_clients' => 'Nombre de clients :',
     'clients_list' => 'Liste des clients',
+    'client_info' => 'Informations',
     'name' => 'Nom',
     'firstname' => 'Prénom',
     'email' => 'Adresse e-mail',
@@ -63,6 +64,13 @@ return [
     'optional_message' => 'Ajouter un message supplémentaire :',
     'newsletter_sent' => 'La newsletter a été envoyée',
 
+    'client_orders' => 'Commandes',
+    'order_date' => 'Date',
+    'order_online' => 'Commande en ligne',
+    'payment_method' => 'Moyen de paiement',
+    'order_content' => 'Contenu de la commande',
+    'franchisee' => 'Franchisé',
+
     'ajax_error' => 'Une erreur est survenue, veuillez rafraîchir la page',
     'delete_confirm' => 'Voulez-vous vraiment supprimer ce client ? Toutes les données associées seront supprimées.',
     'delete_success' => 'Le client a été supprimé',
@@ -70,5 +78,8 @@ return [
     'send' => 'Envoyer',
     'cancel' => 'Annuler',
     'submit' => 'Valider',
+    'update' => 'Modifier',
+    'not_specified_m' => 'Non renseigné',
+    'not_specified_f' => 'Non renseignée',
 
 ];

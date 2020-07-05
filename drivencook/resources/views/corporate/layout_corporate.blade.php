@@ -209,7 +209,7 @@
                         </a>
                     </li>
                 @break
-            
+
                 @case(route('dish_list'))
                     <li class="nav-item">
                         <a class="nav-link text-light2" href="{{ route('corporate_dashboard') }}">

@@ -169,7 +169,7 @@ class ClientController extends Controller
         $user = $user->toArray();
 
         $this->sendNewsLetter($user, $param['news_message']);
-        flash(trans('corporate.newsletter_sent'))->success();
+        flash(trans('client/global.newsletter_sent'))->success();
         return back();
 
     }
