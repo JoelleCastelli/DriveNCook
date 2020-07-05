@@ -1,14 +1,8 @@
 @extends('corporate.layout_corporate')
-@section('style')
-    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css"
-          rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
-          rel="stylesheet">
-@endsection
-@section('title')
-    Modification d'un franchisé
-@endsection
 
+@section('title')
+    {{ trans('franchisee_update.franchisee_update') }}
+@endsection
 
 @section('content')
     <div class="content">
@@ -126,7 +120,7 @@
             <div class="col-12 col-sm-10 col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        <h3>Mise à jour du mot de passe</h3>
+                        <h3>{{ trans('franchisee_update.password_update') }}</h3>
                     </div>
                     <div class="card-body">
                         <form action="{{route('franchisee_update_password')}}" method="post">
@@ -134,9 +128,9 @@
                             <input type="hidden" name="id" id="id" value="{{ $franchisee['id'] }}">
 
                             <div class="form-group">
-                                <label for="password">Nouveau mot de passe</label>
+                                <label for="password">{{ trans('franchisee_update.new_password') }}</label>
                                 <input class="form-control" type="password" name="password" id="password"
-                                       placeholder="nouveau mot de passe" minlength="6">
+                                       placeholder="{{ trans('franchisee_update.set_new_password') }}" minlength="6">
                                 @if ($errors->has('password'))
                                     <span class="badge-danger">
                                         {{$errors->first('password')}}
@@ -145,9 +139,9 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="password_confirmation">Confirmation mot de passe</label>
+                                <label for="password_confirmation">{{ trans('franchisee_update.new_password_confirmation') }}</label>
                                 <input class="form-control" type="password" name="password_confirmation"
-                                       id="password_confirmation" placeholder="confirmation mot de passe" minlength="6">
+                                       id="password_confirmation" placeholder="{{ trans('franchisee_update.set_new_password_confirmation') }}" minlength="6">
                                 @if ($errors->has('password_confirmation'))
                                     <span class="badge-danger">
                                         {{$errors->first('password_confirmation')}}
@@ -155,18 +149,11 @@
                                 @endif
                             </div>
 
-                            <button type="submit" class="btn btn-light_blue">Modifier</button>
+                            <button type="submit" class="btn btn-info">{{ trans('franchisee_update.update') }}</button>
                         </form>
                     </div>
                 </div>
             </div>
-
-            @endsection
-
-            @section('script')
-                <script type="text/javascript"
-                        src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+        </div>
+    </div>
 @endsection

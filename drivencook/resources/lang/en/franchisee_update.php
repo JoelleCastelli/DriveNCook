@@ -11,6 +11,12 @@ return [
     'driving_licence' => 'Driving license number',
     'social_security' => 'Social security number',
     'submit' => 'Confirm',
+    'franchisee_update' => 'Franchisee update',
+    'password_update' => 'Password update',
+    'update' => 'Update',
+    'new_password' => 'New password:',
+    'new_password_confirmation' => 'New password confirmation:',
+    'new_password_updated' => 'The franchisee\'s password has been updated',
 
     // Error messages
     'lastname_error' => 'Firstname must contain between 2 and 30 characters',
@@ -34,5 +40,7 @@ return [
     'set_telephone' => 'Enter a phone number',
     'set_driving_licence' => 'Enter a driving license number',
     'set_social_security' => 'Enter a social security number',
+    'set_new_password' => 'Enter a new password',
+    'set_new_password_confirmation' => 'Enter the new password again',
 
 ];

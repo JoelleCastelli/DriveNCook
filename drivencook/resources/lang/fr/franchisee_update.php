@@ -11,6 +11,12 @@ return [
     'driving_licence' => 'Numéro de permis de conduire',
     'social_security' => 'Numéro de sécurité sociale',
     'submit' => 'Valider',
+    'franchisee_update' => 'Modification d\'un franchisé',
+    'password_update' => 'Mise à jour du mot de passe',
+    'update' => 'Modifier',
+    'new_password' => 'Nouveau mot de passe :',
+    'new_password_confirmation' => 'Confirmation du nouveau mot de passe :',
+    'new_password_updated' => 'Le mot de passe du franchisé a été mis à jour',
 
     // Error messages
     'lastname_error' => 'Le prénom doit contenir entre 2 et 30 caractères',
@@ -34,5 +40,7 @@ return [
     'set_telephone' => 'Entrez un numéro de téléphone',
     'set_driving_licence' => 'Entrez un numéro de permis',
     'set_social_security' => 'Entrez un numéro de sécurité sociale',
+    'set_new_password' => 'Entrez un nouveau mot de passe',
+    'set_new_password_confirmation' => 'Confirmez le mot de passe',
 
 ];
