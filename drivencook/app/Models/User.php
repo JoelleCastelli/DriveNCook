@@ -7,6 +7,66 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Auth\Authenticatable as BasicAuthenticatable;
 
+/**
+ * App\Models\User
+ *
+ * @property int $id
+ * @property string|null $email
+ * @property string|null $firstname
+ * @property string|null $lastname
+ * @property string|null $role
+ * @property string|null $password
+ * @property string|null $remember_token
+ * @property string|null $birthdate
+ * @property int|null $pseudo_id
+ * @property string|null $telephone
+ * @property string|null $driving_licence
+ * @property string|null $social_security
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $loyalty_point
+ * @property string|null $password_token
+ * @property int|null $opt_in
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Sale[] $client_orders
+ * @property-read int|null $client_orders_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EventInvited[] $event_invited
+ * @property-read int|null $event_invited_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\EventInvited[] $event_invited_30
+ * @property-read int|null $event_invited_30_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Invoice[] $invoices
+ * @property-read int|null $invoices_count
+ * @property-read \App\Models\Invoice|null $last_invoice
+ * @property-read \App\Models\Invoice|null $last_paid_invoice_fee
+ * @property-read \App\Models\Pseudo|null $pseudo
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\PurchaseOrder[] $purchase_order
+ * @property-read int|null $purchase_order_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Sale[] $sales
+ * @property-read int|null $sales_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\FranchiseeStock[] $stocks
+ * @property-read int|null $stocks_count
+ * @property-read \App\Models\Truck|null $truck
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereBirthdate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereDrivingLicence($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereFirstname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereLastname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereLoyaltyPoint($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereOptIn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePasswordToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User wherePseudoId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereRole($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereSocialSecurity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereTelephone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class User extends Model implements Authenticatable
 {
     use BasicAuthenticatable;

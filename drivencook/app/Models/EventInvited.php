@@ -6,6 +6,21 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * App\Models\EventInvited
+ *
+ * @property int $event_id
+ * @property int $user_id
+ * @property-read \App\Models\Event $event
+ * @property-read \App\Models\Event $event_30
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EventInvited newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EventInvited newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EventInvited query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EventInvited whereEventId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\EventInvited whereUserId($value)
+ * @mixin \Eloquent
+ */
 class EventInvited extends Model
 {
     protected $table = 'event_invited';

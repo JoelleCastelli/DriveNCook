@@ -3,8 +3,8 @@
 #include "codecFunctions.h"
 #include "gtkFunctions.h"
 
-char *gladeFile = "../window.glade";
-char *configFilePath = "../configFile";
+char *gladeFile = "./window.glade";
+char *configFilePath = "./configFile";
 char codecKey[4][8] = {
         {1, 0, 0, 0, 1, 1, 1, 1},
         {1, 1, 0, 0, 0, 1, 1, 1},

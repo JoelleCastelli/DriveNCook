@@ -217,7 +217,7 @@
 
                         <tbody>
                             @foreach($fidelitySteps as $fidelityStep)
-                                <tr>
+                                <tr class="{{ $fidelityStep->step > Session::get('loyalty_point') ? 'table-danger' : 'table-success' }}">
                                     <td>{{ $fidelityStep->step }}</td>
                                     <td>{{ $fidelityStep->reduction }} €</td>
                                 </tr>
