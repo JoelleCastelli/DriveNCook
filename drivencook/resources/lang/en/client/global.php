@@ -34,10 +34,25 @@ return [
     'name' => 'Name',
     'firstname' => 'Firstname',
     'email' => 'Email address',
-    'phone' => 'Phone',
+    'birthdate' => 'Birthdate',
+    'phone' => 'Phone number',
     'registered_date' => 'Registration date',
     'nb_sales' => 'Total number of sales:',
     'month_nb_sales' => 'Number of sales over the last 30 days:',
+
+    'client_update' => 'Client update',
+    'set_name' => 'Set a name',
+    'set_firstname' => 'Set a firstname',
+    'set_email' => 'Set an email',
+    'set_telephone' => 'Set a phone number',
+    'password_update' => 'Password update',
+    'new_password' => 'New password',
+    'new_password_confirmation' => 'New password confirmation',
+    'set_new_password' => 'Set new password',
+    'set_password_confirm' => 'Confirm new password',
+    'new_password_updated' => 'The client\'s password has been updated',
+    'client_updated' => 'The client has been updated',
+    'password_updated' => 'The client\'s password has been updated',
 
     'newsletter_target' => 'This newsletter will be sent to:',
     'send_newsletter' => 'Send a newsletter',
@@ -54,5 +69,6 @@ return [
 
     'send' => 'Send',
     'cancel' => 'Cancel',
+    'submit' => 'Submit',
 
 ];

@@ -34,10 +34,25 @@ return [
     'name' => 'Nom',
     'firstname' => 'Prénom',
     'email' => 'Adresse e-mail',
+    'birthdate' => 'Date de naissance',
     'phone' => 'Téléphone',
     'registered_date' => 'Date d\'inscription',
     'nb_sales' => 'Nombre de ventes total :',
     'month_nb_sales' => 'Nombre de ventes sur les 30 derniers jours :',
+
+    'client_update' => 'Modification d\'un client',
+    'set_name' => 'Entrez un nom',
+    'set_firstname' => 'Entrez un prénom',
+    'set_email' => 'Entrez une adresse e-mail',
+    'set_telephone' => 'Entrez un numéro de téléphone',
+    'password_update' => 'Mise à jour du mot de passe',
+    'new_password' => 'Nouveau mot de passe :',
+    'new_password_confirmation' => 'Confirmation du nouveau mot de passe :',
+    'set_new_password' => 'Entrez un nouveau mot de passe',
+    'set_password_confirm' => 'Confirmez le nouveau mot de passe',
+    'new_password_updated' => 'Le mot de passe du client a été mis à jour',
+    'client_updated' => 'Le client a été mis à jour',
+    'password_updated' => 'Le mot de passe du client a été mis à jour',
 
     'newsletter_target' => 'Cette newsletter sera envoyée à :',
     'send_newsletter' => 'Envoyer une newsletter',
@@ -54,5 +69,6 @@ return [
 
     'send' => 'Envoyer',
     'cancel' => 'Annuler',
+    'submit' => 'Valider',
 
 ];

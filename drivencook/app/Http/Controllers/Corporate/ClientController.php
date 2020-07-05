@@ -69,7 +69,7 @@ class ClientController extends Controller
             'email' => request('email'),
         ]);
 
-        flash('Utilisateur modifié')->success();
+        flash(trans('client/global.client_updated'))->success();
         return redirect()->route('client_update', ['id' => request('id')]);
     }
 
@@ -81,7 +81,7 @@ class ClientController extends Controller
         ]);
 
         $this->update_user_password(request('id'), request('password'));
-        flash('Mot de passe du client modifié')->success();
+        flash(trans('client/global.password_updated'))->success();
         return back();
     }
 
