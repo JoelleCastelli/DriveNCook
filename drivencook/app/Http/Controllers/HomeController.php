@@ -22,4 +22,11 @@ class HomeController extends Controller
         $trucks = Truck::with('user')->with('location')->where('user_id', "!=", null)->get()->toArray();
         return view('news')->with('news_list', $news_list)->with('trucks', $trucks);
     }
+
+    public function about()
+    {
+        $trucks = Truck::with('user')->with('location')->where('user_id', "!=", null)->get()->toArray();
+
+        return view('about')->with('trucks', $trucks);
+    }
 }

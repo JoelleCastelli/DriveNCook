@@ -38,13 +38,14 @@ Route::get('/', [
     'uses' => 'HomeController@homepage'
 ]);
 
-Route::get('/about', function () {
-    return view('about');
-})->name('about');
-
 Route::get('/news', [
     'as' => 'news',
     'uses' => 'HomeController@news'
+]);
+
+Route::get('/about', [
+    'as' => 'about',
+    'uses' => 'HomeController@about'
 ]);
 
 Route::get('/{language}', function ($language) {
