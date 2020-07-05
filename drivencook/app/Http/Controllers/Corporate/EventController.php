@@ -146,7 +146,7 @@ class EventController extends Controller
                 $this->event_invite_user($id, $user_id);
             }
         }
-        flash("Evenement créé")->success();
+        flash(trans('event.event_creation_success_message'))->success();
         return redirect()->route('corporate.event_list');
     }
 

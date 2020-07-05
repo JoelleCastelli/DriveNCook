@@ -28,6 +28,9 @@ return [
     'title' => 'Titre',
     'update' => 'Modifier',
 
+    'event_creation' => 'Créer un nouvel événement',
+    'event_creation_success_message' => 'L\'événement a été créé',
+
     // Delete
     'delete_confirm' => 'Voulez-vous vraiment supprimer cet événement ?',
     'ajax_error' => 'Une erreur est survenue, veuillez rafraîchir la page.',
