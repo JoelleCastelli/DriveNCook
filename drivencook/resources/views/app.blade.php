@@ -663,6 +663,11 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div id="contact_form_recaptcha"
+                             class="form-group g-recaptcha"
+                             data-sitekey="{{ env('CAPTCHA_SITE_KEY') }}"></div>
+                    </div>
                 </form>
 
                 <div id="contact_status_success" class="alert alert-success" style="display: none">
@@ -714,7 +719,6 @@
     var map = new google.maps.Map(document.getElementById('map_view'), {
         zoom: 10,
         center: new google.maps.LatLng(48.856978, 2.342782),
-        // mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
     var infowindow = new google.maps.InfoWindow();
@@ -735,10 +739,6 @@
                 infowindow.open(map, marker);
             }
         })(marker, i));
-
-        // google.maps.event.addListener(marker, 'click', function() {
-        //     window.location.href = this.url;
-        // });
     }
 
     $(document).ready(function () {
@@ -747,6 +747,7 @@
             formData.append('name', $('#name').val());
             formData.append('email', $('#contact_email').val());
             formData.append('message', $('#message').val());
+            formData.append('g-recaptcha-response', $('#contact_form').serializeArray()[3].value);
 
             $.ajax({
                 url: '{{ route('contact_form_submit') }}',
@@ -764,6 +765,14 @@
                         $('#contact_status_success').show();
                         $('#contact_status_data_error').hide();
                         $('#contact_status_server_error').hide();
+
+                        $('#name').val('');
+                        $('#contact_email').val('');
+                        $('#message').val('');
+
+                        window.setTimeout(function () {
+                            $('#contact_status_success').hide();
+                        }, 5000);
                     } else {
                         $('#contact_status_success').hide();
                         $('#contact_status_data_error').show();
