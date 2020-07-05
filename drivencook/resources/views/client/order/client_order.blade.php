@@ -98,33 +98,50 @@
                         <h2>{{ trans('client/order.shopping_cart') }}</h2>
                     </div>
                     <div class="card-body">
-                        <label class="col-form-label">{{ trans('client/order.discount_amount') }}</label>
-                        <select class="custom-select" id="discountSelection">
-                            <option value="" selected>{{ trans('client/order.select_menu_no_discount') }}</option>
-                            @if(!empty($promotions))
-                                @foreach($promotions as $promotion)
-                                    @if($promotion['step'] <= $client['loyalty_point'])
-                                        <option value="{{ $promotion['reduction'] }}" id="discount_{{ $promotion['id'] }}">-{{ $promotion['reduction'] }} €</option>
+                        <div class="row">
+                            <div class="col-lg-12 mb-4">
+                                <label class="col-form-label">{{ trans('client/order.discount_amount') }}</label>
+                                <select class="custom-select" id="discountSelection">
+                                    <option value="" selected>{{ trans('client/order.select_menu_no_discount') }}</option>
+                                    @if(!empty($promotions))
+                                        @foreach($promotions as $promotion)
+                                            @if($promotion['step'] <= $client['loyalty_point'])
+                                                <option value="{{ $promotion['reduction'] }}" id="discount_{{ $promotion['id'] }}">-{{ $promotion['reduction'] }} €</option>
+                                            @endif
+                                        @endforeach
                                     @endif
-                                @endforeach
-                            @endif
-                        </select><br><br>
-                        <label class="col-form-label">{{ trans('client/order.dishes') }}</label>
-                        <div class="table-responsive">
-                            <table class="table table-hover table-striped table-bordered table-dark"
-                                   style="width: 100%">
-                                <thread>
-                                    <tr>
-                                        <th scope="col">{{ trans('dish.actions') }}</th>
-                                        <th scope="col">{{ trans('client/order.quantity_ordered') }}</th>
-                                        <th scope="col">{{ trans('client/order.line_price') }}</th>
-                                        <th scope="col">{{ trans('dish.name') }}</th>
-                                    </tr>
-                                </thread>
-                                <tbody id="shopCartContent">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="alert alert-warning"
+                                     id="discountAlert"
+                                     style="display: none">
+                                    {{ trans('client/order.alert_discount_more_than_total') }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label class="col-form-label">{{ trans('client/order.dishes') }}</label>
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-striped table-bordered table-dark"
+                                           style="width: 100%">
+                                        <thread>
+                                            <tr>
+                                                <th scope="col"></th>
+                                                <th scope="col">{{ trans('client/order.quantity_ordered') }}</th>
+                                                <th scope="col">{{ trans('client/order.line_price') }}</th>
+                                                <th scope="col">{{ trans('dish.name') }}</th>
+                                            </tr>
+                                        </thread>
+                                        <tbody id="shopCartContent">
 
-                                </tbody>
-                            </table>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -174,7 +191,17 @@
                 $('#orderBtnId').text('');
             }
 
+            checkDiscountWithTotal(discount, tmpSum);
+
             return tmpSum;
+        }
+
+        function checkDiscountWithTotal(elem, total) {
+            if(parseInt($(elem).val(), 10) > Math.floor(total) && total > 0) {
+                $('#discountAlert').show();
+            } else {
+                $('#discountAlert').hide();
+            }
         }
 
         $(document).on('click', '.delToOrderBtn', function () {
@@ -212,18 +239,16 @@
         });
 
         $(document).on('change', '#discountSelection', function () {
-            let total = updateTotalOrderPrice();
-
-            console.log(parseInt($(this).val()));
-            console.log(total);
-            if(parseInt($(this).val()) > total) {
-                alert(Lang.get('client/order.alert_discount_more_than_total'))
-            }
+            checkDiscountWithTotal($(this), updateTotalOrderPrice());
         });
 
         $(document).ready(function () {
             let table = $('#allDishes').DataTable();
             // table.searchPanes.container().prependTo(table.table().container());
+
+            /*$('.popover-dismiss').popover({
+                trigger: 'focus'
+            });*/
 
             $('.orderBtn').on('click', function () {
                 let table = $('.orderDish');
