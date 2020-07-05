@@ -144,6 +144,7 @@ return [
     'order_history' => 'Order history',
     'order_info' => 'Order information',
     'order_summary' => 'Order summary',
+    'order_payment' => 'Payment of the order',
     'plate' => 'Product',
     'products_ordered' => 'Ordered products',
     'cancel_order_prompt' => 'Do you really want to cancel this order?',

@@ -144,6 +144,7 @@ return [
     'order_history' => 'Historique des commandes',
     'order_info' => 'Informations de la commande',
     'order_summary' => 'Récapitulatif de la commande',
+    'order_payment' => 'Paiement de la commande',
     'plate' => 'Produit',
     'products_ordered' => 'Produits commandés',
     'cancel_order_prompt' => 'Voulez-vous vraiment annuler cette commande ?',
