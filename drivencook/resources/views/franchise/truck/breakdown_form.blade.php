@@ -1,4 +1,4 @@
-@extends('franchise.franchise_dashboard')
+@extends('franchise.layout_franchise')
 @section('title')
     {{empty($breakdown)?trans('franchisee.add_breakdown') : trans('franchisee.update_breakdown')}}
 @endsection

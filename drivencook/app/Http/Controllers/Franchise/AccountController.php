@@ -30,15 +30,17 @@ class AccountController extends Controller
         if ($truck != null) {
             $truckLocation = $this->get_truck_with_location_only($truck['id']);
         }
-//        var_dump($truck);die;
+
         $user = User::with('pseudo')->whereKey($this->get_connected_user()['id'])->first()->toArray();
-//        dd($user);
-//        var_dump($user);die;
 
         $current_month_sales = $this->get_franchise_current_month_sale_revenues($user['id']);
+
+        $invoicing_period = $this->get_invoicing_period($this->get_current_obligation(), "d/m/Y");
+
         return view('franchise.franchise_dashboard')
             ->with('truck', $truckLocation)
             ->with('revenues', $current_month_sales)
+            ->with('invoicing_period', $invoicing_period)
             ->with('franchise', $user);
     }
 

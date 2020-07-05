@@ -18,11 +18,11 @@
             /* Set a specific height */
             /*min-height: 860px;*/
             @if(url()->current() == route('homepage') || url()->current() == route('about'))
-   height: 860px;
+                height: 860px;
             @else
-   min-height: 860px;
-        @endif
-   /* Create the parallax scrolling effect */
+               min-height: 860px;
+            @endif
+            /* Create the parallax scrolling effect */
             background-attachment: fixed;
             background-position: center;
             background-repeat: no-repeat;
@@ -102,8 +102,13 @@
                         <i class="fa fa-user"></i>&nbsp;&nbsp;{{ auth()->user()->firstname }} {{ auth()->user()->lastname }}
                     </a>
                     <div class="dropdown-menu dropdown-menu-right bg-dark" aria-labelledby="userDropdownMenuButton">
-                        <a class="dropdown-item text-light"
-                           href="{{ route('client_dashboard') }}">{{ trans('auth.my_account') }}</a>
+                        @if (auth()->user()->role == "Franchisé")
+                            <a class="dropdown-item text-light"
+                                href="{{ route('franchise.dashboard') }}">{{ trans('auth.my_account') }}</a>
+                        @else
+                            <a class="dropdown-item text-light"
+                               href="{{ route('client_dashboard') }}">{{ trans('auth.my_account') }}</a>
+                        @endif
                         <a class="dropdown-item text-light"
                            href="{{ route('client_logout') }}">{{ trans('auth.logout') }}</a>
                     </div>
@@ -630,10 +635,11 @@
 <script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_API_KEY')}}">google.maps.event.addDomListener(window, 'load', initMap);</script>
 <script type="text/javascript">
     var locations = [
-            @foreach($trucks as $truck)
+        @foreach($trucks as $truck)
             @if(!empty($truck['user']))
-        ['{{$truck['location']['name']}}', '{{$truck['location']['latitude']}}', '{{$truck['location']['longitude']}}', '{{route('client_order',['truck_id'=>$truck['id']])}}', '{{$truck['user']['pseudo']['name']}}'],
-        @endif
+                ['{{$truck['location']['name']}}', '{{$truck['location']['latitude']}}', '{{$truck['location']['longitude']}}',
+                    '{{route('client_order',['truck_id'=>$truck['id']])}}', '{{$truck['user']['pseudo']['name']}}'],
+            @endif
         @endforeach
     ];
 

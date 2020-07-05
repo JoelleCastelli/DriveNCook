@@ -11,13 +11,12 @@
                     <h2>{{trans('franchisee.order_info')}}</h2>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><b>{{trans('franchisee.date_order')}} : </b>{{$order['date']}}</li>
-                    <li class="list-group-item"><b>{{trans('franchisee.order_status')}} : </b>{{$order['status']}}</li>
-                    <li class="list-group-item"><b>{{trans('franchisee.order_status')}}
+                    <li class="list-group-item"><b>{{trans('franchisee.date_order')}} : </b>{{ DateTime::createFromFormat('Y-m-d', $order['date'])->format('d/m/Y') }}</li>
+                    <li class="list-group-item"><b>{{trans('franchisee.order_status')}} : </b>{{ trans('franchisee.stock_order_status_'.strtolower($order['status'])) }}</li>
+                    <li class="list-group-item"><b>{{trans('franchisee.order_warehouse')}}
                             : </b>{{$order['warehouse']['name']}}</li>
                     <li class="list-group-item"><b>{{trans('franchisee.warehouse_location')}} : </b>
-                        {{$order['warehouse']['location']['address'].' - '.$order['warehouse']['location']['city'].
-                        ' ('.$order['warehouse']['location']['postcode'].')'}}
+                        {{$order['warehouse']['location']['address'].' '.$order['warehouse']['location']['postcode'].' '.$order['warehouse']['location']['city']}}
                     </li>
                     <li class="list-group-item"><b>{{trans('franchisee.total')}} : </b>
                         <?php
