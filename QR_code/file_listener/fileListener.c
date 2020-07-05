@@ -10,7 +10,7 @@ void startListener(FILE *logFd, char *dirPath, char *toExecProgramPath) {
 
     rep = opendir(dirPath);
 
-    if(!rep) {
+    if (!rep) {
         strcat(strcpy(tmpLogMsg, "Try to open folder to be listen : "), strerror(errno));
         toLog(logFd, ERROR, tmpLogMsg);
         exit(EXIT_FAILURE);
@@ -26,24 +26,24 @@ void listen(FILE *logFd, DIR *rep, char *dirPath, char *toExecProgramPath) {
     short timer = 0;
 
 
-    for(;;) {
+    for (;;) {
         sleep(10);
 
-        if(timer++ == 60) {
+        if (timer++ == 60) {
             timer = 0;
             fclose(logFd);
             logFd = fopen("listener.log", "a");
-            if(!logFd) exit(EXIT_FAILURE);
+            if (!logFd) exit(EXIT_FAILURE);
         }
 
         readFile = readdir(rep);
 
-        if(readFile == NULL) {
+        if (readFile == NULL) {
             rewinddir(rep);
             continue;
         }
 
-        if(fileProcessing(logFd, readFile, dirPath, toExecProgramPath) == 1) continue;
+        if (fileProcessing(logFd, readFile, dirPath, toExecProgramPath) == 1) continue;
     }
 }
 
@@ -57,24 +57,24 @@ int fileProcessing(FILE *logFd, struct dirent *readFile, char *dirPath, char *to
     pid_t pid;
 
     strcpy(tmpFilePath, dirPath);
-    if(dirPath[strlen(dirPath) - 1] != '/') {
+    if (dirPath[strlen(dirPath) - 1] != '/') {
         tmpFilePath[strlen(dirPath)] = '/';
         tmpFilePath[strlen(dirPath) + 1] = '\0';
     }
     strcat(tmpFilePath, readFile->d_name);
 
-    if(strcmp(&tmpFilePath[strlen(tmpFilePath) - 1], ".") == 0) return 1;
+    if (strcmp(&tmpFilePath[strlen(tmpFilePath) - 1], ".") == 0) return 1;
 
     pid = fork();
 
-    if(pid == -1) {
+    if (pid == -1) {
         strcat(strcpy(tmpLogMsg, "Fork : "), strerror(errno));
         toLog(logFd, ERROR, tmpLogMsg);
-    } else if(pid == 0) {
+    } else if (pid == 0) {
         //execl("/bin/ls", "ls", "-l", (char *) NULL);
-        if(strlen(toExecProgramPath) > 0) {
+        if (strlen(toExecProgramPath) > 0) {
             tmpProgram = strchr(toExecProgramPath, '/') + 1;
-            while(strchr(tmpProgram, '/') != NULL) {
+            while (strchr(tmpProgram, '/') != NULL) {
                 tmpProgram = strchr(tmpProgram, '/') + 1;
             }
             program = tmpProgram;
@@ -82,6 +82,7 @@ int fileProcessing(FILE *logFd, struct dirent *readFile, char *dirPath, char *to
             execl(toExecProgramPath, program, tmpFilePath, (char *) NULL);
         }
     } else {
+        sleep(5);
         remove(tmpFilePath);
         strcat(strcpy(tmpLogMsg, "Deleted : "), tmpFilePath);
         toLog(logFd, INFO, tmpLogMsg);
