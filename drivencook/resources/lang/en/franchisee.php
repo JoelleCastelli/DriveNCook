@@ -260,4 +260,14 @@ return [
     'sell_price_updated' => 'Sell price updated',
     'menu_available_updated' => 'Availability updated',
 
+    'back_to_client_sales' => 'Back to clients orders',
+    'client_info' => 'Client information',
+    'order_status_updated' => 'The order status has been updated',
+    'sale_details' => 'Order details',
+    'sale_view' => 'View the order',
+    'sales_client' => 'Client',
+    'sales_product' => 'Products',
+    'update_client_sale_status' => 'Update the order status',
+    'sales_product_count'=>'Number of ordered products'
+
 ];

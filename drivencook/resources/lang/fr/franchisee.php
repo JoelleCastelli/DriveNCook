@@ -259,9 +259,9 @@ return [
     'sell_price_updated' => 'Prix de vente mis à jour',
     'menu_available_updated' => 'Disponibilité mis à jour',
 
-    'back_to_client_sales' => 'Retour aux ventes clients',
+    'back_to_client_sales' => 'Retour aux commandes clients',
     'client_info' => 'Informations sur le client',
-    'order_status_updated' => 'Statut de la commande mis à jour',
+    'order_status_updated' => 'Le statut de la commande a été mis',
     'sale_details' => 'Détails de la commande',
     'sale_view' => 'Voir la commande',
     'sales_client' => 'Client',
