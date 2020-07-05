@@ -28,4 +28,8 @@ return [
     'select_menu_off' => 'Choose...',
     'dish_create' => 'Add',
     'dish_close' => 'Close',
+
+    'delete_confirm' => 'Are you sure you want to delete this product from the warehouse stock?',
+    'ajax_error' => 'An error has occurred, please refresh the page',
+    'delete_success' => 'The product has been deleted from the warehouse stock',
 ];
