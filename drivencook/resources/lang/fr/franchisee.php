@@ -167,6 +167,12 @@ return [
     'stock_order_status_in_progress' => 'En cours de traitement',
     'stock_order_status_sent' => 'Expédiée',
     'stock_order_status_received' => 'Terminée',
+    'stock_delete_confirm' => 'Voulez-vous vraiment supprimer cette ligne de stock ?',
+    'stock_delete_success' => 'La ligne de stock a été supprimée',
+    'stock_update_success' => 'La ligne de stock a été mise à jour',
+    'order_delete_confirm' => 'Voulez-vous vraiment supprimer cette commande de stock ?',
+    'order_delete_success' => 'La commande de stock a été supprimée',
+    'order_update_success' => 'La commande de stock a été mise à jour',
 
     // Invoices
     'invoices' => 'Factures',

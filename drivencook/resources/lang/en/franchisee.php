@@ -167,6 +167,12 @@ return [
     'stock_order_status_in_progress' => 'In progress',
     'stock_order_status_sent' => 'Shipped',
     'stock_order_status_received' => 'Done',
+    'stock_delete_confirm' => 'Are you sure you want to delete this stock line?',
+    'stock_delete_success' => 'The stock line has been deleted',
+    'stock_update_success' => 'The stock line has been updated',
+    'order_delete_confirm' => 'Are you sure you want to delete this stock order?',
+    'order_delete_success' => 'The stock order has been deleted',
+    'order_update_success' => 'The stock order has been updated',
 
 
     // Invoices
