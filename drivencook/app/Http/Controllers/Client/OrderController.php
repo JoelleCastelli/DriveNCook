@@ -37,8 +37,10 @@ class OrderController extends Controller
 
     public function truck_location_list()
     {
-        $trucks = Truck::where('functional', true)
-            ->with('user')
+        $trucks = Truck::where([
+            ['functional', true],
+            ['user_id', "!=", null]
+        ])->with('user')
             ->with('location')
             ->get();
 

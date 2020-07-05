@@ -68,7 +68,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="mailto:contact@drivencook.fr">
+                <a class="nav-link" href="#"
+                   data-toggle="modal" data-target="#contact_form_modal">
                     <i class="fa fa-address-book"></i> {{ trans('homepage.contact') }}
                 </a>
             </li>
@@ -182,7 +183,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link  text-light" href="{{ route('homepage') }}">
+                        <a class="nav-link text-light" href="#" data-toggle="modal"
+                           data-target="#map_modal">
                             <i class="fa fa-map-marker-alt"></i> {{ trans('homepage.find_truck') }}
                         </a>
                     </li>
@@ -196,8 +198,10 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="mailto:contact@drivencook.fr">
-                            <i class="fa fa-address-book"></i> {{ trans('homepage.contact') }}</a>
+                        <a class="nav-link text-light" href="#"
+                            data-toggle="modal" data-target="#contact_form_modal">
+                            <i class="fa fa-address-book"></i> {{ trans('homepage.contact') }}
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -621,6 +625,81 @@
         </div>
     </div>
 </div>
+
+<!-- MODAL CONTACT FORM -->
+<div class="modal fade" id="contact_form_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="form">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">{{ trans('homepage.contact') }}</h5>
+                <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="text-center w-responsive mx-auto mb-3">
+                    {{ trans('homepage.contact_message') }}
+                </p>
+                <form id="contact_form">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="md-form mb-0">
+                                <label for="name">{{ trans('homepage.name') }}</label>
+                                <input type="text" id="name" name="name" maxlength="50"
+                                       class="form-control" placeholder="{{ trans('homepage.your_name') }}">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="md-form mb-0">
+                                <label for="contact_email">{{ trans('homepage.mail') }}</label>
+                                <input type="text" id="contact_email" name="email" maxlength="200"
+                                       class="form-control" placeholder="{{ trans('homepage.your_mail') }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-4">
+                            <div class="md-form">
+                                <label for="message">{{ trans('homepage.message') }}</label>
+                                <textarea type="text" id="message" name="message"
+                                          rows="2" class="form-control md-textarea"
+                                          maxlength="10000"
+                                          placeholder="{{ trans('homepage.your_message') }}"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div id="contact_form_recaptcha"
+                             class="form-group g-recaptcha"
+                             data-sitekey="{{ env('CAPTCHA_SITE_KEY') }}"></div>
+                    </div>
+                </form>
+
+                <div id="contact_status_success" class="alert alert-success" style="display: none">
+                    {{ trans('homepage.send_contact_success') }}
+                </div>
+                <div id="contact_status_data_error" class="alert alert-danger" style="display: none">
+                    {{ trans('homepage.send_contact_data_error') }}
+                </div>
+                <div id="contact_status_server_error" class="alert alert-danger" style="display: none">
+                    {{ trans('homepage.send_contact_server_error') . ' ' }}
+                    <a href="mailto:contact@drivencook.fr">
+                        contact@drivencook.fr
+                    </a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="text-center text-md-left">
+                    <a id="submit_contact_form"
+                       class="btn btn-primary bg-light_blue border-light_blue"
+                       style="width: 100%; color: white">{{ trans('homepage.send') }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL TRUCK MAP -->
 <div class="modal fade" id="map_modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -646,7 +725,6 @@
     var map = new google.maps.Map(document.getElementById('map_view'), {
         zoom: 10,
         center: new google.maps.LatLng(48.856978, 2.342782),
-        // mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
     var infowindow = new google.maps.InfoWindow();
@@ -667,11 +745,52 @@
                 infowindow.open(map, marker);
             }
         })(marker, i));
-
-        // google.maps.event.addListener(marker, 'click', function() {
-        //     window.location.href = this.url;
-        // });
     }
+
+    $(document).ready(function () {
+        $('#submit_contact_form').on('click', function () {
+            let formData = new FormData;
+            formData.append('name', $('#name').val());
+            formData.append('email', $('#contact_email').val());
+            formData.append('message', $('#message').val());
+            formData.append('g-recaptcha-response', $('#contact_form').serializeArray()[3].value);
+
+            $.ajax({
+                url: '{{ route('contact_form_submit') }}',
+                method: 'post',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: formData,
+                dataType: 'json',
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    if (data['status'] === 'success') {
+                        $('#contact_status_success').show();
+                        $('#contact_status_data_error').hide();
+                        $('#contact_status_server_error').hide();
+
+                        $('#name').val('');
+                        $('#contact_email').val('');
+                        $('#message').val('');
+
+                        window.setTimeout(function () {
+                            $('#contact_status_success').hide();
+                        }, 5000);
+                    } else {
+                        $('#contact_status_success').hide();
+                        $('#contact_status_data_error').show();
+                    }
+                },
+                error: function () {
+                    $('#contact_status_success').hide();
+                    $('#contact_status_server_error').show();
+                }
+            });
+        });
+    });
 
 </script>
 
