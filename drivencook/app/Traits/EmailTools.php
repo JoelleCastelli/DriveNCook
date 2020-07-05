@@ -89,4 +89,15 @@ trait EmailTools
         });
 
     }
+
+    public function sendContactForm($parameters)
+    {
+        $corp_mail = 'contact@drivencook.fr';
+        $data = ['user' => $parameters];
+        Mail::send('mails.contact_form', $data, function ($message) use ($corp_mail) {
+            $message->to($corp_mail)
+                ->subject('Contact form');
+            $message->from('noreply@drivencook.fr');
+        });
+    }
 }

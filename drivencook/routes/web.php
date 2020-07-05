@@ -67,3 +67,8 @@ Route::post('/reset_password/', [
     'as' => 'reset_password_submit',
     'uses' => 'Auth\ResetPasswordController@reset_password_submit'
 ]);
+
+Route::post('/contact_form_submit/', [
+    'as' => 'contact_form_submit',
+    'uses' => 'HomeController@contact_form_submit'
+]);
