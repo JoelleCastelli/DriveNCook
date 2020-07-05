@@ -1,0 +1,2 @@
+set pcname TORCY
+dhcp
