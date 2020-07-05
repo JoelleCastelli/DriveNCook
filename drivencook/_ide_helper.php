@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 5.5.49 on 2020-05-01 16:00:01.
+ * Generated for Laravel 5.5.49 on 2020-07-05 15:05:57.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -1606,6 +1606,391 @@ namespace Illuminate\Support\Facades {
             //Method inherited from \Illuminate\Foundation\Console\Kernel            
                         /** @var \App\Console\Kernel $instance */
                         $instance->setArtisan($artisan);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function get_franchisee_by_id($id)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->get_franchisee_by_id($id);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function update_user_password($id, $new_password)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->update_user_password($id, $new_password);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function delete_user($id)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->delete_user($id);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function get_connected_user()
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->get_connected_user();
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function does_have_assigned_truck($user_id)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->does_have_assigned_truck($user_id);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function get_current_obligation()
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->get_current_obligation();
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function get_available_pseudo_list()
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->get_available_pseudo_list();
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function get_franchisee_activity_period($franchisee_id)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->get_franchisee_activity_period($franchisee_id);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function is_franchisee_valided($franchisee_id)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->is_franchisee_valided($franchisee_id);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function create_invoice_reference($prefix, $franchisee_id, $invoice_id)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->create_invoice_reference($prefix, $franchisee_id, $invoice_id);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function generate_first_invoice($franchisee_id)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->generate_first_invoice($franchisee_id);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function create_invoice_pdf($id)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->create_invoice_pdf($id);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function stream_invoice_pdf($id)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->stream_invoice_pdf($id);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function save_invoice_pdf($id, $reference)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->save_invoice_pdf($id, $reference);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function get_invoicing_period($current_obligation, $date_format)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->get_invoicing_period($current_obligation, $date_format);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function get_next_payment_date($franchiseObligation)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->get_next_payment_date($franchiseObligation);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function get_franchise_current_month_sale_revenues($franchise_id)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->get_franchise_current_month_sale_revenues($franchise_id);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function get_franchisee_history($franchisees_ids)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->get_franchisee_history($franchisees_ids);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function franchisee_sales_history_pdf($request)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->franchisee_sales_history_pdf($request);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function get_franchisee_sales($franchisee_id, $start_date, $end_date)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->get_franchisee_sales($franchisee_id, $start_date, $end_date);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function get_sale_total($sale_id)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->get_sale_total($sale_id);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function get_sales_turnover_by_day($franchisee_id)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->get_sales_turnover_by_day($franchisee_id);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function get_monthly_sales_turnover_by_day($franchisee_id, $month, $year)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->get_monthly_sales_turnover_by_day($franchisee_id, $month, $year);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function get_monthly_sales_by_payment_methods($franchisee_id, $month, $year)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->get_monthly_sales_by_payment_methods($franchisee_id, $month, $year);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function get_monthly_sales_by_origin($franchisee_id, $month, $year)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->get_monthly_sales_by_origin($franchisee_id, $month, $year);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function generate_chart($franchisees_ids, $type)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->generate_chart($franchisees_ids, $type);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function get_enum_column_values($table_name, $column_name)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->get_enum_column_values($table_name, $column_name);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function sendNewsLettersAllClients($message = '')
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->sendNewsLettersAllClients($message);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function sendNewsLettersNewClients($message = '')
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->sendNewsLettersNewClients($message);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function sendNewsLettersFidelityStepClients($message = '', $loyalty_point = 0)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->sendNewsLettersFidelityStepClients($message, $loyalty_point);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function sendResetPasswordMail($user_mail, $token)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->sendResetPasswordMail($user_mail, $token);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function sendInvoiceMail($user, $invoice)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->sendInvoiceMail($user, $invoice);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function sendNewAccountMail($user_mail, $token)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->sendNewAccountMail($user_mail, $token);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function sendEventMail($user_mail, $event_id)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->sendEventMail($user_mail, $event_id);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function sendNewsLetter($user, $newsMessage)
+        {
+                        /** @var \App\Console\Kernel $instance */
+                        return $instance->sendNewsLetter($user, $newsMessage);
         }
          
     }
@@ -5778,6 +6163,26 @@ namespace Illuminate\Support\Facades {
     class Lang {
         
         /**
+         * Get the translation for the given key.
+         * 
+         * This method acts as a pass-through to Illuminate\Translation\Translator::get(), but verifies
+         * that a replacement has actually been made.
+         *
+         * @throws MissingTranslationException When no replacement is made.
+         * @param string $key
+         * @param array $replace
+         * @param string|null $locale
+         * @param bool $fallback
+         * @return string|array|null 
+         * @static 
+         */ 
+        public static function get($key, $replace = [], $locale = null, $fallback = true)
+        {
+                        /** @var \LostInTranslation\Translator $instance */
+                        return $instance->get($key, $replace, $locale, $fallback);
+        }
+        
+        /**
          * Determine if a translation exists for a given locale.
          *
          * @param string $key
@@ -5787,7 +6192,8 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function hasForLocale($key, $locale = null)
         {
-                        /** @var \Illuminate\Translation\Translator $instance */
+            //Method inherited from \Illuminate\Translation\Translator            
+                        /** @var \LostInTranslation\Translator $instance */
                         return $instance->hasForLocale($key, $locale);
         }
         
@@ -5802,7 +6208,8 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function has($key, $locale = null, $fallback = true)
         {
-                        /** @var \Illuminate\Translation\Translator $instance */
+            //Method inherited from \Illuminate\Translation\Translator            
+                        /** @var \LostInTranslation\Translator $instance */
                         return $instance->has($key, $locale, $fallback);
         }
         
@@ -5817,24 +6224,9 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function trans($key, $replace = [], $locale = null)
         {
-                        /** @var \Illuminate\Translation\Translator $instance */
+            //Method inherited from \Illuminate\Translation\Translator            
+                        /** @var \LostInTranslation\Translator $instance */
                         return $instance->trans($key, $replace, $locale);
-        }
-        
-        /**
-         * Get the translation for the given key.
-         *
-         * @param string $key
-         * @param array $replace
-         * @param string|null $locale
-         * @param bool $fallback
-         * @return string|array|null 
-         * @static 
-         */ 
-        public static function get($key, $replace = [], $locale = null, $fallback = true)
-        {
-                        /** @var \Illuminate\Translation\Translator $instance */
-                        return $instance->get($key, $replace, $locale, $fallback);
         }
         
         /**
@@ -5848,7 +6240,8 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function getFromJson($key, $replace = [], $locale = null)
         {
-                        /** @var \Illuminate\Translation\Translator $instance */
+            //Method inherited from \Illuminate\Translation\Translator            
+                        /** @var \LostInTranslation\Translator $instance */
                         return $instance->getFromJson($key, $replace, $locale);
         }
         
@@ -5864,7 +6257,8 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function transChoice($key, $number, $replace = [], $locale = null)
         {
-                        /** @var \Illuminate\Translation\Translator $instance */
+            //Method inherited from \Illuminate\Translation\Translator            
+                        /** @var \LostInTranslation\Translator $instance */
                         return $instance->transChoice($key, $number, $replace, $locale);
         }
         
@@ -5880,7 +6274,8 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function choice($key, $number, $replace = [], $locale = null)
         {
-                        /** @var \Illuminate\Translation\Translator $instance */
+            //Method inherited from \Illuminate\Translation\Translator            
+                        /** @var \LostInTranslation\Translator $instance */
                         return $instance->choice($key, $number, $replace, $locale);
         }
         
@@ -5895,7 +6290,8 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function addLines($lines, $locale, $namespace = '*')
         {
-                        /** @var \Illuminate\Translation\Translator $instance */
+            //Method inherited from \Illuminate\Translation\Translator            
+                        /** @var \LostInTranslation\Translator $instance */
                         $instance->addLines($lines, $locale, $namespace);
         }
         
@@ -5910,7 +6306,8 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function load($namespace, $group, $locale)
         {
-                        /** @var \Illuminate\Translation\Translator $instance */
+            //Method inherited from \Illuminate\Translation\Translator            
+                        /** @var \LostInTranslation\Translator $instance */
                         $instance->load($namespace, $group, $locale);
         }
         
@@ -5924,7 +6321,8 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function addNamespace($namespace, $hint)
         {
-                        /** @var \Illuminate\Translation\Translator $instance */
+            //Method inherited from \Illuminate\Translation\Translator            
+                        /** @var \LostInTranslation\Translator $instance */
                         $instance->addNamespace($namespace, $hint);
         }
         
@@ -5937,7 +6335,8 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function addJsonPath($path)
         {
-                        /** @var \Illuminate\Translation\Translator $instance */
+            //Method inherited from \Illuminate\Translation\Translator            
+                        /** @var \LostInTranslation\Translator $instance */
                         $instance->addJsonPath($path);
         }
         
@@ -5950,7 +6349,8 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function parseKey($key)
         {
-                        /** @var \Illuminate\Translation\Translator $instance */
+            //Method inherited from \Illuminate\Translation\Translator            
+                        /** @var \LostInTranslation\Translator $instance */
                         return $instance->parseKey($key);
         }
         
@@ -5962,7 +6362,8 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function getSelector()
         {
-                        /** @var \Illuminate\Translation\Translator $instance */
+            //Method inherited from \Illuminate\Translation\Translator            
+                        /** @var \LostInTranslation\Translator $instance */
                         return $instance->getSelector();
         }
         
@@ -5975,7 +6376,8 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function setSelector($selector)
         {
-                        /** @var \Illuminate\Translation\Translator $instance */
+            //Method inherited from \Illuminate\Translation\Translator            
+                        /** @var \LostInTranslation\Translator $instance */
                         $instance->setSelector($selector);
         }
         
@@ -5987,7 +6389,8 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function getLoader()
         {
-                        /** @var \Illuminate\Translation\Translator $instance */
+            //Method inherited from \Illuminate\Translation\Translator            
+                        /** @var \LostInTranslation\Translator $instance */
                         return $instance->getLoader();
         }
         
@@ -5999,7 +6402,8 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function locale()
         {
-                        /** @var \Illuminate\Translation\Translator $instance */
+            //Method inherited from \Illuminate\Translation\Translator            
+                        /** @var \LostInTranslation\Translator $instance */
                         return $instance->locale();
         }
         
@@ -6011,7 +6415,8 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function getLocale()
         {
-                        /** @var \Illuminate\Translation\Translator $instance */
+            //Method inherited from \Illuminate\Translation\Translator            
+                        /** @var \LostInTranslation\Translator $instance */
                         return $instance->getLocale();
         }
         
@@ -6024,7 +6429,8 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function setLocale($locale)
         {
-                        /** @var \Illuminate\Translation\Translator $instance */
+            //Method inherited from \Illuminate\Translation\Translator            
+                        /** @var \LostInTranslation\Translator $instance */
                         $instance->setLocale($locale);
         }
         
@@ -6036,7 +6442,8 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function getFallback()
         {
-                        /** @var \Illuminate\Translation\Translator $instance */
+            //Method inherited from \Illuminate\Translation\Translator            
+                        /** @var \LostInTranslation\Translator $instance */
                         return $instance->getFallback();
         }
         
@@ -6049,7 +6456,8 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function setFallback($fallback)
         {
-                        /** @var \Illuminate\Translation\Translator $instance */
+            //Method inherited from \Illuminate\Translation\Translator            
+                        /** @var \LostInTranslation\Translator $instance */
                         $instance->setFallback($fallback);
         }
         
@@ -6064,7 +6472,7 @@ namespace Illuminate\Support\Facades {
         public static function setParsedKey($key, $parsed)
         {
             //Method inherited from \Illuminate\Support\NamespacedItemResolver            
-                        /** @var \Illuminate\Translation\Translator $instance */
+                        /** @var \LostInTranslation\Translator $instance */
                         $instance->setParsedKey($key, $parsed);
         }
         
@@ -6078,7 +6486,8 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function macro($name, $macro)
         {
-                        \Illuminate\Translation\Translator::macro($name, $macro);
+            //Method inherited from \Illuminate\Translation\Translator            
+                        \LostInTranslation\Translator::macro($name, $macro);
         }
         
         /**
@@ -6090,7 +6499,8 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function mixin($mixin)
         {
-                        \Illuminate\Translation\Translator::mixin($mixin);
+            //Method inherited from \Illuminate\Translation\Translator            
+                        \LostInTranslation\Translator::mixin($mixin);
         }
         
         /**
@@ -6102,7 +6512,8 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function hasMacro($name)
         {
-                        return \Illuminate\Translation\Translator::hasMacro($name);
+            //Method inherited from \Illuminate\Translation\Translator            
+                        return \LostInTranslation\Translator::hasMacro($name);
         }
          
     }
@@ -13942,6 +14353,357 @@ namespace Yajra\DataTables\Facades {
  
 }
 
+namespace Barryvdh\DomPDF { 
+
+    /**
+     * 
+     *
+     */ 
+    class Facade {
+        
+        /**
+         * Get the DomPDF instance
+         *
+         * @return \Barryvdh\DomPDF\Dompdf 
+         * @static 
+         */ 
+        public static function getDomPDF()
+        {
+                        /** @var \Barryvdh\DomPDF\PDF $instance */
+                        return $instance->getDomPDF();
+        }
+        
+        /**
+         * Set the paper size (default A4)
+         *
+         * @param string $paper
+         * @param string $orientation
+         * @return \Barryvdh\DomPDF\PDF 
+         * @static 
+         */ 
+        public static function setPaper($paper, $orientation = 'portrait')
+        {
+                        /** @var \Barryvdh\DomPDF\PDF $instance */
+                        return $instance->setPaper($paper, $orientation);
+        }
+        
+        /**
+         * Show or hide warnings
+         *
+         * @param bool $warnings
+         * @return \Barryvdh\DomPDF\PDF 
+         * @static 
+         */ 
+        public static function setWarnings($warnings)
+        {
+                        /** @var \Barryvdh\DomPDF\PDF $instance */
+                        return $instance->setWarnings($warnings);
+        }
+        
+        /**
+         * Load a HTML string
+         *
+         * @param string $string
+         * @param string $encoding Not used yet
+         * @return static 
+         * @static 
+         */ 
+        public static function loadHTML($string, $encoding = null)
+        {
+                        /** @var \Barryvdh\DomPDF\PDF $instance */
+                        return $instance->loadHTML($string, $encoding);
+        }
+        
+        /**
+         * Load a HTML file
+         *
+         * @param string $file
+         * @return static 
+         * @static 
+         */ 
+        public static function loadFile($file)
+        {
+                        /** @var \Barryvdh\DomPDF\PDF $instance */
+                        return $instance->loadFile($file);
+        }
+        
+        /**
+         * Add metadata info
+         *
+         * @param array $info
+         * @return static 
+         * @static 
+         */ 
+        public static function addInfo($info)
+        {
+                        /** @var \Barryvdh\DomPDF\PDF $instance */
+                        return $instance->addInfo($info);
+        }
+        
+        /**
+         * Load a View and convert to HTML
+         *
+         * @param string $view
+         * @param array $data
+         * @param array $mergeData
+         * @param string $encoding Not used yet
+         * @return static 
+         * @static 
+         */ 
+        public static function loadView($view, $data = [], $mergeData = [], $encoding = null)
+        {
+                        /** @var \Barryvdh\DomPDF\PDF $instance */
+                        return $instance->loadView($view, $data, $mergeData, $encoding);
+        }
+        
+        /**
+         * Set/Change an option in DomPdf
+         *
+         * @param array $options
+         * @return static 
+         * @static 
+         */ 
+        public static function setOptions($options)
+        {
+                        /** @var \Barryvdh\DomPDF\PDF $instance */
+                        return $instance->setOptions($options);
+        }
+        
+        /**
+         * Output the PDF as a string.
+         *
+         * @return string The rendered PDF as string
+         * @static 
+         */ 
+        public static function output()
+        {
+                        /** @var \Barryvdh\DomPDF\PDF $instance */
+                        return $instance->output();
+        }
+        
+        /**
+         * Save the PDF to a file
+         *
+         * @param $filename
+         * @return static 
+         * @static 
+         */ 
+        public static function save($filename)
+        {
+                        /** @var \Barryvdh\DomPDF\PDF $instance */
+                        return $instance->save($filename);
+        }
+        
+        /**
+         * Make the PDF downloadable by the user
+         *
+         * @param string $filename
+         * @return \Illuminate\Http\Response 
+         * @static 
+         */ 
+        public static function download($filename = 'document.pdf')
+        {
+                        /** @var \Barryvdh\DomPDF\PDF $instance */
+                        return $instance->download($filename);
+        }
+        
+        /**
+         * Return a response with the PDF to show in the browser
+         *
+         * @param string $filename
+         * @return \Illuminate\Http\Response 
+         * @static 
+         */ 
+        public static function stream($filename = 'document.pdf')
+        {
+                        /** @var \Barryvdh\DomPDF\PDF $instance */
+                        return $instance->stream($filename);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function setEncryption($password)
+        {
+                        /** @var \Barryvdh\DomPDF\PDF $instance */
+                        return $instance->setEncryption($password);
+        }
+         
+    }
+ 
+}
+
+namespace MaddHatter\LaravelFullcalendar\Facades { 
+
+    /**
+     * 
+     *
+     */ 
+    class Calendar {
+        
+        /**
+         * Create an event DTO to add to a calendar
+         *
+         * @param string $title
+         * @param string $isAllDay
+         * @param string|\DateTime $start If string, must be valid datetime format: http://bit.ly/1z7QWbg
+         * @param string|\DateTime $end If string, must be valid datetime format: http://bit.ly/1z7QWbg
+         * @param string $id event Id
+         * @param array $options
+         * @return \MaddHatter\LaravelFullcalendar\SimpleEvent 
+         * @static 
+         */ 
+        public static function event($title, $isAllDay, $start, $end, $id = null, $options = [])
+        {
+                        return \MaddHatter\LaravelFullcalendar\Calendar::event($title, $isAllDay, $start, $end, $id, $options);
+        }
+        
+        /**
+         * Create the <div> the calendar will be rendered into
+         *
+         * @return string 
+         * @static 
+         */ 
+        public static function calendar()
+        {
+                        /** @var \MaddHatter\LaravelFullcalendar\Calendar $instance */
+                        return $instance->calendar();
+        }
+        
+        /**
+         * Get the <script> block to render the calendar (as a View)
+         *
+         * @return \Illuminate\View\View 
+         * @static 
+         */ 
+        public static function script()
+        {
+                        /** @var \MaddHatter\LaravelFullcalendar\Calendar $instance */
+                        return $instance->script();
+        }
+        
+        /**
+         * Customize the ID of the generated <div>
+         *
+         * @param string $id
+         * @return \MaddHatter\LaravelFullcalendar\Calendar 
+         * @static 
+         */ 
+        public static function setId($id)
+        {
+                        /** @var \MaddHatter\LaravelFullcalendar\Calendar $instance */
+                        return $instance->setId($id);
+        }
+        
+        /**
+         * Get the ID of the generated <div>
+         * This value is randomized unless a custom value was set via setId
+         *
+         * @return string 
+         * @static 
+         */ 
+        public static function getId()
+        {
+                        /** @var \MaddHatter\LaravelFullcalendar\Calendar $instance */
+                        return $instance->getId();
+        }
+        
+        /**
+         * Add an event
+         *
+         * @param \Event $event
+         * @param array $customAttributes
+         * @return \MaddHatter\LaravelFullcalendar\Calendar 
+         * @static 
+         */ 
+        public static function addEvent($event, $customAttributes = [])
+        {
+                        /** @var \MaddHatter\LaravelFullcalendar\Calendar $instance */
+                        return $instance->addEvent($event, $customAttributes);
+        }
+        
+        /**
+         * Add multiple events
+         *
+         * @param array|\MaddHatter\LaravelFullcalendar\ArrayAccess $events
+         * @param array $customAttributes
+         * @return \MaddHatter\LaravelFullcalendar\Calendar 
+         * @static 
+         */ 
+        public static function addEvents($events, $customAttributes = [])
+        {
+                        /** @var \MaddHatter\LaravelFullcalendar\Calendar $instance */
+                        return $instance->addEvents($events, $customAttributes);
+        }
+        
+        /**
+         * Set fullcalendar options
+         *
+         * @param array $options
+         * @return \MaddHatter\LaravelFullcalendar\Calendar 
+         * @static 
+         */ 
+        public static function setOptions($options)
+        {
+                        /** @var \MaddHatter\LaravelFullcalendar\Calendar $instance */
+                        return $instance->setOptions($options);
+        }
+        
+        /**
+         * Get the fullcalendar options (not including the events list)
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function getOptions()
+        {
+                        /** @var \MaddHatter\LaravelFullcalendar\Calendar $instance */
+                        return $instance->getOptions();
+        }
+        
+        /**
+         * Set fullcalendar callback options
+         *
+         * @param array $callbacks
+         * @return \MaddHatter\LaravelFullcalendar\Calendar 
+         * @static 
+         */ 
+        public static function setCallbacks($callbacks)
+        {
+                        /** @var \MaddHatter\LaravelFullcalendar\Calendar $instance */
+                        return $instance->setCallbacks($callbacks);
+        }
+        
+        /**
+         * Get the callbacks currently defined
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function getCallbacks()
+        {
+                        /** @var \MaddHatter\LaravelFullcalendar\Calendar $instance */
+                        return $instance->getCallbacks();
+        }
+        
+        /**
+         * Get options+events JSON
+         *
+         * @return string 
+         * @static 
+         */ 
+        public static function getOptionsJson()
+        {
+                        /** @var \MaddHatter\LaravelFullcalendar\Calendar $instance */
+                        return $instance->getOptionsJson();
+        }
+         
+    }
+ 
+}
+
 namespace Laracasts\Flash { 
 
     /**
@@ -17744,6 +18506,10 @@ namespace  {
     class Validator extends \Illuminate\Support\Facades\Validator {}
 
     class View extends \Illuminate\Support\Facades\View {}
+
+    class PDF extends \Barryvdh\DomPDF\Facade {}
+
+    class Calendar extends \MaddHatter\LaravelFullcalendar\Facades\Calendar {}
 
     class Flash extends \Laracasts\Flash\Flash {}
 
