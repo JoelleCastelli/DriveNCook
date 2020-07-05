@@ -32,7 +32,7 @@
                             <th>{{ trans('admin.phone') }}</th>
                             <th>{{ trans('admin.email') }}</th>
                             <th>{{ trans('admin.created_at') }}</th>
-                            <th>{{ trans('administrator/global.actions') }}</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
