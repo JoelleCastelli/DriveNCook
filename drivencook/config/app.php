@@ -196,6 +196,9 @@ return [
 
         \MaddHatter\LaravelFullcalendar\ServiceProvider::class,
 
+        //QRCODE
+        \SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+
     ],
 
     /*
@@ -247,6 +250,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Calendar'=> \MaddHatter\LaravelFullcalendar\Facades\Calendar::class,
+        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class
     ],
 
 ];
