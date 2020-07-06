@@ -50,7 +50,7 @@ class ResetPasswordController extends Controller
             'password' => $new_hashed_password,
             'password_token' => null
         ]);
-        flash('Mot de passe modifié !')->success();
+        flash(trans('auth.password_updated'))->success();
         return redirect()->route('homepage');
     }
 

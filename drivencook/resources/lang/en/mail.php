@@ -3,6 +3,7 @@
 return [
     'hello' => 'Hello',
     'staff_signature' => 'The Drive\'N\'Cook team',
+    'password_email_sent' => 'An email has been sent to you in order to generate a new password',
 
     // Objects
     'object_password_reset' => 'Drive\'N\'Cook - New password',
