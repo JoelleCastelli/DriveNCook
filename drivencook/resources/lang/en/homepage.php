@@ -4,7 +4,7 @@ return [
     // navbar
     'home' => 'Home',
     'find_truck' => 'Find a truck',
-    'news' => 'News',
+    'news' => 'Events',
     'about' => 'About us',
     'contact' => 'Contact us',
     'fr' => 'French',

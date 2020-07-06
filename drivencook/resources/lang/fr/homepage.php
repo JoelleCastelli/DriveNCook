@@ -4,7 +4,7 @@ return [
     // navbar
     'home' => 'Accueil',
     'find_truck' => 'Trouver un camion',
-    'news' => 'Actualités',
+    'news' => 'Evènements',
     'about' => 'A propos',
     'contact' => 'Nous contacter',
     'fr' => 'Français',
