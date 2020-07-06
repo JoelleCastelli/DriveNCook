@@ -524,8 +524,9 @@ class OrderController extends Controller
             $truck['location']['city'] . "\n\n";
 
         if (!empty($truck['location_date_end'])) {
-            $text .= "Jusqu'au : " . $truck['location_date_end'];
+            $text .= "Jusqu'au : " . $truck['location_date_end'] . "\n";
         }
+        $text .= route('client_order', ['truck_id' => $truck_id]);
 
 
         $qrCode = \QrCode::format('png')
