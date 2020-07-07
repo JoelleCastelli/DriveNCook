@@ -133,7 +133,7 @@
                         <div class="form-group">
                             <label for="location_id">{{ trans('truck.location_name') }}</label>
                             <div class="input-group mb-3">
-                                <select class="custom-select" name="location_id" id="location_id">
+                                <select class="custom-select selectsearch" name="location_id" id="location_id">
                                     <option value="" selected>{{ trans('truck.select_menu_off') }}</option>
                                     @foreach($locations as $location)
                                         <option value={{ $location['id'] }}>{{ $location['name'] }}
