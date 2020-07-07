@@ -43,15 +43,22 @@
                                    maxlength="30">
                         </div>
 
+{{--                        <div class="form-group">--}}
+{{--                            <label for="functional">{{ trans('truck.functional') }}</label>--}}
+{{--                            <div class="input-group mb-3">--}}
+{{--                                <select class="custom-select" name="functional" id="functional">--}}
+{{--                                    <option value="0" {{$truck['functional']?'selected':''}}>{{ trans('truck.no') }}</option>--}}
+{{--                                    <option value="1" {{$truck['functional']?'selected':''}}>{{ trans('truck.yes') }}</option>--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+
                         <div class="form-group">
-                            <label for="functional">{{ trans('truck.functional') }}</label>
-                            <div class="input-group mb-3">
-                                <select class="custom-select" name="functional" id="functional">
-                                    <option value="0" {{$truck['functional']?'selected':''}}>{{ trans('truck.no') }}</option>
-                                    <option value="1" {{$truck['functional']?'selected':''}}>{{ trans('truck.yes') }}</option>
-                                </select>
-                            </div>
+                            <label for="functional">{{ trans('truck.functional') }}</label><br>
+                            <input type="checkbox" name="functional" id="functional" {{$truck['functional']?'checked':''}}
+                                   data-toggle="toggle" data-onstyle="success" data-size="sm">
                         </div>
+
 
                         <div class="form-group">
                             <label for="purchase_date">{{ trans('truck.purchase_date') }}</label>
@@ -87,7 +94,7 @@
                         <div class="form-group">
                             <label for="fuel_type">{{ trans('truck.fuel_type') }}</label>
                             <div class="input-group mb-3">
-                                <select class="custom-select" name="fuel_type" id="fuel_type">
+                                <select class="custom-select selectsearch" name="fuel_type" id="fuel_type">
                                     <option value="{{$truck['fuel_type']}}"
                                             selected>{{ trans('truck.fuel_type_' . strtolower($truck['fuel_type']) . '') }}</option>
                                     @foreach($fuels as $fuel)
