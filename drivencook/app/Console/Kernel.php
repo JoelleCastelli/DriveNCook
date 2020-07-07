@@ -19,7 +19,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\GenerateMonthlyInvoices::class
+        Commands\GenerateMonthlyInvoices::class,
+        Commands\SendNewsletter::class,
     ];
 
     /**
@@ -31,10 +32,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $current_obligation = $this->get_current_obligation();
-        $schedule->command('invoices:generate_monthly')
+        $schedule->command('invoices:generate_monthly --force')
             ->monthlyOn($current_obligation['billing_day'], '10:00');
 
-        $schedule->command('newsletter:send_monthly')
+        $schedule->command('newsletter:send_monthly --force')
             ->monthlyOn(1, '10:00');
     }
 
