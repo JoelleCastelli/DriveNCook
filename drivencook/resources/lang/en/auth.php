@@ -47,4 +47,6 @@ return [
     'forgot_password' => 'Forgot password',
     'enter_email' => 'Enter your mail',
     'send_reset_password' => 'Send password reset mail',
+    'password_reset' => 'Create a new password:',
+    'password_updated' => 'The password has been updated!',
 ];

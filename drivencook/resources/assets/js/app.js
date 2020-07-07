@@ -7,6 +7,7 @@ global.$ = global.jQuery = require('jquery');
  */
 require('bootstrap/dist/js/bootstrap.min.js');
 require('@fortawesome/fontawesome-free/js/all.js');
+require('bootstrap4-toggle/js/bootstrap4-toggle.min.js');
 // require('datatables.net/js/jquery.dataTables.min.js');
 require('datatables.net-bs4/js/dataTables.bootstrap4.min.js');
 require('datatables.net-searchpanes-bs4/js/searchPanes.bootstrap4.min.js');

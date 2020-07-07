@@ -183,13 +183,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="#" data-toggle="modal"
+                        <a class="nav-link text-light" href="#map_modal" data-toggle="modal"
                            data-target="#map_modal">
                             <i class="fa fa-map-marker-alt"></i> {{ trans('homepage.find_truck') }}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="{{ route('homepage') }}">
+                        <a class="nav-link text-light" href="{{ route('news') }}">
                             <i class="fa fa-newspaper"></i> {{ trans('homepage.news') }}</a>
                     </li>
                     <li class="nav-item">

@@ -2,6 +2,7 @@
 
 
 use App\Http\Middleware\AuthClient;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 Route::get('/client/trucks', [
     'as' => 'truck_location_list',
@@ -13,7 +14,13 @@ Route::get('/client/order/{truck_id}', [
     'uses' => 'Client\OrderController@client_order'
 ]);
 
-Route::group(['middleware' => AuthClient::class], function() {
+Route::get('/client/qrcode/generate/{truck_id}',[
+    'as' => 'generate_franchise_qr',
+    'uses' => 'Client\OrderController@qr_code'
+
+]);
+
+Route::group(['middleware' => AuthClient::class], function () {
     Route::post('/client/order', [
         'as' => 'client_order_submit',
         'uses' => 'Client\OrderController@client_order_submit'

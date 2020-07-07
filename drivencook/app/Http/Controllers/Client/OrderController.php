@@ -235,7 +235,7 @@ class OrderController extends Controller
 
         $payment_method = Session::pull('payment_method');
         $payment_id = Session::pull('charge_id');
-        if($payment_method == 'cash') {
+        if ($payment_method == 'cash') {
             $payment_method = 'Liquide';
         } else {
             $payment_method = 'Carte bancaire';
@@ -260,7 +260,7 @@ class OrderController extends Controller
         }
 
         $discount_amount = 0;
-        if(isset($order['discount_amount'])) {
+        if (isset($order['discount_amount'])) {
             $discount_amount = $order['discount_amount'];
             Sale::whereKey($sale_id)
                 ->update(['discount_amount' => $order['discount_amount']]);
@@ -318,14 +318,14 @@ class OrderController extends Controller
 
         // invoice creation
         $invoice = ['amount' => $sum,
-                    'discount_amount' => $discount_amount,
-                    'date_emitted' => date("Y-m-d"),
-                    'monthly_fee' => 0,
-                    'initial_fee' => 0,
-                    'franchisee_order' => 0,
-                    'client_order' => 1,
-                    'user_id' => $client['id'],
-                    'sale_id' => $sale_id];
+            'discount_amount' => $discount_amount,
+            'date_emitted' => date("Y-m-d"),
+            'monthly_fee' => 0,
+            'initial_fee' => 0,
+            'franchisee_order' => 0,
+            'client_order' => 1,
+            'user_id' => $client['id'],
+            'sale_id' => $sale_id];
         $invoice = Invoice::create($invoice)->toArray();
         $reference = $this->create_invoice_reference('CL', $client['id'], $invoice['id']);
         $this->save_invoice_pdf($invoice['id'], $reference);
@@ -344,7 +344,7 @@ class OrderController extends Controller
     public function charge(Request $request, $order_total_cents, $type = '31uV6UZKmoN57tchyQBgfHNZ0pZz1XHYVv7vFdlzyn9jYeO9JbcQ9xKjeZqNfHJe85vqj')
     {
         Session::put('payment_method', $type);
-        if($order_total_cents != 0 && $type == '31uV6UZKmoN57tchyQBgfHNZ0pZz1XHYVv7vFdlzyn9jYeO9JbcQ9xKjeZqNfHJe85vqj') {
+        if ($order_total_cents != 0 && $type == '31uV6UZKmoN57tchyQBgfHNZ0pZz1XHYVv7vFdlzyn9jYeO9JbcQ9xKjeZqNfHJe85vqj') {
             try {
                 Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
@@ -502,5 +502,42 @@ class OrderController extends Controller
         }
 
         echo json_encode($response_array);
+    }
+
+    public function qr_code($truck_id)
+    {
+        $truck = Truck::whereKey($truck_id)
+            ->with('user')
+            ->with('location')
+            ->first();
+
+        if (empty($truck)) {
+            abort(404);
+        }
+        $truck = $truck->toArray();
+
+        $text = "Franchisé : " . $truck['user']['pseudo']['name'] . "\n";
+        $text .= "Telephone : " . $truck['user']['telephone'] . "\n";
+        $text .= "Email : " . $truck['user']['email'] . "\n\n";
+        $text .= "Adresse : " . $truck['location']['address'] . ' ' .
+            $truck['location']['postcode'] . ' ' .
+            $truck['location']['city'] . "\n\n";
+
+        if (!empty($truck['location_date_end'])) {
+            $text .= "Jusqu'au : " . $truck['location_date_end'] . "\n";
+        }
+        $text .= route('client_order', ['truck_id' => $truck_id]);
+
+
+        $qrCode = \QrCode::format('png')
+            ->encoding('UTF-8')
+            ->merge(asset('img/logo_transparent_4.png'), 0.4, true)
+            ->size(500)
+            ->errorCorrection('H')
+            ->backgroundColor(0, 89, 120)
+            ->margin(2)
+            ->color(188, 188, 188)
+            ->generate($text);
+        return response($qrCode)->header('Content-type', 'image/png');
     }
 }

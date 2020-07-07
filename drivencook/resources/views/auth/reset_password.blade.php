@@ -9,7 +9,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h2>{{$email.' '.trans('auth.password_reset')}}</h2>
+                        <h2>{{ trans('auth.password_reset').' '.$email }}</h2>
                     </div>
                     <div class="card-body">
                         <form action="{{ route('reset_password_submit') }}" method="post">

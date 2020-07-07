@@ -20,7 +20,7 @@ trait EmailTools
         $data = array('name' => $to_name, 'token' => $token);
         Mail::send('mails.reset_password', $data, function ($message) use ($to_name, $to_email) {
             $message->to($to_email, $to_name)
-                ->subject('Drivencook password reset');
+                ->subject(trans('mail.object_password_reset'));
             $message->from('noreply@drivencook.fr');
         });
     }
@@ -32,7 +32,7 @@ trait EmailTools
         $data = array('user' => $user, 'invoice' => $invoice);
         Mail::send('mails.invoice', $data, function ($message) use ($to_name, $to_email) {
             $message->to($to_email, $to_name)
-                ->subject('Drivencook invoice');
+                ->subject(trans('mail.object_invoice'));
             $message->from('noreply@drivencook.fr');
         });
     }
@@ -45,7 +45,7 @@ trait EmailTools
         $data = array('name' => $to_name, 'token' => $token, 'role' => $user['role']);
         Mail::send('mails.new_user', $data, function ($message) use ($to_name, $to_email) {
             $message->to($to_email, $to_name)
-                ->subject('Drivencook new account created');
+                ->subject(trans('mail.object_new_account'));
             $message->from('noreply@drivencook.fr');
         });
     }
@@ -60,12 +60,12 @@ trait EmailTools
             'title' => $event['title'],
             'begin' => DateTime::createFromFormat('Y-m-d', $event['date_start'])->format('d/m/Y'),
             'end' => DateTime::createFromFormat('Y-m-d', $event['date_end'])->format('d/m/Y'),
-            'address' => empty($event['location']) ? 'No address' : $event['location']['address'] . ' - ' . $event['location']['city'] . ' (' . $event['location']['name'] . ')',
+            'address' => empty($event['location']) ? trans('mail.event_no_address') : $event['location']['address'] . ' - ' . $event['location']['city'] . ' (' . $event['location']['name'] . ')',
             'description' => $event['description']
         );
         Mail::send('mails.event_invite', $data, function ($message) use ($to_name, $user_mail) {
             $message->to($user_mail, $to_name)
-                ->subject('Drivencook event');
+                ->subject(trans('mail.object_event_invitation'));
             $message->from('noreply@drivencook.fr');
         });
     }
@@ -84,7 +84,7 @@ trait EmailTools
 
         Mail::send('mails.news_letter', $data, function ($message) use ($to_name, $to_email) {
             $message->to($to_email, $to_name)
-                ->subject('Drivencook newsletter');
+                ->subject(trans('mail.object_newsletter'));
             $message->from('noreply@drivencook.fr');
         });
 

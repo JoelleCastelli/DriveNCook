@@ -47,4 +47,6 @@ return [
     'forgot_password' => 'Mot de pass oublié',
     'enter_email' => 'Entrez votre e-mail',
     'send_reset_password' => 'Envoyer le mail de récupération de mot de passe',
+    'password_reset' => 'Créer un nouveau mot de passe :',
+    'password_updated' => 'Le mot de passe a été modifié !',
 ];
