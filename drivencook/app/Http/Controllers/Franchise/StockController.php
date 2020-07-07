@@ -19,9 +19,11 @@ use App\Traits\EnumValue;
 use App\Traits\UserTools;
 use Carbon\Carbon;
 use DateTime;
+use Exception;
 use Illuminate\Http\Request;
 use Stripe\Charge;
 use Stripe\Customer;
+use Stripe\Refund;
 use Stripe\Stripe;
 
 class StockController extends Controller
@@ -136,7 +138,7 @@ class StockController extends Controller
             ));
 
             return $this->stock_order_validate($order_total_cents / 100);
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             return $ex->getMessage();
         }
     }
@@ -218,7 +220,15 @@ class StockController extends Controller
         if ($order['status'] != 'created') {
             return 'can\'t cancel order anymore';
         }
+        $purchase_dishes = PurchasedDish::where('purchase_order_id', $order_id)->get();
+        foreach ($purchase_dishes as $purchase_dish) {
+            WarehousStock::where([
+                ['dish_id', $purchase_dish->dish_id],
+                ['warehouse_id', $order['warehouse_id']]
+            ])->increment('quantity', $purchase_dish->quantity);
+        }
         PurchasedDish::where('purchase_order_id', $order_id)->delete();
+        Invoice::where('purchase_order_id', $order_id)->delete();
         PurchaseOrder::whereKey($order_id)->delete();
         return $order_id;
     }
