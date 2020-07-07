@@ -7,18 +7,18 @@
 @section('content')
     <div class="row">
         <div class="col-12 col-md-6">
-        @if(Session::has('success'))
-            <div class="alert-success mb-3">{{ Session::get('success') }}</div>
-        @endif
+            @if(Session::has('success'))
+                <div class="alert-success mb-3">{{ Session::get('success') }}</div>
+            @endif
 
-        @if(Session::has('error'))
-            <div class="alert-danger mb-3">
-                {{ trans('truck.new_truck_error') }}
-                @foreach(Session::get('error') as $error)
-                    <li style="margin-left: 20px">{{ $error }}</li>
-                @endforeach
-            </div>
-        @endif
+            @if(Session::has('error'))
+                <div class="alert-danger mb-3">
+                    {{ trans('truck.new_truck_error') }}
+                    @foreach(Session::get('error') as $error)
+                        <li style="margin-left: 20px">{{ $error }}</li>
+                    @endforeach
+                </div>
+            @endif
         </div>
     </div>
     <div class="row">
@@ -146,7 +146,7 @@
                         <div class="form-group">
                             <label for="location_id">{{ trans('truck.location_name') }}</label>
                             <div class="input-group mb-3">
-                                <select class="custom-select" name="location_id" id="location_id">
+                                <select class="custom-select selectsearch" name="location_id" id="location_id">
                                     @foreach($locations as $location)
                                         <option {{$location['id'] == $truck['location_id'] ? 'selected' : ''}}
                                                 value={{ $location['id'] }}>{{ $location['name'] }}
@@ -179,4 +179,12 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('script')
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.selectsearch').SumoSelect({search: true});
+        });
+    </script>
 @endsection
