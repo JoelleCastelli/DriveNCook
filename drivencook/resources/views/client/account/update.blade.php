@@ -16,8 +16,9 @@
     <div class="row update_forms">
         <div class="col-12 col-sm-10 col-md-6">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header d-flex justify-content-between">
                     <h3>{{ trans('client/account.data') }}</h3>
+                    <button id="delete_account" class="btn btn-danger">{{ trans('client/global.delete_account') }}</button>
                 </div>
                 <div class="card-body">
                     <form method="post" action="{{ route('client_update_account_submit') }}">
@@ -150,8 +151,8 @@
 @section('script')
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#deleteAccount').on('click', function () {
-                if(confirm(Lang.get('client/global.ask_delete'))) {
+            $('#delete_account').on('click', function () {
+                if(confirm(Lang.get('client/global.delete_confirm_client'))) {
                     window.location.replace('{{ route('client_delete_account') }}');
                 }
             });

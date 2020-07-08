@@ -6,7 +6,7 @@ return [
     'login_client' => 'Se connecter',
 
     'back_dashboard' => 'Accueil',
-    'delete_account' => 'Supprimer votre compte',
+    'delete_account' => 'Supprimer mon compte',
     'order' => 'Commander',
     'history' => 'Historique',
     'event_list' => 'Evénement',
@@ -78,6 +78,7 @@ return [
 
     'ajax_error' => 'Une erreur est survenue, veuillez rafraîchir la page',
     'delete_confirm' => 'Voulez-vous vraiment supprimer ce client ? Toutes les données associées seront supprimées.',
+    'delete_confirm_client' => 'Voulez-vous vraiment supprimer votre compte ? Si vous confirmez, vos données ne pourront plus être récupérées.',
     'delete_success' => 'Le client a été supprimé',
 
     'send' => 'Envoyer',

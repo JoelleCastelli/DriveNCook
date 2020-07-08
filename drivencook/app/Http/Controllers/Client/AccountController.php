@@ -4,6 +4,8 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\EventInvited;
+use App\Models\Invoice;
 use App\Models\Sale;
 use App\Models\SoldDish;
 use App\Models\Truck;
@@ -203,9 +205,11 @@ class AccountController extends Controller
             $sales = $sales->toArray();
             foreach($sales as $sale) {
                 SoldDish::where('sale_id', $sale['id'])->delete();
+                Invoice::where('sale_id', $sale['id'])->delete();
                 Sale::whereKey($sale['id'])->delete();
             }
         }
+        $events = EventInvited::where('user_id', $this->get_connected_user()['id'])->delete();
 
         $this->delete_user($this->get_connected_user()['id']);
 
