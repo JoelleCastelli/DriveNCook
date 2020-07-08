@@ -21,6 +21,7 @@ return [
     'sale_price' => 'Sale price',
     'description' => 'Description',
 
+    'select_payment_method' => 'Choose your payment method:',
     'credit_card' => 'Credit card',
     'cash' => 'Cash',
     'not_paid' => 'Not paid',

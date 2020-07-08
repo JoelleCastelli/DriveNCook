@@ -10,6 +10,9 @@ return [
     'order' => 'Order',
     'history' => 'History',
     'event_list' => 'Events',
+    'see_menu' => 'See the menu',
+    'truck_of' => 'Truck run by ',
+
 
     'never_ordered' => 'You have never ordered, start now by clicking on the button below!',
 

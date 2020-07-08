@@ -1,4 +1,5 @@
-@extends('client.layout_client')
+@extends('app')
+
 @section('title')
 
 @endsection
@@ -35,10 +36,14 @@
         .category_title {
             margin-left: 1.5rem;
         }
+
+        .menu_content {
+            padding: 100px 50px;
+        }
     </style>
 @endsection
 @section('content')
-    <div class="row">
+    <div class="row menu_content">
         <div class="col-8">
             <div class="card">
                 <div class="card-header">

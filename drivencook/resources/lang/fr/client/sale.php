@@ -21,6 +21,7 @@ return [
     'sale_price' => 'Prix de vente',
     'description' => 'Description',
 
+    'select_payment_method' => 'Choisissez votre mode de paiement :',
     'credit_card' => 'Carte bancaire',
     'cash' => 'Liquide',
     'not_paid' => 'Non payée',

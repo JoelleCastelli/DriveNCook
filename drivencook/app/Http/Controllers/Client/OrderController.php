@@ -28,6 +28,15 @@ use Stripe\Stripe;
 
 class OrderController extends Controller
 {
+    private $trucks;
+    public function __construct()
+    {
+        $this->trucks = Truck::with('user')->with('location')->where([
+            ['functional', true],
+            ['user_id', "!=", null]
+            ])->get()->toArray();
+    }
+
     use UserTools;
     use TruckTools;
     use StockTools;
@@ -103,6 +112,7 @@ class OrderController extends Controller
             ->with('stock_by_category', $stock_by_category)
             ->with('promotions', $fidelity_step)
             ->with('client', $client)
+            ->with('trucks', $this->trucks)
             ->with('truck', $truck);
     }
 
@@ -226,6 +236,7 @@ class OrderController extends Controller
 
         return view('client.order.client_order_payment')
             ->with('order', $order)
+            ->with('trucks', $this->trucks)
             ->with('discount', $discount);
     }
 
