@@ -19,9 +19,12 @@ use App\Traits\EnumValue;
 use App\Traits\UserTools;
 use Carbon\Carbon;
 use DateTime;
+use Exception;
 use Illuminate\Http\Request;
+use Session;
 use Stripe\Charge;
 use Stripe\Customer;
+use Stripe\Refund;
 use Stripe\Stripe;
 
 class StockController extends Controller
@@ -135,8 +138,27 @@ class StockController extends Controller
                 'currency' => 'eur'
             ));
 
+            Session::put('charge_id', $charge->id);
+
             return $this->stock_order_validate($order_total_cents / 100);
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
+            return $ex->getMessage();
+        }
+    }
+
+    public function refund($order_id)
+    {
+        $order = PurchaseOrder::whereKey($order_id)
+            ->first();
+        try {
+            Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+
+            Refund::create([
+                'charge' => $order->payment_id,
+                'reason' => 'requested_by_customer'
+            ]);
+            return $this->stock_order_cancel($order_id);
+        } catch (Exception $ex) {
             return $ex->getMessage();
         }
     }
@@ -149,10 +171,12 @@ class StockController extends Controller
             return redirect(route('franchise.stock_order'));
         }
 
+        $payment_id = Session::pull('charge_id');
         $order_id = PurchaseOrder::insertGetId([
             'user_id' => $this->get_connected_user()['id'],
             'warehouse_id' => $order['warehouse_id'],
-            'date' => Carbon::now()->toDateString()
+            'date' => Carbon::now()->toDateString(),
+            'payment_id' => $payment_id
         ]);
         foreach ($order['dishes'] as $order_dish) {
             PurchasedDish::insert([
@@ -218,7 +242,15 @@ class StockController extends Controller
         if ($order['status'] != 'created') {
             return 'can\'t cancel order anymore';
         }
+        $purchase_dishes = PurchasedDish::where('purchase_order_id', $order_id)->get();
+        foreach ($purchase_dishes as $purchase_dish) {
+            WarehousStock::where([
+                ['dish_id', $purchase_dish->dish_id],
+                ['warehouse_id', $order['warehouse_id']]
+            ])->increment('quantity', $purchase_dish->quantity);
+        }
         PurchasedDish::where('purchase_order_id', $order_id)->delete();
+        Invoice::where('purchase_order_id', $order_id)->delete();
         PurchaseOrder::whereKey($order_id)->delete();
         return $order_id;
     }

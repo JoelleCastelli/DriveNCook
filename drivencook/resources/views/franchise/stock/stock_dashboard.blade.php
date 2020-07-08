@@ -204,7 +204,7 @@
                         success: function (data) {
                             if (data == id) {
                                 alert("{{trans('franchisee.order_cancelled')}}");
-                                document.getElementById("row_order_" + id).remove();
+                                $('#purchase_orders').DataTable().row('#row_order_' + id).remove().draw();
                             } else {
                                 alert("{{trans('franchisee.ajax_error')}}\n" + data);
                             }

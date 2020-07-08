@@ -31,7 +31,7 @@ Route::get('/franchise/stock/new_order_validate', [
 
 Route::delete('/franchise/stock/order_cancel/{order_id}', [
     'as' => 'franchise.stock_order_cancel',
-    'uses' => 'Franchise\StockController@stock_order_cancel'
+    'uses' => 'Franchise\StockController@refund'
 ]);
 
 Route::post('/franchise/stock/update', [
