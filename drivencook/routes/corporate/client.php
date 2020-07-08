@@ -20,6 +20,11 @@ Route::post('/corporate/client_sales/update_status', [
     'uses' => 'Corporate\ClientController@update_client_sale_status'
 ]);
 
+Route::delete('/corporate/client_sales/delete/{sale_id}', [
+    'as' => 'corporate.delete_client_sale',
+    'uses' => 'Corporate\ClientController@delete_client_sale'
+]);
+
 Route::get('/corporate/client/update/{id}', [
     'as' => 'client_update',
     'uses' => 'Corporate\ClientController@update_client'

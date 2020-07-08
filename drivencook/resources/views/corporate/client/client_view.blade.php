@@ -63,7 +63,7 @@
                             </thead>
                             <tbody>
                             @foreach($client_orders as $order)
-                                <tr>
+                                <tr id="row_{{$order['id']}}">
                                     <td>
                                         {{ DateTime::createFromFormat('Y-m-d',$order['date'])->format('d/m/Y') }}
                                     </td>
@@ -95,10 +95,10 @@
                                     </td>
                                     <td>
                                         <a href="{{route('corporate.view_client_sale',['sale_id'=>$order['id']])}}">
-
                                             <i class="fa fa-eye text-light"></i>
                                         </a>
-                                        <i class="fa fa-trash ml-3"></i>
+                                        <button onclick="deleteEvent({{$order['id']}})"
+                                                class="fa fa-trash ml-3"></button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -151,5 +151,33 @@
         $(document).ready(function () {
             $('#client_orders').DataTable();
         });
+
+        function deleteEvent(sale_id) {
+            if (confirm(Lang.get('sale.delete_confirm'))) {
+                if (!isNaN(sale_id)) {
+                    let urlB = '{{route('corporate.delete_client_sale',['sale_id'=>':id'])}}';
+                    urlB = urlB.replace(':id', sale_id);
+                    $.ajax({
+                        url: urlB,
+                        method: "delete",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (data) {
+                            if (data == sale_id) {
+                                alert(Lang.get('client.sale.delete_success'));
+                                $('#client_orders').DataTable().row('#row_' + sale_id).remove().draw();
+                            } else {
+                                alert(Lang.get('event.ajax_error'));
+                            }
+                        },
+                        error: function () {
+                            alert(Lang.get('event.ajax_error'));
+                        }
+                    })
+                }
+            }
+        }
+
     </script>
 @endsection

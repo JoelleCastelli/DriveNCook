@@ -4,8 +4,10 @@
 namespace App\Http\Controllers\Corporate;
 
 use App\Http\Controllers\Controller;
+use App\Models\Invoice;
 use App\Models\Sale;
 use App\Models\FranchiseeStock;
+use App\Models\SoldDish;
 use App\Models\User;
 use App\Traits\NewslettersTools;
 use App\Traits\UserTools;
@@ -147,6 +149,20 @@ class ClientController extends Controller
         return back();
     }
 
+    public function delete_client_sale($sale_id)
+    {
+        if (!ctype_digit($sale_id)) {
+            abort(403);
+        }
+        $sale = Sale::whereKey($sale_id)->first();
+        if (empty($sale)) {
+            abort(404);
+        }
+        Invoice::where('sale_id', $sale_id)->delete();
+        SoldDish::where('sale_id', $sale_id)->delete();
+        $sale->delete();
+        return $sale_id;
+    }
 
 
     public function send_newsletter()
