@@ -27,7 +27,7 @@ return [
     /* NAVBAR */
     /**********/
 
-    'my_account'=>'My account',
+    'my_account' => 'My account',
 
     // Admin
     'admin_page' => 'Administration',
@@ -74,4 +74,14 @@ return [
     'back_countries_list' => 'Back to countries list',
     // Back
     'back_dashboard' => 'Back to dashboard',
+
+    'send_newsletter' => 'Send newsletter',
+    'newsletter_everybody' => 'Send to everyone',
+    'newsletter_new_users' => 'Send to new clients',
+    'newsletter_loyalty_point' => 'Minimum loyalty points required',
+    'minimum_loyalty' => 'Minimum loyalty point',
+    'newsletter_optional_message' => 'Message (optional)',
+    'send' => 'Send',
+
+
 ];
