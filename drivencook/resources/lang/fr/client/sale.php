@@ -11,6 +11,8 @@ return [
     'online_order' => 'Type de vente',
     'date' => 'Date',
     'status' => 'Statut',
+    'total_price_without_discount' => 'Prix total sans remise',
+    'discount' => 'Discount',
     'total_price' => 'Prix total',
 
     'dishes_section' => 'Contenu de votre achat',
@@ -23,6 +25,7 @@ return [
 
     'credit_card' => 'Carte bancaire',
     'cash' => 'Liquide',
+    'free' => 'Gratuit',
     'not_paid' => 'Non payée',
 
     'is_order' => 'Commande en ligne',
