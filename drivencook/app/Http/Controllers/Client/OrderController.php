@@ -383,16 +383,20 @@ class OrderController extends Controller
     {
         $sale = Sale::whereKey($sale_id)
             ->first();
-        try {
-            Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+        if($this->get_sale_total($sale_id) - $sale->discount_amount > 0 && $sale->payment_method != 'Liquide') {
+            try {
+                Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
-            Refund::create([
-                'charge' => $sale->payment_id,
-                'reason' => 'requested_by_customer'
-            ]);
+                Refund::create([
+                    'charge' => $sale->payment_id,
+                    'reason' => 'requested_by_customer'
+                ]);
+                return $this->client_order_cancel($sale_id);
+            } catch (Exception $ex) {
+                return $ex->getMessage();
+            }
+        } else {
             return $this->client_order_cancel($sale_id);
-        } catch (Exception $ex) {
-            return $ex->getMessage();
         }
     }
 

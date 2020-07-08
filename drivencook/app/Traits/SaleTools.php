@@ -16,7 +16,7 @@ trait SaleTools
 
         $sum = 0;
         foreach($sold_dishes as $sold_dish) {
-            $sum += $sold_dish->unit_price;
+            $sum += $sold_dish->unit_price * $sold_dish->quantity;
         }
 
         return $sum;
