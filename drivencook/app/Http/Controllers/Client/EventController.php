@@ -92,6 +92,7 @@ class EventController extends Controller
             }
         }
         return view('client.events.event_view')
+            ->with('trucks', $this->trucks)
             ->with('event', $event);
     }
 
