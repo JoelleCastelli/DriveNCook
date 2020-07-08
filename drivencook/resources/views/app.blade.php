@@ -653,7 +653,8 @@
                             <div class="md-form mb-0">
                                 <label for="contact_email">{{ trans('homepage.mail') }}</label>
                                 <input type="text" id="contact_email" name="email" maxlength="200"
-                                       class="form-control" placeholder="{{ trans('homepage.your_mail') }}">
+                                       class="form-control" placeholder="{{ trans('homepage.your_mail') }}"
+                                       value="{{ !auth()->guest() ? auth()->user()->email : '' }}">
                             </div>
                         </div>
                     </div>
