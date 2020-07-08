@@ -26,6 +26,13 @@ return [
     'brand' => 'Marque',
     'model' => 'Modèle',
 
+    // Dish categories
+    'category_drink' => 'Boissons',
+    'category_hot_dish' => 'Plats chauds',
+    'category_cold_dish' => 'Plats froids',
+    'category_salty_snack' => 'Snacks salés',
+    'category_sweet_snack' => 'Snacks sucrés',
+
     'discount_amount' => 'Remise',
     'select_menu_no_discount' => 'Vous pouvez choisir une remise...',
     'dishes' => 'Commande',

@@ -31,6 +31,10 @@
         .dish_price {
             text-align: right;
         }
+
+        .category_title {
+            margin-left: 1.5rem;
+        }
     </style>
 @endsection
 @section('content')
@@ -55,8 +59,11 @@
                     @endif
                 </div>
                 <div class="card-body">
-                    <div class="row">
-                        @foreach($stock_by_category as $category)
+                    @foreach($stock_by_category as $category_name => $category)
+                        <div class="row mt-2">
+                            <h2 class="category_title">{{ trans('client/order.category_'.$category_name) }}</h2>
+                        </div>
+                        <div class="row">
                             @foreach($category as $dish)
                                 <div id="{{ $dish['dish_id'] }}" class="card col-5 add_to_cart_btn" style="margin: 5px;">
                                     <div class="card-body">
@@ -76,8 +83,8 @@
                                     </div>
                                 </div>
                             @endforeach
-                        @endforeach
-                    </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
