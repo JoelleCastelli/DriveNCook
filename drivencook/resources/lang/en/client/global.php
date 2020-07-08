@@ -12,6 +12,9 @@ return [
     'event_list' => 'Events',
     'see_menu' => 'See the menu',
     'truck_of' => 'Truck run by ',
+    'my_orders' => 'My orders',
+    'my_events' => 'My events',
+    'params' => 'Parameters',
 
 
     'never_ordered' => 'You have never ordered, start now by clicking on the button below!',

@@ -96,16 +96,6 @@
             </li>
 
             @if (auth()->user())
-                @if(!empty(Session::get('loyalty_point')))
-                    <li class="nav-item ml-4">
-                        <a class="nav-link" href="#"
-                           data-toggle="modal" data-target="#loyaltyPointModal"
-                           style="margin: 0; padding: 0">
-                            <span class="navbar-brand">{{ Session::get('loyalty_point') . ' ' . trans('client/global.loyalty_point') }}</span>
-                        </a>
-                    </li>
-                @endif
-
                 <li class="nav-item dropdown ml-4">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-toggle="dropdown"
@@ -119,6 +109,12 @@
                         @else
                             <a class="dropdown-item text-light"
                                href="{{ route('client_dashboard') }}">{{ trans('auth.my_account') }}</a>
+                            <a class="dropdown-item text-light"
+                               href="{{ route('client_sales_history') }}">{{ trans('client/global.my_orders') }}</a>
+                            <a class="dropdown-item text-light"
+                               href="{{ route('client.event_list') }}">{{ trans('client/global.my_events') }}</a>
+                            <a class="dropdown-item text-light"
+                               href="{{ route('client_account') }}">{{ trans('client/global.params') }}</a>
                         @endif
                         <a class="dropdown-item text-light"
                            href="{{ route('client_logout') }}">{{ trans('auth.logout') }}</a>

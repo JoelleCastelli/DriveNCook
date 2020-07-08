@@ -12,6 +12,9 @@ return [
     'event_list' => 'Evénement',
     'see_menu' => 'Voir le menu',
     'truck_of' => 'Camion de ',
+    'my_orders' => 'Mes commandes',
+    'my_events' => 'Mes événements',
+    'params' => 'Paramètres',
 
     'never_ordered' => 'Vous n\'avez jamais commandé, commencez dès maintenant en cliquant sur le bouton ci-dessous !',
 

@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\Sale;
 use App\Models\SoldDish;
+use App\Models\Truck;
 use App\Models\User;
 use App\Traits\LoyaltyTools;
 use Illuminate\Http\Request;
@@ -16,23 +17,40 @@ class AccountController extends Controller
     use UserTools;
     use LoyaltyTools;
 
+    private $trucks;
+    public function __construct()
+    {
+        $this->trucks = Truck::with('user')->with('location')->where([
+            ['functional', true],
+            ['user_id', "!=", null]
+        ])->get()->toArray();
+    }
+
     public function dashboard()
     {
-        $clientId = $this->get_connected_user()['id'];
-        $client = User::whereKey($clientId)
-            ->first();
+        $client = $this->get_connected_user();
 
-        $last_sale = Sale::where('user_client', $clientId)
+        $never_ordered = true;
+        $last_sale = Sale::where('user_client', $client['id'])
             ->with('user_franchised')
+            ->with('sold_dishes')
             ->orderBy('date', 'desc')
             ->first();
 
         if(!empty($last_sale)) {
             $last_sale = $last_sale->toArray();
+            $never_ordered = false;
+
+            $last_sale['total'] = 0;
+            foreach($last_sale['sold_dishes'] as $sold_dish) {
+                $last_sale['total'] += $sold_dish['unit_price'];
+            }
         }
 
         return view('client.client_dashboard')
             ->with('client', $client)
+            ->with('trucks', $this->trucks)
+            ->with('never_ordered', $never_ordered)
             ->with('sale', $last_sale);
     }
 

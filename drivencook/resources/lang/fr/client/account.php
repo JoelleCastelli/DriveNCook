@@ -2,6 +2,13 @@
 
 return [
     'title' => 'Votre compte',
+    'my_info' => 'Mes informations',
+    'my_loyalty' => 'Ma carte de fidélité',
+    'my_loyalty_points' => 'Nombre de points:',
+    'see_loyalty_perks' => 'Voir mes avantages',
+    'latest_order' => 'Ma dernière commande',
+    'see_latest_order' => 'Voir',
+    'never_ordered' => 'Vous n\'avez jamais commandé, commencez dès maintenant en cliquant sur le bouton ci-dessous !',
 
     'data' => 'Information du compte',
     'password_edition' => 'Modification du mot de passe',
@@ -11,6 +18,8 @@ return [
     'birthdate' => 'Date de naissance',
     'email' => 'E-mail',
     'telephone' => 'Téléphone',
+    'not_specified_m' => 'Non renseigné',
+    'not_specified_f' => 'Non renseignée',
 
 
     'new_password' => 'Nouveau mot de passe',
