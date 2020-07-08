@@ -1,4 +1,4 @@
-@extends('client.layout_client')
+@extends('app')
 @section('title')
     {{ trans('client/sale.title') }}
 @endsection
@@ -7,10 +7,14 @@
         .clientTitle {
             color: #FFFFFF;
         }
+
+        .order_summary {
+            padding: 100px 50px;
+        }
     </style>
-@stop
+@endsection
 @section('content')
-    <div class="row">
+    <div class="row order_summary">
         <div class="col-12 col-lg-6 mb-5">
             <div class="card">
                 <div class="card-header d-flex align-items-center">
@@ -33,7 +37,13 @@
                     <li class="list-group-item"><b> {{ trans('client/sale.see_invoice') }}
                             <a class="ml-2" href="{{ route('stream_client_invoice_pdf',['id' => $invoice['id']]) }}" target="_blank">
                             <button class="text-dark fa fa-file-pdf ml-3"></button>
-                            </a></b></li>
+                            </a></b>
+                    </li>
+                    <li>@if($sale['online_order'] == true && $sale['status'] != 'done')
+                            <button class="btn btn-danger"
+                                    id="cancelOrderBtn"
+                                    style="width: 100%">{{ trans('client/sale.cancel_order') }}</button>
+                        @endif</li>
                 </ul>
             </div>
         </div>
@@ -54,8 +64,7 @@
                 </ul>
             </div>
         </div>
-    </div>
-    <div class="row">
+
         <div class="col-12 col-lg-12 mb-5">
             <div class="card">
                 <div class="card-header">
@@ -95,11 +104,6 @@
             </div>
         </div>
     </div>
-    @if($sale['online_order'] == true && $sale['status'] != 'done')
-        <button class="btn btn-danger"
-                id="cancelOrderBtn"
-                style="width: 100%">{{ trans('client/sale.cancel_order') }}</button>
-    @endif
 @endsection
 
 @section('script')

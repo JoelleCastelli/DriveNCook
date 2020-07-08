@@ -157,7 +157,7 @@
                                     id="order_btn_text" style="margin-bottom: 5px"></p></button>
                     </div>
                 </div>
-                <div class="card">
+                <div class="card mt-3">
                     <div class="card-body">
                         <img src="{{route('generate_franchise_qr',['truck_id'=>$truck['id']])}}" class="img-thumbnail"
                              alt="qr_code">

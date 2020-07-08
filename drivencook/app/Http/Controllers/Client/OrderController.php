@@ -460,6 +460,7 @@ class OrderController extends Controller
 
         return view('client.order.client_sale_display')
             ->with('sale', $sale)
+            ->with('trucks', $this->trucks)
             ->with('invoice', $invoice);
     }
 
