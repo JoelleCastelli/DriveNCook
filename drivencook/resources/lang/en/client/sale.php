@@ -5,15 +5,17 @@ return [
     'history_title' => 'Your purchases history',
 
     'back_sales_history' => 'History',
+    'history' => 'My orders history',
+    'no_history' => 'You have never ordered yet',
 
-    'sale_details_section' => 'Sale data',
+    'sale_details_section' => 'Your order',
     'payment_method' => 'Payment method',
     'online_order' => 'Sale type',
     'date' => 'Date',
     'status' => 'Status',
     'total_price' => 'Total price',
 
-    'dishes_section' => 'Purchase content',
+    'dishes_section' => 'Content of your order',
     'product' => 'Product',
     'category' => 'Category',
     'diet' => 'Diet',
@@ -32,7 +34,7 @@ return [
     'pending' => 'Pending',
     'done' => 'Done',
 
-    'franchisee_details_section' => 'Franchisee data',
+    'franchisee_details_section' => 'Truck of your order',
     'franchisee' => 'Franchisee',
     'franchisee_email' => 'Email',
     'franchisee_phone' => 'Phone',

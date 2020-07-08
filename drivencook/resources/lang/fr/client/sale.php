@@ -5,15 +5,17 @@ return [
     'history_title' => 'Votre historique d\'achats',
 
     'back_sales_history' => 'Historique',
+    'history' => 'Historique de mes commandes',
+    'no_history' => 'Vous n\'avez passé aucune commande',
 
-    'sale_details_section' => 'Information de la vente',
+    'sale_details_section' => 'Votre commande',
     'payment_method' => 'Moyen de paiement',
     'online_order' => 'Type de vente',
     'date' => 'Date',
     'status' => 'Statut',
     'total_price' => 'Prix total',
 
-    'dishes_section' => 'Contenu de votre achat',
+    'dishes_section' => 'Contenu de votre commande',
     'product' => 'Produit',
     'category' => 'Catégorie',
     'diet' => 'Régime',
@@ -32,7 +34,7 @@ return [
     'pending' => 'En attente de récupération',
     'done' => 'Terminée',
 
-    'franchisee_details_section' => 'Information du franchisé',
+    'franchisee_details_section' => 'Camion de votre commande',
     'franchisee' => 'Franchisé',
     'franchisee_email' => 'E-mail',
     'franchisee_phone' => 'Téléphone',

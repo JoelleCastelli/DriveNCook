@@ -432,6 +432,7 @@ class OrderController extends Controller
         }
 
         return view('client.order.client_sales_history')
+            ->with('trucks', $this->trucks)
             ->with('sales', $sales);
     }
 
