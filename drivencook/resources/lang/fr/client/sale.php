@@ -14,6 +14,9 @@ return [
     'date' => 'Date',
     'status' => 'Statut',
     'total_price' => 'Prix total',
+    'total' => 'Total',
+    'sub_total' => 'Prix total',
+    'discount' => 'Réduction',
 
     'dishes_section' => 'Contenu de votre commande',
     'product' => 'Produit',
@@ -38,6 +41,7 @@ return [
     'franchisee' => 'Franchisé',
     'franchisee_email' => 'E-mail',
     'franchisee_phone' => 'Téléphone',
+    'truck' => 'Camion',
 
     'cancel_order' => 'Annuler la commande',
     'delete_confirm' => 'Voulez-vous vraiment annuler cette commande ?',

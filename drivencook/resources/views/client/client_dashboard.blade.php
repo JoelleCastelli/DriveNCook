@@ -112,7 +112,7 @@
                                     @if(!empty($sale['user_franchised']['telephone']))
                                         {{ $sale['user_franchised']['telephone'] }}
                                     @else
-                                        {{ trans('franchisee.unknown') }}
+                                        {{ trans('client/account.not_specified_m') }}
                                     @endif
                                 </li>
                             </ul>
@@ -121,10 +121,9 @@
 
                     <div class="card-footer">
                         <a href="{{ route('client_sale_display', ['id' => $sale['id']]) }}" class="btn btn-light_blue">
-                            Voir ma commande
+                            {{ trans('client/account.see_latest_order') }}
                         </a>
-                        @if(!empty($sale['user_franchised']['truck']['id']))
-                            {{--//TODO vérifier que y'a du stock--}}
+                        @if($can_reorder == true)
                             <a href="{{ route('client_order', ['id' => $sale['user_franchised']['truck']['id']]) }}"
                                class="btn btn-light_blue">
                                 {{ trans('client/global.order_again') }}

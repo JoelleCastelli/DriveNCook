@@ -14,6 +14,9 @@ return [
     'date' => 'Date',
     'status' => 'Status',
     'total_price' => 'Total price',
+    'total' => 'Total',
+    'sub_total' => 'Subtotal',
+    'discount' => 'Discount',
 
     'dishes_section' => 'Content of your order',
     'product' => 'Product',
@@ -38,6 +41,7 @@ return [
     'franchisee' => 'Franchisee',
     'franchisee_email' => 'Email',
     'franchisee_phone' => 'Phone',
+    'truck' => 'Truck',
 
     'cancel_order' => 'Cancel order',
     'delete_confirm' => 'Are you sure you want to cancel this order?',

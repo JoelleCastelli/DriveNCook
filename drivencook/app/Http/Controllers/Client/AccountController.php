@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\EventInvited;
+use App\Models\FranchiseeStock;
 use App\Models\Invoice;
 use App\Models\Sale;
 use App\Models\SoldDish;
@@ -49,9 +50,16 @@ class AccountController extends Controller
             }
         }
 
+        $franchisee_stock = FranchiseeStock::where('user_id', $last_sale['user_franchised']['id'] )->get();
+        $can_reorder = true;
+        if ($franchisee_stock->isEmpty()) {
+            $can_reorder = false;
+        }
+
         return view('client.client_dashboard')
             ->with('client', $client)
             ->with('trucks', $this->trucks)
+            ->with('can_reorder', $can_reorder)
             ->with('never_ordered', $never_ordered)
             ->with('sale', $last_sale);
     }
