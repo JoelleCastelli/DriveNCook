@@ -11,8 +11,10 @@
                     <h2>{{ trans('client/global.client_info') }}</h2>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><b>{{ trans('client/global.name') }} : </b>{{ $client['lastname'] }}</li>
-                    <li class="list-group-item"><b>{{ trans('client/global.firstname') }} : </b>{{ $client['firstname'] }}</li>
+                    <li class="list-group-item"><b>{{ trans('client/global.name') }} : </b>{{ $client['lastname'] }}
+                    </li>
+                    <li class="list-group-item"><b>{{ trans('client/global.firstname') }}
+                            : </b>{{ $client['firstname'] }}</li>
                     <li class="list-group-item"><b>{{ trans('client/global.email') }} : </b>{{ $client['email'] }}</li>
                     <li class="list-group-item"><b>{{ trans('client/global.phone') }} :
                         </b>{{empty($client['telephone']) ? trans('client/global.not_specified_m') : $client['telephone'] }}
@@ -49,54 +51,57 @@
                         <table id="client_orders" class="table table-hover table-striped table-bordered table-dark"
                                style="width: 100%">
                             <thead>
-                                <tr>
-                                    <th>{{ trans('client/global.order_date') }}</th>
-                                    <th>{{ trans('client/global.order_online') }}</th>
-                                    <th>{{ trans('client/global.payment_method') }}</th>
-                                    <th>{{ trans('client/global.order_content') }}</th>
-                                    <th>Total</th>
-                                    <th>{{ trans('client/global.franchisee') }}</th>
-                                    <th>Actions</th>
-                                </tr>
+                            <tr>
+                                <th>{{ trans('client/global.order_date') }}</th>
+                                <th>{{ trans('client/global.order_online') }}</th>
+                                <th>{{ trans('client/global.payment_method') }}</th>
+                                <th>{{ trans('client/global.order_content') }}</th>
+                                <th>Total</th>
+                                <th>{{ trans('client/global.franchisee') }}</th>
+                                <th>Actions</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach($client_orders as $order)
-                                    <tr>
-                                        <td>
-                                            {{ DateTime::createFromFormat('Y-m-d',$order['date'])->format('d/m/Y') }}
-                                        </td>
-                                        <td>{{ $order['online_order']? trans('client/global.yes') : trans('client/global.no') }}</td>
-                                        <td>{{ $order['payment_method'] }}</td>
-                                        <td>
-                                            <?php
-                                            $str = '';
-                                            foreach ($order['sold_dishes'] as $sold_dish) {
-                                                $str .= $sold_dish['quantity'].' x '.$sold_dish['dish']['name']."<br>";
-                                            }
-                                            echo $str;
-                                            ?>
-                                        </td>
-                                        <td>
-                                            <?php
-                                                $total = 0;
-                                                foreach ($order['sold_dishes'] as $sold_dish) {
-                                                    $total += $sold_dish['quantity'] * $sold_dish['unit_price'];
-                                                }
-                                                echo $total . ' €';
-                                            ?>
-                                        </td>
-                                        <td>
-                                            <a href="{{route('franchisee_view',['id'=>$order['user_franchised']['id']]) }}">
-                                                <i class="fa text-light fa-eye"></i>
-                                            </a>
-                                            {{ $order['user_franchised']['pseudo']['name'] }}
-                                        </td>
-                                        <td>
-                                            <i class="fa fa-eye"></i>
-                                            <i class="fa fa-trash ml-3"></i>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                            @foreach($client_orders as $order)
+                                <tr>
+                                    <td>
+                                        {{ DateTime::createFromFormat('Y-m-d',$order['date'])->format('d/m/Y') }}
+                                    </td>
+                                    <td>{{ $order['online_order']? trans('client/global.yes') : trans('client/global.no') }}</td>
+                                    <td>{{ $order['payment_method'] }}</td>
+                                    <td>
+                                        <?php
+                                        $str = '';
+                                        foreach ($order['sold_dishes'] as $sold_dish) {
+                                            $str .= $sold_dish['quantity'] . ' x ' . $sold_dish['dish']['name'] . "<br>";
+                                        }
+                                        echo $str;
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $total = 0;
+                                        foreach ($order['sold_dishes'] as $sold_dish) {
+                                            $total += $sold_dish['quantity'] * $sold_dish['unit_price'];
+                                        }
+                                        echo $total . ' €';
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <a href="{{route('franchisee_view',['id'=>$order['user_franchised']['id']]) }}">
+                                            <i class="fa text-light fa-eye"></i>
+                                        </a>
+                                        {{ $order['user_franchised']['pseudo']['name'] }}
+                                    </td>
+                                    <td>
+                                        <a href="{{route('corporate.view_client_sale',['sale_id'=>$order['id']])}}">
+
+                                            <i class="fa fa-eye text-light"></i>
+                                        </a>
+                                        <i class="fa fa-trash ml-3"></i>
+                                    </td>
+                                </tr>
+                            @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -123,12 +128,15 @@
 
                         <div class="form-group">
                             <label for="news_message">{{trans('client/global.optional_message') }}</label>
-                            <textarea class="form-control" name="news_message" id="news_message" maxlength="255"></textarea>
+                            <textarea class="form-control" name="news_message" id="news_message"
+                                      maxlength="255"></textarea>
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('client/global.cancel') }}</button>
-                            <button type="submit" class="btn btn-primary" id="modalSubmit">{{ trans('client/global.send') }}
+                            <button type="button" class="btn btn-secondary"
+                                    data-dismiss="modal">{{ trans('client/global.cancel') }}</button>
+                            <button type="submit" class="btn btn-primary"
+                                    id="modalSubmit">{{ trans('client/global.send') }}
                             </button>
                         </div>
                     </form>

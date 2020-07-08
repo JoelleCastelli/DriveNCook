@@ -104,7 +104,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="post" action="{{route('franchise.update_client_sale_status')}}">
+                <form method="post" action="{{route('corporate.update_client_sale_status')}}">
                     {{csrf_field()}}
                     <input type="hidden" id="sale_id" name="sale_id" value="{{$sale['id']}}">
 
@@ -128,7 +128,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary"
-                                data-dismiss="modal">{{trans('franchisee.cancel')}}</button>
+                                data-dismiss="modal">{{trans('corporate.cancel')}}</button>
                         <button type="submit" class="btn btn-primary" id="modalSubmit">{{trans('franchisee.update')}}
                         </button>
                     </div>
