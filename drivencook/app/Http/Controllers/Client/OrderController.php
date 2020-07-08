@@ -383,7 +383,7 @@ class OrderController extends Controller
     {
         $sale = Sale::whereKey($sale_id)
             ->first();
-        if($this->get_sale_total($sale_id) > 0 && $sale->payment_method != 'Liquide') {
+        if($this->get_sale_total($sale_id) - $sale->discount_amount > 0 && $sale->payment_method != 'Liquide') {
             try {
                 Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
