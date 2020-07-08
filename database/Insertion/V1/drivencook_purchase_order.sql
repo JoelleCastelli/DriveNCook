@@ -1,0 +1,2 @@
+INSERT INTO drivencook.purchase_order (id, user_id, warehouse_id, status, date, updated_at) VALUES (37, 503, 7, 'in_progress', '2020-07-01', '2020-07-04 21:49:12');
+INSERT INTO drivencook.purchase_order (id, user_id, warehouse_id, status, date, updated_at) VALUES (41, 498, 7, 'received', '2020-07-01', '2020-07-05 11:55:09');
