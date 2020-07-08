@@ -73,4 +73,12 @@ return [
     'back_countries_list' => 'Retour à la liste des pays',
     // Back
     'back_dashboard' => 'Retour au tableau de bord',
+
+    'send_newsletter' => 'Envoyer la newsletter',
+    'newsletter_everybody' => 'Envoyer à tous',
+    'newsletter_new_users' => 'Envoyer aux nouveaux clients',
+    'newsletter_loyalty_point' => 'Points de fidélités minimum requis',
+    'minimum_loyalty' => 'Points de fidélités minimum',
+    'newsletter_optional_message' => 'Message (optionnel)',
+    'send' => 'Envoyer',
 ];
