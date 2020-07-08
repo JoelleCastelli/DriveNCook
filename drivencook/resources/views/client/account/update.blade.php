@@ -1,4 +1,4 @@
-@extends('client/layout_client')
+@extends('app')
 @section('title')
     {{ trans('client/account.title') }}
 @endsection
@@ -7,10 +7,13 @@
         .clientTitle {
             color: #FFFFFF;
         }
+        .update_forms {
+            padding: 100px 50px;
+        }
     </style>
 @stop
 @section('content')
-    <div class="row">
+    <div class="row update_forms">
         <div class="col-12 col-sm-10 col-md-6">
             <div class="card">
                 <div class="card-header">
@@ -100,7 +103,7 @@
 
                         <div class="form-group">
                             <button type="submit"
-                                    class="btn btn-info">{{ trans('client/account.update_submit') }}</button>
+                                    class="btn btn-light_blue">{{ trans('client/account.update_submit') }}</button>
                         </div>
                     </form>
                 </div>

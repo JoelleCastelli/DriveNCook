@@ -161,6 +161,7 @@ class AccountController extends Controller
         }
 
         return view('client.account.update')
+            ->with('trucks', $this->trucks)
             ->with('client', $client);
     }
 
