@@ -4,8 +4,10 @@
 namespace App\Http\Controllers\Corporate;
 
 use App\Http\Controllers\Controller;
+use App\Models\Invoice;
 use App\Models\Sale;
 use App\Models\FranchiseeStock;
+use App\Models\SoldDish;
 use App\Models\User;
 use App\Traits\NewslettersTools;
 use App\Traits\UserTools;
@@ -109,6 +111,59 @@ class ClientController extends Controller
             ->with('user_franchised')
             ->get()->toArray();
     }
+
+    public function view_client_sale($sale_id)
+    {
+        $sale = Sale::whereKey($sale_id)
+            ->with('sold_dishes')
+            ->with('user_client')
+            ->first();
+
+        if (empty($sale)) {
+            abort(404);
+        }
+        $sale = $sale->toArray();
+
+        $sum = 0;
+        foreach ($sale['sold_dishes'] as $sold_dish) {
+            $sum += $sold_dish['unit_price'] * $sold_dish['quantity'];
+        }
+        $sale['total_price'] = $sum;
+
+        $sale_status = $this->get_enum_column_values('sale', 'status');
+        return view('corporate.client.client_sale_display')
+            ->with('sale', $sale)
+            ->with('sale_status', $sale_status);
+    }
+
+    public function update_client_sale_status()
+    {
+        request()->validate([
+            'sale_id' => ['required', 'integer'],
+            'status' => ['required', 'string']
+        ]);
+        Sale::whereKey(request('sale_id'))->update(['status' => request('status')]);
+
+        flash(trans('franchisee.order_status_updated'))->success();
+
+        return back();
+    }
+
+    public function delete_client_sale($sale_id)
+    {
+        if (!ctype_digit($sale_id)) {
+            abort(403);
+        }
+        $sale = Sale::whereKey($sale_id)->first();
+        if (empty($sale)) {
+            abort(404);
+        }
+        Invoice::where('sale_id', $sale_id)->delete();
+        SoldDish::where('sale_id', $sale_id)->delete();
+        $sale->delete();
+        return $sale_id;
+    }
+
 
     public function send_newsletter()
     {

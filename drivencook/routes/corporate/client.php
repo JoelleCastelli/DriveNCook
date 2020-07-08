@@ -10,6 +10,21 @@ Route::get('/corporate/client/view/{id}', [
     'uses' => 'Corporate\ClientController@view_client'
 ]);
 
+Route::get('/corporate/client_sales/view/{sale_id}', [
+    'as' => 'corporate.view_client_sale',
+    'uses' => 'Corporate\ClientController@view_client_sale'
+]);
+
+Route::post('/corporate/client_sales/update_status', [
+    'as' => 'corporate.update_client_sale_status',
+    'uses' => 'Corporate\ClientController@update_client_sale_status'
+]);
+
+Route::delete('/corporate/client_sales/delete/{sale_id}', [
+    'as' => 'corporate.delete_client_sale',
+    'uses' => 'Corporate\ClientController@delete_client_sale'
+]);
+
 Route::get('/corporate/client/update/{id}', [
     'as' => 'client_update',
     'uses' => 'Corporate\ClientController@update_client'
