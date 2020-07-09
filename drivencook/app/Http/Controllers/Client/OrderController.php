@@ -347,13 +347,9 @@ class OrderController extends Controller
         $invoice['reference'] = $reference;
         $this->sendInvoiceMail($client, $invoice);
 
-        flash(trans('client/order.created')
-            . ' <a href="' . route('client_sale_display', ['id' => $sale_id]) . '">'
-            . trans('client/order.click_here')
-            . '</a>.')
-            ->success();
+        flash(trans('client/order.created'))->success();
 
-        return redirect(route('client_dashboard'));
+        return redirect(route('client_sale_display', ['event_id' => $sale_id]));
     }
 
     public function charge(Request $request, $order_total_cents, $type = '31uV6UZKmoN57tchyQBgfHNZ0pZz1XHYVv7vFdlzyn9jYeO9JbcQ9xKjeZqNfHJe85vqj')
