@@ -29,12 +29,10 @@ use Stripe\Stripe;
 class OrderController extends Controller
 {
     private $trucks;
+
     public function __construct()
     {
-        $this->trucks = Truck::with('user')->with('location')->where([
-            ['functional', true],
-            ['user_id', "!=", null]
-            ])->get()->toArray();
+        $this->trucks = $this->get_franchisees_trucks_with_stocks();
     }
 
     use UserTools;
@@ -64,27 +62,27 @@ class OrderController extends Controller
     public function client_order($truck_id)
     {
         $truck = Truck::whereKey($truck_id)
-                        ->with('user')
-                        ->with('location')
-                        ->first();
+            ->with('user')
+            ->with('location')
+            ->first();
 
         if (!empty($truck)) {
             $truck = $truck->toArray();
         }
 
         $stocks = FranchiseeStock::where([
-                                    ['user_id', $truck['user']['id']],
-                                    ['menu', true]
-                                    ])->with('dish')
-                                      ->with('user')
-                                      ->get();
+            ['user_id', $truck['user']['id']],
+            ['menu', true]
+        ])->with('dish')
+            ->with('user')
+            ->get();
 
         $stock_by_category = [];
         if (!empty($stocks) && !empty($stocks[0])) {
             $stocks = $stocks->toArray();
             $dish_categories = $this->get_enum_column_values('dish', 'category');
-            foreach($dish_categories as $dish_category) {
-                foreach($stocks as $stock) {
+            foreach ($dish_categories as $dish_category) {
+                foreach ($stocks as $stock) {
                     if ($stock['dish']['category'] == $dish_category) {
                         $stock_by_category[$dish_category][] = $stock;
                     }
@@ -389,7 +387,7 @@ class OrderController extends Controller
     {
         $sale = Sale::whereKey($sale_id)
             ->first();
-        if($this->get_sale_total($sale_id) - $sale->discount_amount > 0 && $sale->payment_method != 'Liquide') {
+        if ($this->get_sale_total($sale_id) - $sale->discount_amount > 0 && $sale->payment_method != 'Liquide') {
             try {
                 Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 

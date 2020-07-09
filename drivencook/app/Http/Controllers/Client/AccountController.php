@@ -23,10 +23,7 @@ class AccountController extends Controller
     private $trucks;
     public function __construct()
     {
-        $this->trucks = Truck::with('user')->with('location')->where([
-            ['functional', true],
-            ['user_id', "!=", null]
-        ])->get()->toArray();
+        $this->trucks = $this->get_franchisees_trucks_with_stocks();
     }
 
     public function dashboard()

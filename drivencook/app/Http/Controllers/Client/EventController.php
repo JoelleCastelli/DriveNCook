@@ -17,10 +17,7 @@ class EventController extends Controller
     public function __construct()
     {
         $this->middleware('App\Http\Middleware\AuthClient');
-        $this->trucks = Truck::with('user')->with('location')->where([
-            ['functional', true],
-            ['user_id', "!=", null]
-        ])->get()->toArray();
+        $this->trucks = $this->get_franchisees_trucks_with_stocks();
     }
 
     public function event_list()

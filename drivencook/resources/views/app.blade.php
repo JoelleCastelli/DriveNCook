@@ -18,11 +18,11 @@
             /* Set a specific height */
             /*min-height: 860px;*/
             @if(url()->current() == route('homepage') || url()->current() == route('about'))
-                         height: 860px;
+                            height: 860px;
             @else
-                        min-height: 860px;
+                           min-height: 860px;
         @endif
-         /* Create the parallax scrolling effect */
+            /* Create the parallax scrolling effect */
             background-attachment: fixed;
             background-position: center;
             background-repeat: no-repeat;
@@ -761,13 +761,13 @@
 <script type="text/javascript">
     var locations = [
             @foreach($trucks as $truck)
-            @if(!empty($truck['user']))
+            @if(!empty($truck['user_with_stocks']))
         [
             '{{$truck['location']['address'].' '.$truck['location']['postcode'].' '.$truck['location']['city']}}',
             '{{$truck['location']['latitude']}}',
             '{{$truck['location']['longitude']}}',
             '{{route('client_order',['truck_id'=>$truck['id']])}}',
-            '{{$truck['user']['pseudo']['name']}}'
+            '{{$truck['user_with_stocks']['pseudo']['name']}}'
         ],
         @endif
         @endforeach
