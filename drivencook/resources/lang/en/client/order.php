@@ -6,7 +6,7 @@ return [
     'title_dishes_offline' => 'You can now consult the menu...',
     'shopping_cart' => 'Your shopping cart',
     'franchisee_menu' => 'Menu from',
-    'franchisee_menu_empty' => 'Empty menu',
+    'franchisee_menu_empty' => ':franchisee has nothing on their menu yet, come back later!',
     'to_order_connection_require' => 'You must log in to order',
 
     'back_trucks' => 'Truck list',

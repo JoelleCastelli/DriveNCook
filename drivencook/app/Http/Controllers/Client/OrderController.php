@@ -79,8 +79,6 @@ class OrderController extends Controller
                                       ->with('user')
                                       ->get();
 
-        $fidelity_step = '';
-
         $stock_by_category = [];
         if (!empty($stocks) && !empty($stocks[0])) {
             $stocks = $stocks->toArray();
@@ -92,17 +90,14 @@ class OrderController extends Controller
                     }
                 }
             }
-
-            $fidelity_step = FidelityStep::orderBy('reduction')
-                ->get();
-            if (!empty($fidelity_step)) {
-                $fidelity_step = $fidelity_step->toArray();
-            }
         }
 
-        $client = User::whereKey($this->get_connected_user())
-            ->first();
+        $fidelity_step = FidelityStep::orderBy('reduction')->get();
+        if (!empty($fidelity_step)) {
+            $fidelity_step = $fidelity_step->toArray();
+        }
 
+        $client = User::whereKey($this->get_connected_user())->first();
         if (!empty($client)) {
             $client = $client->toArray();
         }

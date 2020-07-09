@@ -48,11 +48,7 @@
             <div class="card">
                 <div class="card-header">
                     <h2>
-                        @if(count($stocks) > 0)
-                            {{ trans('client/order.franchisee_menu') . ' ' . $truck['user']['pseudo']['name'] }}
-                        @else
-                            {{ trans('client/order.franchisee_menu_empty') }}
-                        @endif
+                        {{ trans('client/order.franchisee_menu') . ' ' . $truck['user']['pseudo']['name'] }}
                     </h2>
                     @if(!empty($truck['location']['postcode'])
                      && !empty($truck['location']['city'])
@@ -64,32 +60,36 @@
                     @endif
                 </div>
                 <div class="card-body">
-                    @foreach($stock_by_category as $category_name => $category)
-                        <div class="row mt-2">
-                            <h2 class="category_title">{{ trans('client/order.category_'.$category_name) }}</h2>
-                        </div>
-                        <div class="row">
-                            @foreach($category as $dish)
-                                <div id="{{ $dish['dish_id'] }}" class="card col-5 add_to_cart_btn" style="margin: 5px;">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-7">
-                                                <h5 class="dish_name" class="card-title">{{ $dish['dish']['name'] }}</h5>
+                    @if(count($stocks) == 0)
+                        {{ trans('client/order.franchisee_menu_empty', ['franchisee' => $truck['user']['pseudo']['name']]) }}
+                    @else
+                        @foreach($stock_by_category as $category_name => $category)
+                            <div class="row mt-2">
+                                <h2 class="category_title">{{ trans('client/order.category_'.$category_name) }}</h2>
+                            </div>
+                            <div class="row">
+                                @foreach($category as $dish)
+                                    <div id="{{ $dish['dish_id'] }}" class="card col-5 add_to_cart_btn" style="margin: 5px;">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-7">
+                                                    <h5 class="dish_name" class="card-title">{{ $dish['dish']['name'] }}</h5>
+                                                </div>
+                                                <div class="col-4">
+                                                    <p class="dish_price" class="card-text text-right">{{ $dish['unit_price'] }} €</p>
+                                                </div>
                                             </div>
-                                            <div class="col-4">
-                                                <p class="dish_price" class="card-text text-right">{{ $dish['unit_price'] }} €</p>
-                                            </div>
+                                            <p class="card-text">{{ $dish['dish']['description'] }}</p>
+                                            @if ($dish['dish']['diet'] != "none")
+                                                <h6 class="card-subtitle mb-2 text-muted">{{ trans('dish.diet_' . strtolower($dish['dish']['diet'])) }}</h6>
+                                            @endif
+                                            <p class="max_quantity" style="display: none">{{ $dish['quantity'] }}</p>
                                         </div>
-                                        <p class="card-text">{{ $dish['dish']['description'] }}</p>
-                                        @if ($dish['dish']['diet'] != "none")
-                                            <h6 class="card-subtitle mb-2 text-muted">{{ trans('dish.diet_' . strtolower($dish['dish']['diet'])) }}</h6>
-                                        @endif
-                                        <p class="max_quantity" style="display: none">{{ $dish['quantity'] }}</p>
                                     </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endforeach
+                                @endforeach
+                            </div>
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>
