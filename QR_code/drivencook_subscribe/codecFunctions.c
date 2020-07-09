@@ -4,6 +4,7 @@ unsigned char *readBuffer = NULL;
 size_t readBufferSize;
 
 // Fill decodeMatrix[256][2]
+// on veut pas process tous les octets, donc on remplit un tableau : ensuite, on accède juste au bons index
 int fillMatrixDecode() {
     int i, j, k;
     char i4[5], matrixI4[4], byte[8];
@@ -40,6 +41,7 @@ int fillMatrixDecode() {
     return 0;
 }
 
+// Fill encodeMatrix[256][2] with all the possibilities
 int fillMatrixEncode() {
     char array1[8], array2[8];
     int i, j;
@@ -59,6 +61,7 @@ int fillMatrixEncode() {
     return 0;
 }
 
+// décode le fichier de conf
 char *decode(char *filePath) {
     char *result;
     result = malloc(1);

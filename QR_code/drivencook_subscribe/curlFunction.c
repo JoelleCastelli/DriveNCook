@@ -26,7 +26,7 @@ int uploadFile(FILE *logFd, const CurlInfos *userArgs) {
     tmpLogMsg = malloc(sizeof(char) * 200);
     if (!tmpLogMsg) return 1;
 
-    curl = curl_easy_init();
+    curl = curl_easy_init(); // démarre une session
 
     if (curl) {
         res = setupCurl(curl, fd, logFd, userArgs);
@@ -40,7 +40,7 @@ int uploadFile(FILE *logFd, const CurlInfos *userArgs) {
             toLog(logFd, ERROR, tmpLogMsg);
             returnCode = 1;
         } else {
-            curl_easy_getinfo(curl, CURLINFO_SPEED_UPLOAD_T, &speed_upload);
+            curl_easy_getinfo(curl, CURLINFO_SPEED_UPLOAD_T, &speed_upload); // extrait les informations
 
             sprintf(
                     tmpLogMsg,
@@ -51,7 +51,7 @@ int uploadFile(FILE *logFd, const CurlInfos *userArgs) {
             toLog(logFd, INFO, tmpLogMsg);
         }
 
-        curl_easy_cleanup(curl);
+        curl_easy_cleanup(curl); // fin de session
     } else {
         returnCode = 1;
         toLog(logFd, ERROR, "Curl init failed :c");
@@ -81,25 +81,18 @@ CURLcode setupCurl(CURL *curl, FILE *fd, FILE *logFd, const CurlInfos *userArgs)
             userArgs->sftpUser, userArgs->sftpPwd, userArgs->ipDest, userArgs->filename
     );
 
+    // on met les options
     curl_easy_setopt(curl, CURLOPT_FTP_CREATE_MISSING_DIRS, CURLFTP_CREATE_DIR_RETRY);
-
-    curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L); //ask to upload at the URL
-
-    curl_easy_setopt(curl, CURLOPT_URL, ftpURL);
-
+    curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L); // autorise l'upload
+    curl_easy_setopt(curl, CURLOPT_URL, ftpURL); // l'URL à utiliser
     curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
-
-
     curl_easy_setopt(curl, CURLOPT_READDATA, fd);
-
     curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t) file_info.st_size);
-
     curl_easy_setopt(curl, CURLOPT_STDERR, logFd);
-
 
     toLog(logFd, INFO, "Curl verbose:");
 
-    res = curl_easy_perform(curl);
+    res = curl_easy_perform(curl); // fait l'upload
 
     free(ftpURL);
 

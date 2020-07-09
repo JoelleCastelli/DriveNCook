@@ -142,7 +142,7 @@ void startGTK(int *argc, char ***argv) {
 
     gtk_widget_show_all(widgets->window);
     status("En attente d'entrée utilisateur...");
-    processKeyFile(widgets->statusLabel);
+    processKeyFile(widgets->statusLabel); // on remplit les matrices d'encodage et décodage
     gtk_main();
 
     g_slice_free(AppWidgets, widgets);
@@ -241,7 +241,7 @@ char *checkInputs(const char *name, const char *firstName, const char *email) {
 }
 
 int processKeyFile(GtkLabel *logLabel) {
-    fillC2B();
+    fillC2B(); // un tableau avec décimal => byte
     int returnCode = fillMatrixDecode() || fillMatrixEncode();
     if (returnCode == 1) {
         errorStatus("Erreur dans la configuration de la clé de chiffrement!", logLabel);
