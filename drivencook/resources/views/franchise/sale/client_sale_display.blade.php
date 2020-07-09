@@ -2,13 +2,7 @@
 @section('title')
     {{ trans('franchisee.sale_view') }}
 @endsection
-@section('style')
-    <style>
-        .clientTitle {
-            color: #FFFFFF;
-        }
-    </style>
-@stop
+
 @section('content')
     <div class="row">
         <div class="col-12 col-lg-6 mb-5">
@@ -37,10 +31,24 @@
                                                             trans('client/sale.not_paid') :
                                                             trans($GLOBALS['SALE_PAYMENT_METHOD'][$sale['payment_method']]) }}
                     </li>
-                    <li class="list-group-item">
-                        <b>{{ trans('client/sale.total_price') }}
-                            : </b>{{ $sale['total_price'] }} €
-                    </li>
+                    @if($sale['discount_amount'])
+                        <li class="list-group-item"><b>{{ trans('client/sale.sub_total') }} : </b>
+                            {{ $sale['total_price'] }} €
+                        </li>
+                        <li class="list-group-item"><b>{{ trans('client/sale.discount') }} : </b>
+                            {{ $sale['discount_amount'] }} €
+                        </li>
+                        <li class="list-group-item"><b>{{ trans('client/sale.total') }} : </b>
+                            {{ $sale['total_price'] - $sale['discount_amount'] }} €
+                        </li>
+                    @else
+                        <li class="list-group-item">
+                            <b>{{ trans('client/sale.total_price') }}
+                                : </b>{{ $sale['total_price'] }} €
+                        </li>
+                    @endif
+
+
                     <li class="list-group-item"><b> {{ trans('franchisee.invoice_see') }}</b>
                         <a class="ml-2" href="{{ route('franchise.stream_franchisee_invoice_pdf', $invoice['id']) }}" target="_blank">
                             <button class="text-dark fa fa-file-pdf ml-3"></button>
