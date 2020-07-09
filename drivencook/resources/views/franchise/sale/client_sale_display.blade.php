@@ -41,6 +41,11 @@
                         <b>{{ trans('client/sale.total_price') }}
                             : </b>{{ $sale['total_price'] }} €
                     </li>
+                    <li class="list-group-item"><b> {{ trans('franchisee.invoice_see') }}</b>
+                        <a class="ml-2" href="{{ route('franchise.stream_franchisee_invoice_pdf', $invoice['id']) }}" target="_blank">
+                            <button class="text-dark fa fa-file-pdf ml-3"></button>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
