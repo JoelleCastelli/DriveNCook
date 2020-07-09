@@ -178,6 +178,7 @@ return [
 
     // Invoices
     'invoices' => 'Invoices',
+    'invoice_see' => 'See the invoice:',
     'invoices_list' => 'Invoices list',
     'invoice_emission_date' => 'Emission date',
     'invoice_payment_date' => 'Payment date',

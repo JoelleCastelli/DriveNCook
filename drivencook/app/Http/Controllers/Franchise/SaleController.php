@@ -46,11 +46,12 @@ class SaleController extends Controller
             ->with('sold_dishes')
             ->with('user_client')
             ->first();
-
         if (empty($sale)) {
             abort(404);
         }
         $sale = $sale->toArray();
+
+        $invoice = Invoice::where('sale_id', $sale_id)->first()->toArray();
 
         $sum = 0;
         foreach ($sale['sold_dishes'] as $sold_dish) {
@@ -61,6 +62,7 @@ class SaleController extends Controller
         $sale_status = $this->get_enum_column_values('sale', 'status');
         return view('franchise.sale.client_sale_display')
             ->with('sale', $sale)
+            ->with('invoice', $invoice)
             ->with('sale_status', $sale_status);
     }
 

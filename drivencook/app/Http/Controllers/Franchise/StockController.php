@@ -265,8 +265,9 @@ class StockController extends Controller
             abort(404);
         }
         $order = $order->toArray();
-//        var_dump($order);die;
+        $invoice = Invoice::where('purchase_order_id', $order_id)->first()->toArray();
         return view('franchise.stock.stock_order_view')
+            ->with('invoice', $invoice)
             ->with('order', $order);
     }
 

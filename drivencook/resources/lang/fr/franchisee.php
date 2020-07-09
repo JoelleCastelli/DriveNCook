@@ -177,6 +177,7 @@ return [
 
     // Invoices
     'invoices' => 'Factures',
+    'invoice_see' => 'Voir la facture :',
     'invoices_list' => 'Liste des factures',
     'invoice_emission_date' => 'Date d\'émission',
     'invoice_payment_date' => 'Date de paiement',
