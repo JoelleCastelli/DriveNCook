@@ -12,11 +12,12 @@ use App\Models\PurchaseOrder;
 use App\Models\Warehouse;
 use App\Models\WarehousStock;
 use App\Traits\EnumValue;
+use App\Traits\UserTools;
 use Illuminate\Http\Request;
 
 class WarehouseController extends Controller
 {
-    use EnumValue;
+    use UserTools;
 
     public function __construct()
     {
@@ -46,7 +47,7 @@ class WarehouseController extends Controller
         $errors_list = [];
 
         // Check that only one address option has been selected
-        if($parameters["existing_location_id"] != null && $parameters["new_address_full"] != null) {
+        if ($parameters["existing_location_id"] != null && $parameters["new_address_full"] != null) {
             $errors_list = ['Please select only one option'];
             return redirect()->back()->with('error', $errors_list);
         }
@@ -79,7 +80,7 @@ class WarehouseController extends Controller
                 $errors_list[] = trans('warehouse_creation.duplicate_entry_error');
             }
 
-            if($existing_location_id != null) { // Option 1: selection of existing location
+            if ($existing_location_id != null) { // Option 1: selection of existing location
 
                 // Check that location ID is not already associated to another warehouse
                 $duplicate = Warehouse::where('location_id', $existing_location_id)->first();
@@ -127,7 +128,7 @@ class WarehouseController extends Controller
             if ($error) {
                 return redirect()->back()->with('error', $errors_list);
             } else {
-                if($existing_location_id != null) {
+                if ($existing_location_id != null) {
                     $location_id = $existing_location_id;
                 } else {
                     $location_id = Location::insertGetId([
@@ -176,7 +177,7 @@ class WarehouseController extends Controller
         $errors_list = [];
 
         if (count($parameters) == 3 && !empty($parameters["id"]) && !empty($parameters["name"])
-                                    && !empty($parameters["location_id"])) {
+            && !empty($parameters["location_id"])) {
             $id = $parameters["id"];
             $name = $parameters["name"];
             $location_id = $parameters["location_id"];
@@ -206,7 +207,8 @@ class WarehouseController extends Controller
         }
     }
 
-    public function warehouse_list(){
+    public function warehouse_list()
+    {
         $warehouses = Warehouse::with('location')
             ->get()->toArray();
         return view('corporate.warehouse.warehouse_list')->with('warehouses', $warehouses);
@@ -234,7 +236,7 @@ class WarehouseController extends Controller
         }
 
         $out_of_stock = false;
-        foreach($warehouse['stock'] as $dish) {
+        foreach ($warehouse['stock'] as $dish) {
             if ($dish['quantity'] <= 5) {
                 $out_of_stock = true;
                 break;
@@ -339,6 +341,9 @@ class WarehouseController extends Controller
                         ['dish_id', '=', $dish_id],
                     ])->update($product);
 
+                    $franchise_id = PurchaseOrder::whereKey($purchase_order_id)->first(['user_id'])['user_id'];
+                    $this->add_franchisee_stock($dish_id, $quantity,$franchise_id);
+
                     $dishesArray = PurchasedDish::where('purchase_order_id', '=', $purchase_order_id)->get();
                     if (!empty($dishesArray)) {
                         $dishesArray->toArray();
@@ -395,7 +400,7 @@ class WarehouseController extends Controller
             $warehouseId = intval($parameters["warehouseId"]);
 
             $dish = Dish::where('id', $dish_id)->first();
-            if(!empty($dish)) {
+            if (!empty($dish)) {
                 $dish = $dish->toArray();
 
                 if (!is_int($quantity)) {
@@ -403,7 +408,7 @@ class WarehouseController extends Controller
                     $errors_list[] = trans('warehouse_stock.quantity_error');
                 }
 
-                if(!is_numeric($warehouse_price)) {
+                if (!is_numeric($warehouse_price)) {
                     $error = true;
                     $errors_list[] = trans('warehouse_stock.warehouse_price_error');
                 }
@@ -433,7 +438,7 @@ class WarehouseController extends Controller
                         ['warehouse_id', $warehouseId],
                         ['dish_id', $dish_id]
                     ])->with('dish')->first();
-                    if(!empty($warehouseStock)) {
+                    if (!empty($warehouseStock)) {
                         $warehouseStock = $warehouseStock->toArray();
                         $warehouseStock['dish']['category'] = trans($GLOBALS['DISH_TYPE'][$warehouseStock['dish']['category']]);
 
@@ -490,7 +495,7 @@ class WarehouseController extends Controller
                 $errors_list[] = trans('warehouse_stock.quantity_error');
             }
 
-            if(!is_numeric($warehouse_price)) {
+            if (!is_numeric($warehouse_price)) {
                 $error = true;
                 $errors_list[] = trans('warehouse_stock.warehouse_price_error');
             }
@@ -513,7 +518,7 @@ class WarehouseController extends Controller
                     ['warehouse_id', $warehouse_id],
                     ['dish_id', $dishId]
                 ])->first();
-                if(!empty($warehouseStock)) {
+                if (!empty($warehouseStock)) {
                     $warehouseStock = $warehouseStock->toArray();
                 }
 
