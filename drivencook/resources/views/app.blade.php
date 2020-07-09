@@ -38,7 +38,7 @@
         <img src="{{ asset('img/logo_transparent_3.png') }}" height="60" class="d-inline-block align-top" alt="">
     </a>
 
-    <div class="mx-auto order-0">
+    <div class="ml-md-auto order-0">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
             <span class="navbar-toggler-icon"></span>
         </button>
