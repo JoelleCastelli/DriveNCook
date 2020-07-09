@@ -70,6 +70,7 @@ return [
     'registration_document_duplicate' => 'This registration document is already in the database',
     'engine_number_duplicate' => 'This engine number is already in the database',
     'chassis_number_duplicate' => 'This chassis number is already in the database',
+    'empty_fields' => 'Every field must be filled',
 
     'new_truck_success' => 'New truck added',
     'new_truck_error' => 'Error adding new truck',

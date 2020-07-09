@@ -70,6 +70,7 @@ return [
     'registration_document_duplicate' => 'Cette carte grise est déjà dans la base de données',
     'engine_number_duplicate' => 'Ce numéro de moteur est déjà dans la base de données',
     'chassis_number_duplicate' => 'Ce numéro de châssis est déjà dans la base de données',
+    'empty_fields' => 'Veuillez remplir tous les champs du formulaire',
 
     'new_truck_success' => 'Nouveau camion ajouté',
     'new_truck_error' => 'Erreur lors de l\'ajout du camion',
