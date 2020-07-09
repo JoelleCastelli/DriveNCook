@@ -18,7 +18,7 @@ Route::post('/client/light_registration_submit', [
 ]);
 
 Route::group(['middleware' => AuthClient::class], function() {
-    Route::get('/client', [
+    Route::get('/client/dashboard', [
         'as' => 'client_dashboard',
         'uses' => 'Client\AccountController@dashboard'
     ]);

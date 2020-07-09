@@ -28,6 +28,13 @@ use Stripe\Stripe;
 
 class OrderController extends Controller
 {
+    private $trucks;
+
+    public function __construct()
+    {
+        $this->trucks = $this->get_franchisees_trucks_with_stocks();
+    }
+
     use UserTools;
     use TruckTools;
     use StockTools;
@@ -55,45 +62,40 @@ class OrderController extends Controller
     public function client_order($truck_id)
     {
         $truck = Truck::whereKey($truck_id)
-                        ->with('user')
-                        ->with('location')
-                        ->first();
+            ->with('user')
+            ->with('location')
+            ->first();
 
         if (!empty($truck)) {
             $truck = $truck->toArray();
         }
 
         $stocks = FranchiseeStock::where([
-                                    ['user_id', $truck['user']['id']],
-                                    ['menu', true]
-                                    ])->with('dish')
-                                      ->with('user')
-                                      ->get();
-
-        $fidelity_step = '';
+            ['user_id', $truck['user']['id']],
+            ['menu', true]
+        ])->with('dish')
+            ->with('user')
+            ->get();
 
         $stock_by_category = [];
         if (!empty($stocks) && !empty($stocks[0])) {
             $stocks = $stocks->toArray();
             $dish_categories = $this->get_enum_column_values('dish', 'category');
-            foreach($dish_categories as $dish_category) {
-                foreach($stocks as $stock) {
+            foreach ($dish_categories as $dish_category) {
+                foreach ($stocks as $stock) {
                     if ($stock['dish']['category'] == $dish_category) {
                         $stock_by_category[$dish_category][] = $stock;
                     }
                 }
             }
-
-            $fidelity_step = FidelityStep::orderBy('reduction')
-                ->get();
-            if (!empty($fidelity_step)) {
-                $fidelity_step = $fidelity_step->toArray();
-            }
         }
 
-        $client = User::whereKey($this->get_connected_user())
-            ->first();
+        $fidelity_step = FidelityStep::orderBy('reduction')->get();
+        if (!empty($fidelity_step)) {
+            $fidelity_step = $fidelity_step->toArray();
+        }
 
+        $client = User::whereKey($this->get_connected_user())->first();
         if (!empty($client)) {
             $client = $client->toArray();
         }
@@ -103,6 +105,7 @@ class OrderController extends Controller
             ->with('stock_by_category', $stock_by_category)
             ->with('promotions', $fidelity_step)
             ->with('client', $client)
+            ->with('trucks', $this->trucks)
             ->with('truck', $truck);
     }
 
@@ -226,6 +229,7 @@ class OrderController extends Controller
 
         return view('client.order.client_order_payment')
             ->with('order', $order)
+            ->with('trucks', $this->trucks)
             ->with('discount', $discount);
     }
 
@@ -341,13 +345,9 @@ class OrderController extends Controller
         $invoice['reference'] = $reference;
         $this->sendInvoiceMail($client, $invoice);
 
-        flash(trans('client/order.created')
-            . ' <a href="' . route('client_sale_display', ['id' => $sale_id]) . '">'
-            . trans('client/order.click_here')
-            . '</a>.')
-            ->success();
+        flash(trans('client/order.created'))->success();
 
-        return redirect(route('client_dashboard'));
+        return redirect(route('client_sale_display', ['event_id' => $sale_id]));
     }
 
     public function charge(Request $request, $order_total_cents, $type = '31uV6UZKmoN57tchyQBgfHNZ0pZz1XHYVv7vFdlzyn9jYeO9JbcQ9xKjeZqNfHJe85vqj')
@@ -383,7 +383,7 @@ class OrderController extends Controller
     {
         $sale = Sale::whereKey($sale_id)
             ->first();
-        if($this->get_sale_total($sale_id) - $sale->discount_amount > 0 && $sale->payment_method != 'Liquide') {
+        if ($this->get_sale_total($sale_id) - $sale->discount_amount > 0 && $sale->payment_method != 'Liquide') {
             try {
                 Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
@@ -421,6 +421,7 @@ class OrderController extends Controller
         }
 
         return view('client.order.client_sales_history')
+            ->with('trucks', $this->trucks)
             ->with('sales', $sales);
     }
 
@@ -448,6 +449,7 @@ class OrderController extends Controller
 
         return view('client.order.client_sale_display')
             ->with('sale', $sale)
+            ->with('trucks', $this->trucks)
             ->with('invoice', $invoice);
     }
 

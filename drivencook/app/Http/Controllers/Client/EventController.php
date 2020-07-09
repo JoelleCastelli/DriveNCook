@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
+use App\Models\Truck;
 use App\Traits\UserTools;
 use MaddHatter\LaravelFullcalendar\Facades\Calendar;
 
@@ -12,9 +13,11 @@ class EventController extends Controller
 {
     use UserTools;
 
+    private $trucks;
     public function __construct()
     {
         $this->middleware('App\Http\Middleware\AuthClient');
+        $this->trucks = $this->get_franchisees_trucks_with_stocks();
     }
 
     public function event_list()
@@ -62,6 +65,7 @@ class EventController extends Controller
         $calendar_details = Calendar::addEvents($event_calendar);
         return view('client.events.event_list')
             ->with('calendar_details', $calendar_details)
+            ->with('trucks', $this->trucks)
             ->with('event_list', array_merge($event_list_public, $event_list_invited));
     }
 
@@ -85,6 +89,7 @@ class EventController extends Controller
             }
         }
         return view('client.events.event_view')
+            ->with('trucks', $this->trucks)
             ->with('event', $event);
     }
 

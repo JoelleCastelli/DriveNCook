@@ -6,7 +6,7 @@ return [
     'title_dishes_offline' => 'Vous pouvez maintenant consulter le menu...',
     'shopping_cart' => 'Votre panier',
     'franchisee_menu' => 'Menu de',
-    'franchisee_menu_empty' => 'Menu vide',
+    'franchisee_menu_empty' => ':franchisee n\'a rien à sa carte pour le moment, revenez plus tard !',
     'to_order_connection_require' => 'Vous devez vous connecter pour commander',
 
     'back_trucks' => 'Liste des camions',

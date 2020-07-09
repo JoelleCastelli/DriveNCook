@@ -7,18 +7,17 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\Truck;
 use App\Traits\EmailTools;
+use App\Traits\UserTools;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     use EmailTools;
+    use UserTools;
 
     public function homepage()
     {
-        $trucks = Truck::with('user')->with('location')->where([
-            ['functional', true],
-            ['user_id', "!=", null]
-        ])->get()->toArray();
+        $trucks = $this->get_franchisees_trucks_with_stocks();
 
         return view('home')->with('trucks', $trucks);
     }
@@ -26,10 +25,7 @@ class HomeController extends Controller
     public function news()
     {
         $news_list = Event::where('type', 'news')->with('location')->orderByDesc('date_start')->get()->toArray();
-        $trucks = Truck::with('user')->with('location')->where([
-            ['functional', true],
-            ['user_id', "!=", null]
-        ])->get()->toArray();
+        $trucks = $this->get_franchisees_trucks_with_stocks();
 
         return view('news')->with('news_list', $news_list)->with('trucks', $trucks);
     }
@@ -83,11 +79,7 @@ class HomeController extends Controller
 
     public function about()
     {
-        $trucks = Truck::with('user')->with('location')->where([
-            ['functional', true],
-            ['user_id', "!=", null]
-        ])->get()->toArray();
-
+        $trucks = $this->get_franchisees_trucks_with_stocks();
         return view('about')->with('trucks', $trucks);
     }
 }

@@ -1,12 +1,20 @@
-@extends('client.layout_client')
+@extends('app')
 @section('title')
     <span class="text-light">
     </span>
 @endsection
 
-@section('content')
+@section('style')
+    <style>
+        .events {
+            padding: 100px 50px;
+        }
+    </style>
+@endsection
 
-    <div class="col-12 col-xl-8 card mt-5 bg-dark text-light" id="event-list">
+@section('content')
+<div class="row events">
+    <div class="col-lg-7 col-12 mb-3 card" id="event-list">
         <div class="card-header">
             <h2>
                 {{trans('event.event_list')}}
@@ -38,7 +46,7 @@
                             <td>{{$event['date_start']}}</td>
                             <td>{{$event['date_end']}}</td>
                             <td><a href="{{route('client.event_view',['event_id'=>$event['id']])}}">
-                                    <button class="fa fa-eye"></button>
+                                    <button class="fa text-light fa-eye"></button>
                                 </a></td>
                         </tr>
                     @endforeach
@@ -48,7 +56,7 @@
         </div>
     </div>
 
-    <div class="col-12 col-xl-8 card mt-5 bg-dark text-light" id="event-list">
+    <div class="col-lg-4 col-12 mb-3 ml-3 card" id="event-list-calendar">
         <div class="card-header">
             <h2>
                 {{trans('event.calendar')}}
@@ -58,6 +66,7 @@
             {!! $calendar_details->calendar() !!}
         </div>
     </div>
+</div>
 @endsection
 
 @section('script')

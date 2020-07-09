@@ -1,4 +1,5 @@
-@extends('client.layout_client')
+@extends('app')
+
 @section('title')
 
 @endsection
@@ -35,19 +36,19 @@
         .category_title {
             margin-left: 1.5rem;
         }
+
+        .menu_content {
+            padding: 100px 50px;
+        }
     </style>
 @endsection
 @section('content')
-    <div class="row">
-        <div class="col-8">
+    <div class="row menu_content">
+        <div class="col-lg-8 mb-3 col-12">
             <div class="card">
                 <div class="card-header">
                     <h2>
-                        @if(count($stocks) > 0)
-                            {{ trans('client/order.franchisee_menu') . ' ' . $truck['user']['pseudo']['name'] }}
-                        @else
-                            {{ trans('client/order.franchisee_menu_empty') }}
-                        @endif
+                        {{ trans('client/order.franchisee_menu') . ' ' . $truck['user']['pseudo']['name'] }}
                     </h2>
                     @if(!empty($truck['location']['postcode'])
                      && !empty($truck['location']['city'])
@@ -59,37 +60,41 @@
                     @endif
                 </div>
                 <div class="card-body">
-                    @foreach($stock_by_category as $category_name => $category)
-                        <div class="row mt-2">
-                            <h2 class="category_title">{{ trans('client/order.category_'.$category_name) }}</h2>
-                        </div>
-                        <div class="row">
-                            @foreach($category as $dish)
-                                <div id="{{ $dish['dish_id'] }}" class="card col-5 add_to_cart_btn" style="margin: 5px;">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-7">
-                                                <h5 class="dish_name" class="card-title">{{ $dish['dish']['name'] }}</h5>
+                    @if(count($stocks) == 0)
+                        {{ trans('client/order.franchisee_menu_empty', ['franchisee' => $truck['user']['pseudo']['name']]) }}
+                    @else
+                        @foreach($stock_by_category as $category_name => $category)
+                            <div class="row mt-2">
+                                <h2 class="category_title">{{ trans('client/order.category_'.$category_name) }}</h2>
+                            </div>
+                            <div class="row">
+                                @foreach($category as $dish)
+                                    <div id="{{ $dish['dish_id'] }}" class="card col-lg-5 col-12 ml-md-2 mb-2 add_to_cart_btn">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-7">
+                                                    <h5 class="dish_name" class="card-title">{{ $dish['dish']['name'] }}</h5>
+                                                </div>
+                                                <div class="col-4">
+                                                    <p class="dish_price" class="card-text text-right">{{ $dish['unit_price'] }} €</p>
+                                                </div>
                                             </div>
-                                            <div class="col-4">
-                                                <p class="dish_price" class="card-text text-right">{{ $dish['unit_price'] }} €</p>
-                                            </div>
+                                            <p class="card-text">{{ $dish['dish']['description'] }}</p>
+                                            @if ($dish['dish']['diet'] != "none")
+                                                <h6 class="card-subtitle mb-2 text-muted">{{ trans('dish.diet_' . strtolower($dish['dish']['diet'])) }}</h6>
+                                            @endif
+                                            <p class="max_quantity" style="display: none">{{ $dish['quantity'] }}</p>
                                         </div>
-                                        <p class="card-text">{{ $dish['dish']['description'] }}</p>
-                                        @if ($dish['dish']['diet'] != "none")
-                                            <h6 class="card-subtitle mb-2 text-muted">{{ trans('dish.diet_' . strtolower($dish['dish']['diet'])) }}</h6>
-                                        @endif
-                                        <p class="max_quantity" style="display: none">{{ $dish['quantity'] }}</p>
                                     </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endforeach
+                                @endforeach
+                            </div>
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>
         @if(!auth()->guest())
-            <div class="col-4">
+            <div class="col-lg-4 col-12">
                 <div class="card">
                     <div class="card-header">
                         <h2>{{ trans('client/order.shopping_cart') }}</h2>
@@ -152,7 +157,7 @@
                                     id="order_btn_text" style="margin-bottom: 5px"></p></button>
                     </div>
                 </div>
-                <div class="card">
+                <div class="card mt-3">
                     <div class="card-body">
                         <img src="{{route('generate_franchise_qr',['truck_id'=>$truck['id']])}}" class="img-thumbnail"
                              alt="qr_code">

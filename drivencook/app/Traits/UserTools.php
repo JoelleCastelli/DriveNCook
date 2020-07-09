@@ -532,4 +532,27 @@ trait UserTools
         }
     }
 
+    public function get_franchisees_trucks_with_stocks()
+    {
+        $trucks_raw = Truck::with('user_with_stocks')
+            ->with('location')
+            ->where([
+                ['functional', true],
+                ['user_id', "!=", null]
+            ])->get()->toArray();
+
+        $trucks = [];
+
+        foreach ($trucks_raw as $truck) {
+            if (!empty($truck['user_with_stocks'])) {
+                foreach ($truck['user_with_stocks']['stocks'] as $stock) {
+                    if ($stock['quantity'] > 0 && $stock['menu'] == 1) {
+                        $trucks[] = $truck;
+                        break;
+                    }
+                }
+            }
+        }
+        return $trucks;
+    }
 }

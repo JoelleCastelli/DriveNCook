@@ -6,10 +6,16 @@ return [
     'login_client' => 'Login',
 
     'back_dashboard' => 'Home',
-    'delete_account' => 'Delete your account',
+    'delete_account' => 'Delete my account',
     'order' => 'Order',
     'history' => 'History',
     'event_list' => 'Events',
+    'see_menu' => 'See the menu',
+    'truck_of' => 'Truck run by ',
+    'my_orders' => 'My orders',
+    'my_events' => 'My events',
+    'params' => 'Parameters',
+
 
     'never_ordered' => 'You have never ordered, start now by clicking on the button below!',
 
@@ -73,6 +79,7 @@ return [
 
     'ajax_error' => 'An error has occurred, please refresh the page',
     'delete_confirm' => 'Are you sure you want to delete this client? All associated data will be deleted.',
+    'delete_confirm_client' => 'Are you sure you want to delete your acccount? If you confirm, your data can no longer be recovered.',
     'delete_success' => 'The client has been deleted',
 
     'send' => 'Send',

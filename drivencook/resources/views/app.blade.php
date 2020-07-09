@@ -18,11 +18,11 @@
             /* Set a specific height */
             /*min-height: 860px;*/
             @if(url()->current() == route('homepage') || url()->current() == route('about'))
-                         height: 860px;
+                            height: 860px;
             @else
-                        min-height: 860px;
+                           min-height: 860px;
         @endif
-         /* Create the parallax scrolling effect */
+            /* Create the parallax scrolling effect */
             background-attachment: fixed;
             background-position: center;
             background-repeat: no-repeat;
@@ -38,7 +38,7 @@
         <img src="{{ asset('img/logo_transparent_3.png') }}" height="60" class="d-inline-block align-top" alt="">
     </a>
 
-    <div class="mx-auto order-0">
+    <div class="ml-md-auto order-0">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -109,6 +109,12 @@
                         @else
                             <a class="dropdown-item text-light"
                                href="{{ route('client_dashboard') }}">{{ trans('auth.my_account') }}</a>
+                            <a class="dropdown-item text-light"
+                               href="{{ route('client_sales_history') }}">{{ trans('client/global.my_orders') }}</a>
+                            <a class="dropdown-item text-light"
+                               href="{{ route('client.event_list') }}">{{ trans('client/global.my_events') }}</a>
+                            <a class="dropdown-item text-light"
+                               href="{{ route('client_account') }}">{{ trans('client/global.params') }}</a>
                         @endif
                         <a class="dropdown-item text-light"
                            href="{{ route('client_logout') }}">{{ trans('auth.logout') }}</a>
@@ -593,6 +599,8 @@
         </div>
     </div>
 </div>
+
+{{-- MODAL FORGOTTEN PASSWORD --}}
 <div class="modal fade" id="forgot_password_modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="form">
         <div class="modal-content">
@@ -711,18 +719,55 @@
     </div>
 </div>
 
+<!-- MODAL FIDELITY POINT -->
+@php
+    $fidelitySteps = \App\Models\FidelityStep::orderBy('step')->get();
+@endphp
+<div class="modal fade" id="loyaltyPointModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">{{ trans('client/global.loyalty_array') }}</h5>
+                <button type="button" id="closeModal" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover table-striped table-bordered"
+                       style="width: 100%">
+                    <thead>
+                    <tr>
+                        <th>{{ trans('client/global.step') }}</th>
+                        <th>{{ trans('client/global.reduction') }}</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    @foreach($fidelitySteps as $fidelityStep)
+                        <tr class="{{ $fidelityStep->step > Session::get('loyalty_point') ? 'table-danger' : 'table-success' }}">
+                            <td>{{ $fidelityStep->step }}</td>
+                            <td>{{ $fidelityStep->reduction }} €</td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript" src="/js/app.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_API_KEY')}}">google.maps.event.addDomListener(window, 'load', initMap);</script>
 <script type="text/javascript">
     var locations = [
             @foreach($trucks as $truck)
-            @if(!empty($truck['user']))
+            @if(!empty($truck['user_with_stocks']))
         [
             '{{$truck['location']['address'].' '.$truck['location']['postcode'].' '.$truck['location']['city']}}',
             '{{$truck['location']['latitude']}}',
             '{{$truck['location']['longitude']}}',
             '{{route('client_order',['truck_id'=>$truck['id']])}}',
-            '{{$truck['user']['pseudo']['name']}}'
+            '{{$truck['user_with_stocks']['pseudo']['name']}}'
         ],
         @endif
         @endforeach
@@ -745,9 +790,9 @@
 
         google.maps.event.addListener(marker, 'click', (function (marker, i) {
             return function () {
-                let content = 'Camion de ' + locations[i][4] +
+                let content = Lang.get('client/global.truck_of') + locations[i][4] +
                     '<br>' + locations[i][0] +
-                    '<br><br><a href="' + locations[i][3] + '" target="_blank">' + 'Voir le menu' + '</a>';
+                    '<br><br><a href="' + locations[i][3] + '">' + Lang.get('client/global.see_menu') + '</a>';
                 infowindow.setContent(content);
                 infowindow.open(map, marker);
             }
@@ -824,5 +869,6 @@
     </script>
 @endif
 
+@yield('script')
 </body>
 </html>

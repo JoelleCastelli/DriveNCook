@@ -4,8 +4,12 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\EventInvited;
+use App\Models\FranchiseeStock;
+use App\Models\Invoice;
 use App\Models\Sale;
 use App\Models\SoldDish;
+use App\Models\Truck;
 use App\Models\User;
 use App\Traits\LoyaltyTools;
 use Illuminate\Http\Request;
@@ -16,23 +20,44 @@ class AccountController extends Controller
     use UserTools;
     use LoyaltyTools;
 
+    private $trucks;
+    public function __construct()
+    {
+        $this->trucks = $this->get_franchisees_trucks_with_stocks();
+    }
+
     public function dashboard()
     {
-        $clientId = $this->get_connected_user()['id'];
-        $client = User::whereKey($clientId)
-            ->first();
+        $client = $this->get_connected_user();
 
-        $last_sale = Sale::where('user_client', $clientId)
+        $never_ordered = true;
+        $last_sale = Sale::where('user_client', $client['id'])
             ->with('user_franchised')
+            ->with('sold_dishes')
             ->orderBy('date', 'desc')
             ->first();
 
         if(!empty($last_sale)) {
             $last_sale = $last_sale->toArray();
+            $never_ordered = false;
+
+            $last_sale['total'] = 0;
+            foreach($last_sale['sold_dishes'] as $sold_dish) {
+                $last_sale['total'] += $sold_dish['unit_price'];
+            }
+        }
+
+        $franchisee_stock = FranchiseeStock::where('user_id', $last_sale['user_franchised']['id'] )->get();
+        $can_reorder = true;
+        if ($franchisee_stock->isEmpty()) {
+            $can_reorder = false;
         }
 
         return view('client.client_dashboard')
             ->with('client', $client)
+            ->with('trucks', $this->trucks)
+            ->with('can_reorder', $can_reorder)
+            ->with('never_ordered', $never_ordered)
             ->with('sale', $last_sale);
     }
 
@@ -143,6 +168,7 @@ class AccountController extends Controller
         }
 
         return view('client.account.update')
+            ->with('trucks', $this->trucks)
             ->with('client', $client);
     }
 
@@ -184,9 +210,11 @@ class AccountController extends Controller
             $sales = $sales->toArray();
             foreach($sales as $sale) {
                 SoldDish::where('sale_id', $sale['id'])->delete();
+                Invoice::where('sale_id', $sale['id'])->delete();
                 Sale::whereKey($sale['id'])->delete();
             }
         }
+        $events = EventInvited::where('user_id', $this->get_connected_user()['id'])->delete();
 
         $this->delete_user($this->get_connected_user()['id']);
 
