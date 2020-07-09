@@ -14,7 +14,7 @@
 
 @section('content')
 <div class="row events">
-    <div class="col-7 card" id="event-list">
+    <div class="col-lg-7 col-12 mb-3 card" id="event-list">
         <div class="card-header">
             <h2>
                 {{trans('event.event_list')}}
@@ -56,7 +56,7 @@
         </div>
     </div>
 
-    <div class="col-5 pl-3 card" id="event-list-calendar">
+    <div class="col-lg-4 col-12 mb-3 ml-3 card" id="event-list-calendar">
         <div class="card-header">
             <h2>
                 {{trans('event.calendar')}}

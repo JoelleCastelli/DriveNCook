@@ -44,7 +44,7 @@
 @endsection
 @section('content')
     <div class="row menu_content">
-        <div class="col-8">
+        <div class="col-lg-8 mb-3 col-12">
             <div class="card">
                 <div class="card-header">
                     <h2>
@@ -69,7 +69,7 @@
                             </div>
                             <div class="row">
                                 @foreach($category as $dish)
-                                    <div id="{{ $dish['dish_id'] }}" class="card col-5 add_to_cart_btn" style="margin: 5px;">
+                                    <div id="{{ $dish['dish_id'] }}" class="card col-lg-5 col-12 ml-md-2 mb-2 add_to_cart_btn">
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-7">
@@ -94,7 +94,7 @@
             </div>
         </div>
         @if(!auth()->guest())
-            <div class="col-4">
+            <div class="col-lg-4 col-12">
                 <div class="card">
                     <div class="card-header">
                         <h2>{{ trans('client/order.shopping_cart') }}</h2>

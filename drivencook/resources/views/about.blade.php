@@ -3,10 +3,6 @@
 @section('content')
     <div class="container h-100">
         <div class="row align-items-center h-100" style="color: black">
-
-
-
-
             <div class="col-lg-8 col-12 d-flex justify-content-center">
                 <div class="card">
                     <div class="card-header">
@@ -27,7 +23,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-lg-4 col-12 d-flex justify-content-center">
                 <div class="card">
                     <img class="card-img-top" src="{{ asset('img/sananes.png') }}" alt="Sananes">

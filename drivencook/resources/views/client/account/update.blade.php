@@ -14,7 +14,7 @@
 @stop
 @section('content')
     <div class="row update_forms">
-        <div class="col-12 col-sm-10 col-md-6">
+        <div class="col-lg-6 col-12 mb-3">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h3>{{ trans('client/account.data') }}</h3>
@@ -110,7 +110,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12 col-sm-10 col-md-6">
+        <div class="col-lg-6 col-12 mb-3">
             <div class="card">
                 <div class="card-header">
                     <h3>{{ trans('client/account.password_edition') }}</h3>

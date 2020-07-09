@@ -14,7 +14,7 @@
 
 @section('content')
     <div class="row dashboard_content">
-        <div class="col-4">
+        <div class="col-lg-4 col-12 mb-3">
             <div class="card">
                 <div class="card-header">
                     <h2>{{ trans('client/account.my_info') }}</h2>
@@ -39,7 +39,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-4">
+        <div class="col-lg-4 col-12 mb-3">
             <div class="card">
                 <div class="card-header">
                     <h2>{{ trans('client/account.my_loyalty') }}</h2>
@@ -56,7 +56,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-4">
+        <div class="col-lg-4 col-12 mb-3">
             <div class="card">
                 <div class="card-header">
                     <h2>{{ trans('client/account.latest_order') }}</h2>
