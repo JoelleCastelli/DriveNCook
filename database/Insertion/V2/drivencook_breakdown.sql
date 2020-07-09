@@ -1,0 +1,2 @@
+INSERT INTO drivencook.breakdown (id, type, description, cost, date, status, truck_id, updated_at) VALUES (6, 'Batterie', 'Batterie HS', 200, '2020-07-01', 'Réparée', 10, null);
+INSERT INTO drivencook.breakdown (id, type, description, cost, date, status, truck_id, updated_at) VALUES (7, 'Freins', 'Ya plus de freins !', 500, '2020-07-09', 'Signalée', 10, null);

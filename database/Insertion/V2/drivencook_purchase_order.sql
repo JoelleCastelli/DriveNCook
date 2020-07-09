@@ -1,0 +1,6 @@
+INSERT INTO drivencook.purchase_order (id, user_id, warehouse_id, status, date, updated_at, payment_id) VALUES (59, 600, 14, 'sent', '2020-07-09', '2020-07-09 18:21:14', 'ch_1H32T7D45YXLbuEzaNs5vPsQ');
+INSERT INTO drivencook.purchase_order (id, user_id, warehouse_id, status, date, updated_at, payment_id) VALUES (60, 577, 13, 'sent', '2020-07-09', '2020-07-09 19:37:54', 'ch_1H33UzD45YXLbuEzQbsHxWOW');
+INSERT INTO drivencook.purchase_order (id, user_id, warehouse_id, status, date, updated_at, payment_id) VALUES (61, 579, 16, 'sent', '2020-07-09', '2020-07-09 19:37:15', 'ch_1H33ZVD45YXLbuEzSlVuLF1H');
+INSERT INTO drivencook.purchase_order (id, user_id, warehouse_id, status, date, updated_at, payment_id) VALUES (62, 581, 15, 'sent', '2020-07-09', '2020-07-09 19:36:42', 'ch_1H33aMD45YXLbuEzxv8jQIwz');
+INSERT INTO drivencook.purchase_order (id, user_id, warehouse_id, status, date, updated_at, payment_id) VALUES (63, 586, 14, 'sent', '2020-07-09', '2020-07-09 19:39:02', 'ch_1H33cuD45YXLbuEzcVWEo2lb');
+INSERT INTO drivencook.purchase_order (id, user_id, warehouse_id, status, date, updated_at, payment_id) VALUES (64, 595, 13, 'sent', '2020-07-09', '2020-07-09 19:38:30', 'ch_1H33euD45YXLbuEz1cNmZYzL');

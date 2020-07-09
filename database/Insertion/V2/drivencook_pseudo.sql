@@ -1,0 +1,14 @@
+INSERT INTO drivencook.pseudo (id, name, updated_at) VALUES (1, 'Dora Daufour', '2020-07-09 17:05:09');
+INSERT INTO drivencook.pseudo (id, name, updated_at) VALUES (2, 'Barbara Tatouille', '2020-07-09 17:05:34');
+INSERT INTO drivencook.pseudo (id, name, updated_at) VALUES (4, 'Nicole Slaw', '2020-07-09 17:05:18');
+INSERT INTO drivencook.pseudo (id, name, updated_at) VALUES (6, 'Mrs McRow', '2020-07-09 17:04:41');
+INSERT INTO drivencook.pseudo (id, name, updated_at) VALUES (8, 'Igor Gonzola', '2020-07-09 17:05:57');
+INSERT INTO drivencook.pseudo (id, name, updated_at) VALUES (14, 'Don Espa', '2020-07-09 17:04:26');
+INSERT INTO drivencook.pseudo (id, name, updated_at) VALUES (15, 'Simon Fumé', '2020-07-09 17:04:00');
+INSERT INTO drivencook.pseudo (id, name, updated_at) VALUES (16, 'Raie Charles', '2020-07-09 17:04:54');
+INSERT INTO drivencook.pseudo (id, name, updated_at) VALUES (17, 'Al Capomme', '2020-07-09 17:05:43');
+INSERT INTO drivencook.pseudo (id, name, updated_at) VALUES (19, 'Amir Abel', null);
+INSERT INTO drivencook.pseudo (id, name, updated_at) VALUES (20, 'J. Roll', null);
+INSERT INTO drivencook.pseudo (id, name, updated_at) VALUES (21, 'Julian Trecote', null);
+INSERT INTO drivencook.pseudo (id, name, updated_at) VALUES (22, 'Anne-So Sisson', null);
+INSERT INTO drivencook.pseudo (id, name, updated_at) VALUES (23, 'Nicky Lardon', null);

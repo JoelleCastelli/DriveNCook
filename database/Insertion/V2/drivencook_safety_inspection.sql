@@ -1,0 +1,7 @@
+INSERT INTO drivencook.safety_inspection (id, date, truck_age, truck_mileage, replaced_parts, drained_fluids, truck_id, updated_at) VALUES (8, '2020-07-09', 0, 18, null, null, 7, null);
+INSERT INTO drivencook.safety_inspection (id, date, truck_age, truck_mileage, replaced_parts, drained_fluids, truck_id, updated_at) VALUES (9, '2018-05-17', 5, 600, 'Aucune', 'Huile moteur', 10, null);
+INSERT INTO drivencook.safety_inspection (id, date, truck_age, truck_mileage, replaced_parts, drained_fluids, truck_id, updated_at) VALUES (10, '2014-07-09', 2, 1200, 'Bougies', 'Liquide de freins, huile moteur', 12, null);
+INSERT INTO drivencook.safety_inspection (id, date, truck_age, truck_mileage, replaced_parts, drained_fluids, truck_id, updated_at) VALUES (11, '2016-08-22', 4, 4000, 'Aucune', 'Aucun', 12, null);
+INSERT INTO drivencook.safety_inspection (id, date, truck_age, truck_mileage, replaced_parts, drained_fluids, truck_id, updated_at) VALUES (12, '2018-09-04', 6, 8000, 'Pneus', 'Vidange', 12, null);
+INSERT INTO drivencook.safety_inspection (id, date, truck_age, truck_mileage, replaced_parts, drained_fluids, truck_id, updated_at) VALUES (13, '2020-03-10', 2, 600, 'Aucune', 'Aucune', 14, null);
+INSERT INTO drivencook.safety_inspection (id, date, truck_age, truck_mileage, replaced_parts, drained_fluids, truck_id, updated_at) VALUES (14, '2018-08-25', 2, 2500, 'Aucune', 'Aucun', 16, null);

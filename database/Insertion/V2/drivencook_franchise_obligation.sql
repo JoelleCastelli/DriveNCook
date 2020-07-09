@@ -1,0 +1,10 @@
+INSERT INTO drivencook.franchise_obligation (id, date_updated, entrance_fee, revenue_percentage, warehouse_percentage, billing_day, user_id) VALUES (23, '2020-06-06', 50000, 4, 20, 5, 503);
+INSERT INTO drivencook.franchise_obligation (id, date_updated, entrance_fee, revenue_percentage, warehouse_percentage, billing_day, user_id) VALUES (24, '2020-06-06', 50000, 4, 20, 5, 475);
+INSERT INTO drivencook.franchise_obligation (id, date_updated, entrance_fee, revenue_percentage, warehouse_percentage, billing_day, user_id) VALUES (25, '2020-06-06', 50000, 4, 20, 5, 503);
+INSERT INTO drivencook.franchise_obligation (id, date_updated, entrance_fee, revenue_percentage, warehouse_percentage, billing_day, user_id) VALUES (26, '2020-06-06', 50000, 4, 20, 5, 475);
+INSERT INTO drivencook.franchise_obligation (id, date_updated, entrance_fee, revenue_percentage, warehouse_percentage, billing_day, user_id) VALUES (27, '2020-06-06', 50000, 4, 20, 5, 503);
+INSERT INTO drivencook.franchise_obligation (id, date_updated, entrance_fee, revenue_percentage, warehouse_percentage, billing_day, user_id) VALUES (28, '2020-06-06', 50000, 4, 20, 5, 475);
+INSERT INTO drivencook.franchise_obligation (id, date_updated, entrance_fee, revenue_percentage, warehouse_percentage, billing_day, user_id) VALUES (29, '2020-06-06', 50000, 4, 20, 5, 475);
+INSERT INTO drivencook.franchise_obligation (id, date_updated, entrance_fee, revenue_percentage, warehouse_percentage, billing_day, user_id) VALUES (30, '2020-06-06', 50000, 28, 20, 5, 475);
+INSERT INTO drivencook.franchise_obligation (id, date_updated, entrance_fee, revenue_percentage, warehouse_percentage, billing_day, user_id) VALUES (31, '2020-07-05', 50000, 28, 20, 5, 475);
+INSERT INTO drivencook.franchise_obligation (id, date_updated, entrance_fee, revenue_percentage, warehouse_percentage, billing_day, user_id) VALUES (32, '2020-07-05', 50000.1, 28.09, 20.01, 5, 475);
