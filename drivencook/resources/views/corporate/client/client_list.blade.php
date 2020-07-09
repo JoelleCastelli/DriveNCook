@@ -12,16 +12,6 @@
                     <div class="card text-light2">
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item bg-info">{{ trans('client/global.nb_clients') }} {{ count($client_list) }}</li>
-                            <li class="list-group-item bg-info align-content-around">
-                                <a href="#" class="row text-light2">
-                                    <div class="col-10">
-                                        {{ trans('client/global.view_details') }}
-                                    </div>
-                                    <div class="col-2">
-                                        <i class="fa fa-chevron-right"></i>
-                                    </div>
-                                </a>
-                            </li>
                         </ul>
                     </div>
                 </div>
@@ -29,16 +19,6 @@
                     <div class="card text-light2">
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item bg-indigo">{{ trans('client/global.month_nb_sales') }} {{ $month_sale_count }}</li>
-                            <li class="list-group-item bg-indigo align-content-around">
-                                <a href="#" class="row text-light2">
-                                    <div class="col-10">
-                                        {{ trans('client/global.view_details') }}
-                                    </div>
-                                    <div class="col-2">
-                                        <i class="fa fa-chevron-right"></i>
-                                    </div>
-                                </a>
-                            </li>
                         </ul>
                     </div>
                 </div>
@@ -46,16 +26,6 @@
                     <div class="card text-light2">
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item bg-success">{{ trans('client/global.nb_sales') }} {{ $total_sale_count }}</li>
-                            <li class="list-group-item bg-success align-content-around">
-                                <a href="#" class="row text-light2">
-                                    <div class="col-10">
-                                        {{ trans('client/global.view_details') }}
-                                    </div>
-                                    <div class="col-2">
-                                        <i class="fa fa-chevron-right"></i>
-                                    </div>
-                                </a>
-                            </li>
                         </ul>
                     </div>
                 </div>

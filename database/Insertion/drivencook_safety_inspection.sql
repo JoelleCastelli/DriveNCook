@@ -1,3 +1,0 @@
-INSERT INTO drivencook.safety_inspection (id, date, truck_age, truck_mileage, replaced_parts, drained_fluids, truck_id, updated_at) VALUES (1, '2020-04-21', 1, 1001, 'Aucunes', 'ggg', 2, '2020-07-05 16:00:20');
-INSERT INTO drivencook.safety_inspection (id, date, truck_age, truck_mileage, replaced_parts, drained_fluids, truck_id, updated_at) VALUES (5, '2020-05-02', 2, 3001, 'aucune', null, 2, '2020-05-13 13:44:13');
-INSERT INTO drivencook.safety_inspection (id, date, truck_age, truck_mileage, replaced_parts, drained_fluids, truck_id, updated_at) VALUES (6, '2020-05-08', 2, 1200, 'Aucunes', 'Liquide frein', 2, null);
