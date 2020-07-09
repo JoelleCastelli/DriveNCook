@@ -42,13 +42,16 @@
                                                 </td>
                                                 <td>{{ $sale['payment_method'] == null ?
                                                             trans('client/sale.not_paid') :
-                                                            trans($GLOBALS['SALE_PAYMENT_METHOD'][$sale['payment_method']]) }}</td>
+                                                            ( $sale['total_price'] - $sale['discount_amount'] > 0 ?
+                                                            trans($GLOBALS['SALE_PAYMENT_METHOD'][$sale['payment_method']]) :
+                                                            trans('client/sale.free') ) }}</td>
                                                 <td>{{ $sale['online_order'] == true ?
                                                             trans('client/sale.is_order') :
                                                             trans('client/sale.is_sale') }}</td>
                                                 <td>{{ $sale['date'] }}</td>
                                                 <td>{{ trans($GLOBALS['SALE_STATUS'][$sale['status']]) }}</td>
-                                                <td>{{ $sale['total_price'] }} €</td>
+                                                <td>{{ $sale['total_price'] - $sale['discount_amount'] > 0 ?
+                                                        $sale['total_price'] - $sale['discount_amount'] : 0 }} €</td>
                                             </tr>
                                         @endforeach
                                     </tbody>

@@ -21,6 +21,7 @@ return [
     $GLOBALS['SALE_PAYMENT_METHOD'] = [
         'Carte bancaire' => 'client/sale.credit_card',
         'Liquide' => 'client/sale.cash',
+        'free' => 'client/sale.free',
     ],
     $GLOBALS['EVENT_TYPE'] = [
         'public' => 'client/event.public',

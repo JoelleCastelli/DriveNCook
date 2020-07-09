@@ -1,10 +1,6 @@
 @extends('client.layout_client')
 @section('title')
-    @if(!auth()->guest())
-        {{ trans('client/order.title_dishes') }}
-    @else
-        {{ trans('client/order.title_dishes_offline') }}
-    @endif
+
 @endsection
 @section('style')
     <style>
@@ -16,17 +12,31 @@
             color: #FFFFFF;
         }
 
-        .orderBtn {
+        .order_btn {
             width: 100%;
             min-height: 60px;
             font-size: 25px;
+            cursor: not-allowed;
         }
 
-        .addToOrderBtn:hover, .delToOrderBtn:hover {
+        .add_to_cart_btn:hover, .remove_from_cart_btn:hover {
             cursor: pointer;
         }
+
+        #empty_cart_label {
+            color: gray;
+            font-style: italic;
+        }
+
+        .dish_price {
+            text-align: right;
+        }
+
+        .category_title {
+            margin-left: 1.5rem;
+        }
     </style>
-@stop
+@endsection
 @section('content')
     <div class="row">
         <div class="col-8">
@@ -43,55 +53,38 @@
                      && !empty($truck['location']['city'])
                      && !empty($truck['location']['address'])
                      && !empty($truck['location']['country']))
-                        {{ $truck['location']['address'] . ' - '
-                         . $truck['location']['postcode'] . ' - '
-                         . $truck['location']['city'] . ' - '
-                         . $truck['location']['country'] }}
+                        {{ $truck['location']['address'] . ' '
+                         . $truck['location']['postcode'] . ' '
+                         . $truck['location']['city'] }}
                     @endif
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table id="allDishes" class="table table-hover table-striped table-bordered table-dark"
-                               style="width: 100%">
-                            <thead>
-                            <tr>
-                                @if(!auth()->guest())
-                                    <th></th>
-                                    <th>{{ trans('client/order.quantity_to_order') }}</th>
-                                @endif
-                                <th>{{ trans('dish.name') }}</th>
-                                <th>{{ trans('dish.category') }}</th>
-                                <th>{{ trans('client/order.unit_price') }}</th>
-                                <th>{{ trans('dish.description') }}</th>
-                                <th>{{ trans('dish.diet') }}</th>
-                            </tr>
-                            </thead>
-
-                            <tbody>
-                            @foreach($stocks as $stock)
-                                <tr>
-                                    @if(!auth()->guest())
-                                        <td>
-                                            <button class="text-light fa fa-plus addToOrderBtn"
-                                                    id="{{ $stock['dish_id'] }}"></button>
-                                        </td>
-                                        <td><input type="number" class="form-control qtyToOrderIpt"
-                                                   id="qty{{ $stock['dish_id'] }}"
-                                                   style="width: 100%"
-                                                   value="0"
-                                                   min="1"
-                                                   max="{{ $stock['quantity'] }}"></td>
-                                    @endif
-                                    <td id="name{{ $stock['dish_id'] }}">{{ $stock['dish']['name'] }}</td>
-                                    <td>{{ trans('dish.category_' . strtolower($stock['dish']['category'])) }}</td>
-                                    <td id="price{{ $stock['dish_id'] }}">{{ $stock['unit_price'] }} €</td>
-                                    <td>{{ $stock['dish']['description'] }}</td>
-                                    <td>{{ trans('dish.diet_' . strtolower($stock['dish']['diet'])) }}</td>
-                                </tr>
+                    @foreach($stock_by_category as $category_name => $category)
+                        <div class="row mt-2">
+                            <h2 class="category_title">{{ trans('client/order.category_'.$category_name) }}</h2>
+                        </div>
+                        <div class="row">
+                            @foreach($category as $dish)
+                                <div id="{{ $dish['dish_id'] }}" class="card col-5 add_to_cart_btn" style="margin: 5px;">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-7">
+                                                <h5 class="dish_name" class="card-title">{{ $dish['dish']['name'] }}</h5>
+                                            </div>
+                                            <div class="col-4">
+                                                <p class="dish_price" class="card-text text-right">{{ $dish['unit_price'] }} €</p>
+                                            </div>
+                                        </div>
+                                        <p class="card-text">{{ $dish['dish']['description'] }}</p>
+                                        @if ($dish['dish']['diet'] != "none")
+                                            <h6 class="card-subtitle mb-2 text-muted">{{ trans('dish.diet_' . strtolower($dish['dish']['diet'])) }}</h6>
+                                        @endif
+                                        <p class="max_quantity" style="display: none">{{ $dish['quantity'] }}</p>
+                                    </div>
+                                </div>
                             @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -103,58 +96,60 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-lg-12 mb-4">
-                                <label class="col-form-label">{{ trans('client/order.discount_amount') }}</label>
-                                <select class="custom-select" id="discountSelection">
-                                    <option value=""
-                                            selected>{{ trans('client/order.select_menu_no_discount') }}</option>
-                                    @if(!empty($promotions))
-                                        @foreach($promotions as $promotion)
-                                            @if($promotion['step'] <= $client['loyalty_point'])
-                                                <option value="{{ $promotion['reduction'] }}"
-                                                        id="discount_{{ $promotion['id'] }}">
-                                                    -{{ $promotion['reduction'] }} €
-                                                </option>
-                                            @endif
-                                        @endforeach
-                                    @endif
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col-lg-12">
-                                <div class="alert alert-warning"
-                                     id="discountAlert"
-                                     style="display: none">
-                                    {{ trans('client/order.alert_discount_more_than_total') }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <label class="col-form-label">{{ trans('client/order.dishes') }}</label>
-                                <div class="table-responsive">
+                                <div id="empty_cart_label">{{ trans('client/order.cart_empty') }}</div>
+                                <div id="cart" class="table-responsive" style="display: none">
                                     <table class="table table-hover table-striped table-bordered table-dark"
                                            style="width: 100%">
                                         <thread>
                                             <tr>
-                                                <th scope="col"></th>
-                                                <th scope="col">{{ trans('client/order.quantity_ordered') }}</th>
-                                                <th scope="col">{{ trans('client/order.line_price') }}</th>
                                                 <th scope="col">{{ trans('dish.name') }}</th>
+                                                <th scope="col">{{ trans('client/order.line_price') }}</th>
+                                                <th scope="col">{{ trans('client/order.quantity_ordered') }}</th>
+                                                <th scope="col"></th>
                                             </tr>
                                         </thread>
-                                        <tbody id="shopCartContent">
-
+                                        <tbody id="cart_content">
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
+                        @if ($client['loyalty_point'] > $promotions[0]['step'])
+                            <div class="row">
+                                <div class="col-lg-12 mb-4">
+                                    <label class="col-form-label"><b>{{ trans('client/order.discount_amount') }}</b></label>
+                                    <select class="custom-select" id="discount_selection">
+                                        <option value="" selected>{{ trans('client/order.select_menu_no_discount') }}</option>
+                                        @if(!empty($promotions))
+                                            @foreach($promotions as $promotion)
+                                                @if($promotion['step'] <= $client['loyalty_point'])
+                                                    <option value="{{ $promotion['reduction'] }}"
+                                                            id="discount_{{ $promotion['id'] }}">
+                                                        -{{ $promotion['reduction'] }} €
+                                                    </option>
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
+                        @else
+                            <select class="custom-select" id="discount_selection" style="display: none">
+                                <option value="0" selected></option>
+                            </select>
+                        @endif
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="alert alert-warning" id="discountAlert" style="display: none">
+                                    {{ trans('client/order.alert_discount_more_than_total') }}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-footer">
-                        <button class="btn btn-light_blue orderBtn">{{ trans('client/order.order_btn') }}<p
-                                    id="orderBtnId" style="margin-bottom: 5px"></p></button>
+                        <button class="btn btn-light_blue order_btn" disabled>{{ trans('client/order.order_btn') }}<p
+                                    id="order_btn_text" style="margin-bottom: 5px"></p></button>
                     </div>
                 </div>
                 <div class="card">
@@ -171,7 +166,7 @@
                         {{ trans('client/order.to_order_connection_require') }}
                     </div>
                     <div class="card-footer">
-                        <img src="{{route('generate_franchise_qr',['truck_id'=>$truck['id']])}}" class="img-thumbnail"
+                        <img src="{{route('generate_franchise_qr',['truck_id'=>$truck['id']])}}" class="img-thumbnail qr_code"
                              alt="qr_code">
                     </div>
                 </div>
@@ -182,40 +177,67 @@
 
 @section('script')
     <script type="text/javascript">
-        function updateTotalOrderPrice() {
-            let orders = $('.orderDish');
+
+        $('.add_to_cart_btn').on('click', function () {
+
+            if($('#cart').css('display') === 'none') {
+                $('#cart').css('display', 'block');
+                $('#empty_cart_label').css('display', 'none');
+                $('.order_btn').css('cursor', 'pointer');
+                $('.order_btn').attr("disabled", false);
+            }
+
+            let dish_id = $(this).attr('id');
+            let dish_price = parseFloat($(this).find('.dish_price').text());
+            let dish_name = $(this).find('.dish_name').text();
+            let dish_max_quantity = $(this).find('.max_quantity').text();
+            if ($('#ordered_' + dish_id).length === 0) {
+                let cart_quantity_input = '<input type="number" class="form-control qtyToOrderIpt dish_cart_quantity_input" id="qty_' + dish_id + '" ' +
+                    'style="width: 100%" value="1" min="1" max="'+ dish_max_quantity +'">';
+                $('#cart_content').append('' +
+                    '<tr class="ordered_dish" id="ordered_' + dish_id + '">' +
+                    '<td>' + dish_name + '</td>' +
+                    '<td id="ordered_dish_price' + dish_id + '">' + dish_price.toFixed(2) + ' €</td>' +
+                    '<td>' + cart_quantity_input + '</td>' +
+                    '<td><button class="text-light fa fa-trash remove_from_cart_btn"></button></td>' +
+                    '</tr>'
+                );
+            }
+            update_cart_total();
+        });
+
+        function update_cart_total() {
+            let orders = $('.ordered_dish');
             let sum = 0;
 
             for (let i = 0; i < orders.length; i++) {
-                let id = orders[i].getAttribute('id').split('_').slice(-1)[0];
-                let linePrice = parseFloat($('#orderedLinePrice' + id).text());
-
-                sum += parseFloat(linePrice.toFixed(2));
+                let dish_id = orders[i].getAttribute('id').split('_').slice(-1)[0];
+                let dish_line_price = parseFloat($('#ordered_dish_price' + dish_id).text());
+                sum += parseFloat(dish_line_price.toFixed(2));
             }
+            let temp_sum = sum;
 
-            let tmpSum = sum;
-
-            let discount = $('#discountSelection');
+            let discount = $('#discount_selection');
             if (discount !== '' && sum > 0) {
                 sum -= discount.val();
             }
 
             if (orders.length > 0) {
                 if (sum <= 0) {
-                    $('#orderBtnId').text('{{ trans('client/order.free') }}');
+                    $('#order_btn_text').text('{{ trans('client/order.free') }}');
                 } else {
-                    $('#orderBtnId').text(sum.toFixed(2) + ' €');
+                    $('#order_btn_text').text(sum.toFixed(2) + ' €');
                 }
             } else {
-                $('#orderBtnId').text('');
+                $('#order_btn_text').text('');
             }
 
-            checkDiscountWithTotal(discount, tmpSum);
+            check_discount_with_total(discount, temp_sum);
 
-            return tmpSum;
+            return temp_sum;
         }
 
-        function checkDiscountWithTotal(elem, total) {
+        function check_discount_with_total(elem, total) {
             if (parseInt($(elem).val(), 10) > Math.floor(total) && total > 0) {
                 $('#discountAlert').show();
             } else {
@@ -223,10 +245,15 @@
             }
         }
 
-        $(document).on('click', '.delToOrderBtn', function () {
+        $(document).on('click', '.remove_from_cart_btn', function () {
             $(this).parent().parent().remove();
-
-            updateTotalOrderPrice();
+            if ($('#cart_content').children().length == 0) {
+                $('#cart').css('display', 'none');
+                $('#empty_cart_label').css('display', 'block');
+                $('.order_btn').css('cursor', 'not-allowed');
+                $('.order_btn').attr("disabled", true);
+            }
+            update_cart_total();
         });
 
         $(document).on('change', '.qtyToOrderIpt', function () {
@@ -243,34 +270,22 @@
             }
         });
 
-        $(document).on('change', '.qtyOrderedIpt', function () {
-            let id = $(this).attr('id').split('_').slice(-1)[0];
-
-            if (parseInt($(this).val()) < 1) {
-                $(this).val(1);
-            }
-
-            let linePrice = parseFloat($('#price' + id).text()) * parseInt($(this).val());
-
-            $('#orderedLinePrice' + id).text(linePrice.toFixed(2) + ' €');
-
-            updateTotalOrderPrice();
+        $(document).on('change', '.dish_cart_quantity_input', function () {
+            let dish_id = $(this).attr('id').split('_').slice(-1)[0];
+            let dish_price = $('#' + dish_id).find('.dish_price').text();
+            let dish_line_price = parseFloat(dish_price) * parseInt($(this).val());
+            $('#ordered_dish_price' + dish_id).text(dish_line_price.toFixed(2) + ' €');
+            update_cart_total();
         });
 
-        $(document).on('change', '#discountSelection', function () {
-            checkDiscountWithTotal($(this), updateTotalOrderPrice());
+        $(document).on('change', '#discount_selection', function () {
+            check_discount_with_total($(this), update_cart_total());
         });
 
         $(document).ready(function () {
-            let table = $('#allDishes').DataTable();
-            // table.searchPanes.container().prependTo(table.table().container());
 
-            /*$('.popover-dismiss').popover({
-                trigger: 'focus'
-            });*/
-
-            $('.orderBtn').on('click', function () {
-                let table = $('.orderDish');
+            $('.order_btn').on('click', function () {
+                let table = $('.ordered_dish');
                 let order = {};
 
                 if (table.length > 0) {
@@ -279,7 +294,7 @@
                         order[id] = parseInt($('#qty_' + id).val());
                     }
 
-                    let discountId = $('#discountSelection').find(':checked').attr('id');
+                    let discountId = $('#discount_selection').find(':checked').attr('id');
 
                     if (discountId !== undefined) {
                         discountId = discountId.substring(discountId.lastIndexOf('_') + 1);
@@ -321,31 +336,6 @@
                     });
                 }
             });
-
-            $('.addToOrderBtn').on('click', function () {
-                let id = $(this).attr('id');
-                let ipt = $('#qty' + id);
-
-                if (ipt && $('#ordered_' + id).length === 0) {
-                    if (parseInt(ipt.val()) > 0) {
-                        let quantityInput = '<input type="number" class="form-control qtyToOrderIpt qtyOrderedIpt" id="qty_' + id + '" ' +
-                            'style="width: 100%" value="' + ipt.val() + '" min="1" max="' + ipt.attr('max') + '">';
-                        let linePrice = parseFloat($('#price' + id).text()) * parseInt(ipt.val());
-
-                        $('#shopCartContent').append('' +
-                            '<tr class="orderDish" id="ordered_' + id + '">' +
-                            '<td><button class="text-light fa fa-minus delToOrderBtn"></button></td>' +
-                            '<td>' + quantityInput + '</td>' +
-                            '<td id="orderedLinePrice' + id + '">' + linePrice.toFixed(2) + ' €</td>' +
-                            '<td>' + $('#name' + id).text() + '</td>' +
-                            '</tr>'
-                        );
-                    }
-                }
-
-                updateTotalOrderPrice();
-            });
-
         });
     </script>
 @endsection

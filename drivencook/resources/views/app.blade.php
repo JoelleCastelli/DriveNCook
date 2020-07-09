@@ -18,11 +18,11 @@
             /* Set a specific height */
             /*min-height: 860px;*/
             @if(url()->current() == route('homepage') || url()->current() == route('about'))
-                height: 860px;
+                         height: 860px;
             @else
-               min-height: 860px;
-            @endif
-            /* Create the parallax scrolling effect */
+                        min-height: 860px;
+        @endif
+         /* Create the parallax scrolling effect */
             background-attachment: fixed;
             background-position: center;
             background-repeat: no-repeat;
@@ -105,7 +105,7 @@
                     <div class="dropdown-menu dropdown-menu-right bg-dark" aria-labelledby="userDropdownMenuButton">
                         @if (auth()->user()->role == "Franchisé")
                             <a class="dropdown-item text-light"
-                                href="{{ route('franchise.dashboard') }}">{{ trans('auth.my_account') }}</a>
+                               href="{{ route('franchise.dashboard') }}">{{ trans('auth.my_account') }}</a>
                         @else
                             <a class="dropdown-item text-light"
                                href="{{ route('client_dashboard') }}">{{ trans('auth.my_account') }}</a>
@@ -199,7 +199,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-light" href="#"
-                            data-toggle="modal" data-target="#contact_form_modal">
+                           data-toggle="modal" data-target="#contact_form_modal">
                             <i class="fa fa-address-book"></i> {{ trans('homepage.contact') }}
                         </a>
                     </li>
@@ -715,11 +715,16 @@
 <script src="https://maps.googleapis.com/maps/api/js?key={{env('GOOGLE_MAPS_API_KEY')}}">google.maps.event.addDomListener(window, 'load', initMap);</script>
 <script type="text/javascript">
     var locations = [
-        @foreach($trucks as $truck)
+            @foreach($trucks as $truck)
             @if(!empty($truck['user']))
-                ['{{$truck['location']['name']}}', '{{$truck['location']['latitude']}}', '{{$truck['location']['longitude']}}',
-                    '{{route('client_order',['truck_id'=>$truck['id']])}}', '{{$truck['user']['pseudo']['name']}}'],
-            @endif
+        [
+            '{{$truck['location']['address'].' '.$truck['location']['postcode'].' '.$truck['location']['city']}}',
+            '{{$truck['location']['latitude']}}',
+            '{{$truck['location']['longitude']}}',
+            '{{route('client_order',['truck_id'=>$truck['id']])}}',
+            '{{$truck['user']['pseudo']['name']}}'
+        ],
+        @endif
         @endforeach
     ];
 
@@ -740,8 +745,9 @@
 
         google.maps.event.addListener(marker, 'click', (function (marker, i) {
             return function () {
-                let content = locations[i][0] + '<br><br><a href="' + locations[i][3] + '" target="_blank">' + locations[i][4] + '</a>';
-                console.log(content);
+                let content = 'Camion de ' + locations[i][4] +
+                    '<br>' + locations[i][0] +
+                    '<br><br><a href="' + locations[i][3] + '" target="_blank">' + 'Voir le menu' + '</a>';
                 infowindow.setContent(content);
                 infowindow.open(map, marker);
             }

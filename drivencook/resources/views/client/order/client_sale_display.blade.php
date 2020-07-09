@@ -23,13 +23,25 @@
                                                             trans('client/sale.is_sale') }}</li>
                     <li class="list-group-item"><b>{{ trans('client/sale.status') }}
                             : </b>{{ trans($GLOBALS['SALE_STATUS'][$sale['status']]) }}</li>
-                    <li class="list-group-item"><b>{{ trans('client/sale.payment_method') }} : </b>{{ $sale['payment_method'] == null ?
-                                                            trans('client/sale.not_paid') :
-                                                            trans($GLOBALS['SALE_PAYMENT_METHOD'][$sale['payment_method']]) }}
+                    <li class="list-group-item"><b>{{ trans('client/sale.payment_method') }} : </b>{{
+                                                    $sale['payment_method'] == null ?
+                                                    trans('client/sale.not_paid') :
+                                                    ( $sale['total_price'] - $sale['discount_amount'] > 0 ?
+                                                    trans($GLOBALS['SALE_PAYMENT_METHOD'][$sale['payment_method']]) :
+                                                    trans('client/sale.free') ) }}
                     </li>
-                    <li class="list-group-item"><b>{{ trans('client/sale.total_price') }}
+                    <li class="list-group-item"><b>{{ trans('client/sale.total_price_without_discount') }}
                             : </b>{{ $sale['total_price'] }} €
                     </li>
+                    @if ($sale['discount_amount'] != 0)
+                    <li class="list-group-item"><b>{{ trans('client/sale.discount') }}
+                            : </b>{{ $sale['discount_amount'] }} €
+                    </li>
+                    <li class="list-group-item"><b>{{ trans('client/sale.total_price') }}
+                            : </b>{{  $sale['total_price'] - $sale['discount_amount'] > 0 ?
+                                        $sale['total_price'] - $sale['discount_amount'] : 0 }} €
+                    </li>
+                    @endif
                     <li class="list-group-item"><b> {{ trans('client/sale.see_invoice') }}
                             <a class="ml-2" href="{{ route('stream_client_invoice_pdf',['id' => $invoice['id']]) }}" target="_blank">
                             <button class="text-dark fa fa-file-pdf ml-3"></button>

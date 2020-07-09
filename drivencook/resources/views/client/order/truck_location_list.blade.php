@@ -32,7 +32,13 @@
         var locations = [
                 @foreach($trucks as $truck)
                 @if(!empty($truck['user']))
-            ['{{$truck['location']['name']}}', '{{$truck['location']['latitude']}}', '{{$truck['location']['longitude']}}', '{{route('client_order',['truck_id'=>$truck['id']])}}', '{{$truck['user']['pseudo']['name']}}'],
+            [
+                '{{$truck['location']['address'].' '.$truck['location']['postcode'].' '.$truck['location']['city']}}',
+                '{{$truck['location']['latitude']}}',
+                '{{$truck['location']['longitude']}}',
+                '{{route('client_order',['truck_id'=>$truck['id']])}}',
+                '{{$truck['user']['pseudo']['name']}}'
+            ],
             @endif
             @endforeach
         ];
@@ -55,8 +61,9 @@
 
             google.maps.event.addListener(marker, 'click', (function (marker, i) {
                 return function () {
-                    let content = locations[i][0] + '<br><br><a href="' + locations[i][3] + '">' + locations[i][4] + '</a>';
-                    console.log(content);
+                    let content = 'Camion de ' + locations[i][4] +
+                        '<br>' + locations[i][0] +
+                        '<br><br><a href="' + locations[i][3] + '" target="_blank">' + 'Voir le menu' + '</a>';
                     infowindow.setContent(content);
                     infowindow.open(map, marker);
                 }

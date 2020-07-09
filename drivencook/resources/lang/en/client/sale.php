@@ -11,6 +11,8 @@ return [
     'online_order' => 'Sale type',
     'date' => 'Date',
     'status' => 'Status',
+    'total_price_without_discount' => 'Total price without discount',
+    'discount' => 'Discount',
     'total_price' => 'Total price',
 
     'dishes_section' => 'Purchase content',
@@ -23,6 +25,7 @@ return [
 
     'credit_card' => 'Credit card',
     'cash' => 'Cash',
+    'free' => 'Free',
     'not_paid' => 'Not paid',
 
     'is_order' => 'Online order',

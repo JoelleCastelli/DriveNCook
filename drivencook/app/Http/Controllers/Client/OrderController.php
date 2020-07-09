@@ -55,29 +55,37 @@ class OrderController extends Controller
     public function client_order($truck_id)
     {
         $truck = Truck::whereKey($truck_id)
-            ->with('user')
-            ->with('location')
-            ->first();
+                        ->with('user')
+                        ->with('location')
+                        ->first();
 
         if (!empty($truck)) {
             $truck = $truck->toArray();
         }
 
         $stocks = FranchiseeStock::where([
-            ['user_id', $truck['user']['id']],
-            ['menu', true]
-        ])->with('dish')
-            ->with('user')
-            ->get();
+                                    ['user_id', $truck['user']['id']],
+                                    ['menu', true]
+                                    ])->with('dish')
+                                      ->with('user')
+                                      ->get();
 
         $fidelity_step = '';
 
+        $stock_by_category = [];
         if (!empty($stocks) && !empty($stocks[0])) {
             $stocks = $stocks->toArray();
+            $dish_categories = $this->get_enum_column_values('dish', 'category');
+            foreach($dish_categories as $dish_category) {
+                foreach($stocks as $stock) {
+                    if ($stock['dish']['category'] == $dish_category) {
+                        $stock_by_category[$dish_category][] = $stock;
+                    }
+                }
+            }
 
             $fidelity_step = FidelityStep::orderBy('reduction')
                 ->get();
-
             if (!empty($fidelity_step)) {
                 $fidelity_step = $fidelity_step->toArray();
             }
@@ -92,6 +100,7 @@ class OrderController extends Controller
 
         return view('client.order.client_order')
             ->with('stocks', $stocks)
+            ->with('stock_by_category', $stock_by_category)
             ->with('promotions', $fidelity_step)
             ->with('client', $client)
             ->with('truck', $truck);
@@ -374,16 +383,20 @@ class OrderController extends Controller
     {
         $sale = Sale::whereKey($sale_id)
             ->first();
-        try {
-            Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+        if($this->get_sale_total($sale_id) - $sale->discount_amount > 0 && $sale->payment_method != 'Liquide') {
+            try {
+                Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
-            Refund::create([
-                'charge' => $sale->payment_id,
-                'reason' => 'requested_by_customer'
-            ]);
+                Refund::create([
+                    'charge' => $sale->payment_id,
+                    'reason' => 'requested_by_customer'
+                ]);
+                return $this->client_order_cancel($sale_id);
+            } catch (Exception $ex) {
+                return $ex->getMessage();
+            }
+        } else {
             return $this->client_order_cancel($sale_id);
-        } catch (Exception $ex) {
-            return $ex->getMessage();
         }
     }
 

@@ -4,7 +4,7 @@ return [
     'title' => 'Commencez par choisir un camion...',
     'title_dishes' => 'Vous pouvez maintenant ajouter des produits à votre commande...',
     'title_dishes_offline' => 'Vous pouvez maintenant consulter le menu...',
-    'shopping_cart' => 'Votre panier :',
+    'shopping_cart' => 'Votre panier',
     'franchisee_menu' => 'Menu de',
     'franchisee_menu_empty' => 'Menu vide',
     'to_order_connection_require' => 'Vous devez vous connecter pour commander',
@@ -12,11 +12,11 @@ return [
     'back_trucks' => 'Liste des camions',
 
     'quantity_to_order' => 'Quantité à commander',
-    'quantity_ordered' => 'Quantité commandée',
+    'quantity_ordered' => 'Quantité',
     'unit_price' => 'Prix unitaire',
     'line_price' => 'Prix',
 
-    'order_btn' => 'Commander',
+    'order_btn' => 'Valider mon panier',
     'free' => 'GRATUIT',
 
     'pseudo' => 'Pseudonyme',
@@ -26,9 +26,18 @@ return [
     'brand' => 'Marque',
     'model' => 'Modèle',
 
+    // Dish categories
+    'category_drink' => 'Boissons',
+    'category_hot_dish' => 'Plats chauds',
+    'category_cold_dish' => 'Plats froids',
+    'category_salty_snack' => 'Snacks salés',
+    'category_sweet_snack' => 'Snacks sucrés',
+
     'discount_amount' => 'Remise',
     'select_menu_no_discount' => 'Vous pouvez choisir une remise...',
     'dishes' => 'Commande',
+    'cart' => 'Votre panier',
+    'cart_empty' => 'Votre panier est vide',
 
     'alert_discount_more_than_total' => 'Attention le montant de la remise dépasse celui de la commande !',
 
