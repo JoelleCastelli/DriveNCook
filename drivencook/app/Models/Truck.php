@@ -91,6 +91,15 @@ class Truck extends Model
         return $this->belongsTo(User::class, 'user_id')->with('pseudo');
     }
 
+    public function user_with_stocks()
+    {
+        return $this->belongsTo(User::class, 'user_id')
+            ->with('pseudo')
+            ->withCount('stocks')
+            ->with('stocks')
+            ->having('stocks_count', '>', 0);
+    }
+
     public function location()
     {
         return $this->belongsTo(Location::class, 'location_id');
@@ -105,6 +114,7 @@ class Truck extends Model
     {
         return $this->hasMany(SafetyInspection::class, 'truck_id');
     }
+
     public function last_safety_inspection()
     {
         return $this->hasOne(SafetyInspection::class, 'truck_id')->orderByDesc('id');

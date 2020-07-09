@@ -72,13 +72,14 @@ trait UserTools
         return $pseudos;
     }
 
-    public function get_franchisee_activity_period($franchisee_id) {
+    public function get_franchisee_activity_period($franchisee_id)
+    {
         $franchisee = $this->get_franchisee_by_id($franchisee_id);
         $franchisee_activity_period = [];
         $begin = DateTime::createFromFormat("Y-m-d H:i:s", $franchisee['created_at']);
-        $end = new DateTime( 'now' );
+        $end = new DateTime('now');
         $daterange = new DatePeriod($begin, new DateInterval('P1M'), $end);
-        foreach($daterange as $date){
+        foreach ($daterange as $date) {
             $franchisee_activity_period[$date->format("Y")][] = $date->format("m");
         }
         return $franchisee_activity_period;
@@ -140,9 +141,9 @@ trait UserTools
             $client = User::where('id', $sale['user_client'])->first()->toArray();
 
             return $pdf = PDF::loadView('client_invoice', ['invoice' => $invoice,
-                                                            'pseudo' => $pseudo,
-                                                            'client' => $client,
-                                                            'sale' => $sale]);
+                'pseudo' => $pseudo,
+                'client' => $client,
+                'sale' => $sale]);
         } else if ($invoice['franchisee_order'] == 1) {
             $purchase_order = PurchaseOrder::with('purchased_dishes')
                 ->where('id', $invoice['purchase_order_id'])
@@ -153,7 +154,7 @@ trait UserTools
             'pseudo' => $pseudo,
             'purchase_order' => $purchase_order]);
     }
-    
+
     public function stream_invoice_pdf($id)
     {
         $pdf = $this->create_invoice_pdf($id);
@@ -253,7 +254,7 @@ trait UserTools
             $invoices = Invoice::where('user_id', $franchisee_id)->get()->toArray();
             foreach ($invoices as $invoice) {
                 // counting only stock orders and monthly fee (no initial fee or client invoices)
-                if ($invoice['franchisee_order'] == 1 || $invoice['monthly_fee'] == 1 ) {
+                if ($invoice['franchisee_order'] == 1 || $invoice['monthly_fee'] == 1) {
                     $history['total_invoices'] += $invoice['amount'];
                 }
             }
@@ -335,10 +336,11 @@ trait UserTools
     }
 
     // Return only the dates with sales
-    public function get_sales_turnover_by_day($franchisee_id) {
+    public function get_sales_turnover_by_day($franchisee_id)
+    {
         $sales_by_day = Sale::where('user_franchised', $franchisee_id)
-                            ->orderBy('date', 'ASC')
-                            ->get()->groupBy('date')->toArray();
+            ->orderBy('date', 'ASC')
+            ->get()->groupBy('date')->toArray();
         $sales_turnover_by_day = [];
 
         foreach ($sales_by_day as $date => $daily_sales) {
@@ -355,7 +357,8 @@ trait UserTools
     }
 
     // Return the daily sales and turnover on the month - If nothing on a date: fill with 0
-    public function get_monthly_sales_turnover_by_day($franchisee_id, $month, $year) {
+    public function get_monthly_sales_turnover_by_day($franchisee_id, $month, $year)
+    {
 
         $sales_turnover_by_day = $this->get_sales_turnover_by_day($franchisee_id);
 
@@ -370,9 +373,9 @@ trait UserTools
 
         // Array with every day of the month
         $days_in_month = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-        for($i = 1; $i <= $days_in_month; $i++) {
+        for ($i = 1; $i <= $days_in_month; $i++) {
             $prefix = $i < 10 ? '0' : '';
-            $date = $prefix.$i.'/'.$month.'/'.$year;
+            $date = $prefix . $i . '/' . $month . '/' . $year;
             $monthly_data['dates'][] = $date;
         }
 
@@ -396,7 +399,8 @@ trait UserTools
         return $monthly_data;
     }
 
-    public function get_monthly_sales_by_payment_methods($franchisee_id, $month, $year) {
+    public function get_monthly_sales_by_payment_methods($franchisee_id, $month, $year)
+    {
         // Default dates: current month of current year
         $month = $month == null ? date('m') : $month;
         $year = $year == null ? date('Y') : $year;
@@ -406,16 +410,17 @@ trait UserTools
         foreach ($payment_methods as $payment_method) {
             $sales['methods'][] = trans("franchisee.$payment_method");
             $sales['nb_sales'][] = Sale::where('user_franchised', $franchisee_id)
-                                            ->where('payment_method', $payment_method)
-                                            ->whereYear('date', $year)
-                                            ->whereMonth('date', $month)
-                                            ->get()->count();
+                ->where('payment_method', $payment_method)
+                ->whereYear('date', $year)
+                ->whereMonth('date', $month)
+                ->get()->count();
         }
 
         return $sales;
     }
 
-    public function get_monthly_sales_by_origin($franchisee_id, $month, $year){
+    public function get_monthly_sales_by_origin($franchisee_id, $month, $year)
+    {
         // Default dates: current month of current year
         $month = $month == null ? date('m') : $month;
         $year = $year == null ? date('Y') : $year;
@@ -433,7 +438,8 @@ trait UserTools
         return $sales;
     }
 
-    public function generate_chart($franchisees_ids, $type){
+    public function generate_chart($franchisees_ids, $type)
+    {
 
         // Get current month data & initialize data structure with first ID of array
         $monthly_sales_turnover_by_day = $this->get_monthly_sales_turnover_by_day($franchisees_ids[0], null, null);
@@ -447,20 +453,20 @@ trait UserTools
 
                     // Increase sales and turnover by day data
                     $franchisee_monthly_sales_turnover_by_day = $this->get_monthly_sales_turnover_by_day($franchisee_id, null, null);
-                    for($i = 0 ; $i <= count($franchisee_monthly_sales_turnover_by_day['sales']) - 1; $i++) {
+                    for ($i = 0; $i <= count($franchisee_monthly_sales_turnover_by_day['sales']) - 1; $i++) {
                         $monthly_sales_turnover_by_day['sales'][$i] += $franchisee_monthly_sales_turnover_by_day['sales'][$i];
                         $monthly_sales_turnover_by_day['turnover'][$i] += $franchisee_monthly_sales_turnover_by_day['turnover'][$i];
                     }
 
                     // Increase sales by payment methods data
                     $franchisee_sales_by_payment_methods = $this->get_monthly_sales_by_payment_methods($franchisee_id, null, null);
-                    for($j = 0 ; $j <= count($franchisee_sales_by_payment_methods['nb_sales']) - 1; $j++) {
+                    for ($j = 0; $j <= count($franchisee_sales_by_payment_methods['nb_sales']) - 1; $j++) {
                         $monthly_sales_by_payment_methods['nb_sales'][$j] += $franchisee_sales_by_payment_methods['nb_sales'][$j];
                     }
 
                     // Increase sales by origin data
                     $franchisee_sales_by_origin = $this->get_monthly_sales_by_origin($franchisee_id, null, null);
-                    for($y = 0 ; $y <= count($franchisee_sales_by_origin['nb_sales']) - 1; $y++) {
+                    for ($y = 0; $y <= count($franchisee_sales_by_origin['nb_sales']) - 1; $y++) {
                         $monthly_sales_by_origin['nb_sales'][$y] += $franchisee_sales_by_origin['nb_sales'][$y];
                     }
                 }
@@ -508,4 +514,27 @@ trait UserTools
         return $chart;
     }
 
+    public function get_franchisees_trucks_with_stocks()
+    {
+        $trucks_raw = Truck::with('user_with_stocks')
+            ->with('location')
+            ->where([
+                ['functional', true],
+                ['user_id', "!=", null]
+            ])->get()->toArray();
+
+        $trucks = [];
+
+        foreach ($trucks_raw as $truck) {
+            if (!empty($truck['user_with_stocks'])) {
+                foreach ($truck['user_with_stocks']['stocks'] as $stock) {
+                    if ($stock['quantity'] > 0 && $stock['menu'] == 1) {
+                        $trucks[] = $truck;
+                        break;
+                    }
+                }
+            }
+        }
+        return $trucks;
+    }
 }
