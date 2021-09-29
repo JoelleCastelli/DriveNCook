@@ -19,7 +19,7 @@
     "bootstrap4-toggle": "^3.6.1",
     "child_process": "^1.0.2",
     "cross-env": "^5.2.1",
-    "datatables.net": "^1.10.21",
+    "datatables.net": "^1.11.3",
     "datatables.net-bs4": "^1.10.21",
     "datatables.net-searchpanes": "^1.1.1",
     "datatables.net-searchpanes-bs4": "^1.1.1",
