@@ -28,7 +28,7 @@
     "fs": "0.0.1-security",
     "jquery": "3.5.0",
     "jquery-ui": "^1.12.1",
-    "jsdom": "^16.2.2",
+    "jsdom": "^16.5.0",
     "laravel-mix": "^5.0.4",
     "lodash": "^4.17.4",
     "net": "^1.0.2",
@@ -47,7 +47,7 @@
     "font-awesome": "^4.7.0",
     "fs": "0.0.1-security",
     "jquery-ui": "^1.12.1",
-    "jsdom": "^16.2.2",
+    "jsdom": "^16.5.0",
     "net": "^1.0.2",
     "tls": "0.0.1"
   }
